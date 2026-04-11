@@ -1,0 +1,204 @@
+:root {
+  --keyboard: 0px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+html.keyboard-open,
+body.keyboard-open {
+  overflow: hidden;
+  height: 100%;
+  touch-action: none;
+}
+
+.layer-messages {
+  bottom: calc(60px + var(--keyboard));
+}
+
+.messages {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: auto;
+}
+
+.message {
+  opacity: 0;
+  transform: translateY(8px) scale(.995);
+  animation: msgIn 260ms cubic-bezier(.2, .9, .3, 1) forwards;
+  will-change: transform, opacity;
+  position: relative;
+  user-select: none;
+  display: flex;
+  padding: 0 8px;
+}
+
+.message:not(.me) .msg-drag {
+  border-radius: 18px 18px 18px 4px;
+  background: linear-gradient(
+  135deg, 
+  rgb(54,162,189) 5%,
+  rgb(255,255,255,0.7) 5%,
+  transparent 20% ,  
+  rgb(255,255,255,0.5) 80%,
+  rgb(255,255,255,0.7) 2%,
+  rgb(255,255,255,0.5) 6%,
+  rgb(54, 162, 189)) ;
+  border-left: 1px solid #36A2BD;
+  border-bottom: 1px solid #36A2BD;
+  color: white;
+}
+
+.message.me {
+  justify-content: flex-end;
+}
+.message.me .msg-drag {
+  position: relative;
+  background: 
+    linear-gradient(
+      -135deg, 
+      rgba(255,255,255,0.6) 10%, 
+      rgba(255,255,255,0.15) 30%, 
+      rgba(180, 80, 200, 0.5) 60%, 
+      rgba(109, 204, 189, 0.5) 90%
+    );
+  border-right: 1px solid rgba(54, 162, 189, 0.5);
+  border-left: 1px solid rgba(54, 162, 189, 0.5);
+  border-bottom: 1px solid rgba(255, 200, 255, 0.6);
+  border-radius: 18px 18px 4px 18px;
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  box-shadow: 
+    inset -2px 1px rgba(0,255,255,0.4),
+    inset 0 6px 12px rgba(255,255,255,0.3),
+    0 6px 15px rgba(0,0,0,0.25);
+}
+.message.me .msg-drag::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 180deg at 70% 20%, 
+    rgba(255,0,200,0.3), 
+    rgba(0,255,255,0.3), 
+    rgba(255,255,0,0.3), 
+    rgba(255,0,200,0.3)
+  );
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.msg-drag {
+  display: inline-block;
+  background: #1e293b;
+  font-size: 14px;
+  color: #e2e8f0;
+  padding: 12px 12px 8px 12px;
+  border-radius: 8px 20px 0px 8px;
+  line-height: 1.4;
+  word-break: break-word;
+  will-change: transform, opacity;
+  max-width: 85%;
+  position: relative;
+  touch-action: pan-y;
+  transition: all 0.2s ease;
+}
+
+.message-text,
+.reply-quote,
+.reply-separator {
+  display: inline;
+}
+
+.msg-hour {
+  display: inline-block;
+  font-size: 10px;
+  line-height: 1.3;
+  margin-left: 8px;
+  position: relative;
+  top: 3px;
+  color: #94a3b8;
+  vertical-align: baseline;
+}
+
+.message.me .msg-hour {
+  color: #ccfbf1;
+}
+
+.reactions-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.message:not(.me) .reactions-wrap {
+  justify-content: flex-start;
+}
+
+.reply-quote {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.reply-separator {
+  display: block;
+  margin: 6px 0;
+}
+
+@keyframes msgIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.messages.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+.layer-header {
+  transform: translateZ(0);
+  letter-spacing: 1.4px;
+}
+
+.layer-input {
+  transform: translateY(calc(-1 * var(--keyboard)));
+}
+
+.input-container {
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+}
+
+textarea {
+  line-height: 1.3;
+  overscroll-behavior: contain;
+}
+
+button {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+  touch-action: manipulation;
+}	

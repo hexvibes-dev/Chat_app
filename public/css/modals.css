@@ -1,0 +1,153 @@
+.edit-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 11000;
+}
+
+.edit-card {
+  width: 300px;
+  background:#285E94 ;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transform-origin: center;
+  transition: transform 160ms ease, opacity 140ms ease;
+  color: #e2e8f0;
+  animation: In 0.3s ease both;
+}
+
+@keyframes In {
+  from{
+    transform: scale(0);
+  }
+  to{
+    transform: scale(1);
+  }
+}
+
+.edit-modal.enter .edit-card {
+  transform: translateY(8px) scale(.98);
+  opacity: 0;
+}
+
+.edit-modal.leave .edit-card {
+  transform: translateY(8px) scale(.98);
+  opacity: 0;
+}
+
+.edit-card h1 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: #2dd4bf;
+}
+
+.edit-card textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: rgb(52, 165, 189,0.4);
+  color: #e2e8f0;
+  margin-bottom: 12px;
+  resize: vertical;
+}
+
+.add-reaction-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 11000;
+}
+
+.add-reaction-card {
+  width: 300px;
+  background: rgb(8, 118, 157,0.6);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transform-origin: center;
+  transition: transform 160ms ease, opacity 140ms ease;
+  color: #e2e8f0;
+}
+
+.add-reaction-card h1 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: #2dd4bf;
+}
+
+.add-reaction-card input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: rgb(52, 165, 189,0.4);
+  color: #e2e8f0;
+  margin-bottom: 12px;
+}
+
+.modal-blur-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10999;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+
+.modal-blur-overlay.visible {
+  opacity: 1;
+}
+
+.add-reaction-modal,
+.edit-modal {
+  z-index: 11000;
+}
+
+.message.lifted .msg-drag {
+  border: 2px solid #14b8a6;
+  transition: border 0.18s ease;
+}
+
+.reactions-popup,
+.options-menu,
+.message.lifted .msg-drag {
+  box-shadow: none;
+}
+
+button.primary {
+  background: #DA5391 ;
+  transition:all 1s esse;
+}
+
+button.primary:hover {
+  transform: scale(0.8);
+}
+
+.reactions-popup,
+.reactions-scroll-container {
+  overscroll-behavior: contain;
+  touch-action: pan-x;
+}
+
+.edit-modal,
+.add-reaction-modal,
+.modal-blur-overlay {
+  touch-action: none;
+}
+
+.reply-popup,
+.options-menu,
+.transient-notif {
+  touch-action: none;
+}

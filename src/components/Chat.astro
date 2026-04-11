@@ -1,0 +1,76 @@
+<div 
+  class="layer-messages fixed top-[60px] left-0 right-0 overflow-hidden touch-pan-y"
+  style="bottom: calc(60px + var(--keyboard, 0px))">
+  
+  <div 
+    class="messages absolute inset-0 overflow-y-auto p-5 touch-auto" 
+    id="messages" 
+    aria-live="polite" 
+    aria-atomic="false">
+    
+    <div 
+      id="spacer" 
+      style="height:0px">
+    </div>
+    
+  </div>
+  
+</div>
+
+<div 
+  class="layer-header fixed top-0 left-0 h-14 w-full bg-gradient-to-br from-pink-600 via-white/50 to-cyan-600/80 flex items-center px-4 z-10 border-b border-b-pink-100 rounded-bl-2xl rounded-br-2xl">
+  
+  <h1 
+    class="text-white text-xl translate-x-4">
+    Contact Name
+  </h1>
+  
+</div>
+
+<div 
+  class="layer-input fixed left-0 bottom-0 w-full z-20 touch-none will-change-transform" 
+  id="layerInput">
+  
+  <div 
+    class="input-container bg-pink-500 border-t border-slate-700 rounded-t-3xl"
+    style="padding: 10px 12px; padding-bottom: calc(10px + env(safe-area-inset-bottom));">
+    
+    <div 
+      class="input-box w-full flex justify-center items-center gap-3">
+      
+      <textarea 
+        id="input" 
+        class="resize-none border-none font-medium max-h-[120px] min-h-[40px] overflow-y-auto text-white bg-pink-400 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all duration-200 rounded-l-2xl rounded-r-2xl"
+        style="padding: 16px 12px 12px 20px !important; width: 70%; max-width: 500px;"
+        rows="1" 
+        placeholder="Escribe un mensaje..." 
+        aria-label="Escribe un mensaje"></textarea>
+      
+      <button 
+        id="sendBtn" 
+        type="button" 
+        class="bg-cyan-500 text-white font-semibold py-3 px-5 rounded-xl transform active:scale-75 transition-all"
+        aria-label="Enviar mensaje">
+        Enviar
+      </button>
+      
+    </div>
+    
+  </div>
+  
+</div>
+
+<div 
+  id="replyPopup" 
+  class="reply-popup"
+  role="button" 
+  aria-hidden="true" 
+  tabindex="0">
+</div>
+
+<button 
+  id="scrollToBottomBtn" 
+  class="scroll-to-bottom-btn fixed right-5 bottom-[70px] w-11 h-11 rounded-full bg-teal-600 text-white flex items-center justify-center text-2xl cursor-pointer shadow-md z-[10000] transition-all duration-200 touch-manipulation hidden"
+  aria-label="Ir al final">
+  ↓
+</button>

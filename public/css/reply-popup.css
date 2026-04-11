@@ -1,0 +1,118 @@
+.reply-popup {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  bottom: calc(60px + var(--keyboard) + env(safe-area-inset-bottom) + 22px);
+  background: rgba(15, 23, 42, 0.98);
+  color: #e2e8f0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  max-width: calc(100% - 40px);
+  width: auto;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 180ms ease, opacity 180ms ease, bottom 180ms ease;
+  z-index: 1200;
+  padding-right: 18px;
+}
+
+.reply-popup.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.reply-popup:focus {
+  outline: 2px solid #14b8a6;
+  outline-offset: 2px;
+}
+
+.reply-popup .text {
+  display: inline-block;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-right: 8px;
+}
+
+.reply-popup .close-btn {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 120ms ease, background 120ms ease, color 120ms ease;
+  z-index: 1300;
+  pointer-events: auto;
+}
+
+.reply-popup .close-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 1);
+  color: #0f172a;
+}
+
+.flash-highlight {
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.3) !important;
+  transition: box-shadow 220ms ease;
+}
+
+/* Blur global */
+.reply-blur-active .layer-messages,
+.reply-blur-active .layer-header,
+.reply-blur-active .layer-input,
+.reply-blur-active body> :not(#replyPopup) {
+  filter: blur(6px);
+  transition: filter 160ms ease;
+  opacity: 0.92;
+}
+
+.reply-blur-active .message.no-blur,
+.reply-blur-active .message.no-blur * {
+  filter: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+  z-index: 1400;
+  position: relative;
+}
+
+.reply-blur-dim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  z-index: 1140;
+  transition: opacity 160ms ease;
+}
+
+.reply-popup {
+  z-index: 1200;
+}
+
+.reply-popup .close-btn {
+  z-index: 1300;
+}

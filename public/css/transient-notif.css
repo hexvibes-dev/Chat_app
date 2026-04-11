@@ -1,0 +1,53 @@
+.transient-notif {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 18px;
+  background: #0f172a;
+  color: #2dd4bf;
+  padding: 8px 14px;
+  border-radius: 18px;
+  font-size: 13px;
+  opacity: 0;
+  transition: opacity 120ms ease, transform 120ms ease;
+  z-index: 12000;
+  border: 1px solid #14b8a6;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.transient-notif.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.notif-buttons {
+  display: inline-flex;
+  gap: 12px;
+}
+
+.notif-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 16px;
+  padding: 4px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  transition: background 0.2s;
+}
+
+.notif-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.message {
+  position: relative;
+}
+
+.reactions-wrap {
+  pointer-events: auto;
+}
