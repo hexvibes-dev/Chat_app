@@ -74,3 +74,24 @@
   aria-label="Ir al final">
   ↓
 </button>
+
+<!-- Modal de registro de usuario (oculto por defecto) -->
+<div id="user-register-overlay" class="modal-blur-overlay" style="display: none;"></div>
+<div id="user-register-modal" class="name-modal" style="display: none;">
+  <div class="name-card">
+    <h1>¿Cómo te llamas?</h1>
+    <div class="input-group">
+      <label for="displayNameInput">Nombre visible</label>
+      <input type="text" id="displayNameInput" placeholder="Ej: Juan Pérez" maxlength="30" autocomplete="off" />
+    </div>
+    <div class="input-group">
+      <label for="usernameInput">Nombre de usuario (único)</label>
+      <input type="text" id="usernameInput" placeholder="Ej: juan123" maxlength="20" autocomplete="off" />
+      <div class="username-hint">Solo letras, números y guiones bajos. Sin espacios.</div>
+      <div id="usernameError" class="error-message"></div>
+    </div>
+    <div class="name-actions">
+      <button id="nameAccept" class="btn primary" disabled>Entrar al chat</button>
+    </div>
+  </div>
+</div>

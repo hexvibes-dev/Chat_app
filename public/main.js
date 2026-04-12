@@ -1,3 +1,4 @@
+// public/main.js
 import './js/messages.js';
 import './js/scroll.js';
 import './js/keyboard.js';
@@ -6,6 +7,7 @@ import './js/hour.js';
 import './js/answer.js';
 import './js/scrollButton.js';
 import './js/reactions.js';
+import { initUserRegistration } from './js/user.js';
 
 import { updateIsAtBottom } from './js/scroll.js';
 import { updateKeyboard } from './js/keyboard.js';
@@ -16,6 +18,13 @@ import { enableAnswerGestures } from './js/answer.js';
 if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
 if (typeof window.smoothScrollToBottom !== 'function') window.smoothScrollToBottom = () => {};
 if (typeof window.ensureLastMessageAboveInput !== 'function') window.ensureLastMessageAboveInput = () => {};
+
+// Iniciar registro de usuario cuando el DOM esté listo
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initUserRegistration);
+} else {
+  initUserRegistration();
+}
 
 if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', updateKeyboard);

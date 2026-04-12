@@ -1,4 +1,6 @@
-// src/js/socket.js
+// public/socket.js
+import { getUsername } from './js/user.js';
+
 let socket = null;
 
 function showTransientNotification(text, duration = 2000) {
@@ -35,13 +37,17 @@ function loadSocketIO(baseUrl) {
 export async function connectToBackend(url) {
   try {
     const io = await loadSocketIO(url);
+    const username = getUsername() || 'anon';
 
     if (socket) {
       socket.disconnect();
       socket = null;
     }
 
-    socket = io(url, { transports: ['websocket'] });
+    socket = io(url, {
+      transports: ['websocket'],
+      query: { username }
+    });
 
     socket.on('connect', () => {
       console.log('✅ Socket conectado, ID:', socket.id);
@@ -54,10 +60,10 @@ export async function connectToBackend(url) {
 
     socket.on('history', (messages) => {
       console.log('📜 Historial recibido:', messages);
+      // Ruta corregida: ./js/messages.js
       import('./js/messages.js').then(({ appendMessage }) => {
         messages.forEach(msg => {
-          // En el historial, determinamos si es propio comparando senderId con nuestro ID actual
-          const isMe = (socket?.id && msg.senderId === socket.id);
+          const isMe = (username && msg.senderId === username);
           appendMessage(msg.text, { me: isMe, fromSocket: true, timestamp: msg.timestamp });
         });
       }).catch(err => console.error('Error al importar messages.js para history', err));
@@ -65,12 +71,11 @@ export async function connectToBackend(url) {
 
     socket.on('new-message', (msg) => {
       console.log('📩 Mensaje recibido del servidor:', msg);
-      import('./messages.js').then(({ appendMessage }) => {
+      // Ruta corregida: ./js/messages.js
+      import('./js/messages.js').then(({ appendMessage }) => {
         try {
-          const myId = socket?.id;
-          const isMe = (myId && msg.senderId === myId);
-          console.log(`🧑 Mi ID: ${myId}, senderId: ${msg.senderId}, isMe: ${isMe}`);
-          // Usamos requestAnimationFrame para asegurar que el DOM esté listo
+          const isMe = (username && msg.senderId === username);
+          console.log(`🧑 Mi username: ${username}, senderId: ${msg.senderId}, isMe: ${isMe}`);
           requestAnimationFrame(() => {
             appendMessage(msg.text, { me: isMe, fromSocket: true, timestamp: msg.timestamp });
           });
