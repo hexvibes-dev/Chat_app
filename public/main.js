@@ -1,19 +1,19 @@
-import './messages.js';
-import './automsj.js';
-import './scroll.js';
-import './keyboard.js';
-import './input.js';
-import './hour.js';
-import './answer.js';
-import './scrollButton.js';
-import './reactions.js';
+import './js/messages.js';
+import './js/automsj.js';
+import './js/scroll.js';
+import './js/keyboard.js';
+import './js/input.js';
+import './js/hour.js';
+import './js/answer.js';
+import './js/scrollButton.js';
+import './js/reactions.js';
 
-import { updateIsAtBottom } from './scroll.js';
-import { updateKeyboard } from './keyboard.js';
-import { input } from './input.js';
-import { appendMessage } from './messages.js';
-import { startAutoReplies } from './automsj.js';
-import { enableAnswerGestures } from './answer.js';
+import { updateIsAtBottom } from './js/scroll.js';
+import { updateKeyboard } from './js/keyboard.js';
+import { input } from './js/input.js';
+import { appendMessage } from './js/messages.js';
+import { startAutoReplies } from './js/automsj.js';
+import { enableAnswerGestures } from './js/answer.js';
 
 if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
 if (typeof window.smoothScrollToBottom !== 'function') window.smoothScrollToBottom = () => {};
