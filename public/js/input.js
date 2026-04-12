@@ -1,6 +1,6 @@
 import { appendMessage } from './messages.js';
 import { getAndClearQuotedMessage, hideReplyPopup } from './answer.js';
-import { scheduleRandomReply } from './automsj.js';
+import { connectToBackend, sendMessageViaSocket, isSocketConnected, disconnectSocket } from '../socket.js';
 
 if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
 if (typeof window.smoothScrollToBottom !== 'function') window.smoothScrollToBottom = () => {};
@@ -49,11 +49,30 @@ export function sendMessageFromInput() {
   if (!input) return;
   const text = input.value.trim();
 
-  if (!text && !editingMessageId) {
+  // Comandos
+  if (text.startsWith('/connect')) {
+    const parts = text.split(' ');
+    const url = parts[1];
+    if (!url) {
+      showTransientNotification('Debes especificar una URL');
+    } else {
+      connectToBackend(url);
+    }
+    input.value = '';
+    adjustTextareaHeight();
     keepFocusOnInput();
     return;
   }
 
+  if (text === '/disconnect') {
+    disconnectSocket();
+    input.value = '';
+    adjustTextareaHeight();
+    keepFocusOnInput();
+    return;
+  }
+
+  // Edición de mensaje
   if (editingMessageId) {
     const msgEl = document.querySelector(`[data-msg-id="${editingMessageId}"]`);
     if (msgEl) {
@@ -70,8 +89,27 @@ export function sendMessageFromInput() {
     return;
   }
 
+  // No hay texto y no es edición
+  if (!text) {
+    keepFocusOnInput();
+    return;
+  }
+
   const quoted = getAndClearQuotedMessage ? getAndClearQuotedMessage() : null;
 
+  // Si hay socket activo, enviar por socket
+  if (isSocketConnected()) {
+    const sent = sendMessageViaSocket(text);
+    if (sent) {
+      input.value = '';
+      adjustTextareaHeight();
+      if (typeof hideReplyPopup === 'function') hideReplyPopup();
+      keepFocusOnInput();
+    }
+    return;
+  }
+
+  // Modo local (sin socket)
   appendMessage(text, { me: true, replyTo: quoted || undefined });
 
   input.value = '';
@@ -87,8 +125,6 @@ export function sendMessageFromInput() {
   if (window.keyboardOpen && typeof window.ensureLastMessageAboveInput === 'function') {
     setTimeout(() => window.ensureLastMessageAboveInput(kb), 60);
   }
-
-  if (typeof scheduleRandomReply === 'function') scheduleRandomReply(400, 1400);
 }
 
 function onMessageEdit(e) {
@@ -110,8 +146,7 @@ if (input) {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
       sendMessageFromInput();
-    }
-    else if (e.key === 'Escape') {
+    } else if (e.key === 'Escape') {
       if (editingMessageId) {
         editingMessageId = null;
         input.value = '';
