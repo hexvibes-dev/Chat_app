@@ -1,6 +1,10 @@
+// public/js/editModal.js
+import { emitSocketEvent, isSocketConnected } from './socketUtils.js';
+
 let modal = null;
 let blurOverlay = null;
 let keyboardListener = null;
+const pendingEdits = new Map();
 
 export function showEditModal(messageEl, onSave) {
   window.dispatchEvent(new CustomEvent('close-all-popups'));
@@ -49,15 +53,53 @@ export function showEditModal(messageEl, onSave) {
   input.select();
 
   btnCancel.addEventListener('click', () => hideModal());
+
   btnSave.addEventListener('click', () => {
     const newText = input.value.trim();
     if (!newText || newText === currentText) {
       hideModal();
       return;
     }
-    if (typeof onSave === 'function') onSave(newText);
+
+    const msgId = messageEl.dataset.msgId;
+    const textNode = messageEl.querySelector('.message-text');
+    const originalText = textNode.textContent;
+
+    textNode.textContent = newText;
+    messageEl.dataset.edited = 'true';
+    const hourEl = messageEl.querySelector('.msg-hour');
+    let originalHourText = hourEl.innerText;
+    if (hourEl) {
+      let baseHour = hourEl.innerText.split(' (')[0];
+      hourEl.innerText = baseHour + ' (editado)';
+    }
     hideModal();
     showTransientNotification('Mensaje editado');
+
+    if (pendingEdits.has(msgId)) {
+      clearTimeout(pendingEdits.get(msgId).timeoutId);
+    }
+    const timeoutId = setTimeout(() => {
+      if (pendingEdits.has(msgId)) {
+        textNode.textContent = originalText;
+        messageEl.dataset.edited = 'false';
+        if (hourEl) hourEl.innerText = originalHourText;
+        pendingEdits.delete(msgId);
+        showTransientNotification('Error de conexión. Edición revertida.', 2000);
+      }
+    }, 15000);
+    pendingEdits.set(msgId, { originalText, newText, timeoutId });
+
+    if (isSocketConnected()) {
+      emitSocketEvent('message:edit', { msgId, newText });
+      if (typeof onSave === 'function') onSave(newText);
+    } else {
+      textNode.textContent = originalText;
+      messageEl.dataset.edited = 'false';
+      if (hourEl) hourEl.innerText = originalHourText;
+      pendingEdits.delete(msgId);
+      showTransientNotification('Sin conexión. No se pudo editar.', 2000);
+    }
   });
 
   function updateModalPosition() {
@@ -134,4 +176,23 @@ function showTransientNotification(text, duration = 1000) {
   _notifT = setTimeout(() => {
     if (_notifEl) _notifEl.classList.remove('visible');
   }, duration);
+}
+
+export function editMessageRemotely(msgId, newText) {
+  const msgEl = document.querySelector(`[data-msg-id="${msgId}"]`);
+  if (!msgEl) return;
+
+  if (pendingEdits.has(msgId)) {
+    clearTimeout(pendingEdits.get(msgId).timeoutId);
+    pendingEdits.delete(msgId);
+  }
+
+  const textNode = msgEl.querySelector('.message-text');
+  if (textNode) textNode.textContent = newText;
+  msgEl.dataset.edited = 'true';
+  const hourEl = msgEl.querySelector('.msg-hour');
+  if (hourEl) {
+    let baseHour = hourEl.innerText.split(' (')[0];
+    hourEl.innerText = baseHour + ' (editado)';
+  }
 }

@@ -1,3 +1,4 @@
+// public/js/scrollButton.js
 (function() {
   const btn = document.getElementById('scrollToBottomBtn');
   const messagesEl = document.getElementById('messages');
@@ -24,8 +25,15 @@
   new MutationObserver(updateButtonVisibility).observe(messagesEl, { childList: true, subtree: true });
   setInterval(updateButtonVisibility, 500);
 
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('input');
+    const wasFocused = document.activeElement === input;
     messagesEl.scrollTo({ top: messagesEl.scrollHeight, behavior: 'smooth' });
+    if (wasFocused) {
+      // Mantener el foco sin abrir/cerrar teclado
+      input.focus({ preventScroll: true });
+    }
   });
 
   updateButtonVisibility();

@@ -39,6 +39,7 @@
   cursor: pointer;
   color: white;
   transition: background 0.2s;
+  pointer-events: auto;
 }
 
 .notif-btn:hover {

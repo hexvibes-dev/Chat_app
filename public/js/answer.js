@@ -1,3 +1,7 @@
+// public/js/answer.js
+import { appendMessage } from './messages.js';
+import { getUsername } from './user.js';
+
 let currentQuotedMessage = null;
 
 export function enableAnswerGestures() {
@@ -277,4 +281,28 @@ export function blurExceptTargetForDuration(target, duration = 1000) {
       if (dim && dim.parentNode) dim.parentNode.removeChild(dim);
     }, 100);
   }, duration);
+}
+
+// --- RESPUESTAS REMOTAS ---
+export function addReplyRemotely(targetMsgId, replyText, replyAuthor, senderId) {
+  const targetMsg = document.querySelector(`[data-msg-id="${targetMsgId}"]`);
+  if (!targetMsg) {
+    console.warn('addReplyRemotely: mensaje objetivo no encontrado', targetMsgId);
+    return;
+  }
+
+  const currentUser = getUsername();
+  const isMe = (senderId === currentUser);
+  const quotedText = extractMessageText(targetMsg.querySelector('.msg-drag'));
+
+  appendMessage(replyText, {
+    me: isMe,
+    replyTo: {
+      id: targetMsgId,
+      author: replyAuthor,
+      text: quotedText
+    },
+    fromSocket: true
+    // msgId se asignará automáticamente en appendMessage (o por el servidor cuando llegue el new-message)
+  });
 }

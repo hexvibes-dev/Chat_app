@@ -1,7 +1,24 @@
 // public/socket.js
 import { getUsername } from './js/user.js';
+import { setSocket as setUtilsSocket, emitSocketEvent, isSocketConnected } from './js/socketUtils.js';
+import { setSocket as setQueueSocket } from './js/queue.js';
+import { addReactionRemotely, removeReactionRemotely, playReactionAnimation } from './js/reactions.js';
+import { deleteMessageRemotely, editMessageRemotely, appendMessage } from './js/messages.js';
 
 let socket = null;
+let heartbeatInterval = null;
+
+function updateConnectionIndicator(connected) {
+  let indicator = document.getElementById('connection-indicator');
+  if (!indicator) {
+    indicator = document.createElement('div');
+    indicator.id = 'connection-indicator';
+    indicator.style.cssText = 'position:fixed;top:70px;right:10px;width:12px;height:12px;border-radius:50%;z-index:99999;transition:background 0.3s;';
+    document.body.appendChild(indicator);
+  }
+  indicator.style.backgroundColor = connected ? '#2dd4bf' : '#f87171';
+  indicator.title = connected ? 'Conectado' : 'Desconectado';
+}
 
 function showTransientNotification(text, duration = 2000) {
   let notifEl = document.querySelector('.transient-notif');
@@ -43,55 +60,99 @@ export async function connectToBackend(url) {
       socket.disconnect();
       socket = null;
     }
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
 
     socket = io(url, {
       transports: ['websocket'],
-      query: { username }
+      query: { username },
+      reconnection: true,
+      reconnectionAttempts: 10,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000
     });
+
+    setUtilsSocket(socket);
+    setQueueSocket(socket);
 
     socket.on('connect', () => {
       console.log('✅ Socket conectado, ID:', socket.id);
+      updateConnectionIndicator(true);
       showTransientNotification(`Conectado a ${url}`);
-      setTimeout(() => {
-        const input = document.getElementById('input');
-        if (input) input.focus();
-      }, 100);
+
+      heartbeatInterval = setInterval(() => {
+        if (socket && socket.connected) {
+          socket.emit('heartbeat', { timestamp: Date.now() });
+        }
+      }, 15000);
+    });
+
+    socket.on('heartbeat-ack', () => {
+      console.log('💓 Heartbeat OK');
     });
 
     socket.on('history', (messages) => {
       console.log('📜 Historial recibido:', messages);
-      // Ruta corregida: ./js/messages.js
-      import('./js/messages.js').then(({ appendMessage }) => {
-        messages.forEach(msg => {
-          const isMe = (username && msg.senderId === username);
-          appendMessage(msg.text, { me: isMe, fromSocket: true, timestamp: msg.timestamp });
+      messages.forEach(msg => {
+        const isMe = (username && msg.senderId === username);
+        appendMessage(msg.text, {
+          me: isMe,
+          fromSocket: true,
+          timestamp: msg.timestamp,
+          replyTo: msg.replyTo,
+          msgId: msg.msgId
         });
-      }).catch(err => console.error('Error al importar messages.js para history', err));
+      });
     });
 
     socket.on('new-message', (msg) => {
-      console.log('📩 Mensaje recibido del servidor:', msg);
-      // Ruta corregida: ./js/messages.js
-      import('./js/messages.js').then(({ appendMessage }) => {
-        try {
-          const isMe = (username && msg.senderId === username);
-          console.log(`🧑 Mi username: ${username}, senderId: ${msg.senderId}, isMe: ${isMe}`);
-          requestAnimationFrame(() => {
-            appendMessage(msg.text, { me: isMe, fromSocket: true, timestamp: msg.timestamp });
-          });
-        } catch (e) {
-          console.error('Error en appendMessage:', e);
-        }
-      }).catch(err => console.error('Error al importar messages.js para new-message', err));
+      console.log('📩 new-message recibido:', msg);
+      const isMe = (username && msg.senderId === username);
+      requestAnimationFrame(() => {
+        appendMessage(msg.text, {
+          me: isMe,
+          fromSocket: true,
+          timestamp: msg.timestamp,
+          replyTo: msg.replyTo,
+          msgId: msg.msgId
+        });
+      });
     });
 
-    socket.on('disconnect', () => {
-      console.log('🔌 Socket desconectado');
-      showTransientNotification('Desconectado del servidor');
+    socket.on('reaction:add', ({ msgId, emoji, senderId }) => {
+      showTransientNotification(`❤️ Reacción: ${emoji}`, 1000);
+      addReactionRemotely(msgId, emoji, senderId);
+    });
+
+    socket.on('reaction:remove', ({ msgId, emoji, senderId }) => {
+      showTransientNotification(`💔 Eliminada: ${emoji}`, 1000);
+      removeReactionRemotely(msgId, emoji, senderId);
+    });
+
+    socket.on('reaction:animation', ({ msgId, emoji }) => {
+      showTransientNotification(`✨ Animación: ${emoji}`, 1000);
+      playReactionAnimation(msgId, emoji);
+    });
+
+    socket.on('message:delete', ({ msgId }) => {
+      showTransientNotification(`🗑️ Eliminado`, 1000);
+      deleteMessageRemotely(msgId);
+    });
+
+    socket.on('message:edit', ({ msgId, newText }) => {
+      showTransientNotification(`✏️ Editado`, 1000);
+      editMessageRemotely(msgId, newText);
+    });
+
+    socket.on('disconnect', (reason) => {
+      console.log('🔌 Socket desconectado:', reason);
+      updateConnectionIndicator(false);
+      showTransientNotification('Conexión perdida. Reconectando...', 3000);
+      if (heartbeatInterval) clearInterval(heartbeatInterval);
     });
 
     socket.on('connect_error', (err) => {
       console.error('❌ Error de conexión:', err);
+      updateConnectionIndicator(false);
       showTransientNotification(`Error de conexión: ${err.message}`);
     });
 
@@ -101,24 +162,26 @@ export async function connectToBackend(url) {
   }
 }
 
-export function sendMessageViaSocket(text) {
+export { emitSocketEvent, isSocketConnected };
+
+export function sendMessageViaSocket(text, replyTo = null) {
   if (socket && socket.connected) {
-    console.log('📤 Enviando mensaje:', text);
-    socket.emit('new-message', { text });
+    console.log('📤 Enviando mensaje:', text, replyTo ? '(respuesta)' : '');
+    socket.emit('new-message', { text, replyTo });
     return true;
   }
   showTransientNotification('No hay conexión activa. Usa /connect <url>');
   return false;
 }
 
-export function isSocketConnected() {
-  return !!(socket && socket.connected);
-}
-
 export function disconnectSocket() {
   if (socket) {
     socket.disconnect();
     socket = null;
+    setUtilsSocket(null);
+    setQueueSocket(null);
+    updateConnectionIndicator(false);
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
     showTransientNotification('Desconectado manualmente');
     setTimeout(() => {
       const input = document.getElementById('input');

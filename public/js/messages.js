@@ -1,3 +1,4 @@
+// public/js/messages.js
 import { appendHour } from './hour.js';
 import { blurExceptTargetForDuration } from './answer.js';
 import {
@@ -49,9 +50,8 @@ export function appendMessage(text, opts = {}) {
   const div = document.createElement('div');
   div.className = 'message' + (opts.me ? ' me' : '');
 
-  if (!div.dataset.msgId) {
-    div.dataset.msgId = `msg-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-  }
+  const msgId = opts.msgId || `local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  div.dataset.msgId = msgId;
 
   const dragWrap = document.createElement('div');
   dragWrap.className = 'msg-drag';
@@ -128,10 +128,40 @@ export function appendMessage(text, opts = {}) {
       }
     }
   });
+
+  return div;
 }
 
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+export function deleteMessageRemotely(msgId) {
+  const msgEl = document.querySelector(`[data-msg-id="${msgId}"]`);
+  if (!msgEl) return;
+  const textEl = msgEl.querySelector('.message-text');
+  if (textEl) textEl.innerText = 'Mensaje eliminado';
+  msgEl.dataset.deletedForAll = 'true';
+}
+
+export function editMessageRemotely(msgId, newText) {
+  const msgEl = document.querySelector(`[data-msg-id="${msgId}"]`);
+  if (!msgEl) {
+    console.warn('editMessageRemotely: mensaje no encontrado', msgId);
+    return;
+  }
+  const textNode = msgEl.querySelector('.message-text');
+  if (textNode) {
+    if (textNode.textContent !== newText) {
+      textNode.textContent = newText;
+      msgEl.dataset.edited = 'true';
+      const hourEl = msgEl.querySelector('.msg-hour');
+      if (hourEl) {
+        let baseHour = hourEl.innerText.split(' (')[0];
+        hourEl.innerText = baseHour + ' (editado)';
+      }
+    }
+  }
 }

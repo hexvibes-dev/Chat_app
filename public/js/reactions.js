@@ -1,3 +1,4 @@
+// public/js/reactions.js
 import { showOptionsMenu, hideOptionsMenu } from './options.js';
 import { computeLayout } from './position.js';
 import { showAddReactionModal } from './addReaction.js';
@@ -10,6 +11,8 @@ import {
   cryAnimation,
   thumbsUpAnimation
 } from './reactionAnimations.js';
+import { getUsername } from './user.js';
+import { emitSocketEvent, isSocketConnected } from './socketUtils.js';
 
 const DEFAULT_EMOJIS = ['👍','❤️','😂','😮','😭','🔥'];
 const MAX_REACTIONS_PER_BUBBLE = 4;
@@ -99,29 +102,26 @@ function renderReactionsOnBubble(messageEl) {
 }
 
 function toggleReactionOnMessage(messageEl, emoji) {
+  const msgId = messageEl.dataset.msgId;
+  if (!msgId) return;
+
+  if (!isSocketConnected()) {
+    showTransientNotification('Sin conexión', 1000);
+    return;
+  }
+
   let reactions = JSON.parse(messageEl.dataset.reactions || '[]');
   const idx = reactions.findIndex(r => r.emoji === emoji);
-  if (idx === -1) {
-    if (reactions.length >= MAX_REACTIONS_PER_BUBBLE) {
-      showTransientNotification('Máximo de reacciones alcanzado');
-      return;
-    }
-    reactions.push({ emoji, count: 1, you: true });
-    showTransientNotification('Reacción añadida');
-  } else {
-    if (reactions[idx].you) {
-      reactions[idx].you = false;
-      reactions[idx].count = Math.max(0, reactions[idx].count - 1);
-      if (reactions[idx].count === 0) reactions.splice(idx,1);
-      showTransientNotification('Reacción eliminada');
-    } else {
-      reactions[idx].you = true;
-      reactions[idx].count = (reactions[idx].count || 0) + 1;
-      showTransientNotification('Reacción añadida');
-    }
+  const wasAdded = idx === -1;
+
+  if (wasAdded && reactions.length >= MAX_REACTIONS_PER_BUBBLE) {
+    showTransientNotification('Máximo de reacciones alcanzado');
+    return;
   }
-  messageEl.dataset.reactions = JSON.stringify(reactions);
-  renderReactionsOnBubble(messageEl);
+
+  const eventName = wasAdded ? 'reaction:add' : 'reaction:remove';
+  emitSocketEvent(eventName, { msgId, emoji });
+  showTransientNotification(wasAdded ? 'Reacción enviada' : 'Reacción eliminada', 800);
 }
 
 function extractMessageTextForCopy(messageEl) {
@@ -144,17 +144,23 @@ function backupAndDeleteMessage(messageEl, isForAll = false) {
   if (isForAll) {
     const confirmDiv = document.createElement('div');
     confirmDiv.className = 'transient-notif visible';
-    confirmDiv.innerHTML = '¿Eliminar para todos? <button class="notif-btn">✓</button> <button class="notif-btn">✗</button>';
+    confirmDiv.style.pointerEvents = 'auto';
+    confirmDiv.innerHTML = '¿Eliminar para todos? <button class="notif-btn" style="pointer-events:auto;">✓</button> <button class="notif-btn" style="pointer-events:auto;">✗</button>';
     document.body.appendChild(confirmDiv);
     const buttons = confirmDiv.querySelectorAll('.notif-btn');
-    buttons[0].onclick = () => {
-      const textEl = messageEl.querySelector('.message-text');
-      if (textEl) textEl.innerText = 'Mensaje eliminado';
-      messageEl.dataset.deletedForAll = 'true';
-      showTransientNotification('Eliminado para todos', 1500);
+    buttons[0].onclick = (e) => {
+      e.stopPropagation();
+      const msgId = messageEl.dataset.msgId;
       confirmDiv.remove();
+      if (!isSocketConnected()) {
+        showTransientNotification('Sin conexión', 1000);
+        return;
+      }
+      emitSocketEvent('message:delete', { msgId });
+      showTransientNotification('Eliminando...', 800);
     };
-    buttons[1].onclick = () => {
+    buttons[1].onclick = (e) => {
+      e.stopPropagation();
       showTransientNotification('Cancelado', 1000);
       confirmDiv.remove();
     };
@@ -170,10 +176,12 @@ function backupAndDeleteMessage(messageEl, isForAll = false) {
     showTransientNotification('Mensaje eliminado', 3000);
     const undoDiv = document.createElement('div');
     undoDiv.className = 'transient-notif visible';
-    undoDiv.innerHTML = 'Mensaje eliminado <button class="notif-btn">Deshacer</button>';
+    undoDiv.style.pointerEvents = 'auto';
+    undoDiv.innerHTML = 'Mensaje eliminado <button class="notif-btn" style="pointer-events:auto;">Deshacer</button>';
     document.body.appendChild(undoDiv);
     const undoBtn = undoDiv.querySelector('.notif-btn');
-    undoBtn.onclick = () => {
+    undoBtn.onclick = (e) => {
+      e.stopPropagation();
       if (window._deletedMessageBackup) {
         const spacer = document.getElementById('spacer');
         if (window._deletedMessageNextSibling && window._deletedMessageNextSibling.parentNode === window._deletedMessageParent) {
@@ -209,15 +217,13 @@ function handleOptionAction(action, messageEl) {
       break;
     case 'edit':
       showEditModal(messageEl, (newText) => {
-        const textNode = messageEl.querySelector('.message-text');
-        if (textNode) textNode.textContent = newText;
-        messageEl.dataset.edited = 'true';
-        const hourEl = messageEl.querySelector('.msg-hour');
-        if (hourEl) {
-          let baseHour = hourEl.innerText.split(' (')[0];
-          hourEl.innerText = baseHour + ' (editado)';
+        const msgId = messageEl.dataset.msgId;
+        if (!isSocketConnected()) {
+          showTransientNotification('Sin conexión', 1000);
+          return;
         }
-        showTransientNotification('Mensaje editado');
+        emitSocketEvent('message:edit', { msgId, newText });
+        showTransientNotification('Editando...', 800);
       });
       break;
     case 'forward':
@@ -321,6 +327,9 @@ function showReactionsPopup(messageEl, anchorRect) {
       }
       toggleReactionOnMessage(messageEl, emoji);
       if (navigator.vibrate) navigator.vibrate(100);
+      if (isSocketConnected()) {
+        emitSocketEvent('reaction:animation', { msgId: messageEl.dataset.msgId, emoji });
+      }
     }
 
     btn.addEventListener('pointerdown', (ev) => {
@@ -497,6 +506,87 @@ function init() {
   });
 }
 init();
+
+// --- Funciones remotas (SIN scale) ---
+
+export function addReactionRemotely(msgId, emoji, senderId) {
+  let msgEl = document.querySelector(`[data-msg-id="${msgId}"]`);
+  if (!msgEl) {
+    const allMessages = document.querySelectorAll('[data-msg-id]');
+    for (let m of allMessages) {
+      if (m.dataset.msgId.includes(msgId) || msgId.includes(m.dataset.msgId)) {
+        msgEl = m;
+        break;
+      }
+    }
+    if (!msgEl) return;
+  }
+
+  const currentUser = getUsername();
+  const isYou = (senderId === currentUser);
+
+  let reactions = JSON.parse(msgEl.dataset.reactions || '[]');
+  const idx = reactions.findIndex(r => r.emoji === emoji);
+  if (idx === -1) {
+    if (reactions.length >= MAX_REACTIONS_PER_BUBBLE) return;
+    reactions.push({ emoji, count: 1, you: isYou });
+  } else {
+    if (isYou) reactions[idx].you = true;
+    reactions[idx].count = (reactions[idx].count || 0) + 1;
+  }
+  msgEl.dataset.reactions = JSON.stringify(reactions);
+  renderReactionsOnBubble(msgEl);
+}
+
+export function removeReactionRemotely(msgId, emoji, senderId) {
+  let msgEl = document.querySelector(`[data-msg-id="${msgId}"]`);
+  if (!msgEl) {
+    const allMessages = document.querySelectorAll('[data-msg-id]');
+    for (let m of allMessages) {
+      if (m.dataset.msgId.includes(msgId) || msgId.includes(m.dataset.msgId)) {
+        msgEl = m;
+        break;
+      }
+    }
+    if (!msgEl) return;
+  }
+
+  const currentUser = getUsername();
+  const isYou = (senderId === currentUser);
+
+  let reactions = JSON.parse(msgEl.dataset.reactions || '[]');
+  const idx = reactions.findIndex(r => r.emoji === emoji);
+  if (idx === -1) return;
+
+  if (isYou) reactions[idx].you = false;
+  reactions[idx].count = Math.max(0, (reactions[idx].count || 0) - 1);
+  if (reactions[idx].count === 0) reactions.splice(idx, 1);
+  msgEl.dataset.reactions = JSON.stringify(reactions);
+  renderReactionsOnBubble(msgEl);
+}
+
+export function playReactionAnimation(msgId, emoji) {
+  let msgEl = document.querySelector(`[data-msg-id="${msgId}"]`);
+  if (!msgEl) {
+    const allMessages = document.querySelectorAll('[data-msg-id]');
+    for (let m of allMessages) {
+      if (m.dataset.msgId.includes(msgId) || msgId.includes(m.dataset.msgId)) {
+        msgEl = m;
+        break;
+      }
+    }
+    if (!msgEl) return;
+  }
+
+  switch (emoji) {
+    case '❤️': heartRainAnimation(msgEl); break;
+    case '🔥': fireAnimation(msgEl); break;
+    case '😂': dancingEmojiAnimation(emoji, msgEl); break;
+    case '😮': astonishedAnimation(msgEl); break;
+    case '😭': cryAnimation(msgEl); break;
+    case '👍': thumbsUpAnimation(msgEl); break;
+  }
+}
 
 export function addReactionToMessageById(msgId, emoji) {
   const m = document.querySelector(`[data-msg-id="${msgId}"]`);

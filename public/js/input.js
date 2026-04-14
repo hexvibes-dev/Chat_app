@@ -1,3 +1,4 @@
+// public/js/input.js
 import { appendMessage } from './messages.js';
 import { getAndClearQuotedMessage, hideReplyPopup } from './answer.js';
 import { connectToBackend, sendMessageViaSocket, isSocketConnected, disconnectSocket } from '../socket.js';
@@ -49,7 +50,6 @@ export function sendMessageFromInput() {
   if (!input) return;
   const text = input.value.trim();
 
-  // Comandos
   if (text.startsWith('/connect')) {
     const parts = text.split(' ');
     const url = parts[1];
@@ -60,7 +60,6 @@ export function sendMessageFromInput() {
     }
     input.value = '';
     adjustTextareaHeight();
-    keepFocusOnInput();
     return;
   }
 
@@ -68,11 +67,9 @@ export function sendMessageFromInput() {
     disconnectSocket();
     input.value = '';
     adjustTextareaHeight();
-    keepFocusOnInput();
     return;
   }
 
-  // Edición de mensaje
   if (editingMessageId) {
     const msgEl = document.querySelector(`[data-msg-id="${editingMessageId}"]`);
     if (msgEl) {
@@ -89,27 +86,28 @@ export function sendMessageFromInput() {
     return;
   }
 
-  // No hay texto y no es edición
   if (!text) {
     keepFocusOnInput();
     return;
   }
 
   const quoted = getAndClearQuotedMessage ? getAndClearQuotedMessage() : null;
+  const wasInputFocused = document.activeElement === input;
 
-  // Si hay socket activo, enviar por socket
   if (isSocketConnected()) {
-    const sent = sendMessageViaSocket(text);
+    const sent = sendMessageViaSocket(text, quoted);
     if (sent) {
       input.value = '';
       adjustTextareaHeight();
       if (typeof hideReplyPopup === 'function') hideReplyPopup();
-      keepFocusOnInput();
+      // Mantener el foco solo si ya lo tenía
+      if (wasInputFocused) {
+        keepFocusOnInput();
+      }
     }
     return;
   }
 
-  // Modo local (sin socket)
   appendMessage(text, { me: true, replyTo: quoted || undefined });
 
   input.value = '';
@@ -120,7 +118,9 @@ export function sendMessageFromInput() {
     window.smoothScrollToBottom();
   }
 
-  keepFocusOnInput();
+  if (wasInputFocused) {
+    keepFocusOnInput();
+  }
   const kb = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
   if (window.keyboardOpen && typeof window.ensureLastMessageAboveInput === 'function') {
     setTimeout(() => window.ensureLastMessageAboveInput(kb), 60);
