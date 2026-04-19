@@ -1,0 +1,29 @@
+@import './themes/default.css';
+@import './themes/dark.css';
+@import './themes/light.css';
+@import './themes/cristal.css';
+@import './themes/forest.css';
+@import './themes/magenta.css';
+@import './themes/midnight.css';
+@import './themes/ocean.css';
+@import './themes/reference.css';
+@import './themes/whatsapp.css';
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--app-bg-color);
+  background-image: var(--app-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: var(--app-bg-opacity, 1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+

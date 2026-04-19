@@ -1,0 +1,25 @@
+html[data-theme="whatsapp"] {
+  --msg-bg-me: #dcf8c6;
+  --msg-bg-other: #ffffff;
+  --msg-border-me: #dcf8c6;
+  --msg-border-other: #e5ddd5;
+  --text-color: #303030;
+  --hour-color: #667781;
+  --hour-color-me: #667781;
+  --header-bg: #075e54;
+  --input-bg: #f0f0f0;
+  --send-btn-bg: #25d366;
+  
+  --modal-bg: #ffffff;
+  --modal-text: #303030;
+  --modal-header: #075e54;
+  --modal-input-bg: #f5f5f5;
+  --modal-input-border: #dddddd;
+  --modal-btn-primary: #25d366;
+  --modal-btn-primary-text: #ffffff;
+  --modal-btn-secondary: #e0e0e0;
+  --modal-btn-secondary-text: #303030;
+  --notification-bg: #075e54;
+  --notification-text: #ffffff;
+  --notification-border: #25d366;
+}

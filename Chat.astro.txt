@@ -1,0 +1,239 @@
+---
+---
+
+<div 
+  class="layer-messages fixed top-[60px] left-0 right-0 overflow-hidden touch-pan-y"
+  style="bottom: calc(60px + var(--keyboard, 0px))">
+  <div class="messages absolute inset-0 overflow-y-auto p-5 touch-auto" id="messages">
+    <div id="spacer" style="height:0px"></div>
+  </div>
+</div>
+
+<!-- HEADER: ahora usa variable CSS -->
+<div class="layer-header fixed top-0 left-0 h-14 w-full flex items-center px-4 z-10 border-b border-b-pink-100 rounded-bl-2xl rounded-br-2xl" style="background: var(--header-bg);">
+  <h1 class="text-white text-xl translate-x-4">Contact Name</h1>
+  <button id="hamburgerBtn" class="hamburger-btn" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+  <div id="hamburgerMenuContainer"></div>
+  <div id="themeModalContainer"></div>
+</div>
+
+<!-- INPUT: ahora usa variables CSS -->
+<div class="layer-input fixed left-0 bottom-0 w-full z-20 touch-none will-change-transform" id="layerInput">
+  <div class="input-container border-t border-slate-700 rounded-t-3xl" style="padding: 10px 12px; padding-bottom: calc(10px + env(safe-area-inset-bottom)); background: var(--input-bg);">
+    <div class="input-box w-full flex justify-center items-center gap-3">
+      <textarea id="input" class="resize-none border-none font-medium max-h-[120px] min-h-[40px] overflow-y-auto text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all duration-200 rounded-l-2xl rounded-r-2xl"
+        style="padding: 16px 12px 12px 20px !important; width: 70%; max-width: 500px; background: var(--input-bg); color: var(--text-color);" rows="1" placeholder="Escribe un mensaje..."></textarea>
+      <button id="sendBtn" type="button" class="text-white font-semibold py-3 px-5 rounded-xl transform active:scale-75 transition-all" style="background: var(--send-btn-bg, #0891b2);">Enviar</button>
+    </div>
+  </div>
+</div>
+
+<div id="replyPopup" class="reply-popup" role="button" aria-hidden="true" tabindex="0"></div>
+<button id="scrollToBottomBtn" class="scroll-to-bottom-btn fixed right-5 bottom-[70px] w-11 h-11 rounded-full bg-teal-600 text-white flex items-center justify-center text-2xl cursor-pointer shadow-md z-[10000] transition-all duration-200 touch-manipulation hidden">↓</button>
+
+<div id="user-register-overlay" class="modal-blur-overlay" style="display: none;"></div>
+<div id="user-register-modal" class="name-modal" style="display: none;">
+  <div class="name-card">
+    <h1>¿Cómo te llamas?</h1>
+    <div class="input-group">
+      <label for="displayNameInput">Nombre visible</label>
+      <input type="text" id="displayNameInput" placeholder="Ej: Juan Pérez" maxlength="30" autocomplete="off" />
+    </div>
+    <div class="input-group">
+      <label for="usernameInput">Nombre de usuario (único)</label>
+      <input type="text" id="usernameInput" placeholder="Ej: juan123" maxlength="20" autocomplete="off" />
+      <div class="username-hint">Solo letras, números y guiones bajos. Sin espacios.</div>
+      <div id="usernameError" class="error-message"></div>
+    </div>
+    <div class="name-actions">
+      <button id="nameAccept" class="btn primary" disabled>Entrar al chat</button>
+    </div>
+  </div>
+</div>
+
+<div id="theme-modal-overlay" class="theme-modal-overlay"></div>
+
+<div id="movable-window" 
+     class="fixed rounded-3xl overflow-hidden w-125 h-125"
+     style="height: 500px; min-width: 150px; min-height: 150px; max-width: 90vw; max-height: 90vh; display: none; z-index: 11000; background: var(--modal-bg); color: var(--modal-text); border: 1px solid var(--modal-input-border);">
+
+  <div id="modal-header" class="px-3 py-2 flex justify-between items-center border-b select-none cursor-grab active:cursor-grabbing" style="background: var(--modal-btn-secondary); color: var(--modal-text); border-bottom-color: var(--modal-input-border);">
+    <span class="font-medium">Personalizar chat</span>
+    <button id="close-theme-modal" class="hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">✕</button>
+  </div>
+
+  <div id="theme-content" class="p-4 overflow-auto" style="height: calc(100% - 48px); display: flex; flex-direction: column; gap: 16px;">
+    <div class="text-gray-600">Cargando...</div>
+  </div>
+
+  <!-- Manejadores de redimensionado -->
+  <div class="resize-handle resize-n"></div>
+  <div class="resize-handle resize-s"></div>
+  <div class="resize-handle resize-e"></div>
+  <div class="resize-handle resize-w"></div>
+  <div class="resize-handle resize-ne"></div>
+  <div class="resize-handle resize-nw"></div>
+  <div class="resize-handle resize-se"></div>
+  <div class="resize-handle resize-sw"></div>
+</div>
+
+<div id="drag-handle" 
+     class="fixed bg-red-500 hover:bg-red-600 rounded-full w-10 h-10 flex items-center justify-center shadow-lg cursor-grab active:cursor-grabbing z-50 border-2 border-white"
+     style="touch-action: none; user-select: none; left: 0; top: 0; display: none; z-index: 11001;">
+  <span class="text-white text-xl font-bold">⋮⋮</span>
+</div>
+
+<style>
+  /* Overlay */
+  .theme-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10999;
+    display: none;
+  }
+  .theme-modal-overlay.active {
+    display: block;
+  }
+
+  /* Manejadores de redimensionado */
+  .resize-handle {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.1);
+    transition: background 0.1s;
+    z-index: 10;
+    touch-action: none;
+  }
+  .resize-handle:hover { background: rgba(0, 0, 0, 0.3); }
+  .resize-n, .resize-s { left: 10px; right: 10px; height: 12px; }
+  .resize-n { top: 0; cursor: n-resize; }
+  .resize-s { bottom: 0; cursor: s-resize; }
+  .resize-e, .resize-w { top: 10px; bottom: 10px; width: 12px; }
+  .resize-e { right: 0; cursor: e-resize; }
+  .resize-w { left: 0; cursor: w-resize; }
+  .resize-ne, .resize-nw, .resize-se, .resize-sw { width: 18px; height: 18px; }
+  .resize-ne { top: 0; right: 0; cursor: ne-resize; }
+  .resize-nw { top: 0; left: 0; cursor: nw-resize; }
+  .resize-se { bottom: 0; right: 0; cursor: se-resize; }
+  .resize-sw { bottom: 0; left: 0; cursor: sw-resize; }
+
+  #movable-window {
+    position: fixed;
+    transform-origin: top left;
+  }
+
+  /* Scroll personalizado */
+  #theme-content::-webkit-scrollbar {
+    width: 8px;
+  }
+  #theme-content::-webkit-scrollbar-track {
+    background: var(--modal-input-bg);
+    border-radius: 10px;
+  }
+  #theme-content::-webkit-scrollbar-thumb {
+    background: var(--modal-btn-primary);
+    border-radius: 10px;
+  }
+
+  /* Estilos internos del contenido del modal */
+  .theme-header h2 {
+    margin: 0 0 16px 0;
+    font-size: 22px;
+    color: var(--modal-header);
+  }
+  h3 {
+    font-size: 16px;
+    margin: 0 0 8px 0;
+    color: var(--modal-text);
+  }
+  .theme-options, .bg-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .theme-btn {
+    padding: 8px 20px;
+    border-radius: 40px;
+    background: var(--modal-input-bg);
+    border: 1px solid var(--modal-input-border);
+    color: var(--modal-text);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .theme-btn.active {
+    background: var(--modal-btn-primary);
+    border-color: var(--modal-btn-primary);
+    color: var(--modal-btn-primary-text);
+  }
+  .bg-preview {
+    width: 70px;
+    height: 70px;
+    border-radius: 16px;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.1s, border-color 0.1s;
+  }
+  .bg-preview.selected {
+    border-color: var(--modal-btn-primary);
+    transform: scale(1.05);
+  }
+  .custom-file-upload {
+    margin-bottom: 8px;
+  }
+  .file-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--modal-btn-secondary);
+    color: var(--modal-btn-secondary-text);
+    padding: 10px 20px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+  }
+  .file-upload-btn:hover {
+    background: var(--modal-btn-primary);
+    color: var(--modal-btn-primary-text);
+    transform: translateY(-2px);
+  }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .modal-actions button {
+    padding: 10px 24px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+  }
+  .btn-save {
+    background: var(--modal-btn-primary);
+    color: var(--modal-btn-primary-text);
+  }
+  .btn-cancel {
+    background: var(--modal-btn-secondary);
+    color: var(--modal-btn-secondary-text);
+  }
+</style>
+
+<script>
+  import { initThemeManager } from '../scripts/themeManager.js';
+  initThemeManager();
+</script>
