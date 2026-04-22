@@ -13,6 +13,8 @@ import {
 } from './reactionAnimations.js';
 import { getUsername } from './user.js';
 import { emitSocketEvent, isSocketConnected } from './socketUtils.js';
+import { enqueueEvent } from './queue.js';
+import { loadCustomEmojis, convertShortcodesToImages } from './emojiUtils.js';
 
 const DEFAULT_EMOJIS = ['👍','❤️','😂','😮','😭','🔥'];
 const MAX_REACTIONS_PER_BUBBLE = 4;
@@ -54,6 +56,15 @@ function removeLiftEffect() {
   }
 }
 
+function getLocalReactions(msgId) {
+  const stored = localStorage.getItem(`reactions_${msgId}`);
+  return stored ? JSON.parse(stored) : [];
+}
+
+function setLocalReactions(msgId, reactions) {
+  localStorage.setItem(`reactions_${msgId}`, JSON.stringify(reactions));
+}
+
 function getCustomReactions(messageEl) {
   const custom = messageEl.dataset.customReactions;
   return custom ? JSON.parse(custom) : [];
@@ -71,7 +82,16 @@ function addCustomReaction(messageEl, emoji) {
   }
 }
 
-function renderReactionsOnBubble(messageEl) {
+// Función auxiliar para obtener la URL de un emoji personalizado a partir de un shortcode
+function getCustomEmojiUrl(shortcode) {
+  if (!window._customEmojiData) return null;
+  // Limpiar shortcode (quitar dos puntos si los tiene)
+  const cleanShortcode = shortcode.replace(/^:/, '').replace(/:$/, '');
+  const found = window._customEmojiData.find(e => e.shortcodes.includes(cleanShortcode));
+  return found ? found.url : null;
+}
+
+export function renderReactionsOnBubble(messageEl) {
   const dragWrap = messageEl.querySelector('.msg-drag');
   if (!dragWrap) return;
 
@@ -87,7 +107,28 @@ function renderReactionsOnBubble(messageEl) {
   reactions.slice(0, MAX_REACTIONS_PER_BUBBLE).forEach(r => {
     const btn = document.createElement('button');
     btn.className = 'reaction-badge';
-    btn.innerText = r.emoji;
+    
+    // Verificar si es un emoji personalizado (contiene dos puntos o es un shortcode conocido)
+    const isCustom = (r.emoji && r.emoji.includes(':') && r.emoji.includes('custom_')) || 
+                     (r.emoji && r.emoji.startsWith(':') && r.emoji.endsWith(':'));
+    
+    if (isCustom) {
+      const url = getCustomEmojiUrl(r.emoji);
+      if (url) {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = r.emoji;
+        img.style.width = '1.2em';
+        img.style.height = '1.2em';
+        img.style.verticalAlign = 'middle';
+        btn.appendChild(img);
+      } else {
+        btn.innerText = r.emoji;
+      }
+    } else {
+      btn.innerText = r.emoji;
+    }
+    
     if (r.you) btn.classList.add('you');
     const bubble = dragWrap;
     const bg = getComputedStyle(bubble).backgroundColor || '#fff';
@@ -101,16 +142,11 @@ function renderReactionsOnBubble(messageEl) {
   });
 }
 
-function toggleReactionOnMessage(messageEl, emoji) {
+export function toggleReactionOnMessage(messageEl, emoji) {
   const msgId = messageEl.dataset.msgId;
   if (!msgId) return;
 
-  if (!isSocketConnected()) {
-    showTransientNotification('Sin conexión', 1000);
-    return;
-  }
-
-  let reactions = JSON.parse(messageEl.dataset.reactions || '[]');
+  let reactions = getLocalReactions(msgId);
   const idx = reactions.findIndex(r => r.emoji === emoji);
   const wasAdded = idx === -1;
 
@@ -119,9 +155,22 @@ function toggleReactionOnMessage(messageEl, emoji) {
     return;
   }
 
-  const eventName = wasAdded ? 'reaction:add' : 'reaction:remove';
-  emitSocketEvent(eventName, { msgId, emoji });
-  showTransientNotification(wasAdded ? 'Reacción enviada' : 'Reacción eliminada', 800);
+  if (wasAdded) {
+    reactions.push({ emoji, count: 1, you: true });
+  } else {
+    reactions[idx].count = Math.max(0, reactions[idx].count - 1);
+    if (reactions[idx].count === 0) reactions.splice(idx, 1);
+  }
+  setLocalReactions(msgId, reactions);
+  messageEl.dataset.reactions = JSON.stringify(reactions);
+  renderReactionsOnBubble(messageEl);
+
+  if (isSocketConnected()) {
+    const eventName = wasAdded ? 'reaction:add' : 'reaction:remove';
+    emitSocketEvent(eventName, { msgId, emoji });
+  } else {
+    enqueueEvent(wasAdded ? 'reaction:add' : 'reaction:remove', { msgId, emoji });
+  }
 }
 
 function extractMessageTextForCopy(messageEl) {
@@ -248,6 +297,9 @@ function isNearBottomVisible(messageEl) {
 function showReactionsPopup(messageEl, anchorRect) {
   hidePopup();
 
+  // Asegurar que los emojis personalizados estén cargados
+  loadCustomEmojis();
+
   const popup = document.createElement('div');
   popup.className = 'reactions-popup enter';
 
@@ -357,11 +409,46 @@ function showReactionsPopup(messageEl, anchorRect) {
     emojisRow.appendChild(btn);
   });
 
+  // Reacciones personalizadas (las que el usuario ya ha añadido a este mensaje)
   const customReactions = getCustomReactions(messageEl);
+  
   customReactions.forEach(emoji => {
     const btn = document.createElement('button');
     btn.className = 'react-emoji';
-    btn.innerText = emoji;
+    
+    // Normalizar el shortcode (asegurar que tenga dos puntos al inicio y al final)
+    let normalizedShortcode = emoji;
+    if (!normalizedShortcode.startsWith(':')) normalizedShortcode = ':' + normalizedShortcode;
+    if (!normalizedShortcode.endsWith(':')) normalizedShortcode = normalizedShortcode + ':';
+    
+    // Obtener la URL directamente
+    const url = getCustomEmojiUrl(normalizedShortcode);
+    
+    if (url) {
+      // Crear imagen con estilos muy específicos para garantizar visibilidad
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = emoji;
+      // Estilos en línea que forzarán la visibilidad independientemente del CSS externo
+      img.style.cssText = `
+        width: 1.5em !important;
+        height: 1.5em !important;
+        min-width: 24px !important;
+        min-height: 24px !important;
+        max-width: 1.5em !important;
+        max-height: 1.5em !important;
+        vertical-align: middle !important;
+        display: inline-block !important;
+        border-radius: 4px !important;
+        object-fit: contain !important;
+      `;
+      btn.appendChild(img);
+    } else {
+      // Fallback: texto
+      btn.innerText = emoji;
+      if (!btn.innerText.trim()) btn.innerText = '?';
+    }
+    
     btn.addEventListener('click', (ev) => {
       ev.stopPropagation();
       toggleReactionOnMessage(messageEl, emoji);
@@ -507,8 +594,6 @@ function init() {
 }
 init();
 
-// --- Funciones remotas (SIN scale) ---
-
 export function addReactionRemotely(msgId, emoji, senderId) {
   let msgEl = document.querySelector(`[data-msg-id="${msgId}"]`);
   if (!msgEl) {
@@ -536,6 +621,17 @@ export function addReactionRemotely(msgId, emoji, senderId) {
   }
   msgEl.dataset.reactions = JSON.stringify(reactions);
   renderReactionsOnBubble(msgEl);
+  if (isYou) {
+    const localReactions = getLocalReactions(msgId);
+    const localIdx = localReactions.findIndex(r => r.emoji === emoji);
+    if (localIdx === -1) {
+      localReactions.push({ emoji, count: 1, you: true });
+    } else {
+      localReactions[localIdx].count = (localReactions[localIdx].count || 0) + 1;
+      localReactions[localIdx].you = true;
+    }
+    setLocalReactions(msgId, localReactions);
+  }
 }
 
 export function removeReactionRemotely(msgId, emoji, senderId) {
@@ -563,6 +659,15 @@ export function removeReactionRemotely(msgId, emoji, senderId) {
   if (reactions[idx].count === 0) reactions.splice(idx, 1);
   msgEl.dataset.reactions = JSON.stringify(reactions);
   renderReactionsOnBubble(msgEl);
+  if (isYou) {
+    const localReactions = getLocalReactions(msgId);
+    const localIdx = localReactions.findIndex(r => r.emoji === emoji);
+    if (localIdx !== -1) {
+      localReactions[localIdx].count = Math.max(0, (localReactions[localIdx].count || 0) - 1);
+      if (localReactions[localIdx].count === 0) localReactions.splice(localIdx, 1);
+      setLocalReactions(msgId, localReactions);
+    }
+  }
 }
 
 export function playReactionAnimation(msgId, emoji) {
@@ -591,4 +696,20 @@ export function playReactionAnimation(msgId, emoji) {
 export function addReactionToMessageById(msgId, emoji) {
   const m = document.querySelector(`[data-msg-id="${msgId}"]`);
   if (m) toggleReactionOnMessage(m, emoji);
+}
+
+export function syncLocalReactionsToServer() {
+  if (!isSocketConnected()) return;
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('reactions_')) {
+      const msgId = key.replace('reactions_', '');
+      const localReactions = JSON.parse(localStorage.getItem(key));
+      localReactions.forEach(reaction => {
+        if (reaction.you) {
+          emitSocketEvent('reaction:add', { msgId, emoji: reaction.emoji });
+        }
+      });
+    }
+  }
 }

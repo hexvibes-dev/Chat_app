@@ -6,13 +6,27 @@ let blurOverlay = null;
 let keyboardListener = null;
 const pendingEdits = new Map();
 
+// Convierte el HTML del editor (con imágenes) a texto plano con shortcodes
+function getEditText(editor) {
+  if (!editor) return '';
+  const clone = editor.cloneNode(true);
+  clone.querySelectorAll('img[data-shortcode]').forEach(img => {
+    const shortcode = img.getAttribute('data-shortcode');
+    const textNode = document.createTextNode(shortcode);
+    img.parentNode.replaceChild(textNode, img);
+  });
+  return clone.innerText.trim();
+}
+
 export function showEditModal(messageEl, onSave) {
   window.dispatchEvent(new CustomEvent('close-all-popups'));
   if (modal) return;
 
+  // Obtener el HTML original del mensaje (incluye las imágenes)
   const textEl = messageEl.querySelector('.message-text');
-  let currentText = textEl ? textEl.textContent.trim() : '';
-  currentText = currentText.replace(/\s*\(editado\)/g, '');
+  let originalHtml = textEl ? textEl.innerHTML : '';
+  // Eliminar la marca de "(editado)" si existe
+  originalHtml = originalHtml.replace(/\s*\(editado\)/g, '');
 
   blurOverlay = document.createElement('div');
   blurOverlay.className = 'modal-blur-overlay';
@@ -25,8 +39,8 @@ export function showEditModal(messageEl, onSave) {
   modal.innerHTML = `
     <div class="edit-card">
       <h1>Editar mensaje</h1>
-      <textarea id="editMessageInput" maxlength="1000" rows="4" placeholder="Escribe tu mensaje..."></textarea>
-      <div class="edit-actions">
+      <div id="editMessageInput" contenteditable="true" class="edit-contenteditable" style="padding: 10px; border-radius: 8px; background: var(--modal-input-bg); color: var(--modal-text); border: 1px solid var(--modal-input-border); min-height: 100px; max-height: 200px; overflow-y: auto; white-space: pre-wrap; word-break: break-word; line-height: 1.4;"></div>
+      <div class="edit-actions" style="margin-top: 12px; display: flex; justify-content: flex-end; gap: 12px;">
         <button id="editCancel" class="btn">Cancelar</button>
         <button id="editSave" class="btn primary">Editar</button>
       </div>
@@ -39,32 +53,43 @@ export function showEditModal(messageEl, onSave) {
   modal.style.transform = 'translate(-50%, -50%)';
   modal.classList.remove('enter');
 
-  const input = modal.querySelector('#editMessageInput');
+  const editor = modal.querySelector('#editMessageInput');
   const btnCancel = modal.querySelector('#editCancel');
   const btnSave = modal.querySelector('#editSave');
 
-  if (!input || !btnCancel || !btnSave) {
+  if (!editor || !btnCancel || !btnSave) {
     hideModal();
     return;
   }
 
-  input.value = currentText;
-  input.focus();
-  input.select();
+  // Mostrar el HTML original en el editor
+  editor.innerHTML = originalHtml;
+  editor.focus();
+
+  // Colocar el cursor al final
+  const range = document.createRange();
+  const sel = window.getSelection();
+  range.selectNodeContents(editor);
+  range.collapse(false);
+  sel.removeAllRanges();
+  sel.addRange(range);
 
   btnCancel.addEventListener('click', () => hideModal());
 
   btnSave.addEventListener('click', () => {
-    const newText = input.value.trim();
-    if (!newText || newText === currentText) {
+    const newText = getEditText(editor).trim();
+    // Obtener el texto original del mensaje (sin HTML) para comparar
+    const originalText = textEl ? textEl.textContent.trim().replace(/\s*\(editado\)/g, '') : '';
+    if (!newText || newText === originalText) {
       hideModal();
       return;
     }
 
     const msgId = messageEl.dataset.msgId;
     const textNode = messageEl.querySelector('.message-text');
-    const originalText = textNode.textContent;
+    const originalFullText = textNode.textContent;
 
+    // Actualizar el mensaje en el DOM con el nuevo texto plano
     textNode.textContent = newText;
     messageEl.dataset.edited = 'true';
     const hourEl = messageEl.querySelector('.msg-hour');
@@ -81,20 +106,20 @@ export function showEditModal(messageEl, onSave) {
     }
     const timeoutId = setTimeout(() => {
       if (pendingEdits.has(msgId)) {
-        textNode.textContent = originalText;
+        textNode.textContent = originalFullText;
         messageEl.dataset.edited = 'false';
         if (hourEl) hourEl.innerText = originalHourText;
         pendingEdits.delete(msgId);
         showTransientNotification('Error de conexión. Edición revertida.', 2000);
       }
     }, 15000);
-    pendingEdits.set(msgId, { originalText, newText, timeoutId });
+    pendingEdits.set(msgId, { originalText: originalFullText, newText, timeoutId });
 
     if (isSocketConnected()) {
       emitSocketEvent('message:edit', { msgId, newText });
       if (typeof onSave === 'function') onSave(newText);
     } else {
-      textNode.textContent = originalText;
+      textNode.textContent = originalFullText;
       messageEl.dataset.edited = 'false';
       if (hourEl) hourEl.innerText = originalHourText;
       pendingEdits.delete(msgId);
@@ -178,21 +203,27 @@ function showTransientNotification(text, duration = 1000) {
   }, duration);
 }
 
-export function editMessageRemotely(msgId, newText) {
-  const msgEl = document.querySelector(`[data-msg-id="${msgId}"]`);
-  if (!msgEl) return;
-
+export function clearPendingEdit(msgId) {
   if (pendingEdits.has(msgId)) {
     clearTimeout(pendingEdits.get(msgId).timeoutId);
     pendingEdits.delete(msgId);
   }
+}
 
+export function editMessageRemotely(msgId, newText) {
+  clearPendingEdit(msgId);
+  const msgEl = document.querySelector(`[data-msg-id="${msgId}"]`);
+  if (!msgEl) return;
   const textNode = msgEl.querySelector('.message-text');
-  if (textNode) textNode.textContent = newText;
-  msgEl.dataset.edited = 'true';
-  const hourEl = msgEl.querySelector('.msg-hour');
-  if (hourEl) {
-    let baseHour = hourEl.innerText.split(' (')[0];
-    hourEl.innerText = baseHour + ' (editado)';
+  if (textNode) {
+    if (textNode.textContent !== newText) {
+      textNode.textContent = newText;
+      msgEl.dataset.edited = 'true';
+      const hourEl = msgEl.querySelector('.msg-hour');
+      if (hourEl) {
+        let baseHour = hourEl.innerText.split(' (')[0];
+        hourEl.innerText = baseHour + ' (editado)';
+      }
+    }
   }
 }

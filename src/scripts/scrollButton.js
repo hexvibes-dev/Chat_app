@@ -2,6 +2,7 @@
 (function() {
   const btn = document.getElementById('scrollToBottomBtn');
   const messagesEl = document.getElementById('messages');
+  const input = document.getElementById('input');
   if (!btn || !messagesEl) return;
 
   function updateButtonVisibility() {
@@ -25,13 +26,16 @@
   new MutationObserver(updateButtonVisibility).observe(messagesEl, { childList: true, subtree: true });
   setInterval(updateButtonVisibility, 500);
 
+  // Prevenir la pérdida de foco del input al hacer clic en el botón de scroll
+  btn.addEventListener('mousedown', (e) => {
+    e.preventDefault();  // Evita que el botón robe el foco
+  });
+  
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    const input = document.getElementById('input');
     const wasFocused = document.activeElement === input;
     messagesEl.scrollTo({ top: messagesEl.scrollHeight, behavior: 'smooth' });
-    if (wasFocused) {
-      // Mantener el foco sin abrir/cerrar teclado
+    if (wasFocused && input) {
       input.focus({ preventScroll: true });
     }
   });

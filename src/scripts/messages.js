@@ -1,4 +1,3 @@
-// src/scripts/messages.js
 import { appendHour } from './hour.js';
 import { blurExceptTargetForDuration } from './answer.js';
 import {
@@ -8,6 +7,9 @@ import {
   getSpecialEmojiType,
   applySpecialEmojiAnimation
 } from './emojiMessage.js';
+import { clearPendingEdit, editMessageRemotely as editMessageRemotelyFn } from './editModal.js';
+import { getCustomEmojiByShortcode } from './CustomEmojiPicker.js';
+import { convertShortcodesToImages } from './emojiUtils.js';
 
 if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
 if (typeof window.smoothScrollToBottom !== 'function') window.smoothScrollToBottom = () => {};
@@ -44,40 +46,52 @@ function updateLastMessageMargin() {
   }
 }
 
+function processCustomEmojis(text) {
+  return convertShortcodesToImages(text);
+}
+
 export function appendMessage(text, opts = {}) {
   if (!messages || !spacer) return;
 
+  const msgId = opts.msgId || `local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  if (messages.querySelector(`[data-msg-id="${msgId}"]`)) return;
+
   const div = document.createElement('div');
   div.className = 'message' + (opts.me ? ' me' : '');
-
-  const msgId = opts.msgId || `local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
   div.dataset.msgId = msgId;
 
   const dragWrap = document.createElement('div');
   dragWrap.className = 'msg-drag';
 
-  const isEmojiOnly = applyEmojiStyle(dragWrap, text);
+  const processedText = processCustomEmojis(text);
+  const isEmojiOnly = applyEmojiStyle(dragWrap, processedText);
 
-  const isSingleHeartEmoji = isSingleHeart(text);
+  const isSingleHeartEmoji = isSingleHeart(processedText);
   if (isSingleHeartEmoji) {
     setTimeout(() => {
       applyHeartAnimation(div, dragWrap);
     }, 100);
   }
 
-  const specialEmojiType = getSpecialEmojiType(text);
+  const specialEmojiType = getSpecialEmojiType(processedText);
   if (specialEmojiType && !isSingleHeartEmoji) {
     setTimeout(() => {
       applySpecialEmojiAnimation(div, dragWrap, specialEmojiType);
     }, 100);
   }
 
-  if (opts.replyTo) {
+  if (opts.replyTo && opts.replyTo.id && opts.replyTo.author && opts.replyTo.text) {
     const replyBlock = document.createElement('div');
     replyBlock.className = 'reply-quote';
+    
+    let quotedContent = opts.replyTo.text;
+    if (!quotedContent.includes('<img')) {
+      quotedContent = processCustomEmojis(quotedContent);
+    }
+    
     replyBlock.innerHTML = `
       <div class="reply-quote-author">${escapeHtml(opts.replyTo.author)}</div>
-      <div class="reply-quote-text">${escapeHtml(opts.replyTo.text.substring(0, 150))}${opts.replyTo.text.length > 150 ? '...' : ''}</div>
+      <div class="reply-quote-text">${quotedContent}</div>
     `;
     replyBlock.addEventListener('click', (e) => {
       e.preventDefault();
@@ -99,11 +113,10 @@ export function appendMessage(text, opts = {}) {
 
   const messageText = document.createElement('div');
   messageText.className = 'message-text';
-  messageText.textContent = text;
+  messageText.innerHTML = processedText;
   dragWrap.appendChild(messageText);
 
   appendHour(dragWrap);
-
   div.appendChild(dragWrap);
   messages.insertBefore(div, spacer);
 
@@ -147,21 +160,5 @@ export function deleteMessageRemotely(msgId) {
 }
 
 export function editMessageRemotely(msgId, newText) {
-  const msgEl = document.querySelector(`[data-msg-id="${msgId}"]`);
-  if (!msgEl) {
-    console.warn('editMessageRemotely: mensaje no encontrado', msgId);
-    return;
-  }
-  const textNode = msgEl.querySelector('.message-text');
-  if (textNode) {
-    if (textNode.textContent !== newText) {
-      textNode.textContent = newText;
-      msgEl.dataset.edited = 'true';
-      const hourEl = msgEl.querySelector('.msg-hour');
-      if (hourEl) {
-        let baseHour = hourEl.innerText.split(' (')[0];
-        hourEl.innerText = baseHour + ' (editado)';
-      }
-    }
-  }
+  editMessageRemotelyFn(msgId, newText);
 }

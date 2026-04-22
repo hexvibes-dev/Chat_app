@@ -10,7 +10,7 @@
   font-size: 13px;
   opacity: 0;
   transition: opacity 120ms ease, transform 120ms ease;
-  z-index: 12000;
+  z-index: 12005;
   border: 1px solid var(--notification-border);
   display: flex;
   gap: 12px;

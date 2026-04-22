@@ -9,6 +9,7 @@ import './scrollButton.js';
 import './reactions.js';
 import { initUserRegistration } from './user.js';
 import { initHamburgerMenu } from './hamburgerMenu.js';
+import { loadCustomEmojis } from './EmojiPicker/EmojiData.js';
 
 import { updateIsAtBottom } from './scroll.js';
 import { updateKeyboard } from './keyboard.js';
@@ -20,6 +21,9 @@ function inicializarApp() {
   if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
   if (typeof window.smoothScrollToBottom !== 'function') window.smoothScrollToBottom = () => {};
   if (typeof window.ensureLastMessageAboveInput !== 'function') window.ensureLastMessageAboveInput = () => {};
+
+  // Cargar emojis personalizados (estáticos + dinámicos) al inicio
+  loadCustomEmojis();
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initUserRegistration);

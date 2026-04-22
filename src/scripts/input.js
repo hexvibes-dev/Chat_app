@@ -1,71 +1,149 @@
-// src/scripts/input.js
 import { appendMessage } from './messages.js';
 import { getAndClearQuotedMessage, hideReplyPopup } from './answer.js';
 import { connectToBackend, sendMessageViaSocket, isSocketConnected, disconnectSocket } from './socket.js';
-
-if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
-if (typeof window.smoothScrollToBottom !== 'function') window.smoothScrollToBottom = () => {};
-if (typeof window.keyboardOpen === 'undefined') window.keyboardOpen = false;
-if (typeof window.ensureLastMessageAboveInput !== 'function') window.ensureLastMessageAboveInput = () => {};
-
-export const MAX_TEXTAREA_HEIGHT = 120;
+import { convertShortcodesToImages, convertShortcodesToImagesInNode } from './emojiUtils.js';
 
 export const input = document.getElementById('input');
 export const sendBtn = document.getElementById('sendBtn');
-export const layerInput = document.querySelector('.layer-input');
 
 let editingMessageId = null;
+let lastCursorPosition = null;
+
+function saveCursorPosition() {
+  const sel = window.getSelection();
+  if (sel.rangeCount > 0 && input.contains(sel.anchorNode)) {
+    lastCursorPosition = sel.getRangeAt(0).cloneRange();
+  }
+}
+
+function restoreCursorPosition() {
+  if (lastCursorPosition && input.contains(lastCursorPosition.startContainer)) {
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(lastCursorPosition);
+    return true;
+  }
+  return false;
+}
+
+function getInputText() {
+  if (!input) return '';
+  const clone = input.cloneNode(true);
+  clone.querySelectorAll('img[data-shortcode]').forEach(img => {
+    const shortcode = img.getAttribute('data-shortcode');
+    const textNode = document.createTextNode(shortcode);
+    img.parentNode.replaceChild(textNode, img);
+  });
+  clone.querySelectorAll('.sticker-message').forEach(img => {
+    const imgClone = img.cloneNode(true);
+    img.parentNode.replaceChild(imgClone, img);
+  });
+  return clone.innerText.trim();
+}
+
+function setInputText(text) {
+  if (!input) return;
+  input.innerText = text;
+  const range = document.createRange();
+  const sel = window.getSelection();
+  range.selectNodeContents(input);
+  range.collapse(false);
+  sel.removeAllRanges();
+  sel.addRange(range);
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  setTimeout(() => convertShortcodesToImagesInNode(input), 10);
+}
+
+export function insertAtCursor(html, shouldKeepFocus = true) {
+  if (!input) return;
+
+  let processedHtml = html;
+  if (typeof html === 'string' && html.match(/^:[a-zA-Z0-9_]+:$/)) {
+    processedHtml = convertShortcodesToImages(html);
+  }
+
+  let range;
+  const sel = window.getSelection();
+  let validSelection = false;
+
+  if (sel.rangeCount > 0) {
+    const testRange = sel.getRangeAt(0);
+    if (input.contains(testRange.commonAncestorContainer)) {
+      range = testRange;
+      validSelection = true;
+    }
+  }
+
+  if (!validSelection && lastCursorPosition && input.contains(lastCursorPosition.startContainer)) {
+    range = lastCursorPosition;
+    validSelection = true;
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
+  if (!validSelection) {
+    range = document.createRange();
+    range.selectNodeContents(input);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
+  range.deleteContents();
+  const fragment = range.createContextualFragment(processedHtml);
+  range.insertNode(fragment);
+  range.collapse(false);
+  sel.removeAllRanges();
+  sel.addRange(range);
+
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  saveCursorPosition();
+  
+  setTimeout(() => convertShortcodesToImagesInNode(input), 10);
+
+  if (shouldKeepFocus) {
+    setTimeout(() => input.focus(), 0);
+  }
+}
 
 export function adjustTextareaHeight() {
   if (!input) return;
   input.style.height = 'auto';
-  const newH = Math.min(input.scrollHeight, MAX_TEXTAREA_HEIGHT);
+  const newH = Math.min(input.scrollHeight, 120);
   input.style.height = newH + 'px';
 }
 
-export function keepFocusOnInput() {
-  if (!input) return;
-  input.focus();
-  const len = input.value.length;
-  try { input.setSelectionRange(len, len); } catch (err) {}
-}
-
-let _notifEl = null;
-let _notifT = null;
 function showTransientNotification(text, duration = 1000) {
-  if (!_notifEl) {
-    _notifEl = document.createElement('div');
-    _notifEl.className = 'transient-notif';
-    document.body.appendChild(_notifEl);
+  let notifEl = document.querySelector('.transient-notif');
+  if (!notifEl) {
+    notifEl = document.createElement('div');
+    notifEl.className = 'transient-notif';
+    document.body.appendChild(notifEl);
   }
-  _notifEl.textContent = text;
-  _notifEl.classList.add('visible');
-  if (_notifT) clearTimeout(_notifT);
-  _notifT = setTimeout(() => {
-    _notifEl.classList.remove('visible');
+  notifEl.textContent = text;
+  notifEl.classList.add('visible');
+  if (window._notifT) clearTimeout(window._notifT);
+  window._notifT = setTimeout(() => {
+    notifEl.classList.remove('visible');
   }, duration);
 }
 
 export function sendMessageFromInput() {
-  if (!input) return;
-  const text = input.value.trim();
+  let text = getInputText();
 
   if (text.startsWith('/connect')) {
     const parts = text.split(' ');
     const url = parts[1];
-    if (!url) {
-      showTransientNotification('Debes especificar una URL');
-    } else {
-      connectToBackend(url);
-    }
-    input.value = '';
+    if (!url) showTransientNotification('Debes especificar una URL');
+    else connectToBackend(url);
+    setInputText('');
     adjustTextareaHeight();
     return;
   }
 
   if (text === '/disconnect') {
     disconnectSocket();
-    input.value = '';
+    setInputText('');
     adjustTextareaHeight();
     return;
   }
@@ -80,64 +158,43 @@ export function sendMessageFromInput() {
       showTransientNotification('Mensaje editado');
     }
     editingMessageId = null;
-    input.value = '';
+    setInputText('');
     adjustTextareaHeight();
-    keepFocusOnInput();
     return;
   }
 
-  if (!text) {
-    keepFocusOnInput();
-    return;
-  }
+  if (!text) return;
 
-  const quoted = getAndClearQuotedMessage ? getAndClearQuotedMessage() : null;
-  const wasInputFocused = document.activeElement === input;
+  const quoted = getAndClearQuotedMessage();
+  const hadFocus = document.activeElement === input;
 
   if (isSocketConnected()) {
     const sent = sendMessageViaSocket(text, quoted);
     if (sent) {
-      input.value = '';
+      setInputText('');
       adjustTextareaHeight();
       if (typeof hideReplyPopup === 'function') hideReplyPopup();
-      // Mantener el foco solo si ya lo tenía
-      if (wasInputFocused) {
-        keepFocusOnInput();
-      }
+      if (hadFocus) input.focus();
     }
     return;
   }
 
   appendMessage(text, { me: true, replyTo: quoted || undefined });
-
-  input.value = '';
+  setInputText('');
   adjustTextareaHeight();
   if (typeof hideReplyPopup === 'function') hideReplyPopup();
-
-  if (window.isAtBottom && typeof window.smoothScrollToBottom === 'function') {
-    window.smoothScrollToBottom();
-  }
-
-  if (wasInputFocused) {
-    keepFocusOnInput();
-  }
-  const kb = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
-  if (window.keyboardOpen && typeof window.ensureLastMessageAboveInput === 'function') {
-    setTimeout(() => window.ensureLastMessageAboveInput(kb), 60);
-  }
+  if (window.isAtBottom && typeof window.smoothScrollToBottom === 'function') window.smoothScrollToBottom();
+  if (hadFocus) input.focus();
 }
 
-function onMessageEdit(e) {
-  const id = e?.detail?.id;
-  if (!id) return;
-  const msgEl = document.querySelector(`[data-msg-id="${id}"]`);
-  if (!msgEl) return;
-  const textEl = msgEl.querySelector('.message-text');
-  if (!textEl) return;
-  editingMessageId = id;
-  input.value = textEl.textContent.trim();
-  adjustTextareaHeight();
-  keepFocusOnInput();
+if (sendBtn) {
+  sendBtn.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+  });
+  sendBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    sendMessageFromInput();
+  });
 }
 
 if (input) {
@@ -146,26 +203,39 @@ if (input) {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
       sendMessageFromInput();
+    } else if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessageFromInput();
     } else if (e.key === 'Escape') {
       if (editingMessageId) {
         editingMessageId = null;
-        input.value = '';
+        setInputText('');
         adjustTextareaHeight();
-        keepFocusOnInput();
         showTransientNotification('Edición cancelada');
       } else {
         input.blur();
       }
     }
   });
-}
 
-if (sendBtn) {
-  sendBtn.addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    sendMessageFromInput();
+  input.addEventListener('click', saveCursorPosition);
+  input.addEventListener('keyup', saveCursorPosition);
+  input.addEventListener('focus', saveCursorPosition);
+  input.addEventListener('paste', (e) => {
+    setTimeout(() => convertShortcodesToImagesInNode(input), 10);
   });
-  sendBtn.addEventListener('click', (e) => e.preventDefault());
 }
 
-window.addEventListener('message-edit', onMessageEdit);
+window.addEventListener('message-edit', (e) => {
+  const id = e?.detail?.id;
+  if (!id) return;
+  const msgEl = document.querySelector(`[data-msg-id="${id}"]`);
+  if (!msgEl) return;
+  const textEl = msgEl.querySelector('.message-text');
+  if (!textEl) return;
+  editingMessageId = id;
+  const plainText = textEl.textContent.trim();
+  setInputText(plainText);
+  adjustTextareaHeight();
+  input.focus();
+});

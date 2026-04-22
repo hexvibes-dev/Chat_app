@@ -2,8 +2,8 @@
 import { getUsername } from './user.js';
 import { setSocket as setUtilsSocket, emitSocketEvent, isSocketConnected } from './socketUtils.js';
 import { setSocket as setQueueSocket } from './queue.js';
-import { addReactionRemotely, removeReactionRemotely, playReactionAnimation } from './reactions.js';
-import { deleteMessageRemotely, editMessageRemotely, appendMessage } from './messages.js';
+import { addReactionRemotely, removeReactionRemotely, playReactionAnimation, syncLocalReactionsToServer } from './reactions.js';
+import { deleteMessageRemotely, editMessageRemotely, appendMessage, messages, spacer } from './messages.js';
 
 let socket = null;
 let heartbeatInterval = null;
@@ -90,18 +90,38 @@ export async function connectToBackend(url) {
       console.log('💓 Heartbeat OK');
     });
 
-    socket.on('history', (messages) => {
-      console.log('📜 Historial recibido:', messages);
-      messages.forEach(msg => {
+    socket.on('history', (messagesHistory) => {
+      console.log('📜 Historial recibido:', messagesHistory);
+      if (messages) {
+        Array.from(messages.querySelectorAll('.message')).forEach(msg => msg.remove());
+      }
+      messagesHistory.forEach(msg => {
         const isMe = (username && msg.senderId === username);
-        appendMessage(msg.text, {
+        const newMsg = appendMessage(msg.text, {
           me: isMe,
           fromSocket: true,
           timestamp: msg.timestamp,
           replyTo: msg.replyTo,
           msgId: msg.msgId
         });
+        if (msg.reactions && newMsg) {
+          newMsg.dataset.reactions = JSON.stringify(msg.reactions);
+          import('./reactions.js').then(module => {
+            module.renderReactionsOnBubble(newMsg);
+          });
+        }
+        if (msg.editedText && newMsg) {
+          const textNode = newMsg.querySelector('.message-text');
+          if (textNode) textNode.textContent = msg.editedText;
+          newMsg.dataset.edited = 'true';
+          const hourEl = newMsg.querySelector('.msg-hour');
+          if (hourEl) {
+            let baseHour = hourEl.innerText.split(' (')[0];
+            hourEl.innerText = baseHour + ' (editado)';
+          }
+        }
       });
+      syncLocalReactionsToServer();
     });
 
     socket.on('new-message', (msg) => {

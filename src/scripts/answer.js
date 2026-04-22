@@ -1,6 +1,8 @@
 // src/scripts/answer.js
 import { appendMessage } from './messages.js';
 import { getUsername } from './user.js';
+import { getCustomEmojiByShortcode } from './CustomEmojiPicker.js';
+import { convertShortcodesToImages } from './emojiUtils.js';
 
 let currentQuotedMessage = null;
 
@@ -19,6 +21,8 @@ function startDrag(e) {
   if (!dragWrap) return;
   const target = dragWrap.closest('.message');
   if (!target) return;
+
+  const keyboardWasOpen = window.keyboardOpen;
 
   let startX = e.clientX;
   let startY = e.clientY;
@@ -81,9 +85,27 @@ function startDrag(e) {
 
     if (dragging && Math.abs(lastDiff) === maxDiff) {
       dragWrap.style.transition = 'transform 0.25s ease, opacity 0.25s ease';
-      const text = extractMessageText(dragWrap);
-      showReplyPopup(target, text);
-      setQuotedMessage(target, text);
+      const plainText = extractPlainText(dragWrap);
+      const htmlContent = convertShortcodesToImages(plainText);
+      
+      const popup = document.getElementById('replyPopup');
+      if (popup && keyboardWasOpen) {
+        popup.style.pointerEvents = 'none';
+      }
+      
+      showReplyPopup(target, htmlContent);
+      setQuotedMessage(target, htmlContent);
+      
+      if (popup && keyboardWasOpen) {
+        popup.style.pointerEvents = 'auto';
+        setTimeout(() => {
+          const input = document.getElementById('input');
+          if (input && window.keyboardOpen) {
+            input.focus();
+          }
+        }, 50);
+      }
+      
       dragWrap.style.transform = 'translate3d(0,0,0)';
       dragWrap.style.opacity = 1;
       setTimeout(() => {
@@ -104,40 +126,51 @@ function startDrag(e) {
   window.addEventListener('pointercancel', onUp);
 }
 
-function extractMessageText(dragWrap) {
+function extractPlainText(dragWrap) {
   const clone = dragWrap.cloneNode(true);
-  const quotes = clone.querySelectorAll('.reply-quote');
-  quotes.forEach(q => q.remove());
-  const hour = clone.querySelector('.msg-hour');
-  if (hour) hour.remove();
-  const reactionsWrap = clone.querySelector('.reactions-wrap');
-  if (reactionsWrap) reactionsWrap.remove();
-  let txt = clone.textContent || '';
-  txt = txt.replace(/\s*\(editado\)/g, '');
-  return txt.replace(/\s+/g, ' ').trim();
+  clone.querySelectorAll('.reply-quote, .msg-hour, .reactions-wrap').forEach(el => el.remove());
+  
+  clone.querySelectorAll('img[data-shortcode]').forEach(img => {
+    const shortcode = img.getAttribute('data-shortcode');
+    const textNode = document.createTextNode(shortcode);
+    img.parentNode.replaceChild(textNode, img);
+  });
+  
+  clone.querySelectorAll('img').forEach(img => {
+    const alt = img.getAttribute('alt') || 'imagen';
+    const textNode = document.createTextNode(`[${alt}]`);
+    img.parentNode.replaceChild(textNode, img);
+  });
+  
+  let text = clone.textContent || '';
+  text = text.replace(/\s*\(editado\)/g, '').trim();
+  return text || '[Mensaje]';
 }
 
-function showReplyPopup(messageElement, text) {
+function convertShortcodesToImagesLegacy(text) {
+  // Usamos la función importada de emojiUtils
+  return convertShortcodesToImages(text);
+}
+
+function showReplyPopup(messageElement, content) {
   const popup = document.getElementById('replyPopup');
   if (!popup) return;
-
   if (!messageElement.dataset.msgId) {
     messageElement.dataset.msgId = `msg-${Date.now()}-${Math.random().toString(36).slice(2,7)}`;
   }
   popup.dataset.targetMsg = messageElement.dataset.msgId;
-
   popup.innerHTML = '';
 
   const active = document.activeElement;
-  const wasInputFocused = !!(active && (
-    active.tagName === 'TEXTAREA' ||
-    active.tagName === 'INPUT' ||
-    active.isContentEditable
-  ));
+  const wasInputFocused = !!(active && (active.tagName === 'TEXTAREA' || active.tagName === 'INPUT' || active.isContentEditable));
 
   const span = document.createElement('span');
   span.className = 'text';
-  span.textContent = text;
+  span.innerHTML = content;
+  span.style.display = 'inline-flex';
+  span.style.alignItems = 'center';
+  span.style.gap = '4px';
+  span.style.flexWrap = 'wrap';
   popup.appendChild(span);
 
   const closeBtn = document.createElement('button');
@@ -145,34 +178,24 @@ function showReplyPopup(messageElement, text) {
   closeBtn.type = 'button';
   closeBtn.setAttribute('aria-label', 'Cerrar respuesta');
   closeBtn.textContent = '✕';
-  closeBtn.setAttribute('tabindex', '-1');
-  closeBtn.addEventListener('pointerdown', (ev) => ev.preventDefault(), { passive: false });
-
-  closeBtn.onclick = (ev) => {
+  closeBtn.addEventListener('click', (ev) => {
     ev.stopPropagation();
     hideReplyPopup();
     popup.dataset.targetMsg = '';
     clearQuotedMessage();
-
     if (wasInputFocused) {
       const inputEl = document.getElementById('input');
-      try {
-        if (inputEl && typeof inputEl.focus === 'function') {
-          inputEl.focus({ preventScroll: true });
-        } else if (active && typeof active.focus === 'function') {
-          active.focus({ preventScroll: true });
-        }
-      } catch (err) {}
+      if (inputEl) inputEl.focus({ preventScroll: true });
     }
-  };
+  });
   popup.appendChild(closeBtn);
 
   popup.classList.add('visible');
   popup.setAttribute('aria-hidden', 'false');
-
-  if (!window.keyboardOpen) {
-    try { popup.focus(); } catch (err) {}
-  }
+  
+  popup.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+  });
 
   const onActivate = () => {
     const id = popup.dataset.targetMsg;
@@ -183,7 +206,6 @@ function showReplyPopup(messageElement, text) {
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
-
   span.onclick = onActivate;
   span.onkeydown = (ev) => {
     if (ev.key === 'Enter' || ev.key === ' ') {
@@ -205,12 +227,11 @@ export function hideReplyPopup() {
   popup.dataset.targetMsg = '';
 }
 
-function setQuotedMessage(messageElement, quotedText) {
+function setQuotedMessage(messageElement, quotedHtml) {
   currentQuotedMessage = {
-    element: messageElement,
-    text: quotedText,
     id: messageElement.dataset.msgId,
-    author: messageElement.classList.contains('me') ? 'Tú' : 'Contacto'
+    author: messageElement.classList.contains('me') ? 'Tú' : 'Contacto',
+    text: quotedHtml
   };
 }
 
@@ -284,26 +305,23 @@ export function blurExceptTargetForDuration(target, duration = 1000) {
   }, duration);
 }
 
-// --- RESPUESTAS REMOTAS ---
 export function addReplyRemotely(targetMsgId, replyText, replyAuthor, senderId) {
   const targetMsg = document.querySelector(`[data-msg-id="${targetMsgId}"]`);
   if (!targetMsg) {
     console.warn('addReplyRemotely: mensaje objetivo no encontrado', targetMsgId);
     return;
   }
-
   const currentUser = getUsername();
   const isMe = (senderId === currentUser);
-  const quotedText = extractMessageText(targetMsg.querySelector('.msg-drag'));
-
+  const plainText = extractPlainText(targetMsg.querySelector('.msg-drag'));
+  const quotedHtml = convertShortcodesToImages(plainText);
   appendMessage(replyText, {
     me: isMe,
     replyTo: {
       id: targetMsgId,
       author: replyAuthor,
-      text: quotedText
+      text: quotedHtml
     },
     fromSocket: true
-    // msgId se asignará automáticamente en appendMessage (o por el servidor cuando llegue el new-message)
   });
 }

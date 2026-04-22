@@ -1,5 +1,5 @@
-// src/scripts/themeManager.js
 import interact from 'interactjs';
+import { registerModal, unregisterModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
 
 const STORAGE_THEME = 'chat_theme_prefs';
 const STORAGE_BG_MODE = 'chat_bg_mode';
@@ -7,7 +7,7 @@ const STORAGE_CUSTOM_BG = 'chat_custom_bg';
 const STORAGE_BG_OPACITY = 'chat_bg_opacity';
 const STORAGE_USER_IMAGES = 'chat_user_images';
 
-const ALLOWED_THEMES = ['dark', 'light', 'cristal', 'forest', 'ocean', 'whatsapp', 'midnight', 'reference' , 'magenta'];
+const ALLOWED_THEMES = ['dark', 'light', 'cristal', 'forest', 'ocean', 'whatsapp', 'midnight', 'reference', 'magenta'];
 
 const themes = {
   dark: { name: 'Oscuro', bg: '/img/dark.jpg', color: '#17212b' },
@@ -16,7 +16,7 @@ const themes = {
   forest: { name: 'Bosque', bg: '/img/bg-forest.jpg', color: '#1e3a1e' },
   ocean: { name: 'Océano', bg: '/img/ballena.jpg', color: '#082f49' },
   magenta: { name: 'Magenta', bg: '/img/patron1.jpg', color: '#16222F' },
-  whatsapp: { name: 'WhatsApp', bg: null, color: '#e5ddd5' },
+  whatsapp: { name: 'WhatsApp', bg: '/img/dark.jpg', color: '#e5ddd5' },
   midnight: { name: 'Midnight', bg: '/img/magic.jpg', color: '#0b0f19' },
   reference: { name: 'Referencia', bg: '/img/dark.jpg', color: '#030F0F' }
 };
@@ -39,7 +39,6 @@ const nativeBackgroundsGrouped = {
   ]
 };
 
-// ========== GESTIÓN DE IMÁGENES DE USUARIO ==========
 function getUserImages() {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_USER_IMAGES) || '[]');
@@ -64,7 +63,6 @@ function removeUserImages(urls) {
   return images;
 }
 
-// ========== ESTADO CONFIRMADO (GUARDADO) ==========
 export function getCurrentTheme() {
   return document.documentElement.getAttribute('data-theme') || 'dark';
 }
@@ -104,10 +102,8 @@ function applyConfirmedBackground(theme, bgMode, customBgUrl, opacity = null) {
   } else if (themeObj.bg) {
     finalBgUrl = themeObj.bg;
   }
-
   const bgColor = themeObj.color;
   const finalOpacity = opacity !== null ? opacity : getCurrentBgOpacity();
-
   if (finalBgUrl) {
     root.style.setProperty('--app-bg-image', `url('${finalBgUrl}')`);
   } else {
@@ -117,14 +113,11 @@ function applyConfirmedBackground(theme, bgMode, customBgUrl, opacity = null) {
   root.style.setProperty('--app-bg-opacity', finalOpacity.toString());
 }
 
-// ========== API PÚBLICA (CAMBIOS CONFIRMADOS) ==========
 export function setTheme(themeId) {
   if (!ALLOWED_THEMES.includes(themeId)) return;
-
   const currentBgMode = getCurrentBgMode();
   const currentCustomBg = getCurrentCustomBg();
   const currentOpacity = getCurrentBgOpacity();
-
   document.documentElement.setAttribute('data-theme', themeId);
   saveConfirmedState(themeId, currentBgMode, currentCustomBg, currentOpacity);
   applyConfirmedBackground(themeId, currentBgMode, currentCustomBg, currentOpacity);
@@ -163,7 +156,6 @@ export function getNativeBackgroundsGrouped() {
   return nativeBackgroundsGrouped;
 }
 
-// ========== DRAFT HELPERS ==========
 let draftOpacity = 1;
 let draftBgMode = null;
 let draftCustomBg = null;
@@ -181,7 +173,6 @@ let preOpacityDraftTheme = null;
 let preOpacityPreviewUrl = null;
 let opacityImageChanged = false;
 
-// ========== MENÚ DE FONDOS DEL USUARIO ==========
 let userImagesDeleteMode = false;
 let selectedUserImages = new Set();
 
@@ -209,7 +200,6 @@ function restoreDraftSnapshot(snapshot) {
 function buildUserImagesSectionHtml() {
   const userImages = getUserImages();
   if (!userImages.length) return '';
-
   return `
     <div class="bg-category" data-category="user">
       <button class="bg-category-header" type="button" data-user-header="1">
@@ -243,13 +233,10 @@ function buildUserImagesSectionHtml() {
 function toggleCategoryContent(header) {
   const categoryDiv = header.closest('.bg-category');
   if (!categoryDiv) return;
-
   const content = categoryDiv.querySelector('.bg-category-content');
   const arrow = header.querySelector('.arrow');
   if (!content) return;
-
   const isExpanded = content.classList.contains('expanded');
-
   if (isExpanded) {
     content.style.maxHeight = '0px';
     content.style.paddingTop = '0';
@@ -269,10 +256,8 @@ function toggleCategoryContent(header) {
 function bindUserImagesSection() {
   const userCategory = document.querySelector('.bg-category[data-category="user"]');
   if (!userCategory) return;
-
   const header = userCategory.querySelector('.bg-category-header');
   const content = userCategory.querySelector('.bg-category-content');
-
   if (header) {
     const newHeader = header.cloneNode(true);
     header.parentNode.replaceChild(newHeader, header);
@@ -281,25 +266,20 @@ function bindUserImagesSection() {
       toggleCategoryContent(newHeader);
     });
   }
-
   const toggleBtn = userCategory.querySelector('.user-images-toggle-select');
   const selectAllBtn = userCategory.querySelector('.user-images-select-all');
   const deleteBtn = userCategory.querySelector('.user-images-delete');
   const previews = userCategory.querySelectorAll('.bg-preview[data-user-image="1"]');
-
   if (toggleBtn) {
     const newToggleBtn = toggleBtn.cloneNode(true);
     toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
     newToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       userImagesDeleteMode = !userImagesDeleteMode;
-      if (!userImagesDeleteMode) {
-        selectedUserImages.clear();
-      }
+      if (!userImagesDeleteMode) selectedUserImages.clear();
       refreshUserImagesSection();
     });
   }
-
   if (selectAllBtn) {
     const newSelectAllBtn = selectAllBtn.cloneNode(true);
     selectAllBtn.parentNode.replaceChild(newSelectAllBtn, selectAllBtn);
@@ -310,7 +290,6 @@ function bindUserImagesSection() {
       refreshUserImagesSection();
     });
   }
-
   if (deleteBtn) {
     const newDeleteBtn = deleteBtn.cloneNode(true);
     deleteBtn.parentNode.replaceChild(newDeleteBtn, deleteBtn);
@@ -320,32 +299,24 @@ function bindUserImagesSection() {
       deleteSelectedUserImages();
     });
   }
-
   previews.forEach(preview => {
     const newPreview = preview.cloneNode(true);
     preview.parentNode.replaceChild(newPreview, preview);
     newPreview.addEventListener('click', (e) => {
       e.stopPropagation();
       const bgValue = newPreview.dataset.bg;
-
       if (userImagesDeleteMode) {
-        if (selectedUserImages.has(bgValue)) {
-          selectedUserImages.delete(bgValue);
-        } else {
-          selectedUserImages.add(bgValue);
-        }
+        if (selectedUserImages.has(bgValue)) selectedUserImages.delete(bgValue);
+        else selectedUserImages.add(bgValue);
         refreshUserImagesSection();
         return;
       }
-
       const snapshot = getDraftSnapshot();
-
       draftBgMode = 'custom';
       draftCustomBg = bgValue;
       document.querySelectorAll('#theme-content .bg-preview').forEach(p => p.classList.remove('active'));
       newPreview.classList.add('active');
       applyDraftPreview();
-
       if (bgValue && !bgValue.startsWith('color:')) {
         showOpacityModal(bgValue, null, (newImageUrl) => {
           draftBgMode = 'custom';
@@ -362,31 +333,23 @@ function bindUserImagesSection() {
 function refreshUserImagesSection() {
   const contentDiv = document.getElementById('theme-content');
   if (!contentDiv) return;
-
   const existing = contentDiv.querySelector('.bg-category[data-category="user"]');
   const userImages = getUserImages();
-
   if (!userImages.length) {
     if (existing) existing.remove();
     return;
   }
-
   if (!existing) {
     const sectionHtml = buildUserImagesSectionHtml();
     const fondosHeader = Array.from(contentDiv.querySelectorAll('h3')).find(h => h.textContent.trim() === 'Fondos');
-    if (fondosHeader) {
-      fondosHeader.insertAdjacentHTML('afterend', sectionHtml);
-    } else {
-      contentDiv.insertAdjacentHTML('beforeend', sectionHtml);
-    }
+    if (fondosHeader) fondosHeader.insertAdjacentHTML('afterend', sectionHtml);
+    else contentDiv.insertAdjacentHTML('beforeend', sectionHtml);
     bindUserImagesSection();
     return;
   }
-
   const content = existing.querySelector('.bg-category-content');
   const toolbar = content.querySelector('.user-images-toolbar');
   const bgOptions = content.querySelector('.bg-options');
-
   if (toolbar) {
     toolbar.innerHTML = `
       <button type="button" class="btn-secondary user-images-toggle-select" style="flex:1; min-width: 120px;">
@@ -400,7 +363,6 @@ function refreshUserImagesSection() {
       </button>
     `;
   }
-
   if (bgOptions) {
     bgOptions.innerHTML = userImages.map(url => `
       <div class="bg-preview ${draftBgMode === 'custom' && draftCustomBg === url ? 'active' : ''} ${selectedUserImages.has(url) ? 'user-delete-selected' : ''}" data-bg="${url}" data-user-image="1" style="background-image: url('${url}'); position: relative; ${userImagesDeleteMode && selectedUserImages.has(url) ? 'outline: 3px solid #ef4444; outline-offset: 2px;' : ''}">
@@ -408,7 +370,6 @@ function refreshUserImagesSection() {
       </div>
     `).join('');
   }
-
   bindUserImagesSection();
 }
 
@@ -417,35 +378,28 @@ function deleteSelectedUserImages() {
     showTransientNotification('No hay fondos seleccionados');
     return;
   }
-
   const toDelete = Array.from(selectedUserImages);
   const deletedCurrentDraft = draftBgMode === 'custom' && draftCustomBg && selectedUserImages.has(draftCustomBg);
   const deletedCurrentConfirmed = confirmedBgMode === 'custom' && confirmedCustomBg && selectedUserImages.has(confirmedCustomBg);
-
   removeUserImages(toDelete);
-
   selectedUserImages.clear();
   userImagesDeleteMode = false;
-
   if (deletedCurrentDraft) {
     draftBgMode = 'theme';
     draftCustomBg = '';
     applyDraftPreview();
     updateActiveIndicators();
   }
-
   if (deletedCurrentConfirmed) {
     confirmedBgMode = 'theme';
     confirmedCustomBg = '';
     saveConfirmedState(confirmedTheme, 'theme', '', confirmedOpacity);
     applyConfirmedBackground(confirmedTheme, 'theme', '', confirmedOpacity);
   }
-
   refreshUserImagesSection();
   showTransientNotification('Fondos eliminados');
 }
 
-// ========== MODAL DE OPACIDAD ==========
 let opacityModal = null;
 let opacitySlider = null;
 let opacityPreviewImage = null;
@@ -455,17 +409,14 @@ let onOpacityImageChange = null;
 function applyDraftPreview() {
   const themeToApply = draftTheme !== null ? draftTheme : confirmedTheme;
   document.documentElement.setAttribute('data-theme', themeToApply);
-
   let bgUrl = null;
   if (draftBgMode === 'custom' && draftCustomBg) {
     bgUrl = draftCustomBg;
   } else if (draftBgMode === 'theme' || draftBgMode === null) {
     bgUrl = themes[themeToApply]?.bg || null;
   }
-
   const themeObj = themes[themeToApply] || themes.dark;
   const bgColor = themeObj.color;
-
   const root = document.documentElement;
   if (bgUrl) {
     root.style.setProperty('--app-bg-image', `url('${bgUrl}')`);
@@ -504,7 +455,6 @@ function restoreConfirmedState() {
 
 function createOpacityModal() {
   if (opacityModal) return;
-
   opacityModal = document.createElement('div');
   opacityModal.id = 'opacity-modal';
   opacityModal.className = 'opacity-modal';
@@ -529,10 +479,8 @@ function createOpacityModal() {
     </div>
   `;
   document.body.appendChild(opacityModal);
-
   opacitySlider = document.getElementById('opacity-slider');
   opacityPreviewImage = document.getElementById('opacity-preview-img');
-
   const closeAndRestore = () => {
     restoreDraftSnapshot({
       draftOpacity: preOpacityDraftOpacity,
@@ -546,13 +494,10 @@ function createOpacityModal() {
     opacityPreviewImage.style.opacity = preOpacityDraftOpacity;
     hideOpacityModal();
   };
-
   opacityModal.querySelector('.opacity-close-btn').onclick = closeAndRestore;
   document.getElementById('opacity-cancel').onclick = closeAndRestore;
-
   document.getElementById('opacity-save').onclick = () => {
     const newOpacity = parseFloat(opacitySlider.value);
-
     if (opacityImageChanged && currentPreviewUrl && !currentPreviewUrl.startsWith('color:')) {
       draftBgMode = 'custom';
       draftCustomBg = currentPreviewUrl;
@@ -561,21 +506,17 @@ function createOpacityModal() {
       updateActiveIndicators();
       refreshUserImagesSection();
     }
-
     setBackgroundOpacity(newOpacity);
     draftOpacity = newOpacity;
-
     hideOpacityModal();
     showTransientNotification('Opacidad actualizada');
   };
-
   document.getElementById('opacity-gallery-btn').onclick = () => {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = 'image/*';
     fileInput.style.display = 'none';
     document.body.appendChild(fileInput);
-
     fileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file && file.type.startsWith('image/')) {
@@ -585,27 +526,18 @@ function createOpacityModal() {
           opacityPreviewImage.src = dataUrl;
           currentPreviewUrl = dataUrl;
           opacityImageChanged = true;
-
-          if (onOpacityImageChange) {
-            onOpacityImageChange(dataUrl);
-          }
-
+          if (onOpacityImageChange) onOpacityImageChange(dataUrl);
           saveUserImage(dataUrl);
         };
         reader.readAsDataURL(file);
       }
       document.body.removeChild(fileInput);
     });
-
     fileInput.click();
   };
-
   opacityModal.addEventListener('click', (e) => {
-    if (e.target === opacityModal) {
-      closeAndRestore();
-    }
+    if (e.target === opacityModal) closeAndRestore();
   });
-
   opacitySlider.addEventListener('input', (e) => {
     const val = parseFloat(e.target.value);
     opacityPreviewImage.style.opacity = val;
@@ -620,8 +552,6 @@ function showOpacityModal(previewUrl, galleryCallback = null, imageChangeCallbac
   onOpacityImageChange = imageChangeCallback;
   currentPreviewUrl = previewUrl;
   opacityImageChanged = false;
-  
-  // Si no hay URL de vista previa (tema sin fondo), creamos un canvas con el color sólido
   if (!previewUrl) {
     const themeObj = themes[draftTheme] || themes.dark;
     const canvas = document.createElement('canvas');
@@ -632,19 +562,16 @@ function showOpacityModal(previewUrl, galleryCallback = null, imageChangeCallbac
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     previewUrl = canvas.toDataURL('image/png');
   }
-  
   opacityPreviewImage.src = previewUrl;
   const currentOpacity = draftOpacity !== undefined ? draftOpacity : getCurrentBgOpacity();
   opacitySlider.value = currentOpacity;
   opacityPreviewImage.style.opacity = currentOpacity;
-
   const snapshot = restoreSnapshot || getDraftSnapshot();
   preOpacityDraftOpacity = snapshot.draftOpacity;
   preOpacityDraftBgMode = snapshot.draftBgMode;
   preOpacityDraftCustomBg = snapshot.draftCustomBg;
   preOpacityDraftTheme = snapshot.draftTheme;
   preOpacityPreviewUrl = snapshot.currentPreviewUrl;
-
   opacityModal.style.display = 'flex';
   const card = opacityModal.querySelector('.opacity-card');
   card.style.animation = 'none';
@@ -653,32 +580,20 @@ function showOpacityModal(previewUrl, galleryCallback = null, imageChangeCallbac
 }
 
 function hideOpacityModal() {
-  if (opacityModal) {
-    opacityModal.style.display = 'none';
-  }
+  if (opacityModal) opacityModal.style.display = 'none';
 }
 
-// ========== LÓGICA DEL MODAL PRINCIPAL ==========
-let windowElement, dragHandle, closeBtn, headerElement, overlay;
+let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
+let isModalOpen = false;
 
-function showTransientNotification(text) {
-  let notif = document.querySelector('.transient-notif');
-  if (!notif) {
-    notif = document.createElement('div');
-    notif.className = 'transient-notif';
-    document.body.appendChild(notif);
-  }
-  notif.textContent = text;
-  notif.classList.add('visible');
-  setTimeout(() => notif.classList.remove('visible'), 1500);
-}
-
-function updateHandlePosition() {
-  if (!windowElement || !dragHandle) return;
-  const rect = windowElement.getBoundingClientRect();
-  dragHandle.style.left = `${rect.left + rect.width / 2 - dragHandle.offsetWidth / 2}px`;
-  dragHandle.style.top = `${rect.top - dragHandle.offsetHeight - 5}px`;
+function addResizeHandlesToModal(element) {
+  const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
+  handles.forEach(dir => {
+    const handle = document.createElement('div');
+    handle.className = `resize-handle resize-${dir}`;
+    element.appendChild(handle);
+  });
 }
 
 function centerModal() {
@@ -689,33 +604,110 @@ function centerModal() {
   windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
   windowElement.setAttribute('data-x', windowX);
   windowElement.setAttribute('data-y', windowY);
-  updateHandlePosition();
 }
 
-function hideModal() {
-  if (windowElement) windowElement.style.display = 'none';
-  if (dragHandle) dragHandle.style.display = 'none';
-  if (overlay) overlay.classList.remove('active');
-  userImagesDeleteMode = false;
-  selectedUserImages.clear();
+function isLessThan10PercentVisible(element) {
+  const rect = element.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const visibleWidth = Math.min(rect.right, viewportWidth) - Math.max(rect.left, 0);
+  const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+  if (visibleWidth <= 0 || visibleHeight <= 0) return true;
+  const visibleArea = visibleWidth * visibleHeight;
+  const totalArea = rect.width * rect.height;
+  return (visibleArea / totalArea) < 0.1;
+}
+
+function setupInteractForModal() {
+  interact(windowElement).resizable({
+    edges: { top: true, left: true, bottom: true, right: true },
+    inertia: false,
+    modifiers: [
+      interact.modifiers.restrictSize({
+        min: { width: 150, height: 150 },
+        max: { width: window.innerWidth * 0.9, height: window.innerHeight * 0.9 }
+      })
+    ],
+    listeners: {
+      move(event) {
+        let width = event.rect.width;
+        let height = event.rect.height;
+        windowElement.style.width = `${width}px`;
+        windowElement.style.height = `${height}px`;
+        windowX += event.deltaRect.left;
+        windowY += event.deltaRect.top;
+        windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+        windowElement.setAttribute('data-x', windowX);
+        windowElement.setAttribute('data-y', windowY);
+        constrainAllModals();
+      }
+    }
+  });
+
+  interact(headerElement).draggable({
+    inertia: false,
+    manualStart: false,
+    allowFrom: headerElement,
+    preventDefault: 'always',
+    modifiers: [
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true
+      })
+    ],
+    listeners: {
+      start() { 
+        window.isDraggingModal = true; 
+      },
+      move(event) {
+        const keyboardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
+        
+        if (keyboardHeight > 0) {
+          const inputElement = document.getElementById('layerInput');
+          if (inputElement) {
+            const inputRect = inputElement.getBoundingClientRect();
+            const modalRect = windowElement.getBoundingClientRect();
+            const inputTop = inputRect.top;
+            const modalBottom = modalRect.bottom;
+            
+            if (modalBottom + event.dy > inputTop - 10) {
+              return;
+            }
+          }
+        }
+        
+        windowX += event.dx;
+        windowY += event.dy;
+        windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+        windowElement.setAttribute('data-x', windowX);
+        windowElement.setAttribute('data-y', windowY);
+        constrainAllModals();
+      },
+      end(event) {
+        window.isDraggingModal = false;
+        if (isLessThan10PercentVisible(windowElement)) {
+          restoreConfirmedState();
+          hideModal();
+          showTransientNotification('Modal cerrado por estar fuera de pantalla');
+        }
+        constrainAllModals();
+      }
+    }
+  });
 }
 
 function loadThemeContent() {
   const contentDiv = document.getElementById('theme-content');
   if (!contentDiv) return;
-
   confirmedTheme = getCurrentTheme();
   confirmedBgMode = getCurrentBgMode();
   confirmedCustomBg = getCurrentCustomBg();
   confirmedOpacity = getCurrentBgOpacity();
-
   draftTheme = confirmedTheme;
   draftBgMode = confirmedBgMode;
   draftCustomBg = confirmedCustomBg;
   draftOpacity = confirmedOpacity;
-
   const userImagesHtml = buildUserImagesSectionHtml();
-
   let bgCategoriesHtml = '';
   for (const [category, items] of Object.entries(nativeBackgroundsGrouped)) {
     bgCategoriesHtml += `
@@ -738,7 +730,6 @@ function loadThemeContent() {
       </div>
     `;
   }
-
   contentDiv.innerHTML = `
     <div class="theme-header"><h2>Personaliza tu<br>chat</h2></div>
     <h3 class="tittle">Temas</h3>
@@ -759,15 +750,13 @@ function loadThemeContent() {
       <input type="file" id="galleryInput" accept="image/*" style="display: none;">
     </div>
     <div class="edit-container" style="margin-top: 12px;">
-      <button class="btn-secondary" id="adjust-opacity-btn" style="width: 100%;">Ajustar opacidad
-      </button>
+      <button class="btn-secondary" id="adjust-opacity-btn" style="width: 100%;">Ajustar opacidad</button>
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" id="cancelThemeBtn">Descartar cambios</button>
       <button class="btn-save" id="saveThemeBtn">Guardar cambios</button>
     </div>
   `;
-
   document.querySelectorAll('.bg-category-header').forEach(header => {
     header.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -776,7 +765,6 @@ function loadThemeContent() {
       const content = categoryDiv.querySelector('.bg-category-content');
       const arrow = header.querySelector('.arrow');
       if (!content) return;
-
       const isExpanded = content.classList.contains('expanded');
       if (isExpanded) {
         content.style.maxHeight = '0px';
@@ -794,14 +782,11 @@ function loadThemeContent() {
       }
     });
   });
-
   bindUserImagesSection();
-
   const themeBtns = document.querySelectorAll('#theme-content .theme-btn');
   themeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const restoreSnapshot = getDraftSnapshot();
-
       draftTheme = btn.dataset.theme;
       draftBgMode = 'theme';
       draftCustomBg = '';
@@ -809,9 +794,7 @@ function loadThemeContent() {
       btn.classList.add('active');
       document.querySelectorAll('#theme-content .bg-preview').forEach(p => p.classList.remove('active'));
       applyDraftPreview();
-
       const bgUrl = themes[draftTheme]?.bg;
-      // Mostrar modal de opacidad para todos los temas
       showOpacityModal(bgUrl, null, (newImageUrl) => {
         draftBgMode = 'custom';
         draftCustomBg = newImageUrl;
@@ -821,13 +804,11 @@ function loadThemeContent() {
       }, restoreSnapshot);
     });
   });
-
   const bgPreviews = document.querySelectorAll('#theme-content .bg-preview:not([data-user-image="1"])');
   bgPreviews.forEach(preview => {
     preview.addEventListener('click', () => {
       const restoreSnapshot = getDraftSnapshot();
       const bgValue = preview.dataset.bg;
-
       if (bgValue === 'reset') {
         draftBgMode = 'theme';
         draftCustomBg = '';
@@ -842,11 +823,8 @@ function loadThemeContent() {
       bgPreviews.forEach(p => p.classList.remove('active'));
       preview.classList.add('active');
       applyDraftPreview();
-
       let previewUrl = draftCustomBg;
-      if (draftBgMode === 'theme') {
-        previewUrl = themes[draftTheme]?.bg;
-      }
+      if (draftBgMode === 'theme') previewUrl = themes[draftTheme]?.bg;
       if (previewUrl && !previewUrl.startsWith('color:')) {
         showOpacityModal(previewUrl, null, (newImageUrl) => {
           draftBgMode = 'custom';
@@ -858,7 +836,6 @@ function loadThemeContent() {
       }
     });
   });
-
   const fileInput = document.getElementById('galleryInput');
   if (fileInput) {
     fileInput.addEventListener('change', (e) => {
@@ -888,15 +865,11 @@ function loadThemeContent() {
       e.target.value = '';
     });
   }
-
   document.getElementById('adjust-opacity-btn')?.addEventListener('click', () => {
     const restoreSnapshot = getDraftSnapshot();
     let previewUrl = '';
-    if (draftBgMode === 'custom' && draftCustomBg) {
-      previewUrl = draftCustomBg;
-    } else if (draftTheme) {
-      previewUrl = themes[draftTheme]?.bg || '';
-    }
+    if (draftBgMode === 'custom' && draftCustomBg) previewUrl = draftCustomBg;
+    else if (draftTheme) previewUrl = themes[draftTheme]?.bg || '';
     if (previewUrl && !previewUrl.startsWith('color:')) {
       showOpacityModal(previewUrl, null, (newImageUrl) => {
         draftBgMode = 'custom';
@@ -909,10 +882,8 @@ function loadThemeContent() {
       showTransientNotification('No hay imagen para ajustar opacidad');
     }
   });
-
   const saveBtn = document.getElementById('saveThemeBtn');
   const cancelBtn = document.getElementById('cancelThemeBtn');
-
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {
       if (draftTheme !== null) {
@@ -937,7 +908,6 @@ function loadThemeContent() {
       showTransientNotification('Tema guardado');
     });
   }
-
   if (cancelBtn) {
     cancelBtn.addEventListener('click', () => {
       restoreConfirmedState();
@@ -947,87 +917,37 @@ function loadThemeContent() {
   }
 }
 
+function showTransientNotification(text) {
+  let notif = document.querySelector('.transient-notif');
+  if (!notif) {
+    notif = document.createElement('div');
+    notif.className = 'transient-notif';
+    document.body.appendChild(notif);
+  }
+  notif.textContent = text;
+  notif.classList.add('visible');
+  setTimeout(() => notif.classList.remove('visible'), 1500);
+}
+
+function hideModal() {
+  if (windowElement) windowElement.style.display = 'none';
+  if (overlay) overlay.classList.remove('active');
+  isModalOpen = false;
+}
+
 function showModal() {
   if (!windowElement) {
     windowElement = document.getElementById('movable-window');
-    dragHandle = document.getElementById('drag-handle');
-    closeBtn = document.getElementById('close-theme-modal');
     headerElement = document.getElementById('modal-header');
+    closeBtn = document.getElementById('close-theme-modal');
     overlay = document.getElementById('theme-modal-overlay');
-    if (!windowElement || !dragHandle || !overlay) return;
-
-    centerModal();
-
-    const syncHandle = () => updateHandlePosition();
-
-    interact(dragHandle).draggable({
-      allowFrom: dragHandle,
-      inertia: false,
-      preventDefault: 'always',
-      manualStart: false,
-      listeners: {
-        start: () => { window.isDraggingModal = true; },
-        move(event) {
-          windowX += event.dx;
-          windowY += event.dy;
-          windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
-          windowElement.setAttribute('data-x', windowX);
-          windowElement.setAttribute('data-y', windowY);
-          syncHandle();
-        },
-        end: () => { window.isDraggingModal = false; }
-      }
-    });
-
-    if (headerElement) {
-      interact(headerElement).draggable({
-        allowFrom: headerElement,
-        inertia: false,
-        preventDefault: 'always',
-        manualStart: false,
-        listeners: {
-          start: () => { window.isDraggingModal = true; },
-          move(event) {
-            windowX += event.dx;
-            windowY += event.dy;
-            windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
-            windowElement.setAttribute('data-x', windowX);
-            windowElement.setAttribute('data-y', windowY);
-            syncHandle();
-          },
-          end: () => { window.isDraggingModal = false; }
-        }
-      });
-    }
-
-    interact(windowElement).resizable({
-      edges: { top: true, left: true, bottom: true, right: true },
-      inertia: false,
-      preventDefault: 'always',
-      modifiers: [
-        interact.modifiers.restrictSize({
-          min: { width: 150, height: 150 },
-          max: { width: window.innerWidth * 0.9, height: window.innerHeight * 0.9 }
-        })
-      ],
-      listeners: {
-        start: () => { window.isDraggingModal = true; },
-        move(event) {
-          let width = event.rect.width;
-          let height = event.rect.height;
-          windowElement.style.width = `${width}px`;
-          windowElement.style.height = `${height}px`;
-          windowX += event.deltaRect.left;
-          windowY += event.deltaRect.top;
-          windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
-          windowElement.setAttribute('data-x', windowX);
-          windowElement.setAttribute('data-y', windowY);
-          syncHandle();
-        },
-        end: () => { window.isDraggingModal = false; }
-      }
-    });
-
+    if (!windowElement || !headerElement) return;
+    
+    associateOverlay(windowElement, overlay);
+    
+    addResizeHandlesToModal(windowElement);
+    setupInteractForModal();
+    
     if (closeBtn) {
       closeBtn.onclick = () => {
         restoreConfirmedState();
@@ -1035,22 +955,16 @@ function showModal() {
         showTransientNotification('Cambios descartados');
       };
     }
-
     loadThemeContent();
-    window.addEventListener('resize', () => syncHandle());
   }
-
+  
   overlay.classList.add('active');
   windowElement.style.display = 'block';
-  dragHandle.style.display = 'flex';
-
   centerModal();
-
-  overlay.onclick = () => {
-    restoreConfirmedState();
-    hideModal();
-    showTransientNotification('Cambios descartados');
-  };
+  isModalOpen = true;
+  
+  registerModal(windowElement, 'theme-modal');
+  bringModalToFront('theme-modal');
 }
 
 export function initThemeManager() {
