@@ -1,3 +1,5 @@
+// src/scripts/editor/EmojiSearch.js
+
 import { searchEmojis } from './EmojiData.js';
 
 let searchInput = null;
@@ -9,6 +11,7 @@ export function createSearchBar(onResults) {
   onSearchResults = onResults;
   
   searchContainer = document.createElement('div');
+  searchContainer.className = 'emoji-search-container';
   
   searchInput = document.createElement('input');
   searchInput.type = 'text';

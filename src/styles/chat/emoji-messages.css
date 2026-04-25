@@ -1,50 +1,101 @@
+/* ==========================================================================
+   emoji-messages.css - VERSIÓN HIPER-GRANULAR
+   ========================================================================== */
+
 .message.emoji-message {
-  margin-bottom: 8px;
+  margin-bottom: var(--emoji-message-margin-bottom);
+  margin-top: var(--emoji-message-margin-top);
+  margin-left: var(--emoji-message-margin-left);
+  margin-right: var(--emoji-message-margin-right);
+  padding: var(--emoji-message-padding);
+  border: var(--emoji-message-border);
+  border-radius: var(--emoji-message-border-radius);
+  box-shadow: var(--emoji-message-shadow);
+  opacity: var(--emoji-message-opacity);
+  transform: var(--emoji-message-transform);
+  transition: var(--emoji-message-transition);
+  backdrop-filter: var(--emoji-message-backdrop-filter);
+  background-color: var(--emoji-message-bg-color);
+  color: var(--emoji-message-color);
 }
 
 .msg-drag.emoji-single {
-  background: transparent !important;
-  font-size: 4rem;
-  padding: 8px 12px;
-  line-height: 1.2;
-  min-width: auto;
-  max-width: 90%;
+  background-color: var(--emoji-single-bg-color) !important;
+  background-image: var(--emoji-single-bg-image);
+  background-size: var(--emoji-single-bg-size);
+  background-position: var(--emoji-single-bg-position);
+  color: var(--emoji-single-color);
+  font-size: var(--emoji-single-font-size);
+  font-family: var(--emoji-single-font-family);
+  font-weight: var(--emoji-single-font-weight);
+  line-height: var(--emoji-single-line-height);
+  letter-spacing: var(--emoji-single-letter-spacing);
+  text-align: var(--emoji-single-text-align);
+  text-transform: var(--emoji-single-text-transform);
+  text-shadow: var(--emoji-single-text-shadow);
+  padding-top: var(--emoji-single-padding-top);
+  padding-right: var(--emoji-single-padding-right);
+  padding-bottom: var(--emoji-single-padding-bottom);
+  padding-left: var(--emoji-single-padding-left);
+  margin: var(--emoji-single-margin);
+  min-width: var(--emoji-single-min-width);
+  max-width: var(--emoji-single-max-width);
+  opacity: var(--emoji-single-opacity);
+  transform: var(--emoji-single-transform);
+  transition: var(--emoji-single-transition);
+  border: var(--emoji-single-border);
+  border-radius: var(--emoji-single-border-radius);
+  box-shadow: var(--emoji-single-shadow);
+  backdrop-filter: var(--emoji-single-backdrop-filter);
 }
 
 .msg-drag.emoji-double {
-  background: transparent !important;
-  font-size: 3rem;
-  padding: 8px 12px;
-  line-height: 1.2;
-  min-width: auto;
+  font-size: var(--emoji-double-font-size);
+  padding-top: var(--emoji-double-padding-top);
+  padding-right: var(--emoji-double-padding-right);
+  padding-bottom: var(--emoji-double-padding-bottom);
+  padding-left: var(--emoji-double-padding-left);
+  min-width: var(--emoji-double-min-width);
+  background-color: var(--emoji-double-bg-color) !important;
+  color: var(--emoji-double-color);
 }
 
 .msg-drag.emoji-triple {
-  background: transparent !important;
-  font-size: 2.5rem;
-  padding: 8px 12px;
-  line-height: 1.2;
+  font-size: var(--emoji-triple-font-size);
+  padding: var(--emoji-triple-padding-top) var(--emoji-triple-padding-right) var(--emoji-triple-padding-bottom) var(--emoji-triple-padding-left);
+  background-color: var(--emoji-triple-bg-color) !important;
 }
 
 .msg-drag.emoji-quad {
-  background: transparent !important;
-  font-size: 2rem;
-  padding: 8px 12px;
-  line-height: 1.2;
+  font-size: var(--emoji-quad-font-size);
+  padding: var(--emoji-quad-padding-top) var(--emoji-quad-padding-right) var(--emoji-quad-padding-bottom) var(--emoji-quad-padding-left);
+  background-color: var(--emoji-quad-bg-color) !important;
 }
 
 .message.me .msg-drag.emoji-single,
 .message.me .msg-drag.emoji-double,
 .message.me .msg-drag.emoji-triple,
 .message.me .msg-drag.emoji-quad {
-  background: transparent !important;
-  color: inherit;
+  background-color: var(--emoji-me-bg-color) !important;
+  color: var(--emoji-me-color);
 }
 
 .emoji-message .msg-hour {
-  position: relative;
-  margin-top: 4px;
-  text-align: right;
-  font-size: 11px;
-  opacity: 0.7;
+  position: var(--emoji-hour-position);
+  margin-top: var(--emoji-hour-margin-top);
+  margin-bottom: var(--emoji-hour-margin-bottom);
+  margin-left: var(--emoji-hour-margin-left);
+  margin-right: var(--emoji-hour-margin-right);
+  text-align: var(--emoji-hour-text-align);
+  font-size: var(--emoji-hour-font-size);
+  font-family: var(--emoji-hour-font-family);
+  font-weight: var(--emoji-hour-font-weight);
+  line-height: var(--emoji-hour-line-height);
+  letter-spacing: var(--emoji-hour-letter-spacing);
+  color: var(--emoji-hour-color);
+  opacity: var(--emoji-hour-opacity);
+  background-color: var(--emoji-hour-bg-color);
+  transform: var(--emoji-hour-transform);
+  transition: var(--emoji-hour-transition);
+  text-shadow: var(--emoji-hour-text-shadow);
 }

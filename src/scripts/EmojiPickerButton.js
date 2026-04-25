@@ -1,3 +1,5 @@
+// src/scripts/EmojiPickerButton.js
+
 import interact from 'interactjs';
 import { showEmojiPicker, hideEmojiPicker } from './EmojiPicker.js';
 import { registerModal, unregisterModal, bringModalToFront } from './modalStackManager.js';

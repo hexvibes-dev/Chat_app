@@ -1,17 +1,16 @@
-// src/scripts/CustomEmojiModal.jd
-
+// src/scripts/StickerModal.js
 import interact from 'interactjs';
 import {
   getCategories,
   canCreateCategory,
   createCategory,
-  addCustomEmoji,
+  addCustomSticker,
   processImageFile,
-  canAddEmojiToCategory,
-  refreshCustomEmojisInPicker,
-  removeCustomEmoji,
+  canAddStickerToCategory,
+  refreshStickersInPicker,
+  removeCustomSticker,
   deleteCategory
-} from './CustomEmojiManager.js';
+} from './StickerManager.js';
 import { registerModal, bringModalToFront } from './modalStackManager.js';
 
 let modal = null;
@@ -21,7 +20,7 @@ let container = null;
 let header = null;
 let closeBtn = null;
 let windowX = 0, windowY = 0;
-let modalId = 'custom-emoji-modal';
+let modalId = 'custom-sticker-modal';
 
 let cropModal = null;
 let cropOverlay = null;
@@ -126,10 +125,9 @@ function showCreateCategoryModal() {
     modalDiv.style.top = '50%';
     modalDiv.style.transform = 'translate(-50%, -50%)';
     const input = modalDiv.querySelector('#new-category-name');
-    // Asegurar el foco automático después de que el modal esté visible
     setTimeout(() => {
       input.focus();
-      input.select(); // Selecciona el texto para mejor UX
+      input.select();
     }, 50);
     const cleanup = () => {
       modalDiv.classList.add('leave');
@@ -177,18 +175,18 @@ function showCategorySelectorForUpload(croppedDataUrl) {
   selectorModal.style.width = '300px';
   let html = `
     <div class="add-reaction-card" style="padding: 20px;">
-      <h1 style="font-size: 18px; margin-bottom: 16px; color: var(--modal-text);">📁 Guardar en categoría</h1>
+      <h1 style="font-size: 18px; margin-bottom: 16px; color: var(--modal-text);">📁 Guardar sticker en categoría</h1>
       <div style="display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; margin-bottom: 16px;">
   `;
   if (categories.length === 0) {
     html += `<p style="color: var(--modal-text); text-align: center;">No hay categorías. Crea una nueva.</p>`;
   } else {
     categories.forEach(cat => {
-      const canAdd = cat.emojis.length < 30;
+      const canAdd = cat.stickers.length < 30;
       html += `
         <button class="category-save-btn btn" data-category="${escapeHtml(cat.name)}" style="text-align: left; display: flex; justify-content: space-between; align-items: center;" ${!canAdd ? 'disabled style="opacity:0.5;"' : ''}>
           <span>📁 ${escapeHtml(cat.name)}</span>
-          <span style="font-size: 12px;">(${cat.emojis.length}/30)</span>
+          <span style="font-size: 12px;">(${cat.stickers.length}/30)</span>
         </button>
       `;
     });
@@ -217,20 +215,18 @@ function showCategorySelectorForUpload(croppedDataUrl) {
   selectorModal.querySelectorAll('.category-save-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const categoryName = btn.dataset.category;
-      if (!canAddEmojiToCategory(categoryName)) {
+      if (!canAddStickerToCategory(categoryName)) {
         showTransientNotification(`La categoría "${categoryName}" está llena.`, 2000);
         return;
       }
       try {
-        const shortcode = `custom_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-        const name = `emoji_${Date.now()}`;
-        await addCustomEmoji({
-          name: name,
-          shortcodes: [shortcode],
+        const id = `sticker_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+        await addCustomSticker({
+          id: id,
           url: croppedDataUrl
         }, categoryName);
-        showTransientNotification('✅ Emoji añadido correctamente', 2000);
-        refreshCustomEmojisInPicker();
+        showTransientNotification('✅ Sticker añadido correctamente', 2000);
+        refreshStickersInPicker();
         if (isOpen) renderModalContent();
         cleanup();
       } catch (err) {
@@ -320,8 +316,8 @@ function setupInteract(element, dragHandle) {
 }
 
 function toggleCategory(categoryId) {
-  const content = document.getElementById(`category-content-${categoryId}`);
-  const arrow = document.getElementById(`category-arrow-${categoryId}`);
+  const content = document.getElementById(`sticker-category-content-${categoryId}`);
+  const arrow = document.getElementById(`sticker-category-arrow-${categoryId}`);
   if (!content || !arrow) return;
   const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
   if (isExpanded) {
@@ -339,8 +335,8 @@ function toggleCategory(categoryId) {
 
 function restoreExpandedState() {
   expandedCategories.forEach(categoryId => {
-    const content = document.getElementById(`category-content-${categoryId}`);
-    const arrow = document.getElementById(`category-arrow-${categoryId}`);
+    const content = document.getElementById(`sticker-category-content-${categoryId}`);
+    const arrow = document.getElementById(`sticker-category-arrow-${categoryId}`);
     if (content && arrow && content.style.maxHeight === '0px') {
       content.style.maxHeight = content.scrollHeight + 'px';
       content.style.paddingTop = '12px';
@@ -350,33 +346,32 @@ function restoreExpandedState() {
 }
 
 async function deleteCategoryHandler(categoryName) {
-  const confirmed = await showConfirmPopup(`¿Eliminar categoría "${categoryName}" y todos sus emojis?`);
+  const confirmed = await showConfirmPopup(`¿Eliminar categoría "${categoryName}" y todos sus stickers?`);
   if (confirmed) {
     deleteCategory(categoryName);
     showTransientNotification(`Categoría "${categoryName}" eliminada`, 2000);
-    refreshCustomEmojisInPicker();
+    refreshStickersInPicker();
     renderModalContent();
     restoreExpandedState();
   }
 }
 
-async function deleteEmojiHandler(categoryName, shortcode) {
-  const confirmed = await showConfirmPopup('¿Eliminar este emoji?');
+async function deleteStickerHandler(categoryName, stickerId) {
+  const confirmed = await showConfirmPopup('¿Eliminar este sticker?');
   if (confirmed) {
-    removeCustomEmoji(categoryName, shortcode);
-    showTransientNotification('Emoji eliminado', 2000);
-    refreshCustomEmojisInPicker();
+    removeCustomSticker(categoryName, stickerId);
+    showTransientNotification('Sticker eliminado', 2000);
+    refreshStickersInPicker();
     renderModalContent();
     restoreExpandedState();
   }
 }
 
-function addEmojiHandler(categoryName) {
+function addStickerHandler(categoryName) {
   pendingCategoryForUpload = categoryName;
-  isQuickUpload = false;
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
-  fileInput.accept = 'image/png,image/jpeg,image/gif,image/svg+xml';
+  fileInput.accept = 'image/png,image/jpeg,image/gif';
   fileInput.style.display = 'none';
   document.body.appendChild(fileInput);
   fileInput.onchange = async (e) => {
@@ -389,20 +384,18 @@ function addEmojiHandler(categoryName) {
     reader.onload = (ev) => {
       currentImageDataUrl = ev.target.result;
       showCropModal(async (croppedDataUrl) => {
-        if (!canAddEmojiToCategory(pendingCategoryForUpload)) {
+        if (!canAddStickerToCategory(pendingCategoryForUpload)) {
           showTransientNotification(`La categoría "${pendingCategoryForUpload}" está llena.`, 2000);
           return;
         }
         try {
-          const shortcode = `custom_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-          const name = `emoji_${Date.now()}`;
-          await addCustomEmoji({
-            name: name,
-            shortcodes: [shortcode],
+          const id = `sticker_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+          await addCustomSticker({
+            id: id,
             url: croppedDataUrl
           }, pendingCategoryForUpload);
-          showTransientNotification('✅ Emoji añadido correctamente', 2000);
-          refreshCustomEmojisInPicker();
+          showTransientNotification('✅ Sticker añadido correctamente', 2000);
+          refreshStickersInPicker();
           renderModalContent();
           restoreExpandedState();
         } catch (err) {
@@ -432,7 +425,7 @@ function showCropModal(onSave) {
   cropModal.style.maxWidth = '500px';
   cropModal.innerHTML = `
     <div class="add-reaction-card" style="width: 100%; max-width: 500px;">
-      <h1 style="font-size: 20px; margin-bottom: 16px; color: var(--modal-text);">✂️ Recortar emoji (cuadrado)</h1>
+      <h1 style="font-size: 20px; margin-bottom: 16px; color: var(--modal-text);">✂️ Recortar sticker (cuadrado)</h1>
       <div style="position: relative; width: 100%; aspect-ratio: 1; background: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 16px;">
         <canvas id="crop-canvas" style="width: 100%; height: 100%; display: block; cursor: grab;"></canvas>
         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid var(--modal-btn-primary); pointer-events: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);"></div>
@@ -609,29 +602,28 @@ function renderModalContent() {
   if (!contentDiv) return;
   let html = `<div style="padding: 16px; overflow-y: auto; height: 100%; color: var(--modal-text);">`;
   categories.forEach((cat, idx) => {
-    const categoryId = `cat-${idx}`;
+    const categoryId = `sticker-cat-${idx}`;
     html += `
       <div class="custom-category-item" style="margin-bottom: 16px; border: 1px solid var(--modal-input-border); border-radius: 12px; overflow: hidden;">
         <div class="category-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--modal-input-bg); cursor: pointer; user-select: none;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span id="category-arrow-${categoryId}" style="font-size: 14px; color: var(--modal-text);">${expandedCategories.has(categoryId) ? '▲' : '▼'}</span>
+            <span id="sticker-category-arrow-${categoryId}" style="font-size: 14px; color: var(--modal-text);">${expandedCategories.has(categoryId) ? '▲' : '▼'}</span>
             <strong style="color: var(--modal-text);">${escapeHtml(cat.name)}</strong>
-            <span style="font-size: 12px; opacity: 0.7; color: var(--modal-text);">(${cat.emojis.length}/30)</span>
+            <span style="font-size: 12px; opacity: 0.7; color: var(--modal-text);">(${cat.stickers.length}/30)</span>
           </div>
           <div style="display: flex; gap: 8px;">
             <button class="delete-category-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: #ef4444;">🗑️</button>
-            <button class="add-emoji-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: var(--modal-btn-primary);">➕</button>
+            <button class="add-sticker-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: var(--modal-btn-primary);">➕</button>
           </div>
         </div>
-        <div id="category-content-${categoryId}" class="category-content" style="max-height: ${expandedCategories.has(categoryId) ? '1000px' : '0'}; overflow: hidden; transition: max-height 0.3s ease-out; padding-top: ${expandedCategories.has(categoryId) ? '12px' : '0'};">
+        <div id="sticker-category-content-${categoryId}" class="category-content" style="max-height: ${expandedCategories.has(categoryId) ? '1000px' : '0'}; overflow: hidden; transition: max-height 0.3s ease-out; padding-top: ${expandedCategories.has(categoryId) ? '12px' : '0'};">
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 12px; padding: 16px;">
     `;
-    for (const emoji of cat.emojis) {
+    for (const sticker of cat.stickers) {
       html += `
-        <div class="custom-emoji-item" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px; background: var(--input-bg); border-radius: 12px; position: relative;">
-          <img src="${emoji.url}" alt="${emoji.name}" style="width: 48px; height: 48px; object-fit: contain; border-radius: 8px;">
-          <span style="font-size: 10px; text-align: center; word-break: break-all; color: var(--text-color);">:${emoji.shortcodes[0]}:</span>
-          <button class="delete-emoji-btn" data-category="${escapeHtml(cat.name)}" data-shortcode="${emoji.shortcodes[0]}" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; color: white; font-size: 12px;">🗑️</button>
+        <div class="custom-sticker-item" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px; background: var(--input-bg); border-radius: 12px; position: relative;">
+          <img src="${sticker.url}" alt="sticker" style="width: 64px; height: 64px; object-fit: contain; border-radius: 8px;">
+          <button class="delete-sticker-btn" data-category="${escapeHtml(cat.name)}" data-sticker-id="${sticker.id}" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; color: white; font-size: 12px;">🗑️</button>
         </div>
       `;
     }
@@ -643,7 +635,7 @@ function renderModalContent() {
   });
   if (canCreateCategory()) {
     html += `
-      <button id="create-new-category-btn" class="btn primary" style="width: 100%; margin-top: 16px; padding: 12px; border-radius: 12px; background: var(--modal-btn-primary); color: var(--modal-btn-primary-text); border: none; cursor: pointer;">
+      <button id="create-new-sticker-category-btn" class="btn primary" style="width: 100%; margin-top: 16px; padding: 12px; border-radius: 12px; background: var(--modal-btn-primary); color: var(--modal-btn-primary-text); border: none; cursor: pointer;">
         + Crear nueva categoría (${getCategories().length}/4)
       </button>
     `;
@@ -652,9 +644,9 @@ function renderModalContent() {
   contentDiv.innerHTML = html;
 
   document.querySelectorAll('.category-header').forEach(header => {
-    const arrowSpan = header.querySelector('[id^="category-arrow-"]');
+    const arrowSpan = header.querySelector('[id^="sticker-category-arrow-"]');
     if (arrowSpan) {
-      const categoryId = arrowSpan.id.replace('category-arrow-', '');
+      const categoryId = arrowSpan.id.replace('sticker-category-arrow-', '');
       header.addEventListener('click', (e) => {
         if (e.target.closest('button')) return;
         toggleCategory(categoryId);
@@ -668,22 +660,22 @@ function renderModalContent() {
       deleteCategoryHandler(categoryName);
     });
   });
-  document.querySelectorAll('.add-emoji-btn').forEach(btn => {
+  document.querySelectorAll('.add-sticker-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const categoryName = btn.dataset.category;
-      addEmojiHandler(categoryName);
+      addStickerHandler(categoryName);
     });
   });
-  document.querySelectorAll('.delete-emoji-btn').forEach(btn => {
+  document.querySelectorAll('.delete-sticker-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const categoryName = btn.dataset.category;
-      const shortcode = btn.dataset.shortcode;
-      deleteEmojiHandler(categoryName, shortcode);
+      const stickerId = btn.dataset.stickerId;
+      deleteStickerHandler(categoryName, stickerId);
     });
   });
-  const createBtn = document.getElementById('create-new-category-btn');
+  const createBtn = document.getElementById('create-new-sticker-category-btn');
   if (createBtn) {
     createBtn.addEventListener('click', async () => {
       const name = await showCreateCategoryModal();
@@ -691,7 +683,7 @@ function renderModalContent() {
         try {
           createCategory(name.trim().substring(0, 20));
           showTransientNotification(`Categoría "${name}" creada`, 2000);
-          refreshCustomEmojisInPicker();
+          refreshStickersInPicker();
           renderModalContent();
           restoreExpandedState();
         } catch (err) {
@@ -710,17 +702,17 @@ function showModal() {
     modal.className = 'action-menu-modal';
     modal.innerHTML = `
       <div class="action-menu-container" style="width: 500px; height: 600px;">
-        <div class="action-menu-header" id="custom-emoji-header">
-          <h3 style="color: var(--modal-text);">📁 Gestionar emojis personalizados</h3>
-          <button class="action-menu-close" id="custom-emoji-close" style="color: var(--modal-text);">&times;</button>
+        <div class="action-menu-header" id="custom-sticker-header">
+          <h3 style="color: var(--modal-text);">🖼️ Gestionar stickers personalizados</h3>
+          <button class="action-menu-close" id="custom-sticker-close" style="color: var(--modal-text);">&times;</button>
         </div>
         <div class="action-menu-content" style="padding: 0; overflow: hidden;"></div>
       </div>
     `;
     document.body.appendChild(modal);
     container = modal.querySelector('.action-menu-container');
-    header = modal.querySelector('#custom-emoji-header');
-    closeBtn = modal.querySelector('#custom-emoji-close');
+    header = modal.querySelector('#custom-sticker-header');
+    closeBtn = modal.querySelector('#custom-sticker-close');
     addResizeHandles(container);
     setupInteract(container, header);
     closeBtn.addEventListener('click', () => hideModal());
@@ -758,15 +750,14 @@ function hideModal() {
   }, 300);
 }
 
-export function showCustomEmojiModal() {
+export function showCustomStickerModal() {
   showModal();
 }
 
-export function showQuickEmojiUpload() {
-  isQuickUpload = true;
+export function showQuickStickerUpload() {
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
-  fileInput.accept = 'image/png,image/jpeg,image/gif,image/svg+xml';
+  fileInput.accept = 'image/png,image/jpeg,image/gif';
   fileInput.style.display = 'none';
   document.body.appendChild(fileInput);
   fileInput.onchange = async (e) => {

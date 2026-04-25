@@ -21,7 +21,6 @@ function setDisplayName(newName) {
 }
 
 export function initUserRegistration() {
-  // Si ya hay usuario, no mostramos el modal
   if (username) {
     console.log('Usuario ya registrado:', username);
     return;
@@ -54,10 +53,9 @@ export function initUserRegistration() {
   usernameInput.addEventListener('input', updateButtonState);
   displayInput.addEventListener('input', updateButtonState);
 
-  // Mostrar modal
   overlay.style.display = 'block';
   modal.style.display = 'flex';
-  // Forzar reflow y añadir clase visible
+
   overlay.getBoundingClientRect();
   overlay.classList.add('visible');
   modal.classList.add('enter');
@@ -68,7 +66,6 @@ export function initUserRegistration() {
 
   displayInput.focus();
 
-  // Ajuste por teclado virtual (mismo sistema que otros modals)
   let keyboardListener = null;
   function updateModalPosition() {
     if (!modal) return;

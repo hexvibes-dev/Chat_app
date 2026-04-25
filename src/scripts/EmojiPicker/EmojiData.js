@@ -1,3 +1,5 @@
+// src/scripts/editor/EmojiData.js
+
 import emojis from 'unicode-emoji-json';
 import { getCustomEmojiArray, getCategories as getUserCategories } from '../CustomEmojiManager.js';
 import { customEmojiCollection } from '../CustomEmojiPicker.js';
@@ -83,11 +85,9 @@ export function loadCustomEmojis(force = false) {
     cachedMergedData = [...staticData, ...dynamicData];
     window._customEmojiData = cachedMergedData;
     
-    // Cargar subcategorías del usuario
     const userCategories = getUserCategories();
     const subcategories = [];
     
-    // 1. Primero, añadir la subcategoría de emojis estáticos (Logos)
     const staticEmojis = getStaticCustomEmojis();
     if (staticEmojis.length > 0) {
       subcategories.push({
@@ -96,7 +96,6 @@ export function loadCustomEmojis(force = false) {
       });
     }
     
-    // 2. Luego, añadir las subcategorías del usuario (Favoritos, Logos, Animados, etc.)
     for (const cat of userCategories) {
       subcategories.push({
         name: cat.name,
@@ -105,7 +104,6 @@ export function loadCustomEmojis(force = false) {
     }
     
     EMOJI_CATEGORIES.custom.subcategories = subcategories;
-    // Exponer subcategorías globalmente para addReaction.js
     window._customEmojiSubcategories = subcategories;
   }
   return window._customEmojiData;

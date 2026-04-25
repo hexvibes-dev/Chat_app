@@ -21,8 +21,6 @@ function inicializarApp() {
   if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
   if (typeof window.smoothScrollToBottom !== 'function') window.smoothScrollToBottom = () => {};
   if (typeof window.ensureLastMessageAboveInput !== 'function') window.ensureLastMessageAboveInput = () => {};
-
-  // Cargar emojis personalizados (estáticos + dinámicos) al inicio
   loadCustomEmojis();
 
   if (document.readyState === 'loading') {

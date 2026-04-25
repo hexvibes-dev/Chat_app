@@ -117,12 +117,12 @@ function renderModalContent(onAdd) {
 
   const existingActions = container.querySelector('.add-reaction-actions');
   
-  // Eliminar acordeones anteriores si existen
   const oldWrapper = container.querySelector('#reaction-accordions');
   if (oldWrapper) oldWrapper.remove();
 
   if (subcategories.length > 0) {
     const wrapper = document.createElement('div');
+    wrapper.className = 'reaction-accordions-wrapper';
     wrapper.id = 'reaction-accordions';
     wrapper.style.marginTop = '16px';
     wrapper.style.maxHeight = '300px';

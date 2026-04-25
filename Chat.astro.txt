@@ -132,8 +132,9 @@
   <div class="resize-handle resize-se"></div>
   <div class="resize-handle resize-sw"></div>
 </div>
-
-
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
 
 <script>
   import { initThemeManager } from '../scripts/themeManager.js';

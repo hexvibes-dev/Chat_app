@@ -1,183 +1,171 @@
+/* ==========================================================================
+   reactions.css - VERSIÓN HIPER-GRANULAR
+   ========================================================================== */
+
 .reactions-popup {
-  position: fixed;
-  z-index: 1000;
-  background: var(--reactions-bg);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-  padding: 8px;
-  max-width: 85vw;
-  overflow-y: visible;
-  overflow-x: auto;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  border-left: var(--border-left-border-reactions-pop-up-width) var(--border-left-border-reactions-pop-up-style) var(--border-left-border-reactions-pop-up-color);
-  border-right: var(--border-right-border-reactions-pop-up-width) var(--border-right-border-reactions-pop-up-style) var(--border-right-border-reactions-pop-up-color);
-  border-top: var(--border-top-border-reactions-pop-up-width) var(--border-top-border-reactions-pop-up-style) var(--border-top-border-reactions-pop-up-color);
-  border-bottom: var(--border-bottom-border-reactions-pop-up-width) var(--border-bottom-border-reactions-pop-up-style) var(--border-bottom-border-reactions-pop-up-color);
+  position: var(--reactions-popup-position);
+  z-index: var(--reactions-popup-z-index);
+  background-color: var(--reactions-popup-bg-color);
+  border-radius: var(--reactions-popup-border-radius);
+  padding: var(--reactions-popup-padding);
+  max-width: var(--reactions-popup-max-width);
+  overflow-y: var(--reactions-popup-overflow-y);
+  overflow-x: var(--reactions-popup-overflow-x);
+  white-space: var(--reactions-popup-white-space);
+  display: var(--reactions-popup-display);
+  align-items: var(--reactions-popup-align-items);
+  box-shadow: var(--reactions-popup-shadow-external), var(--reactions-popup-shadow-internal);
+  border-left: var(--reactions-popup-border-left);
+  border-right: var(--reactions-popup-border-right);
+  border-top: var(--reactions-popup-border-top);
+  border-bottom: var(--reactions-popup-border-bottom);
 }
 
 .reactions-scroll-container {
-  overflow-x: auto;
-  overflow-y: visible;
-  scrollbar-width: thin;
-  max-width: 100%;
-  padding: 4px 0;
+  overflow-x: var(--reactions-scroll-overflow-x);
+  overflow-y: var(--reactions-scroll-overflow-y);
+  scrollbar-width: var(--reactions-scroll-scrollbar-width);
+  max-width: var(--reactions-scroll-max-width);
+  padding: var(--reactions-scroll-padding);
+  scrollbar-color: var(--reactions-scroll-scrollbar-color-thumb) var(--reactions-scroll-scrollbar-color-track);
 }
 
 .reactions-scroll-container::-webkit-scrollbar {
   height: 4px;
 }
-
 .reactions-scroll-container::-webkit-scrollbar-track {
   background: var(--scrollbar-bg-reactions);
   border-radius: 10px;
 }
-
 .reactions-scroll-container::-webkit-scrollbar-thumb {
   background: var(--scrollbar-reactions);
   border-radius: 10px;
 }
 
-.reactions-scroll-container {
-  scrollbar-color: var(--scrollbar-reactions) var(--scrollbar-bg-reactions);
-}
-
 .reactions-row {
-  display: inline-flex;
-  gap: 3px;
-  align-items: center;
-  flex-wrap: nowrap;
+  display: var(--reactions-row-display);
+  gap: var(--reactions-row-gap);
+  align-items: var(--reactions-row-align-items);
+  flex-wrap: var(--reactions-row-flex-wrap);
 }
 
 .react-emoji,
 .react-add {
-  border: none;
-  border-radius: 50%;
-  font-size: 20px;
-  padding: 6px;
-  cursor: pointer;
-  transition: transform 120ms ease, background 120ms ease;
-  color: var(--reactions-pop-up-text);
+  border: var(--react-emoji-base-border);
+  border-radius: var(--react-emoji-base-border-radius);
+  font-size: var(--react-emoji-base-font-size);
+  padding: var(--react-emoji-base-padding);
+  cursor: var(--react-emoji-base-cursor);
+  transition: var(--react-emoji-base-transition);
+  color: var(--react-emoji-base-color);
 }
 
 .react-emoji {
-  background: var(--reactions-bg-emoji);
+  background-color: var(--react-emoji-base-bg-color);
 }
-
 .react-add {
-  background: var(--reactions-bg-add);
+  background-color: var(--react-add-bg-color);
 }
 
 .react-emoji.pressing {
-  transition: transform 0.02s linear;
-  transform: scale(1.5);
-  z-index: 10010;
-  position: relative;
+  transition: var(--react-emoji-pressing-transition);
+  transform: var(--react-emoji-pressing-transform);
+  z-index: var(--react-emoji-pressing-z-index);
+  position: var(--react-emoji-pressing-position);
 }
 
 .react-add:hover {
-  transform: translateY(-3px);
-  background: var(--modal-btn-primary);
+  transform: var(--react-add-hover-transform);
+  background-color: var(--react-add-hover-bg-color);
 }
 
 .reactions-popup.leave {
-  transform: scale(.98) translateY(6px);
-  opacity: 0;
+  transform: var(--reactions-popup-leave-transform);
+  opacity: var(--reactions-popup-leave-opacity);
 }
 
 .reaction-badge {
-  min-width: 28px;
-  height: 28px;
-  border-radius: 16px;
-  border-left: var(--border-left-badge-width) var(--border-left-badge-style) var(--border-left-badge-color);
-  border-right: var(--border-right-badge-width) var(--border-right-badge-style) var(--border-right-badge-color);
-  border-top: var(--border-top-badge-width) var(--border-top-badge-style) var(--border-top-badge-color);
-  border-bottom: var(--border-bottom-badge-width) var(--border-bottom-badge-style) var(--border-bottom-badge-color);
-  background: var(--badge-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  padding: 0 6px;
-  cursor: pointer;
-  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
-  color: var(--badge-text);
+  min-width: var(--reaction-badge-min-width);
+  height: var(--reaction-badge-height);
+  border-radius: var(--reaction-badge-border-radius);
+  border-left: var(--reaction-badge-border-left);
+  border-right: var(--reaction-badge-border-right);
+  border-top: var(--reaction-badge-border-top);
+  border-bottom: var(--reaction-badge-border-bottom);
+  background-color: var(--reaction-badge-bg-color);
+  display: var(--reaction-badge-display);
+  align-items: var(--reaction-badge-align-items);
+  justify-content: var(--reaction-badge-justify-content);
+  font-size: var(--reaction-badge-font-size);
+  padding: var(--reaction-badge-padding);
+  cursor: var(--reaction-badge-cursor);
+  transition: var(--reaction-badge-transition);
+  color: var(--reaction-badge-color);
+  opacity: var(--reaction-badge-opacity);
 }
 
 .reaction-badge.you {
-  background: var(--badge-bg-me);
-  color: var(--badge-text-me);
-  border-left: var(--border-left-badge-me-width) var(--border-left-badge-me-style) var(--border-left-badge-me-color);
-  border-right: var(--border-right-badge-me-width) var(--border-right-badge-me-style) var(--border-right-badge-me-color);
-  border-top: var(--border-top-badge-me-width) var(--border-top-badge-me-style) var(--border-top-badge-me-color);
-  border-bottom: var(--border-bottom-badge-me-width) var(--border-bottom-badge-me-style) var(--border-bottom-badge-me-color);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  background-color: var(--reaction-badge-you-bg-color);
+  color: var(--reaction-badge-you-color);
+  border-left: var(--reaction-badge-you-border-left);
+  border-right: var(--reaction-badge-you-border-right);
+  border-top: var(--reaction-badge-you-border-top);
+  border-bottom: var(--reaction-badge-you-border-bottom);
+  box-shadow: var(--reaction-badge-you-shadow-external), var(--reaction-badge-you-shadow-internal);
 }
 
 .options-menu {
-  position: fixed;
-  z-index: 1000;
-  background: var(--bg-options-pop-up);
-  border-radius: 12px;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  transition: transform 160ms ease, opacity 140ms ease;
-  animation: opReact 0.3s ease both;
-  border-left: var(--border-left-border-options-pop-up-width) var(--border-left-border-options-pop-up-style) var(--border-left-border-options-pop-up-color);
-  border-right: var(--border-right-border-options-pop-up-width) var(--border-right-border-options-pop-up-style) var(--border-right-border-options-pop-up-color);
-  border-top: var(--border-top-border-options-pop-up-width) var(--border-top-border-options-pop-up-style) var(--border-top-border-options-pop-up-color);
-  border-bottom: var(--border-bottom-border-options-pop-up-width) var(--border-bottom-border-options-pop-up-style) var(--border-bottom-border-options-pop-up-color);
-}
-
-@keyframes opReact {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  position: var(--options-menu-position);
+  z-index: var(--options-menu-z-index);
+  background-color: var(--options-menu-bg-color);
+  border-radius: var(--options-menu-border-radius);
+  box-shadow: var(--options-menu-shadow-external), var(--options-menu-shadow-internal);
+  overflow: var(--options-menu-overflow);
+  transition: var(--options-menu-transition);
+  animation: var(--options-menu-animation);
+  border-left: var(--options-menu-border-left);
+  border-right: var(--options-menu-border-right);
+  border-top: var(--options-menu-border-top);
+  border-bottom: var(--options-menu-border-bottom);
 }
 
 .options-menu.enter,
 .options-menu.leave {
-  transform: translateY(-6px);
-  opacity: 0;
+  transform: var(--options-menu-enter-leave-transform);
+  opacity: var(--options-menu-enter-leave-opacity);
 }
 
 .options-list {
-  display: flex;
-  flex-direction: column;
-  min-width: 180px;
+  display: var(--options-list-display);
+  flex-direction: var(--options-list-flex-direction);
+  min-width: var(--options-list-min-width);
 }
 
 .options-item {
-  padding: 12px 14px;
-  border: none;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-  font-size: 15px;
-  color: var(--text-options-pop-up);
+  padding: var(--options-item-padding);
+  border: var(--options-item-border);
+  background-color: var(--options-item-bg-color);
+  text-align: var(--options-item-text-align);
+  cursor: var(--options-item-cursor);
+  font-size: var(--options-item-font-size);
+  color: var(--options-item-color);
+  transition: var(--options-item-transition);
 }
 
 .options-item:hover {
-  background: var(--text-bg-options-pop-up-hover);
-  color: var(--text-options-pop-up-hover);
+  background-color: var(--options-item-hover-bg-color);
+  color: var(--options-item-hover-color);
 }
 
 .floating-emoji-clone {
-  position: fixed;
-  z-index: 100000;
-  pointer-events: none;
-  transition: none;
-  background: transparent;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+  position: var(--floating-emoji-clone-position);
+  z-index: var(--floating-emoji-clone-z-index);
+  pointer-events: var(--floating-emoji-clone-pointer-events);
+  transition: var(--floating-emoji-clone-transition);
+  background-color: var(--floating-emoji-clone-bg-color);
+  border: var(--floating-emoji-clone-border);
+  display: var(--floating-emoji-clone-display);
+  align-items: var(--floating-emoji-clone-align-items);
+  justify-content: var(--floating-emoji-clone-justify-content);
+  filter: var(--floating-emoji-clone-filter);
 }

@@ -1,5 +1,6 @@
+// src/scripts/EmojiPicker.js
 import { initEmojiPicker, destroyEmojiPicker } from './EmojiPicker/EmojiPickerCore.js';
-import { initStickersPicker, destroyStickersPicker } from './StickersPicker.js';
+import { initStickersPicker, destroyStickersPicker, refreshStickersDisplay } from './StickersPicker.js';
 import { initGifsPicker, destroyGifsPicker } from './GifsPicker.js';
 import { insertAtCursor } from './input.js';
 import { appendMessage } from './messages.js';

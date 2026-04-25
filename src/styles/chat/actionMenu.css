@@ -1,4 +1,7 @@
-/* ========== ACTION MENU MODAL CON ANIMACIÓN DE CONO 3D ========== */
+/* ==========================================================================
+   actionMenu.css - VERSIÓN HIPER-GRANULAR
+   ========================================================================== */
+
 .action-menu-modal {
   position: fixed;
   top: 0;
@@ -10,152 +13,318 @@
   align-items: center;
   justify-content: center;
   visibility: hidden;
-  pointer-events: none; /* Permite clics en el fondo cuando el modal está cerrado */
+  pointer-events: none;
+  background-color: var(--action-menu-modal-bg-color);
+  background-image: var(--action-menu-modal-bg-image);
+  background-size: var(--action-menu-modal-bg-size);
+  background-position: var(--action-menu-modal-bg-position);
+  opacity: var(--action-menu-modal-opacity);
+  transform: var(--action-menu-modal-transform-closed);
+  transition-property: var(--action-menu-modal-transition-property);
+  transition-duration: var(--action-menu-modal-transition-duration-closed);
+  transition-timing-function: var(--action-menu-modal-transition-timing-function-closed);
+  backdrop-filter: var(--action-menu-modal-backdrop-filter);
 }
 
 .action-menu-modal.open {
   visibility: visible;
-  pointer-events: none; /* Sigue permitiendo clics en el fondo */
+  pointer-events: none;
+  opacity: var(--action-menu-modal-visible-opacity);
+  transform: var(--action-menu-modal-transform-open);
+  transition-duration: var(--action-menu-modal-transition-duration-open);
+  transition-timing-function: var(--action-menu-modal-transition-timing-function-open);
 }
 
-/* El contenedor del modal es el único que recibe eventos */
 .action-menu-container {
   position: relative;
-  background: var(--modal-bg);
-  border-radius: 28px;
   width: 320px;
   max-width: 90vw;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--modal-input-border);
   transform-origin: center bottom;
-  transform: scale(0.2) rotateX(90deg);
-  opacity: 0;
-  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity 0.3s ease;
+  transform: var(--action-menu-container-transform-closed);
+  opacity: var(--action-menu-container-opacity);
+  transition-property: var(--action-menu-container-transition-property);
+  transition-duration: var(--action-menu-container-transition-duration-closed);
+  transition-timing-function: var(--action-menu-container-transition-timing-function-closed);
   display: flex;
   flex-direction: column;
   will-change: transform, width, height;
   touch-action: none;
   cursor: grab;
-  pointer-events: auto; /* Solo el contenedor recibe eventos */
+  pointer-events: auto;
+  background-color: var(--action-menu-container-bg-color);
+  background-image: var(--action-menu-container-bg-image);
+  background-size: var(--action-menu-container-bg-size);
+  background-position: var(--action-menu-container-bg-position);
+  color: var(--action-menu-container-color);
+  backdrop-filter: var(--action-menu-container-backdrop-filter);
+  padding: var(--action-menu-container-padding);
+  margin: var(--action-menu-container-margin);
+  border-top: var(--action-menu-container-border-top-width) var(--action-menu-container-border-top-style) var(--action-menu-container-border-top-color);
+  border-right: var(--action-menu-container-border-right-width) var(--action-menu-container-border-right-style) var(--action-menu-container-border-right-color);
+  border-bottom: var(--action-menu-container-border-bottom-width) var(--action-menu-container-border-bottom-style) var(--action-menu-container-border-bottom-color);
+  border-left: var(--action-menu-container-border-left-width) var(--action-menu-container-border-left-style) var(--action-menu-container-border-left-color);
+  border-top-left-radius: var(--action-menu-container-border-radius-top-left);
+  border-top-right-radius: var(--action-menu-container-border-radius-top-right);
+  border-bottom-right-radius: var(--action-menu-container-border-radius-bottom-right);
+  border-bottom-left-radius: var(--action-menu-container-border-radius-bottom-left);
+  box-shadow: var(--action-menu-container-shadow-external), var(--action-menu-container-shadow-internal);
+  font-family: var(--action-menu-container-font-family);
+  font-size: var(--action-menu-container-font-size);
+  font-weight: var(--action-menu-container-font-weight);
+  line-height: var(--action-menu-container-line-height);
+  letter-spacing: var(--action-menu-container-letter-spacing);
+  text-align: var(--action-menu-container-text-align);
+  text-transform: var(--action-menu-container-text-transform);
+  text-shadow: var(--action-menu-container-text-shadow);
 }
 
 .action-menu-container:active {
-  cursor: grabbing;
+  cursor: var(--action-menu-container-active-cursor);
 }
 
 .action-menu-modal.open .action-menu-container {
-  transform: scale(1) rotateX(0deg);
-  opacity: 1;
+  transform: var(--action-menu-container-transform-open);
+  opacity: var(--action-menu-container-visible-opacity);
+  transition-duration: var(--action-menu-container-transition-duration-open);
+  transition-timing-function: var(--action-menu-container-transition-timing-function-open);
 }
 
 .action-menu-modal.closing .action-menu-container {
-  transform: scale(0.2) rotateX(90deg);
-  opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.6, 1), opacity 0.2s;
+  transform: var(--action-menu-container-transform-closed);
+  opacity: var(--action-menu-container-opacity);
+  transition-duration: var(--action-menu-container-transition-duration-closed);
+  transition-timing-function: var(--action-menu-container-transition-timing-function-closed);
 }
 
 .action-menu-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px 12px 20px;
-  border-bottom: 1px solid var(--modal-input-border);
   cursor: grab;
   user-select: none;
   flex-shrink: 0;
+  background-color: var(--action-menu-header-bg-color);
+  background-image: var(--action-menu-header-bg-image);
+  background-size: var(--action-menu-header-bg-size);
+  background-position: var(--action-menu-header-bg-position);
+  color: var(--action-menu-header-color);
+  opacity: var(--action-menu-header-opacity);
+  transform: var(--action-menu-header-transform);
+  transition-property: var(--action-menu-header-transition-property);
+  transition-duration: var(--action-menu-header-transition-duration);
+  transition-timing-function: var(--action-menu-header-transition-timing-function);
+  animation: var(--action-menu-header-animation);
+  backdrop-filter: var(--action-menu-header-backdrop-filter);
+  padding-top: var(--action-menu-header-padding-top);
+  padding-right: var(--action-menu-header-padding-right);
+  padding-bottom: var(--action-menu-header-padding-bottom);
+  padding-left: var(--action-menu-header-padding-left);
+  margin: var(--action-menu-header-margin);
+  border-top: var(--action-menu-header-border-top-width) var(--action-menu-header-border-top-style) var(--action-menu-header-border-top-color);
+  border-right: var(--action-menu-header-border-right-width) var(--action-menu-header-border-right-style) var(--action-menu-header-border-right-color);
+  border-bottom: var(--action-menu-header-border-bottom-width) var(--action-menu-header-border-bottom-style) var(--action-menu-header-border-bottom-color);
+  border-left: var(--action-menu-header-border-left-width) var(--action-menu-header-border-left-style) var(--action-menu-header-border-left-color);
+  border-radius: var(--action-menu-header-border-radius);
+  box-shadow: var(--action-menu-header-shadow-external), var(--action-menu-header-shadow-internal);
+  font-family: var(--action-menu-header-font-family);
+  font-size: var(--action-menu-header-font-size);
+  font-weight: var(--action-menu-header-font-weight);
+  line-height: var(--action-menu-header-line-height);
+  letter-spacing: var(--action-menu-header-letter-spacing);
+  text-align: var(--action-menu-header-text-align);
+  text-transform: var(--action-menu-header-text-transform);
+  text-shadow: var(--action-menu-header-text-shadow);
 }
 
 .action-menu-header:active {
-  cursor: grabbing;
+  cursor: var(--action-menu-header-active-cursor);
 }
 
 .action-menu-header h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--modal-text);
+  margin: var(--action-menu-header-h3-margin);
+  color: var(--action-menu-header-h3-color);
+  font-family: var(--action-menu-header-h3-font-family);
+  font-size: var(--action-menu-header-h3-font-size);
+  font-weight: var(--action-menu-header-h3-font-weight);
+  line-height: var(--action-menu-header-h3-line-height);
+  letter-spacing: var(--action-menu-header-h3-letter-spacing);
+  text-align: var(--action-menu-header-h3-text-align);
+  text-transform: var(--action-menu-header-h3-text-transform);
+  text-shadow: var(--action-menu-header-h3-text-shadow);
+  opacity: var(--action-menu-header-h3-opacity);
 }
 
 .action-menu-close {
-  background: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: var(--modal-text);
-  padding: 0;
-  line-height: 1;
-  transition: transform 0.1s;
+  background: var(--action-menu-close-bg-color);
+  background-image: var(--action-menu-close-bg-image);
+  background-size: var(--action-menu-close-bg-size);
+  background-position: var(--action-menu-close-bg-position);
+  color: var(--action-menu-close-color);
+  padding: var(--action-menu-close-padding);
+  margin: var(--action-menu-close-margin);
+  border: var(--action-menu-close-border);
+  border-radius: var(--action-menu-close-border-radius);
+  box-shadow: var(--action-menu-close-shadow);
+  opacity: var(--action-menu-close-opacity);
+  transform: var(--action-menu-close-transform);
+  transition-property: var(--action-menu-close-transition-property);
+  transition-duration: var(--action-menu-close-transition-duration);
+  transition-timing-function: var(--action-menu-close-transition-timing-function);
+  animation: var(--action-menu-close-animation);
+  backdrop-filter: var(--action-menu-close-backdrop-filter);
+  font-family: var(--action-menu-close-font-family);
+  font-size: var(--action-menu-close-font-size);
+  font-weight: var(--action-menu-close-font-weight);
+  line-height: var(--action-menu-close-line-height);
+  letter-spacing: var(--action-menu-close-letter-spacing);
+  text-align: var(--action-menu-close-text-align);
+  text-transform: var(--action-menu-close-text-transform);
+  text-shadow: var(--action-menu-close-text-shadow);
 }
 
 .action-menu-close:hover {
-  transform: scale(1.1);
+  transform: var(--action-menu-close-hover-transform);
+  opacity: var(--action-menu-close-hover-opacity);
+  color: var(--action-menu-close-hover-color);
 }
 
 .action-menu-content {
   flex: 1;
   overflow-y: auto;
-  padding: 12px 20px 20px 20px;
-  max-height: 60vh;
+  padding-top: var(--action-menu-content-padding-top);
+  padding-right: var(--action-menu-content-padding-right);
+  padding-bottom: var(--action-menu-content-padding-bottom);
+  padding-left: var(--action-menu-content-padding-left);
+  margin: var(--action-menu-content-margin);
+  max-height: var(--action-menu-content-max-height);
+  background-color: var(--action-menu-content-bg-color);
+  background-image: var(--action-menu-content-bg-image);
+  background-size: var(--action-menu-content-bg-size);
+  background-position: var(--action-menu-content-bg-position);
+  color: var(--action-menu-content-color);
+  opacity: var(--action-menu-content-opacity);
+  transform: var(--action-menu-content-transform);
+  transition-property: var(--action-menu-content-transition-property);
+  transition-duration: var(--action-menu-content-transition-duration);
+  transition-timing-function: var(--action-menu-content-transition-timing-function);
+  animation: var(--action-menu-content-animation);
+  backdrop-filter: var(--action-menu-content-backdrop-filter);
+  border: var(--action-menu-content-border);
+  border-radius: var(--action-menu-content-border-radius);
+  box-shadow: var(--action-menu-content-shadow);
 }
 
 .action-menu-options {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 12px;
+  display: var(--action-menu-options-display);
+  gap: var(--action-menu-options-gap);
+  padding: var(--action-menu-options-padding);
+  margin: var(--action-menu-options-margin);
 }
 
 .action-option {
-  background: var(--input-bg);
-  border: 1px solid var(--modal-input-border);
-  border-radius: 20px;
-  padding: 16px 8px;
+  background-color: var(--action-option-bg-color);
+  background-image: var(--action-option-bg-image);
+  background-size: var(--action-option-bg-size);
+  background-position: var(--action-option-bg-position);
+  color: var(--action-option-color);
+  padding-top: var(--action-option-padding-top);
+  padding-right: var(--action-option-padding-right);
+  padding-bottom: var(--action-option-padding-bottom);
+  padding-left: var(--action-option-padding-left);
+  margin: var(--action-option-margin);
+  border-top: var(--action-option-border-top-width) var(--action-option-border-top-style) var(--action-option-border-top-color);
+  border-right: var(--action-option-border-right-width) var(--action-option-border-right-style) var(--action-option-border-right-color);
+  border-bottom: var(--action-option-border-bottom-width) var(--action-option-border-bottom-style) var(--action-option-border-bottom-color);
+  border-left: var(--action-option-border-left-width) var(--action-option-border-left-style) var(--action-option-border-left-color);
+  border-top-left-radius: var(--action-option-border-radius-top-left);
+  border-top-right-radius: var(--action-option-border-radius-top-right);
+  border-bottom-right-radius: var(--action-option-border-radius-bottom-right);
+  border-bottom-left-radius: var(--action-option-border-radius-bottom-left);
+  box-shadow: var(--action-option-shadow-external), var(--action-option-shadow-internal);
+  opacity: var(--action-option-opacity);
+  transform: var(--action-option-transform);
+  transition-property: var(--action-option-transition-property);
+  transition-duration: var(--action-option-transition-duration);
+  transition-timing-function: var(--action-option-transition-timing-function);
+  animation: var(--action-option-animation);
+  backdrop-filter: var(--action-option-backdrop-filter);
+  font-family: var(--action-option-font-family);
+  font-size: var(--action-option-font-size);
+  font-weight: var(--action-option-font-weight);
+  line-height: var(--action-option-line-height);
+  letter-spacing: var(--action-option-letter-spacing);
+  text-align: var(--action-option-text-align);
+  text-transform: var(--action-option-text-transform);
+  text-shadow: var(--action-option-text-shadow);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: var(--action-option-gap);
   cursor: pointer;
-  transition: transform 0.1s, background 0.1s;
-  color: var(--modal-text);
-  min-width: 0;
 }
 
 .action-option:hover {
-  background: var(--modal-btn-primary);
-  transform: translateY(-2px);
+  background-color: var(--action-option-hover-bg-color);
+  color: var(--action-option-hover-color);
+  transform: var(--action-option-hover-transform);
+  opacity: var(--action-option-hover-opacity);
+  border-top-color: var(--action-option-hover-border-top-color);
+  border-right-color: var(--action-option-hover-border-right-color);
+  border-bottom-color: var(--action-option-hover-border-bottom-color);
+  border-left-color: var(--action-option-hover-border-left-color);
+  box-shadow: var(--action-option-hover-shadow-external), var(--action-option-hover-shadow-internal);
+}
+
+.action-option:active {
+  transform: var(--action-option-active-transform);
 }
 
 .action-option svg {
-  width: 40px;
-  height: 40px;
-  stroke: currentColor;
-  fill: none;
+  width: var(--action-option-svg-width);
+  height: var(--action-option-svg-height);
+  stroke: var(--action-option-svg-stroke);
+  fill: var(--action-option-svg-fill);
   flex-shrink: 0;
 }
 
 .action-option span {
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--action-option-span-font-size);
+  font-weight: var(--action-option-span-font-weight);
+  letter-spacing: var(--action-option-span-letter-spacing);
+  text-transform: var(--action-option-span-text-transform);
+  opacity: var(--action-option-span-opacity);
   text-align: center;
   word-break: break-word;
 }
 
-/* Redimensionadores */
 .resize-handle {
   position: absolute;
-  background: rgba(255, 255, 255, 0.1);
-  transition: background 0.1s;
+  background-color: var(--resize-handle-bg-color);
+  background-image: var(--resize-handle-bg-image);
+  background-size: var(--resize-handle-bg-size);
+  background-position: var(--resize-handle-bg-position);
+  transition-property: var(--resize-handle-transition-property);
+  transition-duration: var(--resize-handle-transition-duration);
+  transition-timing-function: var(--resize-handle-transition-timing-function);
+  animation: var(--resize-handle-animation);
+  backdrop-filter: var(--resize-handle-backdrop-filter);
+  border-radius: var(--resize-handle-border-radius);
+  box-shadow: var(--resize-handle-shadow);
+  opacity: var(--resize-handle-opacity);
+  transform: var(--resize-handle-transform);
   z-index: 10;
   touch-action: none;
 }
 
 .resize-handle:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background-color: var(--resize-handle-hover-bg-color);
+  opacity: var(--resize-handle-hover-opacity);
 }
 
 .resize-n, .resize-s {
   left: 10px;
   right: 10px;
-  height: 12px;
+  height: var(--resize-handle-n-height);
 }
 .resize-n { top: 0; cursor: n-resize; }
 .resize-s { bottom: 0; cursor: s-resize; }
@@ -163,14 +332,14 @@
 .resize-e, .resize-w {
   top: 10px;
   bottom: 10px;
-  width: 12px;
+  width: var(--resize-handle-e-width);
 }
 .resize-e { right: 0; cursor: e-resize; }
 .resize-w { left: 0; cursor: w-resize; }
 
 .resize-ne, .resize-nw, .resize-se, .resize-sw {
-  width: 18px;
-  height: 18px;
+  width: var(--resize-handle-corner-size);
+  height: var(--resize-handle-corner-size);
 }
 .resize-ne { top: 0; right: 0; cursor: ne-resize; }
 .resize-nw { top: 0; left: 0; cursor: nw-resize; }

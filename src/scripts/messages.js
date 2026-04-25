@@ -1,3 +1,4 @@
+// src/scripts/messages.js
 import { appendHour } from './hour.js';
 import { blurExceptTargetForDuration } from './answer.js';
 import {
@@ -10,6 +11,7 @@ import {
 import { clearPendingEdit, editMessageRemotely as editMessageRemotelyFn } from './editModal.js';
 import { getCustomEmojiByShortcode } from './CustomEmojiPicker.js';
 import { convertShortcodesToImages } from './emojiUtils.js';
+import { isStickerSaved, getStickerCategoryByUrl } from './StickerManager.js';
 
 if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
 if (typeof window.smoothScrollToBottom !== 'function') window.smoothScrollToBottom = () => {};
@@ -19,21 +21,6 @@ if (typeof window.ensureLastMessageAboveInput !== 'function') window.ensureLastM
 export const messages = document.getElementById('messages');
 export const spacer = document.getElementById('spacer');
 
-function blurInputOnMessageClick(e) {
-  const target = e.target;
-  if (!target) return;
-  const isInput = target.closest('#input, #sendBtn');
-  if (!isInput) {
-    const inputEl = document.getElementById('input');
-    if (inputEl && document.activeElement === inputEl) {
-      inputEl.blur();
-    }
-  }
-}
-
-if (messages) {
-  messages.addEventListener('click', blurInputOnMessageClick);
-}
 
 function updateLastMessageMargin() {
   const allMessages = document.querySelectorAll('.message');
@@ -63,17 +50,26 @@ export function appendMessage(text, opts = {}) {
   const dragWrap = document.createElement('div');
   dragWrap.className = 'msg-drag';
 
-  const processedText = processCustomEmojis(text);
-  const isEmojiOnly = applyEmojiStyle(dragWrap, processedText);
+  const isSticker = text.includes('class="sticker-message"');
+  if (isSticker) {
+    dragWrap.classList.add('sticker-message-wrapper');
+    const stickerImg = text.match(/src="([^"]+)"/)?.[1];
+    if (stickerImg) {
+      dragWrap.dataset.stickerUrl = stickerImg;
+    }
+  }
 
-  const isSingleHeartEmoji = isSingleHeart(processedText);
+  const processedText = isSticker ? text : processCustomEmojis(text);
+  const isEmojiOnly = !isSticker && applyEmojiStyle(dragWrap, processedText);
+
+  const isSingleHeartEmoji = !isSticker && isSingleHeart(processedText);
   if (isSingleHeartEmoji) {
     setTimeout(() => {
       applyHeartAnimation(div, dragWrap);
     }, 100);
   }
 
-  const specialEmojiType = getSpecialEmojiType(processedText);
+  const specialEmojiType = !isSticker && getSpecialEmojiType(processedText);
   if (specialEmojiType && !isSingleHeartEmoji) {
     setTimeout(() => {
       applySpecialEmojiAnimation(div, dragWrap, specialEmojiType);
@@ -113,14 +109,24 @@ export function appendMessage(text, opts = {}) {
 
   const messageText = document.createElement('div');
   messageText.className = 'message-text';
-  messageText.innerHTML = processedText;
+  if (isSticker) {
+    messageText.innerHTML = processedText;
+    messageText.style.padding = '0';
+    messageText.style.background = 'transparent';
+    messageText.style.display = 'inline-block';
+    dragWrap.style.background = 'transparent';
+    dragWrap.style.boxShadow = 'none';
+    dragWrap.style.padding = '4px 0';
+  } else {
+    messageText.innerHTML = processedText;
+  }
   dragWrap.appendChild(messageText);
 
   appendHour(dragWrap);
   div.appendChild(dragWrap);
   messages.insertBefore(div, spacer);
 
-  if (isEmojiOnly) {
+  if (isEmojiOnly && !isSticker) {
     const hour = dragWrap.querySelector('.msg-hour');
     if (hour && dragWrap.classList.contains('emoji-single')) {
       hour.style.position = 'relative';

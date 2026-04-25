@@ -6,7 +6,6 @@ let blurOverlay = null;
 let keyboardListener = null;
 const pendingEdits = new Map();
 
-// Convierte el HTML del editor (con imágenes) a texto plano con shortcodes
 function getEditText(editor) {
   if (!editor) return '';
   const clone = editor.cloneNode(true);
@@ -22,10 +21,8 @@ export function showEditModal(messageEl, onSave) {
   window.dispatchEvent(new CustomEvent('close-all-popups'));
   if (modal) return;
 
-  // Obtener el HTML original del mensaje (incluye las imágenes)
   const textEl = messageEl.querySelector('.message-text');
   let originalHtml = textEl ? textEl.innerHTML : '';
-  // Eliminar la marca de "(editado)" si existe
   originalHtml = originalHtml.replace(/\s*\(editado\)/g, '');
 
   blurOverlay = document.createElement('div');
@@ -62,11 +59,8 @@ export function showEditModal(messageEl, onSave) {
     return;
   }
 
-  // Mostrar el HTML original en el editor
   editor.innerHTML = originalHtml;
   editor.focus();
-
-  // Colocar el cursor al final
   const range = document.createRange();
   const sel = window.getSelection();
   range.selectNodeContents(editor);
@@ -78,7 +72,6 @@ export function showEditModal(messageEl, onSave) {
 
   btnSave.addEventListener('click', () => {
     const newText = getEditText(editor).trim();
-    // Obtener el texto original del mensaje (sin HTML) para comparar
     const originalText = textEl ? textEl.textContent.trim().replace(/\s*\(editado\)/g, '') : '';
     if (!newText || newText === originalText) {
       hideModal();
@@ -89,7 +82,6 @@ export function showEditModal(messageEl, onSave) {
     const textNode = messageEl.querySelector('.message-text');
     const originalFullText = textNode.textContent;
 
-    // Actualizar el mensaje en el DOM con el nuevo texto plano
     textNode.textContent = newText;
     messageEl.dataset.edited = 'true';
     const hourEl = messageEl.querySelector('.msg-hour');

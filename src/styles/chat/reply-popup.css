@@ -1,118 +1,121 @@
+/* ==========================================================================
+   reply-popup.css - VERSIÓN HIPER-GRANULAR
+   ========================================================================== */
+
 .reply-popup {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%) translateY(12px);
-  bottom: calc(60px + var(--keyboard) + env(safe-area-inset-bottom) + 22px);
-  background: var(--notification-bg);
-  color: var(--notification-text);
-  padding: 10px 14px;
-  border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
-  max-width: calc(100% - 40px);
-  width: auto;
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  overflow: visible;
-  text-overflow: ellipsis;
-  font-size: 14px;
-  line-height: 1;
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 180ms ease, opacity 180ms ease, bottom 180ms ease;
-  z-index: 1200;
-  padding-right: 18px;
+  position: var(--reply-popup-position);
+  left: var(--reply-popup-left);
+  transform: var(--reply-popup-transform);
+  bottom: var(--reply-popup-bottom);
+  background-color: var(--reply-popup-bg-color);
+  color: var(--reply-popup-color);
+  padding-top: var(--reply-popup-padding-top);
+  padding-right: var(--reply-popup-padding-right);
+  padding-bottom: var(--reply-popup-padding-bottom);
+  padding-left: var(--reply-popup-padding-left);
+  border-radius: var(--reply-popup-border-radius);
+  box-shadow: var(--reply-popup-shadow-external), var(--reply-popup-shadow-internal);
+  max-width: var(--reply-popup-max-width);
+  width: var(--reply-popup-width);
+  display: var(--reply-popup-display);
+  align-items: var(--reply-popup-align-items);
+  white-space: var(--reply-popup-white-space);
+  overflow: var(--reply-popup-overflow);
+  text-overflow: var(--reply-popup-text-overflow);
+  font-size: var(--reply-popup-font-size);
+  line-height: var(--reply-popup-line-height);
+  opacity: var(--reply-popup-opacity);
+  transition-property: var(--reply-popup-transition-property);
+  transition-duration: var(--reply-popup-transition-duration);
+  transition-timing-function: var(--reply-popup-transition-timing-function);
+  z-index: var(--reply-popup-z-index);
+  border: var(--reply-popup-border);
+  pointer-events: var(--reply-popup-pointer-events);
 }
 
 .reply-popup.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
+  opacity: var(--reply-popup-visible-opacity);
+  pointer-events: var(--reply-popup-visible-pointer-events);
+  transform: var(--reply-popup-visible-transform);
 }
 
 .reply-popup:focus {
-  outline: 2px solid var(--modal-btn-primary);
-  outline-offset: 2px;
+  outline: var(--reply-popup-focus-outline-width) var(--reply-popup-focus-outline-style) var(--reply-popup-focus-outline-color);
+  outline-offset: var(--reply-popup-focus-outline-offset);
 }
 
 .reply-popup .text {
-  display: inline-block;
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
+  display: var(--reply-popup-text-display);
+  flex: var(--reply-popup-text-flex);
+  min-width: var(--reply-popup-text-min-width);
+  overflow: var(--reply-popup-text-overflow);
   text-overflow: ellipsis;
-  white-space: nowrap;
-  padding-right: 8px;
+  white-space: var(--reply-popup-text-white-space);
+  padding-right: var(--reply-popup-text-padding-right);
 }
 
 .reply-popup .close-btn {
-  position: absolute;
-  top: -12px;
-  right: -12px;
-  background: var(--modal-bg);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: none;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  color: var(--modal-text);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-  transition: transform 120ms ease, background 120ms ease, color 120ms ease;
-  z-index: 1300;
-  pointer-events: auto;
+  position: var(--reply-popup-close-position);
+  top: var(--reply-popup-close-top);
+  right: var(--reply-popup-close-right);
+  background-color: var(--reply-popup-close-bg-color);
+  backdrop-filter: var(--reply-popup-close-backdrop-filter);
+  -webkit-backdrop-filter: var(--reply-popup-close-webkit-backdrop-filter);
+  border: var(--reply-popup-close-border);
+  border-radius: var(--reply-popup-close-border-radius);
+  width: var(--reply-popup-close-width);
+  height: var(--reply-popup-close-height);
+  color: var(--reply-popup-close-color);
+  font-size: var(--reply-popup-close-font-size);
+  font-weight: var(--reply-popup-close-font-weight);
+  cursor: var(--reply-popup-close-cursor);
+  user-select: var(--reply-popup-close-user-select);
+  display: var(--reply-popup-close-display);
+  align-items: var(--reply-popup-close-align-items);
+  justify-content: var(--reply-popup-close-justify-content);
+  box-shadow: var(--reply-popup-close-shadow-external), var(--reply-popup-close-shadow-internal);
+  transition-property: var(--reply-popup-close-transition-property);
+  transition-duration: var(--reply-popup-close-transition-duration);
+  transition-timing-function: var(--reply-popup-close-transition-timing-function);
+  z-index: var(--reply-popup-close-z-index);
+  pointer-events: var(--reply-popup-close-pointer-events);
 }
 
 .reply-popup .close-btn:hover {
-  transform: translateY(-2px);
-  background: var(--modal-btn-primary);
-  color: var(--modal-btn-primary-text);
+  transform: var(--reply-popup-close-hover-transform);
+  background-color: var(--reply-popup-close-hover-bg-color);
+  color: var(--reply-popup-close-hover-color);
 }
 
 .flash-highlight {
-  box-shadow: 0 6px 20px var(--modal-btn-primary) !important;
-  transition: box-shadow 220ms ease;
+  box-shadow: var(--flash-highlight-shadow-external), var(--flash-highlight-shadow-internal) !important;
+  transition: var(--flash-highlight-transition);
 }
 
-/* Blur global */
 .reply-blur-active .layer-messages,
 .reply-blur-active .layer-header,
 .reply-blur-active .layer-input,
-.reply-blur-active body> :not(#replyPopup) {
-  filter: blur(6px);
-  transition: filter 160ms ease;
-  opacity: 0.92;
+.reply-blur-active body > :not(#replyPopup) {
+  filter: var(--reply-blur-active-filter);
+  transition: var(--reply-blur-active-transition);
+  opacity: var(--reply-blur-active-opacity);
 }
 
 .reply-blur-active .message.no-blur,
 .reply-blur-active .message.no-blur * {
-  filter: none !important;
-  opacity: 1 !important;
-  transition: none !important;
-  z-index: 1400;
-  position: relative;
+  filter: var(--reply-blur-no-blur-filter);
+  opacity: var(--reply-blur-no-blur-opacity) !important;
+  transition: var(--reply-blur-no-blur-transition);
+  z-index: var(--reply-blur-no-blur-z-index);
+  position: var(--reply-blur-no-blur-position);
 }
 
 .reply-blur-dim {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.2);
-  pointer-events: none;
-  z-index: 1140;
-  transition: opacity 160ms ease;
-}
-
-.reply-popup {
-  z-index: 1200;
-}
-
-.reply-popup .close-btn {
-  z-index: 1300;
+  position: var(--reply-blur-dim-position);
+  inset: var(--reply-blur-dim-inset);
+  background-color: var(--reply-blur-dim-bg-color);
+  pointer-events: var(--reply-blur-dim-pointer-events);
+  z-index: var(--reply-blur-dim-z-index);
+  transition: var(--reply-blur-dim-transition);
+  opacity: var(--reply-blur-dim-opacity);
 }

@@ -3,6 +3,8 @@ import { appendMessage } from './messages.js';
 import { getUsername } from './user.js';
 import { getCustomEmojiByShortcode } from './CustomEmojiPicker.js';
 import { convertShortcodesToImages } from './emojiUtils.js';
+import { isStickerSaved, getStickerCategoryByUrl } from './StickerManager.js';
+import { showQuickStickerUpload } from './StickerModal.js';
 
 let currentQuotedMessage = null;
 
@@ -85,16 +87,22 @@ function startDrag(e) {
 
     if (dragging && Math.abs(lastDiff) === maxDiff) {
       dragWrap.style.transition = 'transform 0.25s ease, opacity 0.25s ease';
-      const plainText = extractPlainText(dragWrap);
-      const htmlContent = convertShortcodesToImages(plainText);
+      let contentForPopup;
+      const isSticker = dragWrap.classList.contains('sticker-message-wrapper');
+      if (isSticker) {
+        contentForPopup = '📷 Sticker';
+      } else {
+        const plainText = extractPlainText(dragWrap);
+        contentForPopup = convertShortcodesToImages(plainText);
+      }
       
       const popup = document.getElementById('replyPopup');
       if (popup && keyboardWasOpen) {
         popup.style.pointerEvents = 'none';
       }
       
-      showReplyPopup(target, htmlContent);
-      setQuotedMessage(target, htmlContent);
+      showReplyPopup(target, contentForPopup, isSticker);
+      setQuotedMessage(target, contentForPopup);
       
       if (popup && keyboardWasOpen) {
         popup.style.pointerEvents = 'auto';
@@ -147,12 +155,7 @@ function extractPlainText(dragWrap) {
   return text || '[Mensaje]';
 }
 
-function convertShortcodesToImagesLegacy(text) {
-  // Usamos la función importada de emojiUtils
-  return convertShortcodesToImages(text);
-}
-
-function showReplyPopup(messageElement, content) {
+function showReplyPopup(messageElement, content, isSticker = false) {
   const popup = document.getElementById('replyPopup');
   if (!popup) return;
   if (!messageElement.dataset.msgId) {
@@ -166,7 +169,11 @@ function showReplyPopup(messageElement, content) {
 
   const span = document.createElement('span');
   span.className = 'text';
-  span.innerHTML = content;
+  if (isSticker) {
+    span.textContent = '📷 Sticker';
+  } else {
+    span.innerHTML = content;
+  }
   span.style.display = 'inline-flex';
   span.style.alignItems = 'center';
   span.style.gap = '4px';
@@ -313,8 +320,14 @@ export function addReplyRemotely(targetMsgId, replyText, replyAuthor, senderId) 
   }
   const currentUser = getUsername();
   const isMe = (senderId === currentUser);
-  const plainText = extractPlainText(targetMsg.querySelector('.msg-drag'));
-  const quotedHtml = convertShortcodesToImages(plainText);
+  let quotedHtml;
+  const isSticker = targetMsg.querySelector('.sticker-message-wrapper') !== null;
+  if (isSticker) {
+    quotedHtml = '📷 Sticker';
+  } else {
+    const plainText = extractPlainText(targetMsg.querySelector('.msg-drag'));
+    quotedHtml = convertShortcodesToImages(plainText);
+  }
   appendMessage(replyText, {
     me: isMe,
     replyTo: {

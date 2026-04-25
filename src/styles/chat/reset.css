@@ -24,34 +24,223 @@ body.keyboard-open {
 
 .layer-messages {
   bottom: calc(60px + var(--keyboard));
+  background-color: var(--layer-messages-bg-color);
+  background-image: var(--layer-messages-bg-image);
+  background-size: var(--layer-messages-bg-size);
+  background-position: var(--layer-messages-bg-position);
+  color: var(--layer-messages-color);
+  opacity: var(--layer-messages-opacity);
+  transform: var(--layer-messages-transform);
+  transition-property: var(--layer-messages-transition-property);
+  transition-duration: var(--layer-messages-transition-duration);
+  transition-timing-function: var(--layer-messages-transition-timing-function);
+  animation: var(--layer-messages-animation);
+  backdrop-filter: var(--layer-messages-backdrop-filter);
+  padding-top: var(--layer-messages-padding-top);
+  padding-right: var(--layer-messages-padding-right);
+  padding-bottom: var(--layer-messages-padding-bottom);
+  padding-left: var(--layer-messages-padding-left);
+  margin-top: var(--layer-messages-margin-top);
+  margin-right: var(--layer-messages-margin-right);
+  margin-bottom: var(--layer-messages-margin-bottom);
+  margin-left: var(--layer-messages-margin-left);
+  border-top: var(--layer-messages-border-top-width) var(--layer-messages-border-top-style) var(--layer-messages-border-top-color);
+  border-right: var(--layer-messages-border-right-width) var(--layer-messages-border-right-style) var(--layer-messages-border-right-color);
+  border-bottom: var(--layer-messages-border-bottom-width) var(--layer-messages-border-bottom-style) var(--layer-messages-border-bottom-color);
+  border-left: var(--layer-messages-border-left-width) var(--layer-messages-border-left-style) var(--layer-messages-border-left-color);
+  border-top-left-radius: var(--layer-messages-border-radius-top-left);
+  border-top-right-radius: var(--layer-messages-border-radius-top-right);
+  border-bottom-right-radius: var(--layer-messages-border-radius-bottom-right);
+  border-bottom-left-radius: var(--layer-messages-border-radius-bottom-left);
+  box-shadow: var(--layer-messages-shadow-external), var(--layer-messages-shadow-internal);
 }
 
 .messages {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   touch-action: auto;
+  background-color: var(--messages-bg-color);
+  background-image: var(--messages-bg-image);
+  background-size: var(--messages-bg-size);
+  background-position: var(--messages-bg-position);
+  color: var(--messages-color);
+  opacity: var(--messages-opacity);
+  transform: var(--messages-transform);
+  transition-property: var(--messages-transition-property);
+  transition-duration: var(--messages-transition-duration);
+  transition-timing-function: var(--messages-transition-timing-function);
+  animation: var(--messages-animation);
+  backdrop-filter: var(--messages-backdrop-filter);
+  padding-top: var(--messages-padding-top);
+  padding-right: var(--messages-padding-right);
+  padding-bottom: var(--messages-padding-bottom);
+  padding-left: var(--messages-padding-left);
+  margin-top: var(--messages-margin-top);
+  margin-right: var(--messages-margin-right);
+  margin-bottom: var(--messages-margin-bottom);
+  margin-left: var(--messages-margin-left);
+  border-top: var(--messages-border-top-width) var(--messages-border-top-style) var(--messages-border-top-color);
+  border-right: var(--messages-border-right-width) var(--messages-border-right-style) var(--messages-border-right-color);
+  border-bottom: var(--messages-border-bottom-width) var(--messages-border-bottom-style) var(--messages-border-bottom-color);
+  border-left: var(--messages-border-left-width) var(--messages-border-left-style) var(--messages-border-left-color);
+  border-top-left-radius: var(--messages-border-radius-top-left);
+  border-top-right-radius: var(--messages-border-radius-top-right);
+  border-bottom-right-radius: var(--messages-border-radius-bottom-right);
+  border-bottom-left-radius: var(--messages-border-radius-bottom-left);
+  box-shadow: var(--messages-shadow-external), var(--messages-shadow-internal);
 }
 
 .message {
-  opacity: 0;
-  transform: translateY(8px) scale(.995);
-  animation: msgIn 260ms cubic-bezier(.2, .9, .3, 1) forwards;
+  opacity: var(--message-opacity);
+  transform: var(--message-transform);
+  animation: var(--message-animation);
   will-change: transform, opacity;
   position: relative;
   user-select: none;
   display: flex;
-  padding: 0 8px;
+  padding-top: var(--message-padding-top);
+  padding-right: var(--message-padding-right);
+  padding-bottom: var(--message-padding-bottom);
+  padding-left: var(--message-padding-left);
+  margin-top: var(--message-margin-top);
+  margin-right: var(--message-margin-right);
+  margin-bottom: var(--message-margin-bottom);
+  margin-left: var(--message-margin-left);
+  background-color: var(--message-bg-color);
+  background-image: var(--message-bg-image);
+  background-size: var(--message-bg-size);
+  background-position: var(--message-bg-position);
+  color: var(--message-color);
+  border-top: var(--message-border-top-width) var(--message-border-top-style) var(--message-border-top-color);
+  border-right: var(--message-border-right-width) var(--message-border-right-style) var(--message-border-right-color);
+  border-bottom: var(--message-border-bottom-width) var(--message-border-bottom-style) var(--message-border-bottom-color);
+  border-left: var(--message-border-left-width) var(--message-border-left-style) var(--message-border-left-color);
+  border-top-left-radius: var(--message-border-radius-top-left);
+  border-top-right-radius: var(--message-border-radius-top-right);
+  border-bottom-right-radius: var(--message-border-radius-bottom-right);
+  border-bottom-left-radius: var(--message-border-radius-bottom-left);
+  box-shadow: var(--message-shadow-external), var(--message-shadow-internal);
+  transition-property: var(--message-transition-property);
+  transition-duration: var(--message-transition-duration);
+  transition-timing-function: var(--message-transition-timing-function);
+  backdrop-filter: var(--message-backdrop-filter);
+  font-family: var(--message-font-family);
+  font-size: var(--message-font-size);
+  font-weight: var(--message-font-weight);
+  line-height: var(--message-line-height);
+  letter-spacing: var(--message-letter-spacing);
+  text-align: var(--message-text-align);
+  text-transform: var(--message-text-transform);
+  text-shadow: var(--message-text-shadow);
+}
+
+.message:hover {
+  background-color: var(--message-hover-bg-color);
+  background-image: var(--message-hover-bg-image);
+  background-size: var(--message-hover-bg-size);
+  background-position: var(--message-hover-bg-position);
+  color: var(--message-hover-color);
+  opacity: var(--message-hover-opacity);
+  transform: var(--message-hover-transform);
+  transition-property: var(--message-hover-transition-property);
+  transition-duration: var(--message-hover-transition-duration);
+  transition-timing-function: var(--message-hover-transition-timing-function);
+  animation: var(--message-hover-animation);
+  backdrop-filter: var(--message-hover-backdrop-filter);
+  padding-top: var(--message-hover-padding-top);
+  padding-right: var(--message-hover-padding-right);
+  padding-bottom: var(--message-hover-padding-bottom);
+  padding-left: var(--message-hover-padding-left);
+  margin-top: var(--message-hover-margin-top);
+  margin-right: var(--message-hover-margin-right);
+  margin-bottom: var(--message-hover-margin-bottom);
+  margin-left: var(--message-hover-margin-left);
+  border-top: var(--message-hover-border-top-width) var(--message-hover-border-top-style) var(--message-hover-border-top-color);
+  border-right: var(--message-hover-border-right-width) var(--message-hover-border-right-style) var(--message-hover-border-right-color);
+  border-bottom: var(--message-hover-border-bottom-width) var(--message-hover-border-bottom-style) var(--message-hover-border-bottom-color);
+  border-left: var(--message-hover-border-left-width) var(--message-hover-border-left-style) var(--message-hover-border-left-color);
+  border-top-left-radius: var(--message-hover-border-radius-top-left);
+  border-top-right-radius: var(--message-hover-border-radius-top-right);
+  border-bottom-right-radius: var(--message-hover-border-radius-bottom-right);
+  border-bottom-left-radius: var(--message-hover-border-radius-bottom-left);
+  box-shadow: var(--message-hover-shadow-external), var(--message-hover-shadow-internal);
+  font-family: var(--message-hover-font-family);
+  font-size: var(--message-hover-font-size);
+  font-weight: var(--message-hover-font-weight);
+  line-height: var(--message-hover-line-height);
+  letter-spacing: var(--message-hover-letter-spacing);
+  text-align: var(--message-hover-text-align);
+  text-transform: var(--message-hover-text-transform);
+  text-shadow: var(--message-hover-text-shadow);
+}
+
+.message:active {
+  background-color: var(--message-active-bg-color);
+  background-image: var(--message-active-bg-image);
+  background-size: var(--message-active-bg-size);
+  background-position: var(--message-active-bg-position);
+  color: var(--message-active-color);
+  opacity: var(--message-active-opacity);
+  transform: var(--message-active-transform);
+  transition-property: var(--message-active-transition-property);
+  transition-duration: var(--message-active-transition-duration);
+  transition-timing-function: var(--message-active-transition-timing-function);
+  animation: var(--message-active-animation);
+  backdrop-filter: var(--message-active-backdrop-filter);
+  padding-top: var(--message-active-padding-top);
+  padding-right: var(--message-active-padding-right);
+  padding-bottom: var(--message-active-padding-bottom);
+  padding-left: var(--message-active-padding-left);
+  margin-top: var(--message-active-margin-top);
+  margin-right: var(--message-active-margin-right);
+  margin-bottom: var(--message-active-margin-bottom);
+  margin-left: var(--message-active-margin-left);
+  border-top: var(--message-active-border-top-width) var(--message-active-border-top-style) var(--message-active-border-top-color);
+  border-right: var(--message-active-border-right-width) var(--message-active-border-right-style) var(--message-active-border-right-color);
+  border-bottom: var(--message-active-border-bottom-width) var(--message-active-border-bottom-style) var(--message-active-border-bottom-color);
+  border-left: var(--message-active-border-left-width) var(--message-active-border-left-style) var(--message-active-border-left-color);
+  border-top-left-radius: var(--message-active-border-radius-top-left);
+  border-top-right-radius: var(--message-active-border-radius-top-right);
+  border-bottom-right-radius: var(--message-active-border-radius-bottom-right);
+  border-bottom-left-radius: var(--message-active-border-radius-bottom-left);
+  box-shadow: var(--message-active-shadow-external), var(--message-active-shadow-internal);
+}
+
+.message:focus-visible {
+  outline: var(--message-focus-outline);
+  box-shadow: var(--message-focus-ring-width) var(--message-focus-ring-style) var(--message-focus-ring-color);
+}
+
+.message:disabled {
+  opacity: var(--message-disabled-opacity);
+  background-color: var(--message-disabled-bg-color);
+  color: var(--message-disabled-color);
+}
+
+.message.selected {
+  background-color: var(--message-selected-bg-color);
+  color: var(--message-selected-color);
+  border-top-color: var(--message-selected-border-top-color);
+  border-right-color: var(--message-selected-border-right-color);
+  border-bottom-color: var(--message-selected-border-bottom-color);
+  border-left-color: var(--message-selected-border-left-color);
+}
+
+.message.visible {
+  opacity: var(--message-visible-opacity);
 }
 
 .message:not(.me) .msg-drag {
-  border-radius: 18px 18px 18px 4px;
-  background: var(--msg-bg-other);
-  border-left: var(--border-left-msg-border-other-width) var(--border-left-msg-border-other-style) var(--border-left-msg-border-other-color);
-  border-right: var(--border-right-msg-border-other-width) var(--border-right-msg-border-other-style) var(--border-right-msg-border-other-color);
-  border-top: var(--border-top-msg-border-other-width) var(--border-top-msg-border-other-style) var(--border-top-msg-border-other-color);
-  border-bottom: var(--border-bottom-msg-border-other-width) var(--border-bottom-msg-border-other-style) var(--border-bottom-msg-border-other-color);
-  border-bottom: 1px solid var();
-  color: var(--text-color);
+  background-color: var(--msg-drag-other-bg-color);
+  color: var(--msg-drag-other-color);
+  border-top: var(--msg-drag-other-border-top-width) var(--msg-drag-other-border-top-style) var(--msg-drag-other-border-top-color);
+  border-right: var(--msg-drag-other-border-right-width) var(--msg-drag-other-border-right-style) var(--msg-drag-other-border-right-color);
+  border-bottom: var(--msg-drag-other-border-bottom-width) var(--msg-drag-other-border-bottom-style) var(--msg-drag-other-border-bottom-color);
+  border-left: var(--msg-drag-other-border-left-width) var(--msg-drag-other-border-left-style) var(--msg-drag-other-border-left-color);
+  border-top-left-radius: var(--msg-drag-other-border-radius-top-left);
+  border-top-right-radius: var(--msg-drag-other-border-radius-top-right);
+  border-bottom-right-radius: var(--msg-drag-other-border-radius-bottom-right);
+  border-bottom-left-radius: var(--msg-drag-other-border-radius-bottom-left);
 }
 
 .message.me {
@@ -60,44 +249,102 @@ body.keyboard-open {
 
 .message.me .msg-drag {
   position: relative;
-  background: var(--msg-bg-me);
-  border-left: var(--border-left-msg-border-me-width) var(--border-left-msg-border-me-style) var(--border-left-msg-border-me-color);
-  border-right: var(--border-right-msg-border-me-width) var(--border-right-msg-border-me-style) var(--border-right-msg-border-me-color);
-  border-top: var(--border-top-msg-border-me-width) var(--border-top-msg-border-me-style) var(--border-top-msg-border-me-color);
-  border-bottom: var(--border-bottom-msg-border-me-width) var(--border-bottom-msg-border-me-style) var(--border-bottom-msg-border-me-color);
-  box-shadow: var(--msg-me-shadow);
-  color: var(--msg-me-text);
-}
-
-.message.me .msg-drag::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: conic-gradient(from 180deg at 70% 20%,
-      rgba(255, 0, 200, 0.3),
-      rgba(0, 255, 255, 0.3),
-      rgba(255, 255, 0, 0.3),
-      rgba(255, 0, 200, 0.3));
-  mix-blend-mode: screen;
-  opacity: 0.6;
-  pointer-events: none;
+  background-color: var(--msg-drag-me-bg-color);
+  color: var(--msg-drag-me-color);
+  border-top: var(--msg-drag-me-border-top-width) var(--msg-drag-me-border-top-style) var(--msg-drag-me-border-top-color);
+  border-right: var(--msg-drag-me-border-right-width) var(--msg-drag-me-border-right-style) var(--msg-drag-me-border-right-color);
+  border-bottom: var(--msg-drag-me-border-bottom-width) var(--msg-drag-me-border-bottom-style) var(--msg-drag-me-border-bottom-color);
+  border-left: var(--msg-drag-me-border-left-width) var(--msg-drag-me-border-left-style) var(--msg-drag-me-border-left-color);
+  box-shadow: var(--msg-drag-me-shadow-external), var(--msg-drag-me-shadow-internal);
 }
 
 .msg-drag {
   display: inline-block;
-  background: var(--msg-bg-other);
-  font-size: 14px;
-  color: var(--text-color);
-  padding: 12px 12px 8px 12px;
-  border-radius: 18px 18px 4px 18px;
-  line-height: 1.4;
-  word-break: break-word;
-  will-change: transform, opacity;
-  max-width: 85%;
+  background-color: var(--msg-drag-bg-color);
+  background-image: var(--msg-drag-bg-image);
+  background-size: var(--msg-drag-bg-size);
+  background-position: var(--msg-drag-bg-position);
+  color: var(--msg-drag-color);
+  font-size: var(--msg-drag-font-size);
+  padding-top: var(--msg-drag-padding-top);
+  padding-right: var(--msg-drag-padding-right);
+  padding-bottom: var(--msg-drag-padding-bottom);
+  padding-left: var(--msg-drag-padding-left);
+  margin-top: var(--msg-drag-margin-top);
+  margin-right: var(--msg-drag-margin-right);
+  margin-bottom: var(--msg-drag-margin-bottom);
+  margin-left: var(--msg-drag-margin-left);
+  border-top: var(--msg-drag-border-top-width) var(--msg-drag-border-top-style) var(--msg-drag-border-top-color);
+  border-right: var(--msg-drag-border-right-width) var(--msg-drag-border-right-style) var(--msg-drag-border-right-color);
+  border-bottom: var(--msg-drag-border-bottom-width) var(--msg-drag-border-bottom-style) var(--msg-drag-border-bottom-color);
+  border-left: var(--msg-drag-border-left-width) var(--msg-drag-border-left-style) var(--msg-drag-border-left-color);
+  border-top-left-radius: var(--msg-drag-border-radius-top-left);
+  border-top-right-radius: var(--msg-drag-border-radius-top-right);
+  border-bottom-right-radius: var(--msg-drag-border-radius-bottom-right);
+  border-bottom-left-radius: var(--msg-drag-border-radius-bottom-left);
+  line-height: var(--msg-drag-line-height);
+  word-break: var(--msg-drag-word-break);
+  max-width: var(--msg-drag-max-width);
   position: relative;
   touch-action: pan-y;
-  transition: all 0.2s ease;
+  transition-property: var(--msg-drag-transition-property);
+  transition-duration: var(--msg-drag-transition-duration);
+  transition-timing-function: var(--msg-drag-transition-timing-function);
+  box-shadow: var(--msg-drag-shadow-external), var(--msg-drag-shadow-internal);
+  opacity: var(--msg-drag-opacity);
+  transform: var(--msg-drag-transform);
+  animation: var(--msg-drag-animation);
+  backdrop-filter: var(--msg-drag-backdrop-filter);
+  font-family: var(--msg-drag-font-family);
+  font-weight: var(--msg-drag-font-weight);
+  letter-spacing: var(--msg-drag-letter-spacing);
+  text-align: var(--msg-drag-text-align);
+  text-transform: var(--msg-drag-text-transform);
+  text-shadow: var(--msg-drag-text-shadow);
+}
+
+.msg-drag:hover {
+  background-color: var(--msg-drag-hover-bg-color);
+  background-image: var(--msg-drag-hover-bg-image);
+  background-size: var(--msg-drag-hover-bg-size);
+  background-position: var(--msg-drag-hover-bg-position);
+  color: var(--msg-drag-hover-color);
+  opacity: var(--msg-drag-hover-opacity);
+  transform: var(--msg-drag-hover-transform);
+  transition-property: var(--msg-drag-hover-transition-property);
+  transition-duration: var(--msg-drag-hover-transition-duration);
+  transition-timing-function: var(--msg-drag-hover-transition-timing-function);
+  animation: var(--msg-drag-hover-animation);
+  backdrop-filter: var(--msg-drag-hover-backdrop-filter);
+  padding-top: var(--msg-drag-hover-padding-top);
+  padding-right: var(--msg-drag-hover-padding-right);
+  padding-bottom: var(--msg-drag-hover-padding-bottom);
+  padding-left: var(--msg-drag-hover-padding-left);
+  margin-top: var(--msg-drag-hover-margin-top);
+  margin-right: var(--msg-drag-hover-margin-right);
+  margin-bottom: var(--msg-drag-hover-margin-bottom);
+  margin-left: var(--msg-drag-hover-margin-left);
+  border-top: var(--msg-drag-hover-border-top-width) var(--msg-drag-hover-border-top-style) var(--msg-drag-hover-border-top-color);
+  border-right: var(--msg-drag-hover-border-right-width) var(--msg-drag-hover-border-right-style) var(--msg-drag-hover-border-right-color);
+  border-bottom: var(--msg-drag-hover-border-bottom-width) var(--msg-drag-hover-border-bottom-style) var(--msg-drag-hover-border-bottom-color);
+  border-left: var(--msg-drag-hover-border-left-width) var(--msg-drag-hover-border-left-style) var(--msg-drag-hover-border-left-color);
+  border-top-left-radius: var(--msg-drag-hover-border-radius-top-left);
+  border-top-right-radius: var(--msg-drag-hover-border-radius-top-right);
+  border-bottom-right-radius: var(--msg-drag-hover-border-radius-bottom-right);
+  border-bottom-left-radius: var(--msg-drag-hover-border-radius-bottom-left);
+  box-shadow: var(--msg-drag-hover-shadow-external), var(--msg-drag-hover-shadow-internal);
+}
+
+.msg-drag:active {
+  background-color: var(--msg-drag-active-bg-color);
+  color: var(--msg-drag-active-color);
+  opacity: var(--msg-drag-active-opacity);
+  transform: var(--msg-drag-active-transform);
+  border-top-color: var(--msg-drag-active-border-top-color);
+  border-right-color: var(--msg-drag-active-border-right-color);
+  border-bottom-color: var(--msg-drag-active-border-bottom-color);
+  border-left-color: var(--msg-drag-active-border-left-color);
+  box-shadow: var(--msg-drag-active-shadow-external), var(--msg-drag-active-shadow-internal);
 }
 
 .message-text,
@@ -108,40 +355,154 @@ body.keyboard-open {
 
 .msg-hour {
   display: inline-block;
-  font-size: 10px;
-  line-height: 1.3;
-  margin-left: 8px;
+  background-color: var(--msg-hour-bg-color);
+  background-image: var(--msg-hour-bg-image);
+  background-size: var(--msg-hour-bg-size);
+  background-position: var(--msg-hour-bg-position);
+  color: var(--msg-hour-color);
+  font-size: var(--msg-hour-font-size);
+  padding-top: var(--msg-hour-padding-top);
+  padding-right: var(--msg-hour-padding-right);
+  padding-bottom: var(--msg-hour-padding-bottom);
+  padding-left: var(--msg-hour-padding-left);
+  margin-top: var(--msg-hour-margin-top);
+  margin-right: var(--msg-hour-margin-right);
+  margin-bottom: var(--msg-hour-margin-bottom);
+  margin-left: var(--msg-hour-margin-left);
+  border-top: var(--msg-hour-border-top-width) var(--msg-hour-border-top-style) var(--msg-hour-border-top-color);
+  border-right: var(--msg-hour-border-right-width) var(--msg-hour-border-right-style) var(--msg-hour-border-right-color);
+  border-bottom: var(--msg-hour-border-bottom-width) var(--msg-hour-border-bottom-style) var(--msg-hour-border-bottom-color);
+  border-left: var(--msg-hour-border-left-width) var(--msg-hour-border-left-style) var(--msg-hour-border-left-color);
+  border-top-left-radius: var(--msg-hour-border-radius-top-left);
+  border-top-right-radius: var(--msg-hour-border-radius-top-right);
+  border-bottom-right-radius: var(--msg-hour-border-radius-bottom-right);
+  border-bottom-left-radius: var(--msg-hour-border-radius-bottom-left);
+  line-height: var(--msg-hour-line-height);
   position: relative;
-  top: 3px;
-  color: var(--hour-color);
-  vertical-align: baseline;
+  top: var(--msg-hour-top);
+  vertical-align: var(--msg-hour-vertical-align);
+  box-shadow: var(--msg-hour-shadow-external), var(--msg-hour-shadow-internal);
+  opacity: var(--msg-hour-opacity);
+  transform: var(--msg-hour-transform);
+  transition-property: var(--msg-hour-transition-property);
+  transition-duration: var(--msg-hour-transition-duration);
+  transition-timing-function: var(--msg-hour-transition-timing-function);
+  animation: var(--msg-hour-animation);
+  backdrop-filter: var(--msg-hour-backdrop-filter);
+  font-family: var(--msg-hour-font-family);
+  font-weight: var(--msg-hour-font-weight);
+  letter-spacing: var(--msg-hour-letter-spacing);
+  text-align: var(--msg-hour-text-align);
+  text-transform: var(--msg-hour-text-transform);
+  text-shadow: var(--msg-hour-text-shadow);
 }
 
 .message.me .msg-hour {
-  color: var(--hour-color-me);
+  color: var(--msg-hour-me-color);
+}
+
+.msg-hour:hover {
+  color: var(--msg-hour-hover-color);
+  opacity: var(--msg-hour-hover-opacity);
+  background-color: var(--msg-hour-hover-bg-color);
+  transform: var(--msg-hour-hover-transform);
 }
 
 .reactions-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 6px;
-  justify-content: flex-end;
+  gap: var(--reactions-wrap-gap);
+  margin-top: var(--reactions-wrap-margin-top);
+  margin-right: var(--reactions-wrap-margin-right);
+  margin-bottom: var(--reactions-wrap-margin-bottom);
+  margin-left: var(--reactions-wrap-margin-left);
+  justify-content: var(--reactions-wrap-justify-content);
   width: 100%;
+  background-color: var(--reactions-wrap-bg-color);
+  background-image: var(--reactions-wrap-bg-image);
+  background-size: var(--reactions-wrap-bg-size);
+  background-position: var(--reactions-wrap-bg-position);
+  padding-top: var(--reactions-wrap-padding-top);
+  padding-right: var(--reactions-wrap-padding-right);
+  padding-bottom: var(--reactions-wrap-padding-bottom);
+  padding-left: var(--reactions-wrap-padding-left);
+  border-top: var(--reactions-wrap-border-top-width) var(--reactions-wrap-border-top-style) var(--reactions-wrap-border-top-color);
+  border-right: var(--reactions-wrap-border-right-width) var(--reactions-wrap-border-right-style) var(--reactions-wrap-border-right-color);
+  border-bottom: var(--reactions-wrap-border-bottom-width) var(--reactions-wrap-border-bottom-style) var(--reactions-wrap-border-bottom-color);
+  border-left: var(--reactions-wrap-border-left-width) var(--reactions-wrap-border-left-style) var(--reactions-wrap-border-left-color);
+  border-top-left-radius: var(--reactions-wrap-border-radius-top-left);
+  border-top-right-radius: var(--reactions-wrap-border-radius-top-right);
+  border-bottom-right-radius: var(--reactions-wrap-border-radius-bottom-right);
+  border-bottom-left-radius: var(--reactions-wrap-border-radius-bottom-left);
+  box-shadow: var(--reactions-wrap-shadow-external), var(--reactions-wrap-shadow-internal);
+  opacity: var(--reactions-wrap-opacity);
+  transform: var(--reactions-wrap-transform);
+  transition-property: var(--reactions-wrap-transition-property);
+  transition-duration: var(--reactions-wrap-transition-duration);
+  transition-timing-function: var(--reactions-wrap-transition-timing-function);
+  animation: var(--reactions-wrap-animation);
+  backdrop-filter: var(--reactions-wrap-backdrop-filter);
 }
 
 .message:not(.me) .reactions-wrap {
-  justify-content: flex-start;
+  justify-content: var(--reactions-wrap-other-justify-content);
 }
 
 .reply-quote {
   display: block;
-  margin-bottom: 6px;
+  background-color: var(--reply-quote-bg-color);
+  background-image: var(--reply-quote-bg-image);
+  background-size: var(--reply-quote-bg-size);
+  background-position: var(--reply-quote-bg-position);
+  padding-top: var(--reply-quote-padding-top);
+  padding-right: var(--reply-quote-padding-right);
+  padding-bottom: var(--reply-quote-padding-bottom);
+  padding-left: var(--reply-quote-padding-left);
+  margin-top: var(--reply-quote-margin-top);
+  margin-right: var(--reply-quote-margin-right);
+  margin-bottom: var(--reply-quote-margin-bottom);
+  margin-left: var(--reply-quote-margin-left);
+  border-top: var(--reply-quote-border-top-width) var(--reply-quote-border-top-style) var(--reply-quote-border-top-color);
+  border-right: var(--reply-quote-border-right-width) var(--reply-quote-border-right-style) var(--reply-quote-border-right-color);
+  border-bottom: var(--reply-quote-border-bottom-width) var(--reply-quote-border-bottom-style) var(--reply-quote-border-bottom-color);
+  border-left: var(--reply-quote-border-left-width) var(--reply-quote-border-left-style) var(--reply-quote-border-left-color);
+  border-top-left-radius: var(--reply-quote-border-radius-top-left);
+  border-top-right-radius: var(--reply-quote-border-radius-top-right);
+  border-bottom-right-radius: var(--reply-quote-border-radius-bottom-right);
+  border-bottom-left-radius: var(--reply-quote-border-radius-bottom-left);
+  font-size: var(--reply-quote-font-size);
+  box-shadow: var(--reply-quote-shadow-external), var(--reply-quote-shadow-internal);
+  opacity: var(--reply-quote-opacity);
+  transform: var(--reply-quote-transform);
+  transition-property: var(--reply-quote-transition-property);
+  transition-duration: var(--reply-quote-transition-duration);
+  transition-timing-function: var(--reply-quote-transition-timing-function);
+  animation: var(--reply-quote-animation);
+  backdrop-filter: var(--reply-quote-backdrop-filter);
+  font-family: var(--reply-quote-font-family);
+  font-weight: var(--reply-quote-font-weight);
+  line-height: var(--reply-quote-line-height);
+  letter-spacing: var(--reply-quote-letter-spacing);
+  text-align: var(--reply-quote-text-align);
+  text-transform: var(--reply-quote-text-transform);
+  text-shadow: var(--reply-quote-text-shadow);
+}
+
+.reply-quote:hover {
+  background-color: var(--reply-quote-hover-bg-color);
+  border-left-color: var(--reply-quote-hover-border-left-color);
+  opacity: var(--reply-quote-hover-opacity);
 }
 
 .reply-separator {
   display: block;
-  margin: 6px 0;
+  background-color: var(--reply-separator-bg-color);
+  height: var(--reply-separator-height);
+  margin-top: var(--reply-separator-margin-top);
+  margin-right: var(--reply-separator-margin-right);
+  margin-bottom: var(--reply-separator-margin-bottom);
+  margin-left: var(--reply-separator-margin-left);
+  opacity: var(--reply-separator-opacity);
 }
 
 @keyframes msgIn {
@@ -149,7 +510,6 @@ body.keyboard-open {
     opacity: 0;
     transform: translateY(10px) scale(0.8);
   }
-  
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -162,33 +522,95 @@ body.keyboard-open {
 
 .layer-header {
   background: var(--header-bg);
+  backdrop-filter: var(--header-backdrop-filter);
   transform: translateZ(0);
-  letter-spacing: 1.4px;
+  letter-spacing: var(--header-letter-spacing);
+  padding-top: var(--padding-top-header);
+  padding-right: var(--padding-right-header);
+  padding-bottom: var(--padding-bottom-header);
+  padding-left: var(--padding-left-header);
+  padding-block: var(--padding-block-header);
+  padding-block-start: var(--padding-block-start-header);
+  padding-block-end: var(--padding-block-end-header);
+  padding-inline: var(--padding-inline-header);
+  padding-inline-start: var(--padding-inline-start-header);
+  padding-inline-end: var(--padding-inline-end-header);
+  width: var(--header-width);
+  height: var(--header-height);
   border-left: var(--border-left-header-width) var(--border-left-header-style) var(--border-left-header-color);
   border-right: var(--border-right-header-width) var(--border-right-header-style) var(--border-right-header-color);
   border-top: var(--border-top-header-width) var(--border-top-header-style) var(--border-top-header-color);
   border-bottom: var(--border-bottom-header-width) var(--border-bottom-header-style) var(--border-bottom-header-color);
+  border-top-left-radius: var(--header-border-radius-top-left);
+  border-top-right-radius: var(--header-border-radius-top-right);
+  border-bottom-right-radius: var(--header-border-radius-bottom-right);
+  border-bottom-left-radius: var(--header-border-radius-bottom-left);
+  box-shadow: var(--shadow-header), inset var(--inset-shadow-header);
+  transition: var(--header-transition);
+  animation: var(--header-animation);
+  font-family: var(--header-font-family);
+  font-size: var(--header-font-size);
+  font-weight: var(--header-font-weight);
+  margin-top: var(--header-margin-top);
+  margin-right: var(--header-margin-right);
+  margin-bottom: var(--header-margin-bottom);
+  margin-left: var(--header-margin-left);
 }
 
-.layer-header>h1 {
-  color: var(--layer-header-text);
+.layer-header > h1 {
+  color: var(--header-text);
+  font-family: var(--header-text-style);
+  font-size: var(--header-text-size);
+  font-weight: var(--header-text-weight);
+  line-height: var(--header-text-line-height);
+  letter-spacing: var(--header-text-letter-spacing);
+  word-spacing: var(--header-text-word-spacing);
+  text-transform: var(--header-text-text-transform);
+  text-shadow: var(--header-text-text-shadow);
+  opacity: var(--header-text-opacity);
+  box-shadow: var(--header-text-box-shadow);
+  outline: var(--header-text-outline);
+  margin-top: var(--header-text-margin-top);
+  margin-right: var(--header-text-margin-right);
+  margin-bottom: var(--header-text-margin-bottom);
+  margin-left: var(--header-text-margin-left);
+  text-align: var(--header-text-align);
+  background: var(--header-text-background);
+  backdrop-filter: var(--header-text-backdrop-filter);
+  width: var(--header-text-width);
+  height: var(--header-text-height);
+  padding-top: var(--header-text-padding-top);
+  padding-right: var(--header-text-padding-right);
+  padding-bottom: var(--header-text-padding-bottom);
+  padding-left: var(--header-text-padding-left);
+  padding-block: var(--header-text-padding-block);
+  padding-block-start: var(--header-text-padding-block-start);
+  padding-block-end: var(--header-text-padding-block-end);
+  padding-inline: var(--header-text-padding-inline);
+  padding-inline-start: var(--header-text-padding-inline-start);
+  padding-inline-end: var(--header-text-padding-inline-end);
+  border-top: var(--header-text-border-top-width) var(--header-text-border-top-style) var(--header-text-border-top-color);
+  border-right: var(--header-text-border-right-width) var(--header-text-border-right-style) var(--header-text-border-right-color);
+  border-bottom: var(--header-text-border-bottom-width) var(--header-text-border-bottom-style) var(--header-text-border-bottom-color);
+  border-left: var(--header-text-border-left-width) var(--header-text-border-left-style) var(--header-text-border-left-color);
+  border-top-left-radius: var(--header-text-border-radius-top-left);
+  border-top-right-radius: var(--header-text-border-radius-top-right);
+  border-bottom-right-radius: var(--header-text-border-radius-bottom-right);
+  border-bottom-left-radius: var(--header-text-border-radius-bottom-left);
 }
 
 .layer-input {
-  transform: translateY(calc(-1 * var(--keyboard)));
-}
-
-#input:focus {
-  box-shadow:
-    0 0 0 calc(var(--ring-width) + var(--ring-offset)) var(--ring-color);
+  transform: var(--layer-input-transform);
 }
 
 .input-container {
-  padding-bottom: calc(10px + env(safe-area-inset-bottom));
-  border-left: var(--border-left-input-border-width) var(--border-left-input-border-style) var(--border-left-input-border-color);
-  border-right: var(--border-right-input-border-width) var(--border-right-input-border-style) var(--border-right-input-border-color);
-  border-top: var(--border-top-input-border-width) var(--border-top-input-border-style) var(--border-top-input-border-color);
-  border-bottom: var(--border-bottom-input-border-width) var(--border-bottom-input-border-style) var(--border-bottom-input-border-color);
+  padding-bottom: var(--input-container-padding-bottom);
+  border-top: var(--input-container-border-top-width) var(--input-container-border-top-style) var(--input-container-border-top-color);
+  border-right: var(--input-container-border-right-width) var(--input-container-border-right-style) var(--input-container-border-right-color);
+  border-bottom: var(--input-container-border-bottom-width) var(--input-container-border-bottom-style) var(--input-container-border-bottom-color);
+  border-left: var(--input-container-border-left-width) var(--input-container-border-left-style) var(--input-container-border-left-color);
+  background-color: var(--input-container-bg-color);
+  opacity: var(--input-container-opacity);
 }
 
 .layer-input .input-container {
@@ -196,31 +618,234 @@ body.keyboard-open {
 }
 
 #input {
-  background: var(--input-ty-bg);
-  color: var(--input-text-color);
+  background-color: var(--input-bg-color);
+  background-image: var(--input-bg-image);
+  background-size: var(--input-bg-size);
+  background-position: var(--input-bg-position);
+  color: var(--input-color);
+  font-family: var(--input-font-family);
+  font-size: var(--input-font-size);
+  font-weight: var(--input-font-weight);
+  line-height: var(--input-line-height);
+  letter-spacing: var(--input-letter-spacing);
+  text-align: var(--input-text-align);
+  text-transform: var(--input-text-transform);
+  text-shadow: var(--input-text-shadow);
+  padding-top: var(--input-padding-top);
+  padding-right: var(--input-padding-right);
+  padding-bottom: var(--input-padding-bottom);
+  padding-left: var(--input-padding-left);
+  margin-top: var(--input-margin-top);
+  margin-right: var(--input-margin-right);
+  margin-bottom: var(--input-margin-bottom);
+  margin-left: var(--input-margin-left);
+  border-top: var(--input-border-top-width) var(--input-border-top-style) var(--input-border-top-color);
+  border-right: var(--input-border-right-width) var(--input-border-right-style) var(--input-border-right-color);
+  border-bottom: var(--input-border-bottom-width) var(--input-border-bottom-style) var(--input-border-bottom-color);
+  border-left: var(--input-border-left-width) var(--input-border-left-style) var(--input-border-left-color);
+  border-top-left-radius: var(--input-border-radius-top-left);
+  border-top-right-radius: var(--input-border-radius-top-right);
+  border-bottom-right-radius: var(--input-border-radius-bottom-right);
+  border-bottom-left-radius: var(--input-border-radius-bottom-left);
+  box-shadow: var(--input-shadow-external), var(--input-shadow-internal);
+  opacity: var(--input-opacity);
+  transform: var(--input-transform);
+  transition-property: var(--input-transition-property);
+  transition-duration: var(--input-transition-duration);
+  transition-timing-function: var(--input-transition-timing-function);
+  animation: var(--input-animation);
+  backdrop-filter: var(--input-backdrop-filter);
+}
+
+#input:hover {
+  background-color: var(--input-hover-bg-color);
+  color: var(--input-hover-color);
+  border-top-color: var(--input-hover-border-top-color);
+  border-right-color: var(--input-hover-border-right-color);
+  border-bottom-color: var(--input-hover-border-bottom-color);
+  border-left-color: var(--input-hover-border-left-color);
+}
+
+#input:focus-visible {
+  outline: var(--input-focus-outline);
+  box-shadow: 0 0 0 calc(var(--input-focus-ring-width) + var(--input-focus-ring-offset)) var(--input-focus-ring-color);
+}
+
+#input:disabled {
+  opacity: var(--input-disabled-opacity);
+  background-color: var(--input-disabled-bg-color);
+  color: var(--input-disabled-color);
 }
 
 #sendBtn {
-  background: var(--send-btn-bg);
-  color: var(--send-btn-text);
-  border-left: var(--border-left-send-btn-width) var(--border-left-send-btn-style) var(--border-left-send-btn-color);
-  border-right: var(--border-right-send-btn-width) var(--border-right-send-btn-style) var(--border-right-send-btn-color);
-  border-top: var(--border-top-send-btn-width) var(--border-top-send-btn-style) var(--border-top-send-btn-color);
-  border-bottom: var(--border-bottom-send-btn-width) var(--border-bottom-send-btn-style) var(--border-bottom-send-btn-color);
+  background-color: var(--send-btn-bg-color);
+  color: var(--send-btn-color);
+  border-top: var(--send-btn-border-top-width) var(--send-btn-border-top-style) var(--send-btn-border-top-color);
+  border-right: var(--send-btn-border-right-width) var(--send-btn-border-right-style) var(--send-btn-border-right-color);
+  border-bottom: var(--send-btn-border-bottom-width) var(--send-btn-border-bottom-style) var(--send-btn-border-bottom-color);
+  border-left: var(--send-btn-border-left-width) var(--send-btn-border-left-style) var(--send-btn-border-left-color);
+  border-top-left-radius: var(--send-btn-border-radius-top-left);
+  border-top-right-radius: var(--send-btn-border-radius-top-right);
+  border-bottom-right-radius: var(--send-btn-border-radius-bottom-right);
+  border-bottom-left-radius: var(--send-btn-border-radius-bottom-left);
+  opacity: var(--send-btn-opacity);
+  transform: var(--send-btn-transform);
+  transition-property: var(--send-btn-transition-property);
+  transition-duration: var(--send-btn-transition-duration);
+  transition-timing-function: var(--send-btn-transition-timing-function);
+  animation: var(--send-btn-animation);
+  backdrop-filter: var(--send-btn-backdrop-filter);
+  box-shadow: var(--send-btn-shadow-external), var(--send-btn-shadow-internal);
+}
+
+#sendBtn:hover {
+  background-color: var(--send-btn-hover-bg-color);
+  color: var(--send-btn-hover-color);
+  opacity: var(--send-btn-hover-opacity);
+  transform: var(--send-btn-hover-transform);
+  border-top-color: var(--send-btn-hover-border-top-color);
+  border-right-color: var(--send-btn-hover-border-right-color);
+  border-bottom-color: var(--send-btn-hover-border-bottom-color);
+  border-left-color: var(--send-btn-hover-border-left-color);
+}
+
+#sendBtn:active {
+  background-color: var(--send-btn-active-bg-color);
+  color: var(--send-btn-active-color);
+  transform: var(--send-btn-active-transform);
+  opacity: var(--send-btn-active-opacity);
+}
+
+#sendBtn:focus-visible {
+  outline: none;
+  box-shadow: var(--send-btn-focus-ring-width) var(--send-btn-focus-ring-style) var(--send-btn-focus-ring-color);
+}
+
+#sendBtn:disabled {
+  opacity: var(--send-btn-disabled-opacity);
+  background-color: var(--send-btn-disabled-bg-color);
+  color: var(--send-btn-disabled-color);
 }
 
 textarea {
-  line-height: 1.3;
+  background-color: var(--textarea-bg-color);
+  background-image: var(--textarea-bg-image);
+  background-size: var(--textarea-bg-size);
+  background-position: var(--textarea-bg-position);
+  color: var(--textarea-color);
+  font-family: var(--textarea-font-family);
+  font-size: var(--textarea-font-size);
+  font-weight: var(--textarea-font-weight);
+  line-height: var(--textarea-line-height);
+  letter-spacing: var(--textarea-letter-spacing);
+  text-align: var(--textarea-text-align);
+  text-transform: var(--textarea-text-transform);
+  text-shadow: var(--textarea-text-shadow);
+  padding-top: var(--textarea-padding-top);
+  padding-right: var(--textarea-padding-right);
+  padding-bottom: var(--textarea-padding-bottom);
+  padding-left: var(--textarea-padding-left);
+  margin-top: var(--textarea-margin-top);
+  margin-right: var(--textarea-margin-right);
+  margin-bottom: var(--textarea-margin-bottom);
+  margin-left: var(--textarea-margin-left);
+  border-top: var(--textarea-border-top-width) var(--textarea-border-top-style) var(--textarea-border-top-color);
+  border-right: var(--textarea-border-right-width) var(--textarea-border-right-style) var(--textarea-border-right-color);
+  border-bottom: var(--textarea-border-bottom-width) var(--textarea-border-bottom-style) var(--textarea-border-bottom-color);
+  border-left: var(--textarea-border-left-width) var(--textarea-border-left-style) var(--textarea-border-left-color);
+  border-top-left-radius: var(--textarea-border-radius-top-left);
+  border-top-right-radius: var(--textarea-border-radius-top-right);
+  border-bottom-right-radius: var(--textarea-border-radius-bottom-right);
+  border-bottom-left-radius: var(--textarea-border-radius-bottom-left);
+  box-shadow: var(--textarea-shadow-external), var(--textarea-shadow-internal);
+  opacity: var(--textarea-opacity);
+  transform: var(--textarea-transform);
+  transition-property: var(--textarea-transition-property);
+  transition-duration: var(--textarea-transition-duration);
+  transition-timing-function: var(--textarea-transition-timing-function);
+  animation: var(--textarea-animation);
+  backdrop-filter: var(--textarea-backdrop-filter);
   overscroll-behavior: contain;
 }
 
+textarea:hover {
+  background-color: var(--textarea-hover-bg-color);
+  color: var(--textarea-hover-color);
+}
+
+textarea:focus-visible {
+  outline: none;
+  box-shadow: var(--textarea-focus-ring-width) var(--textarea-focus-ring-style) var(--textarea-focus-ring-color);
+}
+
 button {
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
+  background-color: var(--btn-bg-color);
+  background-image: var(--btn-bg-image);
+  background-size: var(--btn-bg-size);
+  background-position: var(--btn-bg-position);
+  color: var(--btn-color);
+  padding-top: var(--btn-padding-top);
+  padding-right: var(--btn-padding-right);
+  padding-bottom: var(--btn-padding-bottom);
+  padding-left: var(--btn-padding-left);
+  margin-top: var(--btn-margin-top);
+  margin-right: var(--btn-margin-right);
+  margin-bottom: var(--btn-margin-bottom);
+  margin-left: var(--btn-margin-left);
+  border-top: var(--btn-border-top-width) var(--btn-border-top-style) var(--btn-border-top-color);
+  border-right: var(--btn-border-right-width) var(--btn-border-right-style) var(--btn-border-right-color);
+  border-bottom: var(--btn-border-bottom-width) var(--btn-border-bottom-style) var(--btn-border-bottom-color);
+  border-left: var(--btn-border-left-width) var(--btn-border-left-style) var(--btn-border-left-color);
+  border-top-left-radius: var(--btn-border-radius-top-left);
+  border-top-right-radius: var(--btn-border-radius-top-right);
+  border-bottom-right-radius: var(--btn-border-radius-bottom-right);
+  border-bottom-left-radius: var(--btn-border-radius-bottom-left);
+  font-family: var(--btn-font-family);
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  line-height: var(--btn-line-height);
+  letter-spacing: var(--btn-letter-spacing);
+  text-align: var(--btn-text-align);
+  text-transform: var(--btn-text-transform);
+  text-shadow: var(--btn-text-shadow);
+  box-shadow: var(--btn-shadow-external), var(--btn-shadow-internal);
+  opacity: var(--btn-opacity);
+  transform: var(--btn-transform);
+  transition-property: var(--btn-transition-property);
+  transition-duration: var(--btn-transition-duration);
+  transition-timing-function: var(--btn-transition-timing-function);
+  animation: var(--btn-animation);
+  backdrop-filter: var(--btn-backdrop-filter);
   user-select: none;
   touch-action: manipulation;
+}
+
+button:hover {
+  background-color: var(--btn-hover-bg-color);
+  color: var(--btn-hover-color);
+  opacity: var(--btn-hover-opacity);
+  transform: var(--btn-hover-transform);
+  border-top-color: var(--btn-hover-border-top-color);
+  border-right-color: var(--btn-hover-border-right-color);
+  border-bottom-color: var(--btn-hover-border-bottom-color);
+  border-left-color: var(--btn-hover-border-left-color);
+  box-shadow: var(--btn-hover-shadow-external), var(--btn-hover-shadow-internal);
+}
+
+button:active {
+  background-color: var(--btn-active-bg-color);
+  color: var(--btn-active-color);
+  transform: var(--btn-active-transform);
+  opacity: var(--btn-active-opacity);
+}
+
+button:focus-visible {
+  outline: none;
+  box-shadow: var(--btn-focus-ring-width) var(--btn-focus-ring-style) var(--btn-focus-ring-color);
+}
+
+button:disabled {
+  opacity: var(--btn-disabled-opacity);
+  background-color: var(--btn-disabled-bg-color);
+  color: var(--btn-disabled-color);
 }

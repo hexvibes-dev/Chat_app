@@ -1,8 +1,7 @@
-// src/scripts/CustomEmojiManager.js
-
-const STORAGE_KEY = 'custom_emoji_categories';
+// src/scripts/StickerManager.js
+const STORAGE_KEY = 'custom_stickers_categories';
 const MAX_CATEGORIES = 4;
-const MAX_EMOJIS_PER_CATEGORY = 30;
+const MAX_STICKERS_PER_CATEGORY = 30;
 
 let categories = [];
 
@@ -12,9 +11,8 @@ export function loadCategories() {
     categories = JSON.parse(saved);
   } else {
     categories = [
-      { name: 'Favoritos', emojis: [] },
-      { name: 'Logos', emojis: [] },
-      { name: 'Animados', emojis: [] }
+      { name: 'Favoritos', stickers: [] },
+      { name: 'Animados', stickers: [] }
     ];
     saveCategories();
   }
@@ -45,37 +43,37 @@ export function createCategory(categoryName) {
   if (getCategories().some(c => c.name === categoryName)) {
     throw new Error('La categoría ya existe');
   }
-  categories.push({ name: categoryName, emojis: [] });
+  categories.push({ name: categoryName, stickers: [] });
   saveCategories();
   return categories;
 }
 
-export function canAddEmojiToCategory(categoryName) {
+export function canAddStickerToCategory(categoryName) {
   const category = getCategories().find(c => c.name === categoryName);
   if (!category) return false;
-  return category.emojis.length < MAX_EMOJIS_PER_CATEGORY;
+  return category.stickers.length < MAX_STICKERS_PER_CATEGORY;
 }
 
-export function addCustomEmoji(emojiData, categoryName) {
+export function addCustomSticker(stickerData, categoryName) {
   const category = getCategories().find(c => c.name === categoryName);
   if (!category) {
     throw new Error('Categoría no encontrada');
   }
-  if (category.emojis.length >= MAX_EMOJIS_PER_CATEGORY) {
-    throw new Error(`Máximo ${MAX_EMOJIS_PER_CATEGORY} emojis por categoría`);
+  if (category.stickers.length >= MAX_STICKERS_PER_CATEGORY) {
+    throw new Error(`Máximo ${MAX_STICKERS_PER_CATEGORY} stickers por categoría`);
   }
-  if (category.emojis.some(e => e.shortcodes[0] === emojiData.shortcodes[0])) {
-    throw new Error('Ya existe un emoji con ese código');
+  if (category.stickers.some(s => s.id === stickerData.id)) {
+    throw new Error('Ya existe un sticker con ese identificador');
   }
-  category.emojis.push(emojiData);
+  category.stickers.push(stickerData);
   saveCategories();
   return categories;
 }
 
-export function removeCustomEmoji(categoryName, shortcode) {
+export function removeCustomSticker(categoryName, stickerId) {
   const category = getCategories().find(c => c.name === categoryName);
   if (category) {
-    category.emojis = category.emojis.filter(e => e.shortcodes[0] !== shortcode);
+    category.stickers = category.stickers.filter(s => s.id !== stickerId);
     saveCategories();
   }
   return categories;
@@ -87,14 +85,13 @@ export function deleteCategory(categoryName) {
   return categories;
 }
 
-export function getCustomEmojiArray() {
+export function getAllStickers() {
   const result = [];
   for (const category of getCategories()) {
-    for (const emoji of category.emojis) {
+    for (const sticker of category.stickers) {
       result.push({
-        name: emoji.name,
-        shortcodes: emoji.shortcodes,
-        url: emoji.url,
+        id: sticker.id,
+        url: sticker.url,
         category: category.name
       });
     }
@@ -102,10 +99,22 @@ export function getCustomEmojiArray() {
   return result;
 }
 
+export function isStickerSaved(url) {
+  return getAllStickers().some(s => s.url === url);
+}
+
+export function getStickerCategoryByUrl(url) {
+  for (const category of getCategories()) {
+    const found = category.stickers.find(s => s.url === url);
+    if (found) return category.name;
+  }
+  return null;
+}
+
 export function processImageFile(file) {
   return new Promise((resolve, reject) => {
-    if (!file.type.startsWith('image/')) {
-      reject(new Error('El archivo debe ser una imagen'));
+    if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+      reject(new Error('El archivo debe ser una imagen o GIF'));
       return;
     }
     const reader = new FileReader();
@@ -115,8 +124,8 @@ export function processImageFile(file) {
   });
 }
 
-export function refreshCustomEmojisInPicker() {
-  if (window._refreshCustomEmojis) {
-    window._refreshCustomEmojis();
+export function refreshStickersInPicker() {
+  if (window._refreshStickers) {
+    window._refreshStickers();
   }
 }

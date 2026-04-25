@@ -1,3 +1,5 @@
+// src/scripts/input.js
+
 import { appendMessage } from './messages.js';
 import { getAndClearQuotedMessage, hideReplyPopup } from './answer.js';
 import { connectToBackend, sendMessageViaSocket, isSocketConnected, disconnectSocket } from './socket.js';

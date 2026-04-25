@@ -1,115 +1,127 @@
+/* ==========================================================================
+   name.css - VERSIÓN HIPER-GRANULAR
+   ========================================================================== */
+
 .name-modal {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 11000;
+  position: var(--name-modal-position);
+  inset: var(--name-modal-inset);
+  display: var(--name-modal-display);
+  align-items: var(--name-modal-align-items);
+  justify-content: var(--name-modal-justify-content);
+  z-index: var(--name-modal-z-index);
+  background-color: var(--name-modal-bg-color);
+  opacity: var(--name-modal-opacity);
 }
 
 .name-card {
-  width: 320px;
-  max-width: 90vw;
-  background: var(--modal-bg);
-  border-radius: 20px;
-  padding: 24px 20px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  transform-origin: center;
-  transition: transform 160ms ease, opacity 140ms ease;
-  color: var(--modal-text);
-  border: 1px solid var(--modal-input-border);
-  animation: modalIn 0.3s ease both;
-}
-
-@keyframes modalIn {
-  from { opacity: 0; transform: scale(0.9) translateY(10px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
+  width: var(--name-card-width);
+  max-width: var(--name-card-max-width);
+  background-color: var(--name-card-bg-color);
+  background-image: var(--name-card-bg-image);
+  background-size: var(--name-card-bg-size);
+  background-position: var(--name-card-bg-position);
+  color: var(--name-card-color);
+  border-radius: var(--name-card-border-radius);
+  padding: var(--name-card-padding);
+  margin: var(--name-card-margin);
+  box-shadow: var(--name-card-shadow-external), var(--name-card-shadow-internal);
+  transform-origin: var(--name-card-transform-origin);
+  transform: var(--name-card-transform);
+  transition-property: var(--name-card-transition-property);
+  transition-duration: var(--name-card-transition-duration);
+  transition-timing-function: var(--name-card-transition-timing-function);
+  animation: var(--name-card-animation);
+  backdrop-filter: var(--name-card-backdrop-filter);
+  border: var(--name-card-border);
+  border-radius: var(--name-card-border-radius);
+  opacity: var(--name-card-opacity);
 }
 
 .name-modal.leave .name-card {
-  transform: scale(0.9) translateY(10px);
-  opacity: 0;
+  transform: var(--name-card-leave-transform);
+  opacity: var(--name-card-leave-opacity);
 }
 
 .name-card h1 {
-  margin: 0 0 20px 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--modal-header);
-  text-align: center;
+  margin: var(--name-card-h1-margin);
+  font-size: var(--name-card-h1-font-size);
+  font-weight: var(--name-card-h1-font-weight);
+  color: var(--name-card-h1-color);
+  text-align: var(--name-card-h1-text-align);
 }
 
 .input-group {
-  margin-bottom: 18px;
+  margin-bottom: var(--input-group-margin-bottom);
 }
 
 .input-group label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--modal-text);
+  display: var(--input-group-label-display);
+  margin-bottom: var(--input-group-label-margin-bottom);
+  font-size: var(--input-group-label-font-size);
+  font-weight: var(--input-group-label-font-weight);
+  color: var(--input-group-label-color);
 }
 
 .input-group input {
-  width: 100%;
-  padding: 12px 12px;
-  font-size: 15px;
-  border-radius: 12px;
-  border: 1px solid var(--modal-input-border);
-  background: var(--modal-input-bg);
-  color: var(--modal-text);
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  width: var(--input-group-input-width);
+  padding: var(--input-group-input-padding);
+  font-size: var(--input-group-input-font-size);
+  border-radius: var(--input-group-input-border-radius);
+  border: var(--input-group-input-border);
+  background-color: var(--input-group-input-bg-color);
+  color: var(--input-group-input-color);
+  outline: var(--input-group-input-outline);
+  transition: var(--input-group-input-transition);
 }
 
 .input-group input:focus {
-  border-color: var(--modal-btn-primary);
-  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2);
+  border-color: var(--input-group-input-focus-border-color);
+  box-shadow: var(--input-group-input-focus-shadow);
 }
 
 .username-hint {
-  font-size: 11px;
-  color: var(--modal-text);
-  opacity: 0.7;
-  margin-top: 4px;
+  font-size: var(--username-hint-font-size);
+  color: var(--username-hint-color);
+  opacity: var(--username-hint-opacity);
+  margin-top: var(--username-hint-margin-top);
 }
 
 .error-message {
-  font-size: 12px;
-  color: #f87171;
-  margin-top: 4px;
-  min-height: 18px;
+  font-size: var(--error-message-font-size);
+  color: var(--error-message-color);
+  margin-top: var(--error-message-margin-top);
+  min-height: var(--error-message-min-height);
 }
 
 .name-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 24px;
+  display: var(--name-actions-display);
+  justify-content: var(--name-actions-justify-content);
+  margin-top: var(--name-actions-margin-top);
 }
 
 .name-actions .btn {
-  padding: 12px 24px;
-  border-radius: 40px;
-  font-weight: 600;
-  font-size: 15px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
+  padding: var(--name-action-btn-padding);
+  border-radius: var(--name-action-btn-border-radius);
+  font-weight: var(--name-action-btn-font-weight);
+  font-size: var(--name-action-btn-font-size);
+  border: var(--name-action-btn-border);
+  cursor: var(--name-action-btn-cursor);
+  transition: var(--name-action-btn-transition);
 }
 
 .name-actions .btn.primary {
-  background: var(--modal-btn-primary);
-  color: var(--modal-btn-primary-text);
+  background-color: var(--name-action-btn-primary-bg-color);
+  color: var(--name-action-btn-primary-color);
+  opacity: var(--name-action-btn-primary-opacity);
 }
 
 .name-actions .btn.primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  opacity: var(--name-action-btn-primary-disabled-opacity);
+  cursor: var(--name-action-btn-primary-disabled-cursor);
 }
 
 .name-actions .btn.primary:not(:disabled):hover {
-  background: var(--modal-btn-primary);
-  opacity: 0.8;
-  transform: scale(0.98);
+  background-color: var(--name-action-btn-primary-hover-bg-color);
+  opacity: var(--name-action-btn-primary-hover-opacity);
+  transform: var(--name-action-btn-primary-hover-transform);
 }

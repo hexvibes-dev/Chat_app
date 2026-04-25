@@ -1,3 +1,5 @@
+// src/scripts/themeManager.js
+
 import interact from 'interactjs';
 import { registerModal, unregisterModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
 
@@ -7,7 +9,7 @@ const STORAGE_CUSTOM_BG = 'chat_custom_bg';
 const STORAGE_BG_OPACITY = 'chat_bg_opacity';
 const STORAGE_USER_IMAGES = 'chat_user_images';
 
-const ALLOWED_THEMES = ['dark', 'light', 'cristal', 'forest', 'ocean', 'whatsapp', 'midnight', 'reference', 'magenta'];
+const ALLOWED_THEMES = ['dark', 'light', 'cristal', 'forest', 'ocean', 'whatsapp', 'midnight', /*'reference', */ 'magenta' , 'nuevo'];
 
 const themes = {
   dark: { name: 'Oscuro', bg: '/img/dark.jpg', color: '#17212b' },
@@ -18,7 +20,8 @@ const themes = {
   magenta: { name: 'Magenta', bg: '/img/patron1.jpg', color: '#16222F' },
   whatsapp: { name: 'WhatsApp', bg: '/img/dark.jpg', color: '#e5ddd5' },
   midnight: { name: 'Midnight', bg: '/img/magic.jpg', color: '#0b0f19' },
-  reference: { name: 'Referencia', bg: '/img/dark.jpg', color: '#030F0F' }
+ // reference: { name: 'Referencia', bg: '/img/dark.jpg', color: '#030F0F' },
+  nuevo: { name: 'nuevo', bg: '/img/dark.jpg', color: '#030F0F' }
 };
 
 const nativeBackgroundsGrouped = {

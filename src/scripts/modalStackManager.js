@@ -1,3 +1,5 @@
+// src/scripts/modalStackManager.js
+
 let modalStack = [];
 let baseZIndex = 11000;
 let activeModals = [];

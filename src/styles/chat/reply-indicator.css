@@ -1,95 +1,101 @@
+/* ==========================================================================
+   reply-indicator.css - VERSIÓN HIPER-GRANULAR
+   ========================================================================== */
+
 .reply-indicator {
-  background: #1e293b;
-  border-left: 3px solid #14b8a6;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  padding: 8px 12px;
-  animation: slideDown 180ms ease;
+  background-color: var(--reply-indicator-bg-color);
+  border-left: var(--reply-indicator-border-left-width) var(--reply-indicator-border-left-style) var(--reply-indicator-border-left-color);
+  border-radius: var(--reply-indicator-border-radius);
+  margin-bottom: var(--reply-indicator-margin-bottom);
+  padding: var(--reply-indicator-padding);
+  animation: var(--reply-indicator-animation);
+  opacity: var(--reply-indicator-opacity);
 }
 
 .reply-indicator-content {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  display: var(--reply-indicator-content-display);
+  flex-direction: var(--reply-indicator-content-flex-direction);
+  gap: var(--reply-indicator-content-gap);
 }
 
 .reply-indicator-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: var(--reply-indicator-header-display);
+  justify-content: var(--reply-indicator-header-justify-content);
+  align-items: var(--reply-indicator-header-align-items);
 }
 
 .reply-indicator-author {
-  font-size: 12px;
-  font-weight: 600;
-  color: #2dd4bf;
+  font-size: var(--reply-indicator-author-font-size);
+  font-weight: var(--reply-indicator-author-font-weight);
+  color: var(--reply-indicator-author-color);
 }
 
 .reply-indicator-cancel {
-  background: none;
-  border: none;
-  color: #94a3b8;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0 4px;
-  transition: color 120ms ease;
+  background: var(--reply-indicator-cancel-bg-color);
+  border: var(--reply-indicator-cancel-border);
+  color: var(--reply-indicator-cancel-color);
+  cursor: var(--reply-indicator-cancel-cursor);
+  font-size: var(--reply-indicator-cancel-font-size);
+  padding: var(--reply-indicator-cancel-padding);
+  transition: var(--reply-indicator-cancel-transition);
 }
 
 .reply-indicator-cancel:hover {
-  color: #f1f5f9;
+  color: var(--reply-indicator-cancel-hover-color);
 }
 
 .reply-indicator-quote {
-  font-size: 13px;
-  color: #94a3b8;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: var(--reply-indicator-quote-font-size);
+  color: var(--reply-indicator-quote-color);
+  white-space: var(--reply-indicator-quote-white-space);
+  overflow: var(--reply-indicator-quote-overflow);
+  text-overflow: var(--reply-indicator-quote-text-overflow);
 }
 
+/* reply-quote (redefinición) */
 .reply-quote {
-  background: rgba(255, 255, 255, 0.05);
-  border-left: 3px solid #14b8a6;
-  border-radius: 6px;
-  padding: 6px 10px;
-  margin-bottom: 8px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 120ms ease;
+  background-color: var(--reply-quote-bg-color);
+  border-left: var(--reply-quote-border-left);
+  border-radius: var(--reply-quote-border-radius);
+  padding: var(--reply-quote-padding);
+  margin-bottom: var(--reply-quote-margin-bottom);
+  font-size: var(--reply-quote-font-size);
+  cursor: var(--reply-quote-cursor);
+  transition: var(--reply-quote-transition);
 }
 
 .reply-quote:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background-color: var(--reply-quote-hover-bg-color);
 }
 
 .message.me .reply-quote {
-  background: rgba(255, 255, 255, 0.1);
+  background-color: var(--reply-quote-me-bg-color);
 }
 
 .reply-quote-author {
-  font-weight: 600;
-  color: #2dd4bf;
-  margin-bottom: 4px;
-  font-size: 11px;
+  font-weight: var(--reply-quote-author-font-weight);
+  color: var(--reply-quote-author-color);
+  margin-bottom: var(--reply-quote-author-margin-bottom);
+  font-size: var(--reply-quote-author-font-size);
 }
 
 .reply-quote-text {
-  color: #cbd5e1;
-  word-break: break-word;
-  white-space: pre-wrap;
+  color: var(--reply-quote-text-color);
+  word-break: var(--reply-quote-text-word-break);
+  white-space: var(--reply-quote-text-white-space);
 }
 
 .message.me .reply-quote-text {
-  color: #ccfbf1;
+  color: var(--reply-quote-text-me-color);
 }
 
 .reply-separator {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 6px 0;
+  height: var(--reply-separator-height);
+  background-color: var(--reply-separator-bg-color);
+  margin: var(--reply-separator-margin);
 }
 
 .message-text {
-  word-break: break-word;
-  white-space: pre-wrap;
+  word-break: var(--message-text-word-break);
+  white-space: var(--message-text-white-space);
 }

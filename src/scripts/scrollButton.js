@@ -26,9 +26,8 @@
   new MutationObserver(updateButtonVisibility).observe(messagesEl, { childList: true, subtree: true });
   setInterval(updateButtonVisibility, 500);
 
-  // Prevenir la pérdida de foco del input al hacer clic en el botón de scroll
   btn.addEventListener('mousedown', (e) => {
-    e.preventDefault();  // Evita que el botón robe el foco
+    e.preventDefault();  
   });
   
   btn.addEventListener('click', (e) => {

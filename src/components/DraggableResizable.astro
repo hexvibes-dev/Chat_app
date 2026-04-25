@@ -1,10 +1,5 @@
 ---
-// DraggableResizableWindow.astro
-// Asa externa flotante (siempre visible) + ventana redimensionable
-// Dependencias: TailwindCSS, interactjs
 ---
-
-<!-- VENTANA REDIMENSIONABLE -->
 <div id="movable-window" 
      class="fixed bg-white rounded-lg shadow-xl border border-gray-300 overflow-hidden"
      style="width: 320px; height: 240px; min-width: 150px; min-height: 100px; max-width: 90vw; max-height: 90vh;">
@@ -19,7 +14,6 @@
     <p class="text-gray-600">Redimensiona desde bordes o esquinas.</p>
   </div>
 
-  <!-- Manejadores de redimensionado -->
   <div class="resize-handle resize-n"></div>
   <div class="resize-handle resize-s"></div>
   <div class="resize-handle resize-e"></div>
@@ -30,7 +24,6 @@
   <div class="resize-handle resize-sw"></div>
 </div>
 
-<!-- ASA EXTERNA FLOTANTE (siempre visible) -->
 <div id="drag-handle" 
      class="fixed bg-red-500 hover:bg-red-600 rounded-full w-10 h-10 flex items-center justify-center shadow-lg cursor-grab active:cursor-grabbing z-50 border-2 border-white"
      style="touch-action: none; user-select: none; left: 0; top: 0;">
@@ -74,14 +67,12 @@
 
     if (!windowElement || !dragHandle) return;
 
-    // Posición inicial de la ventana (centrada)
     let windowX = (window.innerWidth - windowElement.offsetWidth) / 2;
     let windowY = (window.innerHeight - windowElement.offsetHeight) / 2;
     windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
     windowElement.setAttribute('data-x', windowX);
     windowElement.setAttribute('data-y', windowY);
 
-    // Posición del asa (pegada al borde superior de la ventana)
     function updateHandlePosition() {
       const rect = windowElement.getBoundingClientRect();
       dragHandle.style.left = `${rect.left + rect.width / 2 - dragHandle.offsetWidth / 2}px`;
@@ -89,10 +80,8 @@
     }
     updateHandlePosition();
 
-    // Sincronizar el asa cuando se mueve o redimensiona la ventana
     const syncHandle = () => updateHandlePosition();
 
-    // --- ARRASTRE DESDE EL ASA (mueve la ventana) ---
     interact(dragHandle).draggable({
       allowFrom: dragHandle,
       inertia: false,
@@ -112,7 +101,6 @@
       }
     });
 
-    // --- REDIMENSIONADO DE LA VENTANA ---
     interact(windowElement).resizable({
       edges: { top: true, left: true, bottom: true, right: true },
       inertia: false,
@@ -141,18 +129,13 @@
         }
       }
     });
-
-    // Cerrar ventana
     if (closeBtn) {
       closeBtn.addEventListener('click', () => {
         windowElement.remove();
         dragHandle.remove();
       });
     }
-
-    // Sincronizar inicialmente y en cada evento de cambio de tamaño de ventana
     window.addEventListener('resize', () => {
-      // Re-centrar si es necesario (opcional)
       syncHandle();
     });
   });

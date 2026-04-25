@@ -1,0 +1,228 @@
+/* ==========================================================================
+   new-selectors.css - ESTILOS PARA SELECTORES NUEVOS AGREGADOS EN JS
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   .skin-tone-option
+   ------------------------------------------------------------------------- */
+.skin-tone-option {
+  display: var(--skin-tone-option-display);
+  align-items: var(--skin-tone-option-align-items);
+  gap: var(--skin-tone-option-gap);
+  padding-top: var(--skin-tone-option-padding-top);
+  padding-right: var(--skin-tone-option-padding-right);
+  padding-bottom: var(--skin-tone-option-padding-bottom);
+  padding-left: var(--skin-tone-option-padding-left);
+  margin: var(--skin-tone-option-margin);
+  background-color: var(--skin-tone-option-bg-color);
+  color: var(--skin-tone-option-color);
+  font-size: var(--skin-tone-option-font-size);
+  font-family: var(--skin-tone-option-font-family);
+  font-weight: var(--skin-tone-option-font-weight);
+  line-height: var(--skin-tone-option-line-height);
+  letter-spacing: var(--skin-tone-option-letter-spacing);
+  text-align: var(--skin-tone-option-text-align);
+  text-transform: var(--skin-tone-option-text-transform);
+  text-shadow: var(--skin-tone-option-text-shadow);
+  opacity: var(--skin-tone-option-opacity);
+  transform: var(--skin-tone-option-transform);
+  transition: var(--skin-tone-option-transition);
+  animation: var(--skin-tone-option-animation);
+  backdrop-filter: var(--skin-tone-option-backdrop-filter);
+  border-top: var(--skin-tone-option-border-top-width) var(--skin-tone-option-border-top-style) var(--skin-tone-option-border-top-color);
+  border-right: var(--skin-tone-option-border-right-width) var(--skin-tone-option-border-right-style) var(--skin-tone-option-border-right-color);
+  border-bottom: var(--skin-tone-option-border-bottom-width) var(--skin-tone-option-border-bottom-style) var(--skin-tone-option-border-bottom-color);
+  border-left: var(--skin-tone-option-border-left-width) var(--skin-tone-option-border-left-style) var(--skin-tone-option-border-left-color);
+  border-top-left-radius: var(--skin-tone-option-border-radius-top-left);
+  border-top-right-radius: var(--skin-tone-option-border-radius-top-right);
+  border-bottom-right-radius: var(--skin-tone-option-border-radius-bottom-right);
+  border-bottom-left-radius: var(--skin-tone-option-border-radius-bottom-left);
+  box-shadow: var(--skin-tone-option-shadow-external), var(--skin-tone-option-shadow-internal);
+}
+
+.skin-tone-option:hover {
+  background-color: var(--skin-tone-option-hover-bg-color);
+  color: var(--skin-tone-option-hover-color);
+  transform: var(--skin-tone-option-hover-transform);
+  opacity: var(--skin-tone-option-hover-opacity);
+}
+
+.skin-tone-option:active {
+  background-color: var(--skin-tone-option-active-bg-color);
+  color: var(--skin-tone-option-active-color);
+  transform: var(--skin-tone-option-active-transform);
+}
+
+/* -------------------------------------------------------------------------
+   .emoji-search-wrapper
+   ------------------------------------------------------------------------- */
+.emoji-search-wrapper {
+  padding-top: var(--emoji-search-wrapper-padding-top);
+  padding-right: var(--emoji-search-wrapper-padding-right);
+  padding-bottom: var(--emoji-search-wrapper-padding-bottom);
+  padding-left: var(--emoji-search-wrapper-padding-left);
+  margin: var(--emoji-search-wrapper-margin);
+  background-color: var(--emoji-search-wrapper-bg-color);
+  border-bottom: var(--emoji-search-wrapper-border-bottom-width) var(--emoji-search-wrapper-border-bottom-style) var(--emoji-search-wrapper-border-bottom-color);
+  border-top: var(--emoji-search-wrapper-border-top);
+  border-right: var(--emoji-search-wrapper-border-right);
+  border-left: var(--emoji-search-wrapper-border-left);
+  border-radius: var(--emoji-search-wrapper-border-radius);
+  opacity: var(--emoji-search-wrapper-opacity);
+  transform: var(--emoji-search-wrapper-transform);
+  transition: var(--emoji-search-wrapper-transition);
+}
+
+/* -------------------------------------------------------------------------
+   .custom-subcategories-wrapper
+   ------------------------------------------------------------------------- */
+.custom-subcategories-wrapper {
+  display: var(--custom-subcategories-wrapper-display);
+  flex-direction: var(--custom-subcategories-wrapper-flex-direction);
+  width: var(--custom-subcategories-wrapper-width);
+  gap: var(--custom-subcategories-wrapper-gap);
+  background-color: var(--custom-subcategories-wrapper-bg-color);
+  padding: var(--custom-subcategories-wrapper-padding);
+  margin: var(--custom-subcategories-wrapper-margin);
+  border: var(--custom-subcategories-wrapper-border);
+  border-radius: var(--custom-subcategories-wrapper-border-radius);
+}
+
+/* -------------------------------------------------------------------------
+   .emoji-scroll-container
+   ------------------------------------------------------------------------- */
+.emoji-scroll-container {
+  flex: var(--emoji-scroll-container-flex);
+  min-height: var(--emoji-scroll-container-min-height);
+  overflow-y: var(--emoji-scroll-container-overflow-y);
+  overflow-x: var(--emoji-scroll-container-overflow-x);
+  display: var(--emoji-scroll-container-display);
+  flex-direction: var(--emoji-scroll-container-flex-direction);
+  background-color: var(--emoji-scroll-container-bg-color);
+  padding: var(--emoji-scroll-container-padding);
+  margin: var(--emoji-scroll-container-margin);
+  border: var(--emoji-scroll-container-border);
+  border-radius: var(--emoji-scroll-container-border-radius);
+}
+
+/* -------------------------------------------------------------------------
+   .emoji-picker-grid-container
+   ------------------------------------------------------------------------- */
+.emoji-picker-grid-container {
+  display: var(--emoji-picker-grid-container-display);
+  flex-direction: var(--emoji-picker-grid-container-flex-direction);
+  flex: var(--emoji-picker-grid-container-flex);
+  background-color: var(--emoji-picker-grid-container-bg-color);
+  padding: var(--emoji-picker-grid-container-padding);
+  margin: var(--emoji-picker-grid-container-margin);
+}
+
+/* -------------------------------------------------------------------------
+   .emoji-text-replacement
+   ------------------------------------------------------------------------- */
+.emoji-text-replacement {
+  display: var(--emoji-text-replacement-display);
+  color: var(--emoji-text-replacement-color);
+  font-size: var(--emoji-text-replacement-font-size);
+  font-family: var(--emoji-text-replacement-font-family);
+  font-weight: var(--emoji-text-replacement-font-weight);
+  line-height: var(--emoji-text-replacement-line-height);
+  letter-spacing: var(--emoji-text-replacement-letter-spacing);
+  text-align: var(--emoji-text-replacement-text-align);
+  text-transform: var(--emoji-text-replacement-text-transform);
+  text-shadow: var(--emoji-text-replacement-text-shadow);
+  background-color: var(--emoji-text-replacement-bg-color);
+  padding: var(--emoji-text-replacement-padding);
+  margin: var(--emoji-text-replacement-margin);
+  border: var(--emoji-text-replacement-border);
+  border-radius: var(--emoji-text-replacement-border-radius);
+  opacity: var(--emoji-text-replacement-opacity);
+}
+
+/* -------------------------------------------------------------------------
+   .emoji-search-container
+   ------------------------------------------------------------------------- */
+.emoji-search-container {
+  background-color: var(--emoji-search-container-bg-color);
+  display: var(--emoji-search-container-display);
+  padding: var(--emoji-search-container-padding);
+  margin: var(--emoji-search-container-margin);
+  border: var(--emoji-search-container-border);
+  border-radius: var(--emoji-search-container-border-radius);
+}
+
+/* -------------------------------------------------------------------------
+   .dynamic-keyframes-styles
+   ------------------------------------------------------------------------- */
+.dynamic-keyframes-styles {
+  display: var(--dynamic-keyframes-styles-display);
+  background-color: var(--dynamic-keyframes-styles-bg-color);
+  padding: var(--dynamic-keyframes-styles-padding);
+  margin: var(--dynamic-keyframes-styles-margin);
+}
+
+/* -------------------------------------------------------------------------
+   .hidden-file-input
+   ------------------------------------------------------------------------- */
+.hidden-file-input {
+  display: var(--hidden-file-input-display);
+  width: var(--hidden-file-input-width);
+  height: var(--hidden-file-input-height);
+  opacity: var(--hidden-file-input-opacity);
+  padding: var(--hidden-file-input-padding);
+  margin: var(--hidden-file-input-margin);
+  border: var(--hidden-file-input-border);
+}
+
+/* -------------------------------------------------------------------------
+   .reaction-accordions-wrapper
+   ------------------------------------------------------------------------- */
+.reaction-accordions-wrapper {
+  margin-top: var(--reaction-accordions-wrapper-margin-top);
+  margin-bottom: var(--reaction-accordions-wrapper-margin-bottom);
+  margin-left: var(--reaction-accordions-wrapper-margin-left);
+  margin-right: var(--reaction-accordions-wrapper-margin-right);
+  padding: var(--reaction-accordions-wrapper-padding);
+  max-height: var(--reaction-accordions-wrapper-max-height);
+  overflow-y: var(--reaction-accordions-wrapper-overflow-y);
+  background-color: var(--reaction-accordions-wrapper-bg-color);
+  border: var(--reaction-accordions-wrapper-border);
+  border-radius: var(--reaction-accordions-wrapper-border-radius);
+}
+
+/* -------------------------------------------------------------------------
+   .emoji-converted-span
+   ------------------------------------------------------------------------- */
+.emoji-converted-span {
+  display: var(--emoji-converted-span-display);
+  color: var(--emoji-converted-span-color);
+  font-size: var(--emoji-converted-span-font-size);
+  font-family: var(--emoji-converted-span-font-family);
+  font-weight: var(--emoji-converted-span-font-weight);
+  line-height: var(--emoji-converted-span-line-height);
+  background-color: var(--emoji-converted-span-bg-color);
+  padding: var(--emoji-converted-span-padding);
+  margin: var(--emoji-converted-span-margin);
+}
+
+/* -------------------------------------------------------------------------
+   .connection-indicator
+   ------------------------------------------------------------------------- */
+.connection-indicator {
+  position: var(--connection-indicator-position);
+  top: var(--connection-indicator-top);
+  right: var(--connection-indicator-right);
+  width: var(--connection-indicator-width);
+  height: var(--connection-indicator-height);
+  border-radius: var(--connection-indicator-border-radius);
+  background-color: var(--connection-indicator-bg-color);
+  box-shadow: var(--connection-indicator-shadow-external), var(--connection-indicator-shadow-internal);
+  opacity: var(--connection-indicator-opacity);
+  transform: var(--connection-indicator-transform);
+  transition: var(--connection-indicator-transition);
+}
+
+/* Estado desconectado (se aplicaría desde JS cambiando la variable o añadiendo una clase) */
+.connection-indicator.disconnected {
+  background-color: var(--connection-indicator-disconnected-bg-color);
+}

@@ -6,8 +6,9 @@
 @import './themes/magenta.css';
 @import './themes/midnight.css';
 @import './themes/ocean.css';
-@import './themes/reference.css';
+/* @import './themes/reference.css'; */
 @import './themes/whatsapp.css';
+@import './themes/nuevo.css';
 
 body::after {
   content: '';

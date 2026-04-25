@@ -1,3 +1,5 @@
+// src/scripts/editor/EmojiPickerCore.js
+
 import { getCategoryEmojis, addRecentEmoji, getRecentEmojis, searchEmojis, getCustomEmojiData, loadCustomEmojis, refreshCustomEmojis, updateRecentCategory } from './EmojiData.js';
 import { polyfillEmojis, setSkinTone, getSkinTone, applySkinToneToEmoji } from './emojiPolyfill.js';
 
@@ -181,6 +183,7 @@ function ensureCategorySection(categoryKey, onClick) {
       
       if (categoryKey === 'custom' && categoryData && categoryData.type === 'subcategories') {
         const wrapper = document.createElement('div');
+        wrapper.className = 'custom-subcategories-wrapper';
         wrapper.style.display = 'flex';
         wrapper.style.flexDirection = 'column';
         wrapper.style.width = '100%';
@@ -320,6 +323,7 @@ function buildSkinToneSelector(onToneChange) {
   
   tones.forEach(tone => {
     const btn = document.createElement('button');
+    btn.className = 'skin-tone-option';
     btn.innerHTML = `${tone.icon} <span>${tone.label}</span>`;
     btn.addEventListener('click', () => {
       setSkinTone(tone.key);
@@ -488,6 +492,7 @@ function buildCategoryBar(onCategorySelect, onEmojiClick) {
 
 function buildSearchBar(onSearch) {
   const wrapper = document.createElement('div');
+  wrapper.className = 'emoji-search-wrapper';
   wrapper.style.cssText = 'padding:8px 12px;border-bottom:1px solid var(--modal-input-border);flex-shrink:0;';
   
   const input = document.createElement('input');
@@ -531,6 +536,7 @@ export function initEmojiPicker(container, onEmojiClick, onCategoryChange = null
   currentOnEmojiClick = onEmojiClick;
   
   scrollContainer = document.createElement('div');
+  scrollContainer.className = 'emoji-scroll-container';
   scrollContainer.style.cssText = 'flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;';
   scrollContainer.setAttribute('role', 'region');
   scrollContainer.setAttribute('aria-label', 'Selector de emojis');
@@ -542,6 +548,7 @@ export function initEmojiPicker(container, onEmojiClick, onCategoryChange = null
   const skinToneSelector = buildSkinToneSelector(() => {});
   
   gridContainer = document.createElement('div');
+  gridContainer.className = 'emoji-picker-grid-container';
   gridContainer.style.cssText = 'display:flex;flex-direction:column;flex:1;';
   
   scrollContainer.appendChild(categoryBar);

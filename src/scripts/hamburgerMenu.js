@@ -5,8 +5,6 @@ import interact from 'interactjs';
 
 let menuElement = null;
 let isMenuOpen = false;
-
-// --- Funciones auxiliares para popups y notificaciones ---
 function showTransientNotification(text, duration = 2000) {
   let notif = document.querySelector('.transient-notif');
   if (!notif) {
@@ -74,19 +72,15 @@ function showConfirmPopup(message) {
     });
   });
 }
-
-// --- Eliminar chat ---
 async function deleteAllMessages() {
   const confirmed = await showConfirmPopup('¿Eliminar todos los mensajes del chat? Esta acción no se puede deshacer.');
   if (!confirmed) return;
 
   const messagesContainer = document.getElementById('messages');
   if (messagesContainer) {
-    // Eliminar todos los mensajes excepto el spacer
     const messages = messagesContainer.querySelectorAll('.message');
     messages.forEach(msg => msg.remove());
 
-    // Limpiar reacciones almacenadas en localStorage
     const keysToRemove = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
@@ -102,7 +96,6 @@ async function deleteAllMessages() {
   }
 }
 
-// --- Limpiar caché (modal completo) ---
 let cacheModal = null;
 let cacheModalOpen = false;
 let cacheModalContainer = null;
@@ -110,7 +103,8 @@ let cacheModalHeader = null;
 let cacheModalCloseBtn = null;
 let cacheModalContent = null;
 let cacheWindowX = 0, cacheWindowY = 0;
-let cacheCheckboxes = new Map(); // key -> checkbox element
+let cacheCheckboxes = new Map();
+let currentStorageType = 'local';
 
 function addResizeHandles(element) {
   const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
@@ -122,12 +116,16 @@ function addResizeHandles(element) {
 }
 
 function setupCacheInteract(element, dragHandle) {
+  if (getComputedStyle(element).position === 'static') {
+    element.style.position = 'relative';
+  }
+
   interact(element).resizable({
     edges: { top: true, left: true, bottom: true, right: true },
     inertia: false,
     modifiers: [
       interact.modifiers.restrictSize({
-        min: { width: 300, height: 400 },
+        min: { width: 100, height: 100 },
         max: { width: window.innerWidth * 0.9, height: window.innerHeight * 0.9 }
       })
     ],
@@ -171,23 +169,43 @@ function setupCacheInteract(element, dragHandle) {
   });
 }
 
-function getCacheItems() {
+function getAllStorageItems(storageType) {
   const items = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
+  const storage = storageType === 'local' ? localStorage : sessionStorage;
+  for (let i = 0; i < storage.length; i++) {
+    const key = storage.key(i);
     if (key) {
-      // Filtrar claves que pertenecen a la app
-      if (key.startsWith('reactions_') ||
-          key === 'custom_emoji_categories' ||
-          key === 'emoji_recent' ||
-          key === 'chat_theme_prefs' ||
-          key === 'chat_bg_mode' ||
-          key === 'chat_custom_bg' ||
-          key === 'chat_bg_opacity' ||
-          key === 'chat_user_images' ||
-          key === 'emoji_skin_tone') {
-        items.push(key);
+      let value = storage.getItem(key);
+      let preview = value;
+      if (value && value.length > 50) {
+        preview = value.substring(0, 50) + '...';
       }
+      items.push({ key, value: preview, fullValue: value });
+    }
+  }
+  return items.sort((a, b) => a.key.localeCompare(b.key));
+}
+
+async function getCacheStorageItems() {
+  const items = [];
+  if ('caches' in window) {
+    try {
+      const cacheNames = await caches.keys();
+      for (const cacheName of cacheNames) {
+        const cache = await caches.open(cacheName);
+        const requests = await cache.keys();
+        for (const request of requests) {
+          items.push({
+            key: `[Cache: ${cacheName}] ${request.url}`,
+            value: 'Cache entry',
+            fullValue: request.url,
+            cacheName: cacheName,
+            url: request.url
+          });
+        }
+      }
+    } catch(e) {
+      console.error('Error reading cache:', e);
     }
   }
   return items;
@@ -195,34 +213,123 @@ function getCacheItems() {
 
 function renderCacheModalContent() {
   if (!cacheModalContent) return;
-  const items = getCacheItems();
-  cacheCheckboxes.clear();
+  
+  if (currentStorageType === 'local') {
+    const items = getAllStorageItems('local');
+    renderCacheItems(items);
+  } else if (currentStorageType === 'session') {
+    const items = getAllStorageItems('session');
+    renderCacheItems(items);
+  } else if (currentStorageType === 'cache') {
+    getCacheStorageItems().then(items => renderCacheItems(items));
+  }
+}
 
+function renderCacheItems(items) {
+  if (!cacheModalContent) return;
+  cacheCheckboxes.clear();
+  
   if (items.length === 0) {
-    cacheModalContent.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--modal-text);">No hay datos en caché.</div>';
+    cacheModalContent.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--modal-text);">No hay datos en este almacenamiento.</div>';
     return;
   }
 
-  const listHtml = items.map(key => `
-    <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--modal-input-border);">
-      <input type="checkbox" id="cache-${escapeHtml(key)}" data-key="${escapeHtml(key)}" style="width: 18px; height: 18px; cursor: pointer;">
-      <label for="cache-${escapeHtml(key)}" style="flex: 1; cursor: pointer; color: var(--modal-text);">${escapeHtml(key)}</label>
-    </div>
-  `).join('');
-
-  cacheModalContent.innerHTML = `
-    <div style="display: flex; flex-direction: column; height: 100%;">
-      <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
-        ${listHtml}
-      </div>
+  const listHtml = `
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; margin: 12px; padding: 4px;">
+      ${items.map((item, idx) => `
+        <div class="cache-item" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; background: var(--modal-input-bg); border-radius: 12px; border: 1px solid var(--modal-input-border);">
+          <input type="checkbox" id="cache-${idx}" data-key="${escapeHtml(item.key)}" data-full-value="${escapeHtml(item.fullValue || '')}" data-cache-name="${escapeHtml(item.cacheName || '')}" style="width: 18px; height: 18px; margin-top: 2px; cursor: pointer;">
+          <label for="cache-${idx}" style="flex: 1; cursor: pointer; min-width: 0;">
+            <div style="color: var(--modal-text); font-family: monospace; font-size: 12px; word-break: break-all;">${escapeHtml(item.key)}</div>
+            <div style="color: var(--modal-text-secondary); font-size: 11px; margin-top: 4px; word-break: break-all;">${escapeHtml(item.value)}</div>
+          </label>
+        </div>
+      `).join('')}
     </div>
   `;
 
-  // Asignar eventos a los checkboxes
-  items.forEach(key => {
-    const cb = cacheModalContent.querySelector(`#cache-${escapeHtml(key)}`);
-    if (cb) cacheCheckboxes.set(key, cb);
+  cacheModalContent.innerHTML = listHtml;
+
+  items.forEach((item, idx) => {
+    const cb = cacheModalContent.querySelector(`#cache-${idx}`);
+    if (cb) {
+      cb.dataset.key = item.key;
+      cb.dataset.fullValue = item.fullValue || '';
+      cb.dataset.cacheName = item.cacheName || '';
+      cacheCheckboxes.set(item.key, cb);
+    }
   });
+}
+
+async function deleteSelectedCacheItems() {
+  const selectedKeys = [];
+  for (const [key, checkbox] of cacheCheckboxes.entries()) {
+    if (checkbox.checked) {
+      selectedKeys.push({
+        key: checkbox.dataset.key,
+        fullValue: checkbox.dataset.fullValue,
+        cacheName: checkbox.dataset.cacheName
+      });
+    }
+  }
+  
+  if (selectedKeys.length === 0) {
+    showTransientNotification('No has seleccionado ningún elemento.', 2000);
+    return;
+  }
+
+  const warningMessage = `⚠️ Estás a punto de eliminar ${selectedKeys.length} elemento(s). Esta acción no se puede deshacer. ¿Estás seguro?`;
+  const confirmed = await showRedWarningPopup(warningMessage);
+  if (!confirmed) return;
+
+  for (const item of selectedKeys) {
+    if (currentStorageType === 'local') {
+      localStorage.removeItem(item.key);
+    } else if (currentStorageType === 'session') {
+      sessionStorage.removeItem(item.key);
+    } else if (currentStorageType === 'cache' && item.cacheName) {
+      if ('caches' in window) {
+        const cache = await caches.open(item.cacheName);
+        await cache.delete(item.fullValue);
+      }
+    }
+  }
+
+  showTransientNotification(`${selectedKeys.length} elemento(s) eliminados.`, 2000);
+  renderCacheModalContent();
+  window.dispatchEvent(new CustomEvent('cache-cleared'));
+}
+
+async function deleteAllStorage() {
+  const warningMessage = `⚠️⚠️⚠️ ¡ATENCIÓN! ⚠️⚠️⚠️\n\nEstás a punto de BORRAR TODOS los datos guardados en el navegador:\n- localStorage\n- sessionStorage\n- Cache Storage\n\nEsto incluye:\n- Todos los mensajes y reacciones\n- Emojis y stickers personalizados\n- Temas y fondos guardados\n- Estilos del editor\n- Y todos los demás datos\n\nEsta acción NO se puede deshacer.\n\n¿Estás ABSOLUTAMENTE seguro?`;
+  const confirmed = await showRedWarningPopup(warningMessage);
+  if (!confirmed) return;
+  
+  const keysToKeep = ['chat_username', 'chat_displayName'];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && !keysToKeep.includes(key)) {
+      localStorage.removeItem(key);
+    }
+  }
+  
+  sessionStorage.clear();
+  
+  if ('caches' in window) {
+    const cacheNames = await caches.keys();
+    for (const cacheName of cacheNames) {
+      await caches.delete(cacheName);
+    }
+  }
+  
+  showTransientNotification('🗑️ Todos los datos han sido eliminados. La página se recargará...', 3000);
+  setTimeout(() => window.location.reload(), 2000);
+}
+
+function selectAllCacheItems(select) {
+  for (const checkbox of cacheCheckboxes.values()) {
+    checkbox.checked = select;
+  }
 }
 
 function showRedWarningPopup(message) {
@@ -248,13 +355,14 @@ function showRedWarningPopup(message) {
       display: flex;
       flex-direction: column;
       gap: 20px;
-      min-width: 280px;
+      min-width: 320px;
+      max-width: 90vw;
       text-align: center;
       border: 1px solid #ef4444;
     `;
     popup.innerHTML = `
       <p style="margin: 0; font-size: 18px; font-weight: bold; color: white;">⚠️ ADVERTENCIA</p>
-      <p style="margin: 0; font-size: 14px; color: #fecaca;">${message}</p>
+      <p style="margin: 0; font-size: 14px; color: #fecaca; white-space: pre-wrap;">${escapeHtml(message)}</p>
       <div style="display: flex; justify-content: center; gap: 24px;">
         <button class="confirm-no" style="background: transparent; border: none; cursor: pointer; font-size: 28px; color: #f87171;">✗</button>
         <button class="confirm-yes" style="background: transparent; border: none; cursor: pointer; font-size: 28px; color: #4ade80;">✓</button>
@@ -282,47 +390,6 @@ function showRedWarningPopup(message) {
   });
 }
 
-async function deleteSelectedCacheItems() {
-  const selectedKeys = [];
-  for (const [key, checkbox] of cacheCheckboxes.entries()) {
-    if (checkbox.checked) {
-      selectedKeys.push(key);
-    }
-  }
-  if (selectedKeys.length === 0) {
-    showTransientNotification('No has seleccionado ningún elemento.', 2000);
-    return;
-  }
-
-  const warningMessage = `Estás a punto de eliminar ${selectedKeys.length} elemento(s) de la caché. Esta acción no se puede deshacer. ¿Estás seguro?`;
-  const confirmed = await showRedWarningPopup(warningMessage);
-  if (!confirmed) return;
-
-  selectedKeys.forEach(key => {
-    localStorage.removeItem(key);
-  });
-
-  // Recargar el contenido del modal para reflejar los cambios
-  renderCacheModalContent();
-  showTransientNotification(`${selectedKeys.length} elemento(s) eliminados de la caché.`, 2000);
-
-  // Notificar a otros módulos si es necesario (por ejemplo, recargar emojis personalizados)
-  if (window._refreshCustomEmojis && selectedKeys.includes('custom_emoji_categories')) {
-    window._refreshCustomEmojis();
-  }
-  if (selectedKeys.includes('emoji_skin_tone') && window.location) {
-    // Recargar la página para aplicar cambios de tono de piel? Mejor no, pero se puede notificar.
-    // Simplemente recargamos la página para que todo se reinicie.
-    setTimeout(() => window.location.reload(), 500);
-  }
-}
-
-function selectAllCacheItems(select) {
-  for (const checkbox of cacheCheckboxes.values()) {
-    checkbox.checked = select;
-  }
-}
-
 function createCacheModal() {
   if (cacheModal) return cacheModal;
 
@@ -330,18 +397,24 @@ function createCacheModal() {
   cacheModal.id = 'cache-cleaner-modal';
   cacheModal.className = 'action-menu-modal';
   cacheModal.innerHTML = `
-    <div class="action-menu-container" style="width: 500px; height: 600px;">
+    <div class="action-menu-container" style="width: 700px; height: 650px;">
       <div class="action-menu-header" id="cache-cleaner-header">
-        <h3 style="color: var(--modal-text);">🗑️ Limpiar caché</h3>
+        <h3 style="color: var(--modal-text);"> Limpiar almacenamiento</h3>
         <div style="display: flex; gap: 12px;">
-          <button id="select-all-cache-btn" style="background: transparent; border: none; cursor: pointer; font-size: 18px; color: var(--modal-text);">⬜</button>
+          <button id="select-all-cache-btn" style="background: transparent; border: none; cursor: pointer; font-size: 18px; color: var(--modal-text);" title="Seleccionar todo">⬜</button>
           <button class="action-menu-close" id="cache-cleaner-close" style="color: var(--modal-text);">&times;</button>
         </div>
       </div>
-      <div class="action-menu-content" id="cache-cleaner-content" style="padding: 0; overflow: hidden;"></div>
-      <div style="display: flex; justify-content: flex-end; gap: 12px; padding: 16px; border-top: 1px solid var(--modal-input-border);">
+      <div style="display: flex; gap: 8px; padding: 12px; border-bottom: 1px solid var(--modal-input-border); flex-wrap: wrap;">
+        <button id="storage-local-btn" class="storage-tab active" data-storage="local">📦 localStorage</button>
+        <button id="storage-session-btn" class="storage-tab" data-storage="session">🔄 sessionStorage</button>
+        <button id="storage-cache-btn" class="storage-tab" data-storage="cache">💾 Cache Storage</button>
+        <button id="delete-all-storage-btn" class="storage-tab danger" style="background: #7f1a1a; color: white;">⚠️ BORRAR TODO</button>
+      </div>
+      <div class="action-menu-content" id="cache-cleaner-content" style="padding: 0; overflow: auto;"></div>
+      <div style="overflow: auto; margin-left: 20px; margin-right: 20px; display: flex; justify-content: flex-end; gap: 12px; padding: 16px; border-top: 1px solid var(--modal-input-border);">
         <button id="cache-cancel-btn" class="btn-cancel">Cancelar</button>
-        <button id="cache-accept-btn" class="btn primary">Aceptar</button>
+        <button id="cache-accept-btn" class="btn primary">Eliminar seleccionados</button>
       </div>
     </div>
   `;
@@ -364,14 +437,50 @@ function createCacheModal() {
     selectAllCacheItems(!allChecked);
     btn.textContent = allChecked ? '⬜' : '✅';
   });
+  
+  document.getElementById('storage-local-btn').addEventListener('click', () => {
+    currentStorageType = 'local';
+    updateStorageTabs('local');
+    renderCacheModalContent();
+  });
+  document.getElementById('storage-session-btn').addEventListener('click', () => {
+    currentStorageType = 'session';
+    updateStorageTabs('session');
+    renderCacheModalContent();
+  });
+  document.getElementById('storage-cache-btn').addEventListener('click', () => {
+    currentStorageType = 'cache';
+    updateStorageTabs('cache');
+    renderCacheModalContent();
+  });
+  document.getElementById('delete-all-storage-btn').addEventListener('click', () => {
+    hideCacheModal();
+    deleteAllStorage();
+  });
 
   registerModal(cacheModal, 'cache-cleaner-modal');
   return cacheModal;
 }
 
+function updateStorageTabs(active) {
+  const tabs = ['local', 'session', 'cache'];
+  tabs.forEach(tab => {
+    const btn = document.getElementById(`storage-${tab}-btn`);
+    if (btn) {
+      if (tab === active) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    }
+  });
+}
+
 function showCacheModal() {
   if (cacheModalOpen) return;
   const modal = createCacheModal();
+  currentStorageType = 'local';
+  updateStorageTabs('local');
   renderCacheModalContent();
   cacheModalOpen = true;
   modal.classList.remove('closing');
@@ -388,7 +497,6 @@ function showCacheModal() {
     cacheModalContainer.style.height = '';
   }
   bringModalToFront('cache-cleaner-modal');
-  // Restablecer botón de seleccionar todo
   const selectBtn = document.getElementById('select-all-cache-btn');
   if (selectBtn) selectBtn.textContent = '⬜';
 }
@@ -405,7 +513,6 @@ function hideCacheModal() {
   }, 300);
 }
 
-// --- Inicialización del menú hamburguesa ---
 export function initHamburgerMenu() {
   initThemeManager();
   createMenuStructure();
@@ -421,7 +528,7 @@ function createMenuStructure() {
   menu.innerHTML = `
     <ul>
       <li><button id="themeOptionBtn">Cambiar tema</button></li>
-      <li><button id="deleteChatBtn">Eliminar chat</button></li>
+      <li><button id="deleteChatBtn" >Eliminar chat</button></li>
       <li><button id="clearCacheBtn">Limpiar caché</button></li>
     </ul>
   `;

@@ -13,6 +13,7 @@ function updateConnectionIndicator(connected) {
   if (!indicator) {
     indicator = document.createElement('div');
     indicator.id = 'connection-indicator';
+    indicator.className = 'connection-indicator';
     indicator.style.cssText = 'position:fixed;top:70px;right:10px;width:12px;height:12px;border-radius:50%;z-index:99999;transition:background 0.3s;';
     document.body.appendChild(indicator);
   }

@@ -1,3 +1,5 @@
+// src/scripts/emojiUtils.js
+
 import { getCustomEmojiByShortcode } from './CustomEmojiPicker.js';
 import { loadCustomEmojis as loadEmojiData } from './EmojiPicker/EmojiData.js';
 
@@ -33,6 +35,7 @@ export function convertShortcodesToImagesInNode(node) {
     const converted = convertShortcodesToImages(node.textContent);
     if (converted !== node.textContent) {
       const span = document.createElement('span');
+      span.className = 'emoji-converted-span';
       span.innerHTML = converted;
       parent.replaceChild(span, node);
     }

@@ -1,5 +1,5 @@
 // src/scripts/GifsPicker.js
-const GIPHY_API_KEY = 'TU_API_KEY_AQUI'; // Cámbiala por tu clave
+const GIPHY_API_KEY = 'TU_API_KEY_AQUI'; 
 const GIPHY_ENDPOINT = 'https://api.giphy.com/v1/gifs/search';
 
 let searchInput = null;
@@ -63,7 +63,6 @@ export async function initGifsPicker(container, onInsert) {
     if (e.key === 'Enter') searchGifs(searchInput.value);
   });
 
-  // Cargar trending
   try {
     const url = `https://api.giphy.com/v1/gifs/trending?api_key=${GIPHY_API_KEY}&limit=20&rating=pg`;
     const response = await fetch(url);

@@ -1,7 +1,9 @@
+// src/scripts/ActionMenu.js
 import interact from 'interactjs';
 import { showCustomEmojiModal, showQuickEmojiUpload } from './CustomEmojiModal.js';
+import { showCustomStickerModal, showQuickStickerUpload } from './StickerModal.js';
 import { insertAtCursor } from './input.js';
-import { registerModal, unregisterModal, associateOverlay, bringModalToFront, constrainModalPosition } from './modalStackManager.js';
+import { registerModal, bringModalToFront } from './modalStackManager.js';
 
 let modal = null;
 let isOpen = false;
@@ -147,6 +149,22 @@ function createModal() {
             </svg>
             <span>Gestionar emojis</span>
           </button>
+          <button class="action-option" data-action="manage_sticker">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <path d="M21 15l-5-4-3 3-4-4-5 5"/>
+            </svg>
+            <span>Gestionar stickers</span>
+          </button>
+          <button class="action-option" data-action="editor">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M17 3l4 4-7 7H10v-4l7-7z"/>
+              <path d="M4 20h16"/>
+              <path d="M12 10L4 18v4h4l8-8"/>
+            </svg>
+            <span>Editor</span>
+          </button>
         </div>
       </div>
     </div>
@@ -185,51 +203,32 @@ function setupInteract(element, dragHandle) {
         let height = event.rect.height;
         element.style.width = `${width}px`;
         element.style.height = `${height}px`;
-        
         windowX += event.deltaRect.left;
         windowY += event.deltaRect.top;
         element.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
         element.setAttribute('data-x', windowX);
         element.setAttribute('data-y', windowY);
-        
-        if (isKeyboardOpen) {
-          adjustModalPositionForKeyboard();
-        }
+        if (isKeyboardOpen) adjustModalPositionForKeyboard();
       }
     }
   });
-  
   interact(dragHandle).draggable({
     inertia: false,
     manualStart: false,
     allowFrom: dragHandle,
     preventDefault: 'always',
-    modifiers: [
-      interact.modifiers.restrictRect({
-        restriction: 'parent',
-        endOnly: true
-      })
-    ],
+    modifiers: [interact.modifiers.restrictRect({ restriction: 'parent', endOnly: true })],
     listeners: {
       start() { window.isDraggingModal = true; },
       move(event) {
         windowX += event.dx;
         windowY += event.dy;
-        
         element.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
         element.setAttribute('data-x', windowX);
         element.setAttribute('data-y', windowY);
-        
-        if (isKeyboardOpen) {
-          adjustModalPositionForKeyboard();
-        }
+        if (isKeyboardOpen) adjustModalPositionForKeyboard();
       },
-      end(event) {
-        window.isDraggingModal = false;
-        if (isKeyboardOpen) {
-          adjustModalPositionForKeyboard();
-        }
-      }
+      end() { window.isDraggingModal = false; }
     }
   });
 }
@@ -237,13 +236,14 @@ function setupInteract(element, dragHandle) {
 function handleAction(action) {
   switch (action) {
     case 'sticker':
-      showTransientNotification('Funcionalidad de crear sticker (próximamente)', 2000);
+      showQuickStickerUpload();
       break;
     case 'emoji':
       showQuickEmojiUpload();
       break;
     case 'image':
       const fileInput = document.createElement('input');
+      fileInput.className = 'hidden-file-input';
       fileInput.type = 'file';
       fileInput.accept = 'image/*';
       fileInput.onchange = (e) => {
@@ -261,6 +261,17 @@ function handleAction(action) {
       break;
     case 'manage_emoji':
       showCustomEmojiModal();
+      break;
+    case 'manage_sticker':
+      showCustomStickerModal();
+      break;
+    case 'editor':
+      import('./editor/FloatingPreview.js').then(module => {
+        if (module.showFloatingPreview) module.showFloatingPreview();
+      }).catch(err => console.error('Error cargando FloatingPreview:', err));
+      import('./editor/EditorModal.js').then(module => {
+        if (module.showEditorModal) module.showEditorModal();
+      }).catch(err => console.error('Error cargando EditorModal:', err));
       break;
   }
 }
@@ -283,13 +294,9 @@ function showModal() {
     container.style.height = '';
   }
   bringModalToFront('action-menu-modal');
-  
   originalContainerTransform = null;
   originalModalTop = null;
-  
-  if (isKeyboardOpen) {
-    setTimeout(() => adjustModalPositionForKeyboard(), 10);
-  }
+  if (isKeyboardOpen) setTimeout(() => adjustModalPositionForKeyboard(), 10);
 }
 
 function hideModal() {
@@ -315,7 +322,6 @@ if (window.visualViewport) {
 } else {
   window.addEventListener('resize', updateKeyboardStatus);
 }
-
 window.addEventListener('load', updateKeyboardStatus);
 window.addEventListener('keyboardchange', updateKeyboardStatus);
 

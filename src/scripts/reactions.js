@@ -14,7 +14,9 @@ import {
 import { getUsername } from './user.js';
 import { emitSocketEvent, isSocketConnected } from './socketUtils.js';
 import { enqueueEvent } from './queue.js';
-import { loadCustomEmojis, convertShortcodesToImages } from './emojiUtils.js';
+import { loadCustomEmojis } from './emojiUtils.js';
+import { showQuickStickerUpload } from './StickerModal.js';
+import { isStickerSaved, getStickerCategoryByUrl, removeCustomSticker, refreshStickersInPicker } from './StickerManager.js';
 
 const DEFAULT_EMOJIS = ['👍','❤️','😂','😮','😭','🔥'];
 const MAX_REACTIONS_PER_BUBBLE = 4;
@@ -22,9 +24,63 @@ const NOTIF_DURATION = 1000;
 
 const messagesEl = document.getElementById('messages');
 let activePopup = null;
-let activeTarget = null;
+let activeMenu = null;
+let activeThoughtBubbles = []; 
 let notifEl = null;
 let notifTimeout = null;
+
+function showConfirmPopup(message) {
+  return new Promise((resolve) => {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-blur-overlay';
+    overlay.style.zIndex = '30001';
+    document.body.appendChild(overlay);
+    overlay.classList.add('visible');
+
+    const popup = document.createElement('div');
+    popup.className = 'confirm-popup';
+    popup.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--modal-bg);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      z-index: 30002;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 250px;
+      text-align: center;
+      border: 1px solid var(--modal-input-border);
+    `;
+    popup.innerHTML = `
+      <p style="margin: 0; font-size: 16px; color: var(--modal-text);">${message}</p>
+      <div style="display: flex; justify-content: center; gap: 20px;">
+        <button class="confirm-no" style="background: transparent; border: none; cursor: pointer; font-size: 28px; color: #ef4444;">✗</button>
+        <button class="confirm-yes" style="background: transparent; border: none; cursor: pointer; font-size: 28px; color: #10b981;">✓</button>
+      </div>
+    `;
+    document.body.appendChild(popup);
+
+    const cleanup = () => {
+      popup.remove();
+      overlay.classList.remove('visible');
+      setTimeout(() => overlay.remove(), 200);
+    };
+
+    popup.querySelector('.confirm-no').addEventListener('click', () => {
+      cleanup();
+      resolve(false);
+    });
+    popup.querySelector('.confirm-yes').addEventListener('click', () => {
+      cleanup();
+      resolve(true);
+    });
+  });
+}
 
 function showTransientNotification(text, duration = NOTIF_DURATION) {
   if (!notifEl) {
@@ -82,10 +138,8 @@ function addCustomReaction(messageEl, emoji) {
   }
 }
 
-// Función auxiliar para obtener la URL de un emoji personalizado a partir de un shortcode
 function getCustomEmojiUrl(shortcode) {
   if (!window._customEmojiData) return null;
-  // Limpiar shortcode (quitar dos puntos si los tiene)
   const cleanShortcode = shortcode.replace(/^:/, '').replace(/:$/, '');
   const found = window._customEmojiData.find(e => e.shortcodes.includes(cleanShortcode));
   return found ? found.url : null;
@@ -108,7 +162,6 @@ export function renderReactionsOnBubble(messageEl) {
     const btn = document.createElement('button');
     btn.className = 'reaction-badge';
     
-    // Verificar si es un emoji personalizado (contiene dos puntos o es un shortcode conocido)
     const isCustom = (r.emoji && r.emoji.includes(':') && r.emoji.includes('custom_')) || 
                      (r.emoji && r.emoji.startsWith(':') && r.emoji.endsWith(':'));
     
@@ -249,7 +302,7 @@ function backupAndDeleteMessage(messageEl, isForAll = false) {
   }
 }
 
-function handleOptionAction(action, messageEl) {
+async function handleOptionAction(action, messageEl) {
   if (!messageEl) return;
   switch (action) {
     case 'copy':
@@ -278,26 +331,85 @@ function handleOptionAction(action, messageEl) {
     case 'forward':
       showTransientNotification('Mensaje reenviado');
       break;
+    case 'addSticker':
+      showQuickStickerUpload();
+      break;
+    case 'deleteSticker': {
+      const dragWrap = messageEl.querySelector('.msg-drag');
+      const stickerUrl = dragWrap ? dragWrap.dataset.stickerUrl : null;
+      if (stickerUrl) {
+        const confirmed = await showConfirmPopup('¿Eliminar este sticker de tus guardados?');
+        if (confirmed) {
+          const category = getStickerCategoryByUrl(stickerUrl);
+          if (category) {
+            removeCustomSticker(category, stickerUrl);
+            showTransientNotification('Sticker eliminado de tus guardados');
+            refreshStickersInPicker();
+          }
+        }
+      }
+      break;
+    }
   }
   hidePopup();
 }
 
-function isNearBottomVisible(messageEl) {
-  const allMessages = Array.from(document.querySelectorAll('.message'));
-  const visibleMessages = allMessages.filter(msg => {
-    const rect = msg.getBoundingClientRect();
-    const viewportH = window.innerHeight;
-    return rect.top < viewportH && rect.bottom > 0;
-  });
-  if (visibleMessages.length === 0) return false;
-  const lastTwo = visibleMessages.slice(-2);
-  return lastTwo.includes(messageEl);
+function createThoughtBubbles(messageEl, popupEl) {
+  activeThoughtBubbles.forEach(b => b.remove());
+  activeThoughtBubbles = [];
+
+  const msgRect = messageEl.querySelector('.msg-drag').getBoundingClientRect();
+  const popupRect = popupEl.getBoundingClientRect();
+
+  const startX = msgRect.left + msgRect.width / 2;
+  const startY = msgRect.top + msgRect.height / 2;
+  const endX = popupRect.left + popupRect.width / 2;
+  const endY = popupRect.top + popupRect.height / 2;
+
+  const numBubbles = 5;
+  const bubbleColors = ['#ffffff', '#f8f9fa', '#e9ecef'];
+
+  for (let i = 1; i <= numBubbles; i++) {
+    const t = i / (numBubbles + 0.5);
+    const x = startX + (endX - startX) * t;
+    const y = startY + (endY - startY) * t;
+    const size = 20 + (i / numBubbles) * 30;
+
+    const bubble = document.createElement('div');
+    bubble.className = 'thought-bubble';
+    bubble.textContent = '';
+    bubble.style.position = 'fixed';
+    bubble.style.left = (x - size/2) + 'px';
+    bubble.style.top = (y - size/2) + 'px';
+    bubble.style.width = size + 'px';
+    bubble.style.height = size + 'px';
+    bubble.style.borderRadius = '50%';
+    bubble.style.backgroundColor = bubbleColors[i % bubbleColors.length];
+    bubble.style.border = '2px solid #333';
+    bubble.style.boxShadow = '2px 2px 6px rgba(0,0,0,0.2)';
+    bubble.style.zIndex = '500'; 
+    bubble.style.opacity = '0';
+    bubble.style.transform = 'scale(0.5)';
+    bubble.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    bubble.style.pointerEvents = 'none';
+    document.body.appendChild(bubble);
+    activeThoughtBubbles.push(bubble);
+
+    setTimeout(() => {
+      bubble.style.opacity = '1';
+      bubble.style.transform = 'scale(1)';
+    }, i * 80);
+  }
+}
+
+function removeThoughtBubbles() {
+  activeThoughtBubbles.forEach(bubble => bubble.remove());
+  activeThoughtBubbles = [];
 }
 
 function showReactionsPopup(messageEl, anchorRect) {
   hidePopup();
 
-  // Asegurar que los emojis personalizados estén cargados
   loadCustomEmojis();
 
   const popup = document.createElement('div');
@@ -409,27 +521,22 @@ function showReactionsPopup(messageEl, anchorRect) {
     emojisRow.appendChild(btn);
   });
 
-  // Reacciones personalizadas (las que el usuario ya ha añadido a este mensaje)
   const customReactions = getCustomReactions(messageEl);
   
   customReactions.forEach(emoji => {
     const btn = document.createElement('button');
     btn.className = 'react-emoji';
     
-    // Normalizar el shortcode (asegurar que tenga dos puntos al inicio y al final)
     let normalizedShortcode = emoji;
     if (!normalizedShortcode.startsWith(':')) normalizedShortcode = ':' + normalizedShortcode;
     if (!normalizedShortcode.endsWith(':')) normalizedShortcode = normalizedShortcode + ':';
     
-    // Obtener la URL directamente
     const url = getCustomEmojiUrl(normalizedShortcode);
     
     if (url) {
-      // Crear imagen con estilos muy específicos para garantizar visibilidad
       const img = document.createElement('img');
       img.src = url;
       img.alt = emoji;
-      // Estilos en línea que forzarán la visibilidad independientemente del CSS externo
       img.style.cssText = `
         width: 1.5em !important;
         height: 1.5em !important;
@@ -444,7 +551,6 @@ function showReactionsPopup(messageEl, anchorRect) {
       `;
       btn.appendChild(img);
     } else {
-      // Fallback: texto
       btn.innerText = emoji;
       if (!btn.innerText.trim()) btn.innerText = '?';
     }
@@ -511,15 +617,12 @@ function showReactionsPopup(messageEl, anchorRect) {
 
   const viewportW = window.innerWidth;
   const viewportH = window.innerHeight;
-  const isLastVisible = isNearBottomVisible(messageEl);
 
   const { popup: popupPos, menu: menuPos, layout } = computeLayout({
-    anchorRect,
     popupRect,
     menuRect,
     viewportW,
-    viewportH,
-    isLastVisibleMessage: isLastVisible
+    viewportH
   });
 
   popup.style.left = popupPos.left + 'px';
@@ -545,13 +648,14 @@ function showReactionsPopup(messageEl, anchorRect) {
     popup.style.transition = '';
   }, 400);
 
+  createThoughtBubbles(messageEl, popup);
+
   showOptionsMenu(messageEl, menuPos, isMe, (action) => {
     handleOptionAction(action, messageEl);
   });
 
   applyLiftEffect(messageEl);
   activePopup = popup;
-  activeTarget = messageEl;
 
   setTimeout(() => {
     window.addEventListener('pointerdown', onOutside);
@@ -573,11 +677,18 @@ function hidePopup() {
   }
   hideOptionsMenu();
   removeLiftEffect();
+  removeThoughtBubbles(); 
   window.removeEventListener('pointerdown', onOutside);
-  activeTarget = null;
 }
 
 if (messagesEl) {
+  messagesEl.addEventListener('mousedown', (e) => {
+    const bubble = e.target.closest('.msg-drag');
+    if (bubble) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
   messagesEl.addEventListener('click', (e) => {
     const bubble = e.target.closest('.msg-drag');
     if (!bubble) return;

@@ -1,3 +1,5 @@
+// src/scripts/CustomEmojiPicker.js
+
 import 'emoji-picker-element';
 
 export const customEmojiCollection = [
