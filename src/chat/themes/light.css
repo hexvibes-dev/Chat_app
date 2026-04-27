@@ -1,0 +1,26 @@
+html[data-theme="light"] {
+  --msg-bg-me: linear-gradient(135deg, #a5f3fc, #cffafe);
+  --msg-bg-other: linear-gradient(135deg, #e2e8f0, #f8fafc);
+  --msg-border-me: #a5f3fc;
+  --msg-border-other: #cbd5e1;
+  --text-color: #0f172a;
+  --hour-color: #64748b;
+  --hour-color-me: #0f172a;
+  --header-bg: linear-gradient(135deg, #f472b6, #fbcfe8, #22d3ee);
+  --input-bg: #f472b6;
+  --send-btn-bg: #22d3ee;
+  
+  --modal-bg: #ffffff;
+  --modal-text: #0f172a;
+  --modal-header: #0891b2;
+  --modal-input-bg: #f8fafc;
+  --modal-input-border: #cbd5e1;
+  --modal-btn-primary: #0891b2;
+  --modal-btn-primary-text: #ffffff;
+  --modal-btn-select: #0099ff;
+  --bg-theme-header: #ffffff;
+  --modal-btn-secondary-text: #0f172a;
+  --notification-bg: #ffffff;
+  --notification-text: #0891b2;
+  --notification-border: #0891b2;
+}

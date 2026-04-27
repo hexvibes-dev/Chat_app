@@ -1,0 +1,713 @@
+html[data-theme="nuevo"] {
+  /* general */
+  --app-bg-image: url('/img/dark.jpg');
+  --app-bg-color: #1e293b;
+  --app-bg-opacity: 1;
+  
+  
+  
+  /*  Header  */
+  --header-bg: purple;
+  --header-backdrop-filter: blur(0px);
+  --header-width: 100%;
+  --header-height: 56px;
+  --header-letter-spacing: 1.4px;
+  --header-transition: all 0.3s ease-in-out;
+  --header-animation: ;
+  --header-font-family: monospace;
+  --header-font-size: 1.2rem;
+  --header-font-weight: 600;
+  --header-margin-top: 0;
+  --header-margin-right: 0;
+  --header-margin-bottom: 0;
+  --header-margin-left: 0;
+  --padding-top-header: 20px;
+  --padding-right-header: 15px;
+  --padding-bottom-header: 25px;
+  --padding-left-header: 15px;
+  --padding-block-header: 30px;
+  --padding-block-start-header: 10px;
+  --padding-block-end-header: 20px;
+  --padding-inline-header: 40px;
+  --padding-inline-start-header: 12px;
+  --padding-inline-end-header: 18px;
+  
+  --header-text: white;
+  --header-text-style: monospace;
+  --header-text-size: 12px;
+  --header-text-weight: 900;
+  --header-text-background: transparent;
+  --header-text-backdrop-filter: blur(4px);
+  --header-text-width: auto;
+  --header-text-height: 30px;
+  --header-text-margin-top: 10px;
+  --header-text-margin-right: 15px;
+  --header-text-margin-bottom: 20px;
+  --header-text-margin-left: 15px;
+  --header-text-padding-top: 20px;
+  --header-text-padding-right: 15px;
+  --header-text-padding-bottom: 25px;
+  --header-text-padding-left: 15px;
+  --header-text-padding-block: 30px;
+  --header-text-padding-block-start: 10px;
+  --header-text-padding-block-end: 20px;
+  --header-text-padding-inline: 40px;
+  --header-text-padding-inline-start: 12px;
+  --header-text-padding-inline-end: 18px;
+  --header-text-border-top-width: 2px;
+  --header-text-border-top-style: solid;
+  --header-text-border-top-color: #0099ff;
+  --header-text-border-right-width: 2px;
+  --header-text-border-right-style: solid;
+  --header-text-border-right-color: #0099ff;
+  --header-text-border-bottom-width: 2px;
+  --header-text-border-bottom-style: solid;
+  --header-text-border-bottom-color: #0099ff;
+  --header-text-border-left-width: 2px;
+  --header-text-border-left-style: solid;
+  --header-text-border-left-color: #0099ff;
+  --header-text-border-radius-top-left: 10px;
+  --header-text-border-radius-top-right: 15px;
+  --header-text-border-radius-bottom-right: 20px;
+  --header-text-border-radius-bottom-left: 25px;
+  --header-text-line-height: 1.4;
+  --header-text-letter-spacing: 1.2px;
+  --header-text-word-spacing: 2px;
+  --header-text-text-transform: uppercase;
+  --header-text-text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  --header-text-opacity: 0.95;
+  
+  --border-top-header-width: 2px;
+  --border-top-header-style: solid;
+  --border-top-header-color: transparent;
+  --border-right-header-width: 2px;
+  --border-right-header-style: solid;
+  --border-right-header-color: transparent;
+  --border-left-header-width: 2px;
+  --border-left-header-style: solid;
+  --border-left-header-color: transparent;
+  --border-bottom-header-width: 3px;
+  --border-bottom-header-style: solid;
+  --border-bottom-header-color: violet;
+  
+  --header-border-radius-top-left: 0;
+  --header-border-radius-top-right: 0;
+  --header-border-radius-bottom-right: 30px;
+  --header-border-radius-bottom-left: 30px;
+  
+  --shadow-header: 0 18px 25px green;
+  --inset-shadow-header: 0 0 0 transparent;
+  
+  
+  --header-hamburger-btn-background: transparent;
+  --header-hamburger-btn-gap: 8px;
+  --header-hamburger-btn-top: 10px;
+  --header-hamburger-btn-right: 10px;
+  --header-hamburger-btn-left: auto;
+  --header-hamburger-btn-bottom: auto;
+  --header-hamburger-btn-width: 35px;
+  --header-hamburger-btn-height: 30px;
+  --header-hamburger-btn-padding-top: 0;
+  --header-hamburger-btn-padding-right: 0;
+  --header-hamburger-btn-padding-bottom: 0;
+  --header-hamburger-btn-padding-left: 0;
+  --header-hamburger-btn-border-top-width: 2px;
+  --header-hamburger-btn-border-top-style: solid;
+  --header-hamburger-btn-border-top-color: transparent;
+  --header-hamburger-btn-border-right-width: 2px;
+  --header-hamburger-btn-border-right-style: solid;
+  --header-hamburger-btn-border-right-color: transparent;
+  --header-hamburger-btn-border-bottom-width: 2px;
+  --header-hamburger-btn-border-bottom-style: solid;
+  --header-hamburger-btn-border-bottom-color: transparent;
+  --header-hamburger-btn-border-left-width: 2px;
+  --header-hamburger-btn-border-left-style: solid;
+  --header-hamburger-btn-border-left-color: transparent;
+  --header-hamburger-btn-border-radius-top-left: 0;
+  --header-hamburger-btn-border-radius-top-right: 0;
+  --header-hamburger-btn-border-radius-bottom-right: 0;
+  --header-hamburger-btn-border-radius-bottom-left: 0;
+  --header-hamburger-btn-transition: all 0.3s ease-in-out;
+  --header-hamburger-btn-animation: none;
+  --header-hamburger-btn-backdrop-filter: blur(0px);
+  --header-hamburger-btn-box-shadow: 0 4px 12px gray;
+  --header-hamburger-btn-inset-box-shadow: 0 0 2px red;
+  --header-hamburger-btn-opacity: 1;
+  --hover-header-hamburger-btn-background: rgba(255, 255, 255, 0.2);
+  --hover-header-hamburger-btn-top: 10px;
+  --hover-header-hamburger-btn-right: 10px;
+  --hover-header-hamburger-btn-left: auto;
+  --hover-header-hamburger-btn-bottom: auto;
+  --hover-header-hamburger-btn-width: 45px;
+  --hover-header-hamburger-btn-height: 35px;
+  --hover-header-hamburger-btn-padding-top: 0;
+  --hover-header-hamburger-btn-padding-right: 0;
+  --hover-header-hamburger-btn-padding-bottom: 0;
+  --hover-header-hamburger-btn-padding-left: 0;
+  --hover-header-hamburger-btn-border-top-width: 2px;
+  --hover-header-hamburger-btn-border-top-style: solid;
+  --hover-header-hamburger-btn-border-top-color: transparent;
+  --hover-header-hamburger-btn-border-right-width: 2px;
+  --hover-header-hamburger-btn-border-right-style: solid;
+  --hover-header-hamburger-btn-border-right-color: transparent;
+  --hover-header-hamburger-btn-border-bottom-width: 2px;
+  --hover-header-hamburger-btn-border-bottom-style: solid;
+  --hover-header-hamburger-btn-border-bottom-color: transparent;
+  --hover-header-hamburger-btn-border-left-width: 2px;
+  --hover-header-hamburger-btn-border-left-style: solid;
+  --hover-header-hamburger-btn-border-left-color: transparent;
+  --hover-header-hamburger-btn-border-radius-top-left: 6px;
+  --hover-header-hamburger-btn-border-radius-top-right: 6px;
+  --hover-header-hamburger-btn-border-radius-bottom-right: 6px;
+  --hover-header-hamburger-btn-border-radius-bottom-left: 6px;
+  --hover-header-hamburger-btn-transition: all 0.3s ease-in-out;
+  --hover-header-hamburger-btn-animation: none;
+  --hover-header-hamburger-btn-backdrop-filter: blur(6px);
+  --hover-header-hamburger-btn-box-shadow: 0 0 0 transparent;
+  --hover-header-hamburger-btn-inset-box-shadow: 0 0 0 transparent;
+  --hover-header-hamburger-btn-opacity: 0.95;
+  
+  --active-header-hamburger-btn-background: rgba(255, 255, 255, 0.3);
+  --active-header-hamburger-btn-top: 10px;
+  --active-header-hamburger-btn-right: 10px;
+  --active-header-hamburger-btn-left: auto;
+  --active-header-hamburger-btn-bottom: auto;
+  --active-header-hamburger-btn-width: 45px;
+  --active-header-hamburger-btn-height: 35px;
+  --active-header-hamburger-btn-padding-top: 0;
+  --active-header-hamburger-btn-padding-right: 0;
+  --active-header-hamburger-btn-padding-bottom: 0;
+  --active-header-hamburger-btn-padding-left: 0;
+  --active-header-hamburger-btn-border-top-width: 2px;
+  --active-header-hamburger-btn-border-top-style: solid;
+  --active-header-hamburger-btn-border-top-color: transparent;
+  --active-header-hamburger-btn-border-right-width: 2px;
+  --active-header-hamburger-btn-border-right-style: solid;
+  --active-header-hamburger-btn-border-right-color: transparent;
+  --active-header-hamburger-btn-border-bottom-width: 2px;
+  --active-header-hamburger-btn-border-bottom-style: solid;
+  --active-header-hamburger-btn-border-bottom-color: transparent;
+  --active-header-hamburger-btn-border-left-width: 2px;
+  --active-header-hamburger-btn-border-left-style: solid;
+  --active-header-hamburger-btn-border-left-color: transparent;
+  --active-header-hamburger-btn-border-radius-top-left: 6px;
+  --active-header-hamburger-btn-border-radius-top-right: 6px;
+  --active-header-hamburger-btn-border-radius-bottom-right: 6px;
+  --active-header-hamburger-btn-border-radius-bottom-left: 6px;
+  --active-header-hamburger-btn-transition: all 0.3s ease-in-out;
+  --active-header-hamburger-btn-animation: none;
+  --active-header-hamburger-btn-backdrop-filter: blur(8px);
+  --active-header-hamburger-btn-box-shadow: 0 0 25px red;
+  --active-header-hamburger-btn-inset-box-shadow: 0 0 10px blue;
+  --active-header-hamburger-btn-opacity: 0.9;
+  
+  
+  --header-hamburger-span-width: 100%;
+  --header-hamburger-span-height: 3px;
+  --header-hamburger-span-background: #333;
+  --header-hamburger-span-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /*  --header-hamburger-span-transform: translateY(0) rotate(0deg); */
+  --header-hamburger-span-animation: none;
+  --header-hamburger-span-transition: all 0.3s ease-in-out;
+  --header-hamburger-span-opacity: 1;
+  
+  --hover-header-hamburger-span-background: #555;
+  --hover-header-hamburger-span-width: 100%;
+  --hover-header-hamburger-span-height: 3px;
+  /*  --hover-header-hamburger-span-transform: scale(1.05); */
+  --hover-header-hamburger-span-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  --hover-header-hamburger-span-transition: all 0.3s ease-in-out;
+  --hover-header-hamburger-span-opacity: 1;
+  
+  --active-header-hamburger-span-background: #111;
+  --active-header-hamburger-span-width: 100%;
+  --active-header-hamburger-span-height: 3px;
+  /*  --active-header-hamburger-span-transform: rotate(-5deg); */
+  --active-header-hamburger-span-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  --active-header-hamburger-span-transition: all 0.3s ease-in-out;
+  --active-header-hamburger-span-opacity: 1;
+  
+  --header-hamburger-span-border-top-width: 2px;
+  --header-hamburger-span-border-top-style: solid;
+  --header-hamburger-span-border-top-color: #333;
+  --header-hamburger-span-border-right-width: 2px;
+  --header-hamburger-span-border-right-style: solid;
+  --header-hamburger-span-border-right-color: #333;
+  --header-hamburger-span-border-bottom-width: 2px;
+  --header-hamburger-span-border-bottom-style: solid;
+  --header-hamburger-span-border-bottom-color: #333;
+  --header-hamburger-span-border-left-width: 2px;
+  --header-hamburger-span-border-left-style: solid;
+  --header-hamburger-span-border-left-color: #333;
+  
+  --hover-header-hamburger-span-border-top-width: 2px;
+  --hover-header-hamburger-span-border-top-style: solid;
+  --hover-header-hamburger-span-border-top-color: #555;
+  --hover-header-hamburger-span-border-right-width: 2px;
+  --hover-header-hamburger-span-border-right-style: solid;
+  --hover-header-hamburger-span-border-right-color: #555;
+  --hover-header-hamburger-span-border-bottom-width: 2px;
+  --hover-header-hamburger-span-border-bottom-style: solid;
+  --hover-header-hamburger-span-border-bottom-color: #555;
+  --hover-header-hamburger-span-border-left-width: 2px;
+  --hover-header-hamburger-span-border-left-style: solid;
+  --hover-header-hamburger-span-border-left-color: #555;
+  
+  --active-header-hamburger-span-border-top-width: 2px;
+  --active-header-hamburger-span-border-top-style: solid;
+  --active-header-hamburger-span-border-top-color: #111;
+  --active-header-hamburger-span-border-right-width: 2px;
+  --active-header-hamburger-span-border-right-style: solid;
+  --active-header-hamburger-span-border-right-color: #111;
+  --active-header-hamburger-span-border-bottom-width: 2px;
+  --active-header-hamburger-span-border-bottom-style: solid;
+  --active-header-hamburger-span-border-bottom-color: #111;
+  --active-header-hamburger-span-border-left-width: 2px;
+  --active-header-hamburger-span-border-left-style: solid;
+  --active-header-hamburger-span-border-left-color: #111;
+  --header-hamburger-span-border-top-width: 2px;
+  --header-hamburger-span-border-top-style: solid;
+  --header-hamburger-span-border-top-color: #333;
+  --header-hamburger-span-border-right-width: 2px;
+  --header-hamburger-span-border-right-style: solid;
+  --header-hamburger-span-border-right-color: #333;
+  --header-hamburger-span-border-bottom-width: 2px;
+  --header-hamburger-span-border-bottom-style: solid;
+  --header-hamburger-span-border-bottom-color: #333;
+  --header-hamburger-span-border-left-width: 2px;
+  --header-hamburger-span-border-left-style: solid;
+  --header-hamburger-span-border-left-color: #333;
+  --header-hamburger-span-border-radius-top-left: 3px;
+  --header-hamburger-span-border-radius-top-right: 3px;
+  --header-hamburger-span-border-radius-bottom-right: 3px;
+  --header-hamburger-span-border-radius-bottom-left: 3px;
+  
+  --hover-header-hamburger-span-border-top-width: 2px;
+  --hover-header-hamburger-span-border-top-style: solid;
+  --hover-header-hamburger-span-border-top-color: #555;
+  --hover-header-hamburger-span-border-right-width: 2px;
+  --hover-header-hamburger-span-border-right-style: solid;
+  --hover-header-hamburger-span-border-right-color: #555;
+  --hover-header-hamburger-span-border-bottom-width: 2px;
+  --hover-header-hamburger-span-border-bottom-style: solid;
+  --hover-header-hamburger-span-border-bottom-color: #555;
+  --hover-header-hamburger-span-border-left-width: 2px;
+  --hover-header-hamburger-span-border-left-style: solid;
+  --hover-header-hamburger-span-border-left-color: #555;
+  --hover-header-hamburger-span-border-radius-top-left: 3px;
+  --hover-header-hamburger-span-border-radius-top-right: 3px;
+  --hover-header-hamburger-span-border-radius-bottom-right: 3px;
+  --hover-header-hamburger-span-border-radius-bottom-left: 3px;
+  
+  --active-header-hamburger-span-border-top-width: 2px;
+  --active-header-hamburger-span-border-top-style: solid;
+  --active-header-hamburger-span-border-top-color: #111;
+  --active-header-hamburger-span-border-right-width: 2px;
+  --active-header-hamburger-span-border-right-style: solid;
+  --active-header-hamburger-span-border-right-color: #111;
+  --active-header-hamburger-span-border-bottom-width: 2px;
+  --active-header-hamburger-span-border-bottom-style: solid;
+  --active-header-hamburger-span-border-bottom-color: #111;
+  --active-header-hamburger-span-border-left-width: 2px;
+  --active-header-hamburger-span-border-left-style: solid;
+  --active-header-hamburger-span-border-left-color: #111;
+  --active-header-hamburger-span-border-radius-top-left: 3px;
+  --active-header-hamburger-span-border-radius-top-right: 3px;
+  --active-header-hamburger-span-border-radius-bottom-right: 3px;
+  --active-header-hamburger-span-border-radius-bottom-left: 3px;
+  
+  
+  
+  /* ==========================================================================
+   HAMBURGER MENU - VARIABLES COMPLETAS
+   ========================================================================== */
+  
+  /* ===== HAMBURGER MENU CONTAINER ===== */
+  --hamburger-menu-bg: #1e1e2e;
+  --hamburger-menu-color: #ffffff;
+  --hamburger-menu-width: 200px;
+  --hamburger-menu-top: 56px;
+  --hamburger-menu-right: 16px;
+  --hamburger-menu-border-radius-top-left: 28px;
+  --hamburger-menu-border-radius-top-right: 5px;
+  --hamburger-menu-border-radius-bottom-right: 28px;
+  --hamburger-menu-border-radius-bottom-left: 28px;
+  --hamburger-menu-shadow-external: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --hamburger-menu-shadow-internal: none;
+  
+  /* Borders del menú */
+  --hamburger-menu-border-top-width: var(--border-top-hamburger-width, 2px);
+  --hamburger-menu-border-top-style: var(--border-top-hamburger-style, solid);
+  --hamburger-menu-border-top-color: var(--border-top-hamburger-color, #0099ff);
+  --hamburger-menu-border-right-width: var(--border-right-hamburger-width, 2px);
+  --hamburger-menu-border-right-style: var(--border-right-hamburger-style, solid);
+  --hamburger-menu-border-right-color: var(--border-right-hamburger-color, #0099ff);
+  --hamburger-menu-border-bottom-width: var(--border-bottom-hamburger-width, 2px);
+  --hamburger-menu-border-bottom-style: var(--border-bottom-hamburger-style, solid);
+  --hamburger-menu-border-bottom-color: var(--border-bottom-hamburger-color, #0099ff);
+  --hamburger-menu-border-left-width: var(--border-left-hamburger-width, 2px);
+  --hamburger-menu-border-left-style: var(--border-left-hamburger-style, solid);
+  --hamburger-menu-border-left-color: var(--border-left-hamburger-color, #0099ff);
+  
+  /* ===== HAMBURGER MENU LISTA ===== */
+  --hamburger-menu-list-margin: 0;
+  --hamburger-menu-list-padding: 8px 0;
+  
+  /* ===== HAMBURGER MENU ITEMS (botones) ===== */
+  --hamburger-item-padding-top: 12px;
+  --hamburger-item-padding-right: 20px;
+  --hamburger-item-padding-bottom: 12px;
+  --hamburger-item-padding-left: 20px;
+  --hamburger-item-gap: 0;
+  --hamburger-item-font-family: inherit;
+  --hamburger-item-font-size: 16px;
+  --hamburger-item-font-weight: 400;
+  --hamburger-item-line-height: 1.4;
+  --hamburger-item-letter-spacing: normal;
+  --hamburger-item-color: var(--hamburger-modal-text, #ffffff);
+  --hamburger-item-bg: transparent;
+  --hamburger-item-transition: background 0.2s, transform 0.2s, opacity 0.2s;
+  --hamburger-item-opacity: 1;
+  
+  /* Hover */
+  --hamburger-item-hover-bg: #334155;
+  --hamburger-item-hover-color: #ffffff;
+  --hamburger-item-hover-transform: none;
+  --hamburger-item-hover-transition: background 0.2s;
+  --hamburger-item-hover-opacity: 1;
+  
+  /* Active */
+  --hamburger-item-active-bg: #1f2937;
+  --hamburger-item-active-color: #ffffff;
+  --hamburger-item-active-transform: scale(0.98);
+  
+  /* ===== MODAL OVERLAY ===== */
+  --modal-overlay-bg: rgba(0, 0, 0, 0.7);
+  --modal-overlay-opacity: 0;
+  --modal-overlay-visible-opacity: 1;
+  --modal-overlay-transition: opacity 200ms ease;
+  
+  /* ===== THEME MODAL ===== */
+  --theme-modal-bg: transparent;
+  
+  /* Theme Card */
+  --theme-card-width: 500px;
+  --theme-card-max-width: 90vw;
+  --theme-card-bg: #0f172a;
+  --theme-card-border-radius: 20px;
+  --theme-card-padding: 24px;
+  --theme-card-color: #e2e8f0;
+  --theme-card-shadow-external: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --theme-card-shadow-internal: none;
+  
+  /* Theme Card borders */
+  --theme-card-border-top-width: 1px;
+  --theme-card-border-top-style: solid;
+  --theme-card-border-top-color: #1e293b;
+  --theme-card-border-right-width: 1px;
+  --theme-card-border-right-style: solid;
+  --theme-card-border-right-color: #1e293b;
+  --theme-card-border-bottom-width: 1px;
+  --theme-card-border-bottom-style: solid;
+  --theme-card-border-bottom-color: #1e293b;
+  --theme-card-border-left-width: 1px;
+  --theme-card-border-left-style: solid;
+  --theme-card-border-left-color: #1e293b;
+  
+  /* Theme Header */
+  --theme-header-margin-bottom: 16px;
+  --theme-header-gap: 0;
+  
+  /* Theme Header Title */
+  --theme-header-title-margin: 0;
+  --theme-header-title-font-family: inherit;
+  --theme-header-title-font-size: 22px;
+  --theme-header-title-font-weight: 600;
+  --theme-header-title-color: #2dd4bf;
+  --theme-header-title-line-height: 1.4;
+  --theme-header-title-letter-spacing: normal;
+  
+  /* Theme Close Button */
+  --theme-close-btn-bg: transparent;
+  --theme-close-btn-color: #94a3b8;
+  --theme-close-btn-font-size: 20px;
+  --theme-close-btn-padding: 4px 8px;
+  --theme-close-btn-border-radius: 20px;
+  --theme-close-btn-transition: background 0.2s, color 0.2s, transform 0.2s;
+  --theme-close-btn-opacity: 1;
+  
+  /* Hover */
+  --theme-close-btn-hover-bg: #334155;
+  --theme-close-btn-hover-color: white;
+  --theme-close-btn-hover-transform: none;
+  --theme-close-btn-hover-opacity: 1;
+  
+  /* Active */
+  --theme-close-btn-active-bg: #1f2937;
+  --theme-close-btn-active-transform: scale(0.95);
+  
+  /* Theme Scroll Content */
+  --theme-scroll-content-max-height: 60vh;
+  --theme-scroll-content-padding-right: 8px;
+  
+  /* Scrollbar */
+  --theme-scrollbar-width: 6px;
+  --theme-scrollbar-track-bg: #1e293b;
+  --theme-scrollbar-track-border-radius: 10px;
+  --theme-scrollbar-thumb-bg: #14b8a6;
+  --theme-scrollbar-thumb-border-radius: 10px;
+  
+  /* Theme Card Headings */
+  --theme-card-h3-margin-top: 16px;
+  --theme-card-h3-margin-right: 0;
+  --theme-card-h3-margin-bottom: 8px;
+  --theme-card-h3-margin-left: 0;
+  --theme-card-h3-font-family: inherit;
+  --theme-card-h3-font-size: 16px;
+  --theme-card-h3-font-weight: 600;
+  --theme-card-h3-color: #cbd5e1;
+  --theme-card-h3-line-height: 1.4;
+  --theme-card-h3-letter-spacing: normal;
+  
+  /* Theme Options Container */
+  --theme-options-gap: 12px;
+  --theme-options-margin-bottom: 16px;
+  
+  /* Theme Button */
+  --theme-btn-padding-top: 8px;
+  --theme-btn-padding-right: 20px;
+  --theme-btn-padding-bottom: 8px;
+  --theme-btn-padding-left: 20px;
+  --theme-btn-border-radius: 40px;
+  --theme-btn-bg: #1e293b;
+  --theme-btn-color: white;
+  --theme-btn-transition: all 0.2s;
+  --theme-btn-font-family: inherit;
+  --theme-btn-font-size: 14px;
+  --theme-btn-font-weight: 500;
+  --theme-btn-line-height: 1.4;
+  --theme-btn-letter-spacing: normal;
+  --theme-btn-opacity: 1;
+  
+  /* Theme Button borders */
+  --theme-btn-border-top-width: 1px;
+  --theme-btn-border-top-style: solid;
+  --theme-btn-border-top-color: #334155;
+  --theme-btn-border-right-width: 1px;
+  --theme-btn-border-right-style: solid;
+  --theme-btn-border-right-color: #334155;
+  --theme-btn-border-bottom-width: 1px;
+  --theme-btn-border-bottom-style: solid;
+  --theme-btn-border-bottom-color: #334155;
+  --theme-btn-border-left-width: 1px;
+  --theme-btn-border-left-style: solid;
+  --theme-btn-border-left-color: #334155;
+  
+  /* Active (seleccionado) */
+  --theme-btn-active-bg: #0d9488;
+  --theme-btn-active-color: #ffffff;
+  --theme-btn-active-border-top-color: #14b8a6;
+  --theme-btn-active-border-right-color: #14b8a6;
+  --theme-btn-active-border-bottom-color: #14b8a6;
+  --theme-btn-active-border-left-color: #14b8a6;
+  
+  /* Hover */
+  --theme-btn-hover-bg: #334155;
+  --theme-btn-hover-color: #ffffff;
+  --theme-btn-hover-transform: translateY(-2px);
+  --theme-btn-hover-opacity: 1;
+  
+  /* Active click */
+  --theme-btn-active-click-transform: scale(0.98);
+  
+  /* ===== BACKGROUND PREVIEW ===== */
+  --bg-preview-width: 70px;
+  --bg-preview-height: 70px;
+  --bg-preview-border-radius: 16px;
+  --bg-preview-border-top-width: 2px;
+  --bg-preview-border-top-style: solid;
+  --bg-preview-border-top-color: transparent;
+  --bg-preview-border-right-width: 2px;
+  --bg-preview-border-right-style: solid;
+  --bg-preview-border-right-color: transparent;
+  --bg-preview-border-bottom-width: 2px;
+  --bg-preview-border-bottom-style: solid;
+  --bg-preview-border-bottom-color: transparent;
+  --bg-preview-border-left-width: 2px;
+  --bg-preview-border-left-style: solid;
+  --bg-preview-border-left-color: transparent;
+  --bg-preview-transition: transform 0.1s, border-color 0.1s;
+  --bg-preview-opacity: 1;
+  
+  /* Selected */
+  --bg-preview-selected-border-top-color: #14b8a6;
+  --bg-preview-selected-border-right-color: #14b8a6;
+  --bg-preview-selected-border-bottom-color: #14b8a6;
+  --bg-preview-selected-border-left-color: #14b8a6;
+  --bg-preview-selected-transform: scale(1.05);
+  
+  /* ===== CUSTOM FILE UPLOAD ===== */
+  --custom-file-upload-margin-bottom: 20px;
+  
+  /* File Upload Button */
+  --file-upload-btn-gap: 8px;
+  --file-upload-btn-bg: #334155;
+  --file-upload-btn-color: #e2e8f0;
+  --file-upload-btn-padding-top: 10px;
+  --file-upload-btn-padding-right: 20px;
+  --file-upload-btn-padding-bottom: 10px;
+  --file-upload-btn-padding-left: 20px;
+  --file-upload-btn-border-radius: 40px;
+  --file-upload-btn-font-family: inherit;
+  --file-upload-btn-font-size: 14px;
+  --file-upload-btn-font-weight: 600;
+  --file-upload-btn-line-height: 1.4;
+  --file-upload-btn-letter-spacing: normal;
+  --file-upload-btn-transition: all 0.2s ease;
+  --file-upload-btn-opacity: 1;
+  
+  /* File Upload Button borders */
+  --file-upload-btn-border-top-width: 1px;
+  --file-upload-btn-border-top-style: solid;
+  --file-upload-btn-border-top-color: transparent;
+  --file-upload-btn-border-right-width: 1px;
+  --file-upload-btn-border-right-style: solid;
+  --file-upload-btn-border-right-color: transparent;
+  --file-upload-btn-border-bottom-width: 1px;
+  --file-upload-btn-border-bottom-style: solid;
+  --file-upload-btn-border-bottom-color: transparent;
+  --file-upload-btn-border-left-width: 1px;
+  --file-upload-btn-border-left-style: solid;
+  --file-upload-btn-border-left-color: transparent;
+  
+  /* Hover */
+  --file-upload-btn-hover-bg: #14b8a6;
+  --file-upload-btn-hover-color: #0f172a;
+  --file-upload-btn-hover-transform: translateY(-2px);
+  --file-upload-btn-hover-opacity: 1;
+  
+  /* Active */
+  --file-upload-btn-active-transform: translateY(1px);
+  
+  /* ===== MODAL ACTIONS ===== */
+  --modal-actions-gap: 12px;
+  --modal-actions-margin-top: 24px;
+  
+  /* Modal Action Buttons */
+  --modal-action-btn-padding-top: 10px;
+  --modal-action-btn-padding-right: 24px;
+  --modal-action-btn-padding-bottom: 10px;
+  --modal-action-btn-padding-left: 24px;
+  --modal-action-btn-border-radius: 40px;
+  --modal-action-btn-font-weight: 600;
+  --modal-action-btn-font-size: 14px;
+  --modal-action-btn-transition: all 0.2s ease;
+  --modal-action-btn-opacity: 1;
+  
+  /* Save Button */
+  --btn-save-bg: #14b8a6;
+  --btn-save-color: #0f172a;
+  --btn-save-hover-bg: #0d9488;
+  --btn-save-hover-transform: scale(0.98);
+  --btn-save-active-bg: #0f766e;
+  --btn-save-active-transform: scale(0.96);
+  
+  /* Cancel Button */
+  --btn-cancel-bg: #334155;
+  --btn-cancel-color: white;
+  --btn-cancel-hover-bg: #475569;
+  --btn-cancel-hover-transform: scale(0.98);
+  --btn-cancel-active-bg: #1f2937;
+  --btn-cancel-active-transform: scale(0.96);
+  
+  /* ===== THEME MODAL ANIMATIONS ===== */
+  --theme-modal-enter-transform: scale(0.95);
+  --theme-modal-enter-opacity: 0;
+  --theme-modal-enter-transition: transform 0.2s, opacity 0.2s;
+  
+  --theme-modal-card-transform: scale(1);
+  --theme-modal-card-opacity: 1;
+  
+  --theme-modal-leave-transform: scale(0.95);
+  --theme-modal-leave-opacity: 0;
+  
+  /* ===== THEME MODAL OVERLAY ===== */
+  --theme-modal-overlay-bg: rgba(0, 0, 0, 0.7);
+  --theme-modal-overlay-opacity: 0;
+  --theme-modal-overlay-visible-opacity: 1;
+  --theme-modal-overlay-transition: opacity 200ms ease;
+  
+  /* ===== THEME FLOATING WINDOW ===== */
+  --theme-floating-window-bg: #0f172a;
+  --theme-floating-window-border-radius: 28px;
+  --theme-floating-window-min-width: 300px;
+  --theme-floating-window-min-height: 300px;
+  --theme-floating-window-max-width: 90vw;
+  --theme-floating-window-max-height: 90vh;
+  --theme-floating-window-shadow-external: 0 25px 50px rgba(0, 0, 0, 0.5);
+  --theme-floating-window-shadow-internal: none;
+  
+  /* ===== THEME FLOATING CARD ===== */
+  --theme-floating-card-padding: 24px;
+  --theme-floating-card-color: #e2e8f0;
+  
+  /* ===== THEME DRAG HANDLE ===== */
+  --theme-drag-handle-bg: #ef4444;
+  --theme-drag-handle-border-radius: 9999px;
+  --theme-drag-handle-width: 40px;
+  --theme-drag-handle-height: 40px;
+  --theme-drag-handle-shadow-external: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --theme-drag-handle-shadow-internal: none;
+  
+  /* Drag Handle borders */
+  --theme-drag-handle-border-top-width: 2px;
+  --theme-drag-handle-border-top-style: solid;
+  --theme-drag-handle-border-top-color: white;
+  --theme-drag-handle-border-right-width: 2px;
+  --theme-drag-handle-border-right-style: solid;
+  --theme-drag-handle-border-right-color: white;
+  --theme-drag-handle-border-bottom-width: 2px;
+  --theme-drag-handle-border-bottom-style: solid;
+  --theme-drag-handle-border-bottom-color: white;
+  --theme-drag-handle-border-left-width: 2px;
+  --theme-drag-handle-border-left-style: solid;
+  --theme-drag-handle-border-left-color: white;
+  
+  /* Drag Handle Span */
+  --theme-drag-handle-span-color: white;
+  --theme-drag-handle-span-font-size: 20px;
+  --theme-drag-handle-span-font-weight: bold;
+  
+  /* ===== CACHE CLEANER MODAL ===== */
+  --action-menu-header-margin-left: 20px;
+  --action-menu-header-margin-right: 20px;
+  
+  /* Storage Tab */
+  --storage-tab-padding-top: 8px;
+  --storage-tab-padding-right: 16px;
+  --storage-tab-padding-bottom: 8px;
+  --storage-tab-padding-left: 16px;
+  --storage-tab-bg: var(--modal-input-bg, #2d2d44);
+  --storage-tab-color: var(--modal-text, #ffffff);
+  --storage-tab-border-radius: 20px;
+  --storage-tab-transition: all 0.2s;
+  --storage-tab-font-family: inherit;
+  --storage-tab-font-size: 14px;
+  --storage-tab-font-weight: 500;
+  --storage-tab-opacity: 1;
+  
+  /* Active */
+  --storage-tab-active-bg: var(--modal-btn-primary, #0099ff);
+  --storage-tab-active-color: var(--modal-btn-primary-text, #ffffff);
+  
+  /* Danger */
+  --storage-tab-danger-bg: #7f1a1a;
+  --storage-tab-danger-color: white;
+  --storage-tab-danger-hover-bg: #991b1b;
+  --storage-tab-danger-hover-transform: scale(1.02);
+  
+  /* Cache Item */
+  --cache-item-transition: background 0.2s;
+  --cache-item-hover-bg: var(--modal-input-bg-hover, #3d3d5c);
+  
+}

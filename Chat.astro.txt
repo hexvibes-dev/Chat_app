@@ -1,0 +1,173 @@
+---
+---
+
+<div 
+  class="layer-messages fixed top-[60px] left-0 right-0 overflow-hidden touch-pan-y"
+  style="bottom: calc(60px + var(--keyboard, 0px))">
+  <div class="messages absolute inset-0 overflow-y-auto p-5 touch-auto" id="messages">
+    <div id="spacer" style="height:0px"></div>
+  </div>
+</div>
+
+<div class="layer-header fixed top-0 left-0 h-14 w-full flex items-center px-4 z-10 rounded-bl-2xl rounded-br-2xl" style="background: var(--header-bg);">
+  <h1 class="text-white text-xl translate-x-4">Contact Name</h1>
+  <button id="hamburgerBtn" class="hamburger-btn" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+  <div id="hamburgerMenuContainer"></div>
+  <div id="themeModalContainer"></div>
+</div>
+<div class="layer-input fixed left-0 bottom-0 w-full z-20 touch-none will-change-transform" id="layerInput">
+  <div class="input-container border-t border-slate-700 rounded-t-3xl" style="padding: 10px 12px; padding-bottom: calc(10px + env(safe-area-inset-bottom)); background: var(--input-bg);">
+    <div class="input-box w-full flex justify-center items-center gap-3">
+  <button id="actionMenuBtn" type="button" class="text-white font-semibold py-3 px-5 rounded-xl transform active:scale-75 transition-all" style="background: var(--send-btn-bg, #0891b2);">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  <button id="emojiPickerBtn" type="button" class="text-white font-semibold py-3 px-5 rounded-xl transform active:scale-75 transition-all" style="background: var(--send-btn-bg, #0891b2);">
+    😀
+  </button>
+      <div id="input" 
+     contenteditable="true" 
+     data-placeholder="Escribe un mensaje..."
+     class="resize-none font-medium max-h-[120px] min-h-[40px] overflow-y-auto text-white focus:outline-none transition-all duration-200 rounded-l-2xl rounded-r-2xl input-editable empty"
+     style="padding: 16px 12px 12px 20px; width: 70%; max-width: 500px; background: var(--input-bg); color: var(--text-color); line-height: 1.4;"
+     role="textbox" 
+     aria-multiline="true"></div>
+      <button id="sendBtn" type="button" class="text-white font-semibold py-3 px-5 rounded-xl transform active:scale-75 transition-all" style="background: var(--send-btn-bg, #0891b2);">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M21.864 3.549l-6.454 17.868a1.55 1.55 0 0 1 -1.41 .903a1.54 1.54 0 0 1 -1.394 -.874l-2.88 -5.759zm-1.414 -1.414l-12.139 12.138l-5.728 -2.864a1.55 1.55 0 0 1 -.903 -1.409c0 -.606 .353 -1.157 .981 -1.44z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="replyPopup" class="reply-popup" role="button" aria-hidden="true" tabindex="-1"></div>
+<button id="scrollToBottomBtn" class="scroll-to-bottom-btn fixed right-5 bottom-[70px] w-11 h-11 rounded-full bg-teal-600 text-white flex items-center justify-center text-2xl cursor-pointer shadow-md z-[10000] transition-all duration-200 touch-manipulation hidden">↓</button>
+
+<div id="user-register-overlay" class="modal-blur-overlay" style="display: none;"></div>
+<div id="user-register-modal" class="name-modal" style="display: none;">
+  <div class="name-card">
+    <h1>¿Cómo te llamas?</h1>
+    <div class="input-group">
+      <label for="displayNameInput">Nombre visible</label>
+      <input type="text" id="displayNameInput" placeholder="Ej: Juan Pérez" maxlength="30" autocomplete="off" />
+    </div>
+    <div class="input-group">
+      <label for="usernameInput">Nombre de usuario (único)</label>
+      <input type="text" id="usernameInput" placeholder="Ej: juan123" maxlength="20" autocomplete="off" />
+      <div class="username-hint">Solo letras, números y guiones bajos. Sin espacios.</div>
+      <div id="usernameError" class="error-message"></div>
+    </div>
+    <div class="name-actions">
+      <button id="nameAccept" class="btn primary" disabled>Entrar al chat</button>
+    </div>
+  </div>
+</div>
+
+<div id="theme-modal-overlay" class="theme-modal-overlay"></div>
+
+<div id="movable-window" 
+     class="fixed rounded-3xl overflow-hidden w-125 h-125"
+     style="height: 500px; min-width: 150px; min-height: 150px; max-width: 90vw; max-height: 90vh; display: none; z-index: 11000; background: var(--modal-bg); color: var(--modal-text); border: 1px solid var(--modal-input-border);">
+
+<div 
+  id="modal-header" 
+  class="px-3 py-2 grid grid-cols-3 items-center border-b select-none cursor-grab active:cursor-grabbing" 
+  style="background: var(--bg-theme-header); color: var(--modal-text); border-bottom-color: var(--modal-input-border);">
+  
+  <div>
+    
+  </div>
+  
+  <div
+    class="grid place-content-center w-full h-full">
+    <span
+      class="font-medium text-xl text-white">
+      Menú 
+    </span>
+  </div>
+  
+  <button 
+    id="close-theme-modal" 
+    class="justify-self-end hover:opacity-70 text-lg leading-none" 
+    style="color: var(--modal-text);">
+    
+    <svg 
+      width="32" 
+      height="32" 
+      viewBox="0 0 24 24" 
+      fill="none" stroke="currentColor" 
+      stroke-width="1.75" 
+      stroke-linecap="round" 
+      stroke-linejoin="round">
+      <path 
+        stroke="none" 
+        d="M0 0h24v24H0z" 
+        fill="none" />
+      <path 
+        d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+    </svg>
+    
+  </button>
+</div>
+
+  <div 
+    id="theme-content" 
+    class="p-4 overflow-auto flex flex-col gap-4" 
+    style="height: calc(100% - 48px);">
+  </div>
+
+  <div class="resize-handle resize-n"></div>
+  <div class="resize-handle resize-s"></div>
+  <div class="resize-handle resize-e"></div>
+  <div class="resize-handle resize-w"></div>
+  <div class="resize-handle resize-ne"></div>
+  <div class="resize-handle resize-nw"></div>
+  <div class="resize-handle resize-se"></div>
+  <div class="resize-handle resize-sw"></div>
+</div>
+
+
+
+<script>
+  import { initThemeManager } from '../scripts/themeManager.js';
+  initThemeManager();
+</script>
+<script>
+  const input = document.getElementById('input');
+  
+  function updateInputState() {
+    if (!input) return;
+    const hasContent = input.innerText.trim().length > 0 || input.querySelector('img');
+    if (hasContent) {
+      input.classList.remove('empty');
+    } else {
+      input.classList.add('empty');
+    }
+  }
+  
+  if (input) {
+    const observer = new MutationObserver(updateInputState);
+    observer.observe(input, { childList: true, subtree: true, characterData: true });
+    input.addEventListener('input', updateInputState);
+    input.addEventListener('blur', updateInputState);
+    input.addEventListener('keyup', updateInputState);
+    updateInputState();
+  }
+</script>
+
+<script>
+  import { initEmojiPickerButton } from '../scripts/EmojiPickerButton.js';
+  initEmojiPickerButton();
+</script>
+
+<script>
+  import { initActionMenu } from '../scripts/ActionMenu.js';
+  initActionMenu();
+</script>

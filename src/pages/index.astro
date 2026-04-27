@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ChatApp from '../components/Chat.astro';
+---
+
+<Layout>  
+	<ChatApp />
+</Layout>
+
+<script>
+  import('../scripts/main.js').then(module => {
+    // Ejecuta la función de inicialización una vez que el módulo se ha cargado.
+    module.default();
+  }).catch(err => {
+    console.error('Error al cargar el script principal:', err);
+  });
+</script>

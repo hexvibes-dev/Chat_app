@@ -1,0 +1,45 @@
+:root {
+  --bg-g-1: #331628 ;
+  --bg-g-2: #391D2C;
+  --bg: #331628;
+  --msg-other: #3D1C2D;
+  --libstick: #AA046A;
+  --dark-magenta: #840C90;
+  --RYB-violet: #730CB1;
+  --pink: #FF2CD1;
+  --Utah-crimson: #CF023A;
+  --white: #FFE9FF;
+  --bord: #e94560;
+}
+
+
+html[data-theme="magenta"] {
+  --app-bg-color: var(--bg);
+  --app-bg-image: url('/img/patron1.jpg');
+  --app-bg-opacity: 1;
+  --msg-bg-me: linear-gradient(90deg, var(--libstick) , var(--Utah-crimson));
+  --msg-border-me: none;
+  --text-color: var(--white);
+  --hour-color-me: var(--white);
+  --msg-me-shadow: none;
+  --msg-bg-other: var(--msg-other);
+  --msg-border-other: none;
+  --hour-color: #ffffff;
+  --header-bg: linear-gradient(135deg, var(--bg-g-1), var(--bg-g-2));
+  --header-border-b: 1px solid var(--white) ;
+  --input-bg: linear-gradient(135deg , var(--bg-g-1) , var(--bg-g-2));
+  --send-btn-bg: var(--libstick);
+  --modal-bg: var(--bg);
+  --modal-text: var(--white);
+  --modal-header: var(--white);
+  --modal-input-bg: darkgray;
+  --modal-input-border: none;
+  --modal-btn-primary: var(--Utah-crimson);
+  --modal-btn-primary-text: var(--white);
+  --bg-theme-header: var(--bg);
+  --modal-btn-select: var(--libstick);
+  --modal-btn-secondary-text: var(--white);
+  --notification-bg: var(--bg);
+  --notification-text: var(--white);
+  --notification-border: var(--libstick);
+}

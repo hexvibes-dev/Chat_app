@@ -1,0 +1,50 @@
+.message.emoji-message {
+  margin-bottom: 8px;
+}
+
+.msg-drag.emoji-single {
+  background: transparent !important;
+  font-size: 4rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+  min-width: auto;
+  max-width: 90%;
+}
+
+.msg-drag.emoji-double {
+  background: transparent !important;
+  font-size: 3rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+  min-width: auto;
+}
+
+.msg-drag.emoji-triple {
+  background: transparent !important;
+  font-size: 2.5rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+}
+
+.msg-drag.emoji-quad {
+  background: transparent !important;
+  font-size: 2rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+}
+
+.message.me .msg-drag.emoji-single,
+.message.me .msg-drag.emoji-double,
+.message.me .msg-drag.emoji-triple,
+.message.me .msg-drag.emoji-quad {
+  background: transparent !important;
+  color: inherit;
+}
+
+.emoji-message .msg-hour {
+  position: relative;
+  margin-top: 4px;
+  text-align: right;
+  font-size: 11px;
+  opacity: 0.7;
+}

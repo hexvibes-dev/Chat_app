@@ -1,0 +1,1661 @@
+/* ==================================================================
+   THEME VARIABLES COMPLETAS PARA CHAT
+   Personalización total: bordes, sombras, fuentes, radii, etc.
+   ================================================================== */
+
+:root {
+  /* ==================================================================
+     1. GLOBAL & ROOT
+     ================================================================== */
+  --app-bg-image: none;
+  --app-bg-color: #1e293b;
+  --app-bg-opacity: 1;
+  --keyboard-offset: 0px;
+  --transition-default: all 0.2s ease;
+  --transition-fast: all 0.1s ease;
+  --transition-slow: all 0.3s ease;
+  
+  /* ==================================================================
+     2. SCROLLBAR GLOBAL
+     ================================================================== */
+  --scrollbar-width: 8px;
+  --scrollbar-track-bg: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-bg: #4a5568;
+  --scrollbar-thumb-border-radius: 10px;
+  --scrollbar-thumb-hover-bg: #718096;
+  --scrollbar-track-border-radius: 10px;
+  
+  /* ==================================================================
+     3. LAYER MESSAGES (contenedor principal de mensajes)
+     ================================================================== */
+  --layer-messages-bg: transparent;
+  --layer-messages-position-top: 60px;
+  --layer-messages-position-bottom: calc(60px + var(--keyboard, 0px));
+  --layer-messages-z-index: auto;
+  
+  /* Messages container */
+  --messages-inset-top: 0;
+  --messages-inset-right: 0;
+  --messages-inset-bottom: 0;
+  --messages-inset-left: 0;
+  --messages-padding: 20px;
+  --messages-bg: transparent;
+  --messages-scroll-behavior: smooth;
+  
+  /* ==================================================================
+     4. LAYER HEADER (header fijo superior)
+     ================================================================== */
+  --header-position-top: 0;
+  --header-position-left: 0;
+  --header-height: 56px;
+  --header-width: 100%;
+  --header-bg: #0099df;
+  --header-padding-x: 16px;
+  --header-padding-y: 0;
+  --header-z-index: 10;
+  --header-border-radius-bottom-left: 16px;
+  --header-border-radius-bottom-right: 16px;
+  --header-border-radius-top-left: 0;
+  --header-border-radius-top-right: 0;
+  
+  /* Header borders (lados separados) */
+  --header-border-top-width: 0;
+  --header-border-top-style: solid;
+  --header-border-top-color: transparent;
+  --header-border-right-width: 0;
+  --header-border-right-style: solid;
+  --header-border-right-color: transparent;
+  --header-border-bottom-width: 1px;
+  --header-border-bottom-style: solid;
+  --header-border-bottom-color: rgba(255, 255, 255, 0.1);
+  --header-border-left-width: 0;
+  --header-border-left-style: solid;
+  --header-border-left-color: transparent;
+  
+  /* Header shadow */
+  --header-shadow-external: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --header-shadow-internal: none;
+  
+  /* Header title */
+  --header-title-color: #ffffff;
+  --header-title-font-family: inherit;
+  --header-title-font-size: 20px;
+  --header-title-font-weight: 600;
+  --header-title-line-height: 1.4;
+  --header-title-letter-spacing: normal;
+  --header-title-transform: translateX(16px);
+  --header-title-text-shadow: none;
+  
+  /* ==================================================================
+     5. LAYER INPUT (área fija inferior)
+     ================================================================== */
+  --input-layer-position-left: 0;
+  --input-layer-position-right: 0;
+  --input-layer-position-bottom: 0;
+  --input-layer-z-index: 20;
+  --input-layer-touch-action: none;
+  --input-layer-will-change: transform;
+  --input-layer-bg: transparent;
+  
+  /* Input container */
+  --input-container-padding-top: 10px;
+  --input-container-padding-right: 12px;
+  --input-container-padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  --input-container-padding-left: 12px;
+  --input-container-bg: #1a1a2e;
+  --input-container-border-radius-top-left: 24px;
+  --input-container-border-radius-top-right: 24px;
+  --input-container-border-radius-bottom-left: 0;
+  --input-container-border-radius-bottom-right: 0;
+  
+  /* Input container borders */
+  --input-container-border-top-width: 1px;
+  --input-container-border-top-style: solid;
+  --input-container-border-top-color: #334155;
+  --input-container-border-right-width: 0;
+  --input-container-border-right-style: solid;
+  --input-container-border-right-color: transparent;
+  --input-container-border-bottom-width: 0;
+  --input-container-border-bottom-style: solid;
+  --input-container-border-bottom-color: transparent;
+  --input-container-border-left-width: 0;
+  --input-container-border-left-style: solid;
+  --input-container-border-left-color: transparent;
+  
+  /* Input container shadow */
+  --input-container-shadow-external: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  --input-container-shadow-internal: none;
+  
+  /* Input box wrapper */
+  --input-box-gap: 12px;
+  --input-box-justify-content: center;
+  --input-box-align-items: center;
+  
+  /* ==================================================================
+     6. INPUT EDITABLE (contenteditable)
+     ================================================================== */
+  --input-editable-bg: #2d2d44;
+  --input-editable-color: #ffffff;
+  --input-editable-font-family: inherit;
+  --input-editable-font-size: 16px;
+  --input-editable-font-weight: 500;
+  --input-editable-line-height: 1.4;
+  --input-editable-letter-spacing: normal;
+  --input-editable-text-align: left;
+  --input-editable-text-shadow: none;
+  
+  --input-editable-padding-top: 16px;
+  --input-editable-padding-right: 12px;
+  --input-editable-padding-bottom: 12px;
+  --input-editable-padding-left: 20px;
+  --input-editable-width: 70%;
+  --input-editable-max-width: 500px;
+  --input-editable-min-height: 40px;
+  --input-editable-max-height: 120px;
+  
+  /* Input borders */
+  --input-editable-border-top-width: 1px;
+  --input-editable-border-top-style: solid;
+  --input-editable-border-top-color: #3d3d5c;
+  --input-editable-border-right-width: 1px;
+  --input-editable-border-right-style: solid;
+  --input-editable-border-right-color: #3d3d5c;
+  --input-editable-border-bottom-width: 1px;
+  --input-editable-border-bottom-style: solid;
+  --input-editable-border-bottom-color: #3d3d5c;
+  --input-editable-border-left-width: 1px;
+  --input-editable-border-left-style: solid;
+  --input-editable-border-left-color: #3d3d5c;
+  
+  --input-editable-border-radius-top-left: 16px;
+  --input-editable-border-radius-top-right: 16px;
+  --input-editable-border-radius-bottom-left: 16px;
+  --input-editable-border-radius-bottom-right: 16px;
+  
+  --input-editable-shadow-external: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  --input-editable-shadow-internal: none;
+  
+  /* Input focus ring */
+  --input-ring-width: 3px;
+  --input-ring-color: #AB01FF;
+  --input-ring-offset: 0px;
+  --input-ring-border-radius: 16px;
+  
+  /* Input placeholder (via data-placeholder) */
+  --input-placeholder-color: rgba(255, 255, 255, 0.5);
+  --input-placeholder-font-style: normal;
+  
+  /* Input empty state */
+  --input-empty-opacity: 0.6;
+  
+  /* ==================================================================
+     7. BOTONES DEL INPUT (send, action, emoji)
+     ================================================================== */
+  
+  /* Botón de enviar */
+  --send-btn-bg: #0891b2;
+  --send-btn-color: #ffffff;
+  --send-btn-font-family: inherit;
+  --send-btn-font-size: 16px;
+  --send-btn-font-weight: 600;
+  --send-btn-padding-top: 12px;
+  --send-btn-padding-right: 20px;
+  --send-btn-padding-bottom: 12px;
+  --send-btn-padding-left: 20px;
+  --send-btn-border-radius: 12px;
+  --send-btn-transform-scale-active: 0.75;
+  --send-btn-transition: all 0.2s ease;
+  
+  /* Send button borders */
+  --send-btn-border-top-width: 2px;
+  --send-btn-border-top-style: solid;
+  --send-btn-border-top-color: #0099ff;
+  --send-btn-border-right-width: 2px;
+  --send-btn-border-right-style: solid;
+  --send-btn-border-right-color: #0099ff;
+  --send-btn-border-bottom-width: 2px;
+  --send-btn-border-bottom-style: solid;
+  --send-btn-border-bottom-color: #0099ff;
+  --send-btn-border-left-width: 2px;
+  --send-btn-border-left-style: solid;
+  --send-btn-border-left-color: #0099ff;
+  
+  --send-btn-shadow-external: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --send-btn-shadow-internal: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  
+  /* Send button hover */
+  --send-btn-hover-bg: #0e7c9e;
+  --send-btn-hover-color: #ffffff;
+  --send-btn-hover-border-top-color: #0077cc;
+  --send-btn-hover-border-right-color: #0077cc;
+  --send-btn-hover-border-bottom-color: #0077cc;
+  --send-btn-hover-border-left-color: #0077cc;
+  
+  /* Botón de acción (menú) */
+  --action-btn-bg: #0891b2;
+  --action-btn-color: #ffffff;
+  --action-btn-padding-top: 12px;
+  --action-btn-padding-right: 16px;
+  --action-btn-padding-bottom: 12px;
+  --action-btn-padding-left: 16px;
+  --action-btn-border-radius: 12px;
+  --action-btn-transform-scale-active: 0.75;
+  --action-btn-transition: all 0.2s ease;
+  
+  /* Action button borders */
+  --action-btn-border-top-width: 0;
+  --action-btn-border-top-style: solid;
+  --action-btn-border-top-color: transparent;
+  --action-btn-border-right-width: 0;
+  --action-btn-border-right-style: solid;
+  --action-btn-border-right-color: transparent;
+  --action-btn-border-bottom-width: 0;
+  --action-btn-border-bottom-style: solid;
+  --action-btn-border-bottom-color: transparent;
+  --action-btn-border-left-width: 0;
+  --action-btn-border-left-style: solid;
+  --action-btn-border-left-color: transparent;
+  
+  /* Botón de emoji picker */
+  --emoji-picker-btn-bg: #0891b2;
+  --emoji-picker-btn-color: #ffffff;
+  --emoji-picker-btn-padding-top: 12px;
+  --emoji-picker-btn-padding-right: 16px;
+  --emoji-picker-btn-padding-bottom: 12px;
+  --emoji-picker-btn-padding-left: 16px;
+  --emoji-picker-btn-border-radius: 12px;
+  --emoji-picker-btn-font-size: 20px;
+  --emoji-picker-btn-transform-scale-active: 0.75;
+  
+  /* ==================================================================
+     8. MENSAJES - BURBUJAS
+     ================================================================== */
+  
+  /* Contenedor base del mensaje */
+  --message-margin-bottom: 10px;
+  --message-last-margin-bottom: 20px;
+  --message-transition: filter 0.18s ease;
+  
+  /* Drag wrapper (burbuja) */
+  --msg-drag-transition: transform 0.25s ease, opacity 0.25s ease;
+  --msg-drag-opacity-drag: 0.9;
+  
+  /* Burbuja - Mensaje propio (me) */
+  --msg-drag-bg-me: #0891b2;
+  --msg-drag-color-me: #ffffff;
+  --msg-drag-padding-top-me: 10px;
+  --msg-drag-padding-right-me: 14px;
+  --msg-drag-padding-bottom-me: 8px;
+  --msg-drag-padding-left-me: 14px;
+  
+  --msg-drag-border-radius-top-left-me: 18px;
+  --msg-drag-border-radius-top-right-me: 4px;
+  --msg-drag-border-radius-bottom-left-me: 18px;
+  --msg-drag-border-radius-bottom-right-me: 18px;
+  
+  /* Burbuja borders me */
+  --msg-drag-border-top-width-me: 2px;
+  --msg-drag-border-top-style-me: solid;
+  --msg-drag-border-top-color-me: #0099ff;
+  --msg-drag-border-right-width-me: 2px;
+  --msg-drag-border-right-style-me: solid;
+  --msg-drag-border-right-color-me: #0099ff;
+  --msg-drag-border-bottom-width-me: 2px;
+  --msg-drag-border-bottom-style-me: solid;
+  --msg-drag-border-bottom-color-me: #0099ff;
+  --msg-drag-border-left-width-me: 2px;
+  --msg-drag-border-left-style-me: solid;
+  --msg-drag-border-left-color-me: #0099ff;
+  
+  /* Burbuja shadow me */
+  --msg-drag-shadow-external-me: 0 6px 15px rgba(0, 0, 0, 0.25);
+  --msg-drag-shadow-internal-me: inset -2px 1px rgba(0, 255, 255, 0.4), inset 0 6px 12px rgba(255, 255, 255, 0.3);
+  --msg-drag-shadow-combined-me: inset -2px 1px rgba(0, 255, 255, 0.4), inset 0 6px 12px rgba(255, 255, 255, 0.3), 0 6px 15px rgba(0, 0, 0, 0.25);
+  
+  /* Burbuja - Mensaje del otro */
+  --msg-drag-bg-other: #2d2d44;
+  --msg-drag-color-other: #ffffff;
+  --msg-drag-padding-top-other: 10px;
+  --msg-drag-padding-right-other: 14px;
+  --msg-drag-padding-bottom-other: 8px;
+  --msg-drag-padding-left-other: 14px;
+  
+  --msg-drag-border-radius-top-left-other: 4px;
+  --msg-drag-border-radius-top-right-other: 18px;
+  --msg-drag-border-radius-bottom-left-other: 18px;
+  --msg-drag-border-radius-bottom-right-other: 18px;
+  
+  /* Burbuja borders other */
+  --msg-drag-border-top-width-other: 2px;
+  --msg-drag-border-top-style-other: solid;
+  --msg-drag-border-top-color-other: #0099ff;
+  --msg-drag-border-right-width-other: 2px;
+  --msg-drag-border-right-style-other: solid;
+  --msg-drag-border-right-color-other: #0099ff;
+  --msg-drag-border-bottom-width-other: 2px;
+  --msg-drag-border-bottom-style-other: solid;
+  --msg-drag-border-bottom-color-other: #0099ff;
+  --msg-drag-border-left-width-other: 2px;
+  --msg-drag-border-left-style-other: solid;
+  --msg-drag-border-left-color-other: #0099ff;
+  
+  /* Burbuja shadow other */
+  --msg-drag-shadow-external-other: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --msg-drag-shadow-internal-other: none;
+  
+  /* ==================================================================
+     9. TEXTO DEL MENSAJE
+     ================================================================== */
+  --message-text-font-family: inherit;
+  --message-text-font-size: 15px;
+  --message-text-font-weight: 400;
+  --message-text-line-height: 1.4;
+  --message-text-letter-spacing: normal;
+  --message-text-word-break: break-word;
+  --message-text-white-space: pre-wrap;
+  
+  /* Texto me */
+  --message-text-color-me: #ffffff;
+  --message-text-text-shadow-me: none;
+  
+  /* Texto other */
+  --message-text-color-other: #ffffff;
+  --message-text-text-shadow-other: none;
+  
+  /* Texto para stickers */
+  --sticker-text-bg: transparent;
+  --sticker-text-padding: 0;
+  --sticker-text-shadow: none;
+  --sticker-drag-bg: transparent;
+  --sticker-drag-shadow: none;
+  --sticker-drag-padding: 4px 0;
+  
+  /* ==================================================================
+     10. HORA DEL MENSAJE (msg-hour)
+     ================================================================== */
+  --hour-font-family: inherit;
+  --hour-font-size: 11px;
+  --hour-font-weight: 400;
+  --hour-line-height: 1.4;
+  --hour-color: rgba(255, 255, 255, 0.7);
+  --hour-margin-top: 4px;
+  --hour-margin-right: 0;
+  --hour-margin-bottom: 0;
+  --hour-margin-left: 0;
+  --hour-text-align: right;
+  --hour-opacity: 0.7;
+  --hour-transition: all 0.2s ease;
+  
+  /* Hora en mensajes de solo emoji */
+  --hour-emoji-position: relative;
+  --hour-emoji-margin-top: 4px;
+  
+  /* ==================================================================
+     11. RESPUESTA CITADA (reply-quote)
+     ================================================================== */
+  --reply-quote-bg: rgba(0, 0, 0, 0.2);
+  --reply-quote-border-left-width: 3px;
+  --reply-quote-border-left-style: solid;
+  --reply-quote-border-left-color: #0099ff;
+  --reply-quote-border-radius: 8px;
+  --reply-quote-padding-top: 6px;
+  --reply-quote-padding-right: 10px;
+  --reply-quote-padding-bottom: 6px;
+  --reply-quote-padding-left: 10px;
+  --reply-quote-margin-bottom: 6px;
+  
+  --reply-quote-author-font-family: inherit;
+  --reply-quote-author-font-size: 12px;
+  --reply-quote-author-font-weight: 600;
+  --reply-quote-author-color: #0099ff;
+  --reply-quote-author-margin-bottom: 2px;
+  
+  --reply-quote-text-font-family: inherit;
+  --reply-quote-text-font-size: 12px;
+  --reply-quote-text-font-weight: 400;
+  --reply-quote-text-color: rgba(255, 255, 255, 0.8);
+  --reply-quote-text-opacity: 0.8;
+  --reply-quote-text-line-height: 1.3;
+  
+  /* Separador de respuesta */
+  --reply-separator-height: 1px;
+  --reply-separator-bg: rgba(255, 255, 255, 0.1);
+  --reply-separator-margin-top: 6px;
+  --reply-separator-margin-bottom: 6px;
+  
+  /* ==================================================================
+     12. REACCIONES (reactions-wrap y reaction-badge)
+     ================================================================== */
+  --reactions-wrap-margin-top: 6px;
+  --reactions-wrap-gap: 6px;
+  --reactions-wrap-display: flex;
+  --reactions-wrap-flex-wrap: wrap;
+  --reactions-wrap-justify-content: flex-end;
+  
+  --reaction-badge-padding-top: 2px;
+  --reaction-badge-padding-right: 8px;
+  --reaction-badge-padding-bottom: 2px;
+  --reaction-badge-padding-left: 8px;
+  --reaction-badge-font-size: 14px;
+  --reaction-badge-border-radius: 20px;
+  --reaction-badge-bg: #2d2d44;
+  --reaction-badge-color: #ffffff;
+  --reaction-badge-cursor: pointer;
+  --reaction-badge-transition: all 0.15s ease;
+  
+  /* Reaction badge borders */
+  --reaction-badge-border-top-width: 1px;
+  --reaction-badge-border-top-style: solid;
+  --reaction-badge-border-top-color: #4a4a6a;
+  --reaction-badge-border-right-width: 1px;
+  --reaction-badge-border-right-style: solid;
+  --reaction-badge-border-right-color: #4a4a6a;
+  --reaction-badge-border-bottom-width: 1px;
+  --reaction-badge-border-bottom-style: solid;
+  --reaction-badge-border-bottom-color: #4a4a6a;
+  --reaction-badge-border-left-width: 1px;
+  --reaction-badge-border-left-style: solid;
+  --reaction-badge-border-left-color: #4a4a6a;
+  
+  /* Reaction badge - propia (you) */
+  --reaction-badge-you-bg: #0099ff;
+  --reaction-badge-you-color: #ffffff;
+  --reaction-badge-you-border-top-color: #0077cc;
+  --reaction-badge-you-border-right-color: #0077cc;
+  --reaction-badge-you-border-bottom-color: #0077cc;
+  --reaction-badge-you-border-left-color: #0077cc;
+  
+  /* Reaction badge hover */
+  --reaction-badge-hover-bg: #3d3d5c;
+  --reaction-badge-hover-transform: scale(1.05);
+  
+  /* ==================================================================
+     13. ESTILOS ESPECIALES DE EMOJIS
+     ================================================================== */
+  /* Emoji single message */
+  --emoji-single-font-size: 48px;
+  --emoji-single-line-height: 1.2;
+  --emoji-single-hour-margin-top: 4px;
+  
+  /* Emoji double message */
+  --emoji-double-font-size: 40px;
+  --emoji-double-word-spacing: 8px;
+  
+  /* Emoji triple message */
+  --emoji-triple-font-size: 36px;
+  --emoji-triple-word-spacing: 6px;
+  
+  /* Emoji quad message */
+  --emoji-quad-font-size: 32px;
+  --emoji-quad-word-spacing: 4px;
+  
+  /* Heart message */
+  --heart-message-animation-duration: 3s;
+  --heart-beat-scale-start: 1;
+  --heart-beat-scale-peak: 1.15;
+  --heart-residual-shadow: 0 0 15px rgba(255, 80, 120, 0.5);
+  
+  /* Animation particles */
+  --particle-duration-min: 1s;
+  --particle-duration-max: 2.5s;
+  --particle-size-min: 8px;
+  --particle-size-max: 24px;
+  
+  /* ==================================================================
+     14. REACTIONS POPUP (menú de reacciones flotante)
+     ================================================================== */
+  --reactions-popup-bg: #1e1e2e;
+  --reactions-popup-border-radius: 40px;
+  --reactions-popup-padding: 8px 16px;
+  --reactions-popup-z-index: 1000;
+  --reactions-popup-backdrop-filter: blur(8px);
+  
+  /* Reactions popup borders */
+  --reactions-popup-border-top-width: 1px;
+  --reactions-popup-border-top-style: solid;
+  --reactions-popup-border-top-color: #3d3d5c;
+  --reactions-popup-border-right-width: 1px;
+  --reactions-popup-border-right-style: solid;
+  --reactions-popup-border-right-color: #3d3d5c;
+  --reactions-popup-border-bottom-width: 1px;
+  --reactions-popup-border-bottom-style: solid;
+  --reactions-popup-border-bottom-color: #3d3d5c;
+  --reactions-popup-border-left-width: 1px;
+  --reactions-popup-border-left-style: solid;
+  --reactions-popup-border-left-color: #3d3d5c;
+  
+  --reactions-popup-shadow-external: 0 8px 25px rgba(0, 0, 0, 0.3);
+  --reactions-popup-shadow-internal: none;
+  
+  /* Reactions scroll container */
+  --reactions-scroll-max-width: 280px;
+  --reactions-scroll-overflow-x: auto;
+  
+  /* Reactions row */
+  --reactions-row-gap: 8px;
+  --reactions-row-padding: 4px;
+  
+  /* Reaction emoji button */
+  --react-emoji-size: 40px;
+  --react-emoji-font-size: 28px;
+  --react-emoji-bg: transparent;
+  --react-emoji-border-radius: 50%;
+  --react-emoji-transition: all 0.15s ease;
+  --react-emoji-hover-bg: rgba(255, 255, 255, 0.1);
+  --react-emoji-hover-transform: scale(1.2);
+  
+  /* Reaction add button */
+  --react-add-bg: transparent;
+  --react-add-color: #ffffff;
+  --react-add-font-size: 20px;
+  --react-add-hover-bg: rgba(255, 255, 255, 0.1);
+  
+  /* ==================================================================
+     15. OPTIONS MENU (popup de opciones: copiar, editar, eliminar)
+     ================================================================== */
+  --options-menu-bg: #1e1e2e;
+  --options-menu-border-radius: 12px;
+  --options-menu-padding: 8px 0;
+  --options-menu-z-index: 1100;
+  --options-menu-min-width: 160px;
+  
+  --options-menu-border-top-width: 1px;
+  --options-menu-border-top-style: solid;
+  --options-menu-border-top-color: #3d3d5c;
+  --options-menu-border-right-width: 1px;
+  --options-menu-border-right-style: solid;
+  --options-menu-border-right-color: #3d3d5c;
+  --options-menu-border-bottom-width: 1px;
+  --options-menu-border-bottom-style: solid;
+  --options-menu-border-bottom-color: #3d3d5c;
+  --options-menu-border-left-width: 1px;
+  --options-menu-border-left-style: solid;
+  --options-menu-border-left-color: #3d3d5c;
+  
+  --options-menu-shadow-external: 0 4px 15px rgba(0, 0, 0, 0.3);
+  
+  /* Options item */
+  --options-item-padding-top: 10px;
+  --options-item-padding-right: 16px;
+  --options-item-padding-bottom: 10px;
+  --options-item-padding-left: 16px;
+  --options-item-gap: 12px;
+  --options-item-font-family: inherit;
+  --options-item-font-size: 14px;
+  --options-item-font-weight: 500;
+  --options-item-color: #ffffff;
+  --options-item-bg: transparent;
+  --options-item-transition: all 0.15s ease;
+  
+  --options-item-hover-bg: #2d2d44;
+  --options-item-hover-color: #ffffff;
+  
+  /* ==================================================================
+     16. MODAL BLUR OVERLAY
+     ================================================================== */
+  --modal-blur-overlay-bg: rgba(0, 0, 0, 0.7);
+  --modal-blur-overlay-blur: 4px;
+  --modal-blur-overlay-z-index: 10000;
+  --modal-blur-overlay-transition: all 0.2s ease;
+  
+  /* ==================================================================
+     17. MODAL DE AGREGAR REACCIÓN (add-reaction-modal)
+     ================================================================== */
+  --add-reaction-card-bg: #1e1e2e;
+  --add-reaction-card-border-radius: 24px;
+  --add-reaction-card-padding: 24px;
+  --add-reaction-card-width: 480px;
+  --add-reaction-card-max-width: 90vw;
+  
+  /* Add reaction borders */
+  --add-reaction-border-top-width: 2px;
+  --add-reaction-border-top-style: solid;
+  --add-reaction-border-top-color: #0099ff;
+  --add-reaction-border-right-width: 2px;
+  --add-reaction-border-right-style: solid;
+  --add-reaction-border-right-color: #0099ff;
+  --add-reaction-border-bottom-width: 2px;
+  --add-reaction-border-bottom-style: solid;
+  --add-reaction-border-bottom-color: #0099ff;
+  --add-reaction-border-left-width: 2px;
+  --add-reaction-border-left-style: solid;
+  --add-reaction-border-left-color: #0099ff;
+  
+  --add-reaction-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  
+  /* Add reaction title */
+  --add-reaction-title-color: #0099ff;
+  --add-reaction-title-font-size: 20px;
+  --add-reaction-title-font-weight: 600;
+  --add-reaction-title-margin-bottom: 16px;
+  
+  /* Add reaction input */
+  --add-reaction-input-bg: #2d2d44;
+  --add-reaction-input-color: #ffffff;
+  --add-reaction-input-border-radius: 8px;
+  --add-reaction-input-padding: 10px;
+  --add-reaction-input-border-width: 1px;
+  --add-reaction-input-border-style: solid;
+  --add-reaction-input-border-color: #4a4a6a;
+  --add-reaction-input-font-size: 16px;
+  
+  /* Add reaction input focus ring */
+  --add-reaction-ring-width: 3px;
+  --add-reaction-ring-color: #AB01FF;
+  --add-reaction-ring-offset: 0px;
+  
+  /* ==================================================================
+     18. MODAL DE EDICIÓN (edit-modal)
+     ================================================================== */
+  --edit-card-bg: #1e1e2e;
+  --edit-card-border-radius: 24px;
+  --edit-card-padding: 20px;
+  --edit-card-width: 400px;
+  --edit-card-max-width: 90vw;
+  
+  /* Edit modal borders */
+  --edit-modal-border-top-width: 2px;
+  --edit-modal-border-top-style: solid;
+  --edit-modal-border-top-color: #0099ff;
+  --edit-modal-border-right-width: 2px;
+  --edit-modal-border-right-style: solid;
+  --edit-modal-border-right-color: #0099ff;
+  --edit-modal-border-bottom-width: 2px;
+  --edit-modal-border-bottom-style: solid;
+  --edit-modal-border-bottom-color: #0099ff;
+  --edit-modal-border-left-width: 2px;
+  --edit-modal-border-left-style: solid;
+  --edit-modal-border-left-color: #0099ff;
+  
+  --edit-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  
+  /* Edit title */
+  --edit-title-color: #0099ff;
+  --edit-title-font-size: 20px;
+  --edit-title-margin-bottom: 16px;
+  
+  /* Edit contenteditable */
+  --edit-contenteditable-bg: #2d2d44;
+  --edit-contenteditable-color: #ffffff;
+  --edit-contenteditable-border-radius: 8px;
+  --edit-contenteditable-padding: 10px;
+  --edit-contenteditable-min-height: 100px;
+  --edit-contenteditable-max-height: 200px;
+  --edit-contenteditable-border-width: 1px;
+  --edit-contenteditable-border-style: solid;
+  --edit-contenteditable-border-color: #4a4a6a;
+  --edit-contenteditable-font-family: inherit;
+  --edit-contenteditable-font-size: 14px;
+  --edit-contenteditable-line-height: 1.4;
+  
+  /* Edit modal ring */
+  --edit-ring-width: 3px;
+  --edit-ring-color: #AB01FF;
+  --edit-ring-offset: 0px;
+  
+  /* Edit buttons */
+  --edit-btn-cancel-bg: #0099ff;
+  --edit-btn-cancel-color: #ffffff;
+  --edit-btn-cancel-padding: 8px 16px;
+  --edit-btn-cancel-border-radius: 8px;
+  
+  --edit-btn-save-bg: #0099ff;
+  --edit-btn-save-color: #ffffff;
+  --edit-btn-save-padding: 8px 16px;
+  --edit-btn-save-border-radius: 8px;
+  
+  /* ==================================================================
+     19. MODAL FLOTANTE (movable-window para tema y acciones)
+     ================================================================== */
+  --movable-window-bg: #1e1e2e;
+  --movable-window-border-radius: 24px;
+  --movable-window-min-width: 150px;
+  --movable-window-min-height: 150px;
+  --movable-window-max-width: 90vw;
+  --movable-window-max-height: 90vh;
+  --movable-window-z-index: 11000;
+  
+  --movable-window-border-top-width: 1px;
+  --movable-window-border-top-style: solid;
+  --movable-window-border-top-color: #3d3d5c;
+  --movable-window-border-right-width: 1px;
+  --movable-window-border-right-style: solid;
+  --movable-window-border-right-color: #3d3d5c;
+  --movable-window-border-bottom-width: 1px;
+  --movable-window-border-bottom-style: solid;
+  --movable-window-border-bottom-color: #3d3d5c;
+  --movable-window-border-left-width: 1px;
+  --movable-window-border-left-style: solid;
+  --movable-window-border-left-color: #3d3d5c;
+  
+  --movable-window-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  
+  /* Modal header */
+  --modal-header-bg: rgba(0, 0, 0, 0.3);
+  --modal-header-padding-top: 8px;
+  --modal-header-padding-right: 12px;
+  --modal-header-padding-bottom: 8px;
+  --modal-header-padding-left: 12px;
+  --modal-header-cursor: grab;
+  --modal-header-active-cursor: grabbing;
+  --modal-header-border-bottom-width: 1px;
+  --modal-header-border-bottom-style: solid;
+  --modal-header-border-bottom-color: #3d3d5c;
+  --modal-header-grid: 1fr auto 1fr;
+  
+  /* Modal title */
+  --modal-title-color: #ffffff;
+  --modal-title-font-size: 20px;
+  --modal-title-font-weight: 500;
+  --modal-title-text-align: center;
+  
+  /* Modal close button */
+  --modal-close-btn-color: #ffffff;
+  --modal-close-btn-opacity: 0.7;
+  --modal-close-btn-hover-opacity: 1;
+  --modal-close-btn-font-size: 24px;
+  
+  /* Resize handles */
+  --resize-handle-size: 12px;
+  --resize-handle-bg: #0099ff;
+  --resize-handle-border-radius: 2px;
+  --resize-handle-opacity: 0.5;
+  --resize-handle-hover-opacity: 1;
+  
+  /* Modal content */
+  --modal-content-bg: transparent;
+  --modal-content-padding: 16px;
+  --modal-content-height: calc(100% - 48px);
+  --modal-content-overflow: auto;
+  
+  /* ==================================================================
+     20. CONFIRM POPUP
+     ================================================================== */
+  --confirm-popup-bg: #1e1e2e;
+  --confirm-popup-border-radius: 20px;
+  --confirm-popup-padding: 20px;
+  --confirm-popup-min-width: 250px;
+  --confirm-popup-z-index: 20000;
+  
+  --confirm-popup-border-top-width: 1px;
+  --confirm-popup-border-top-style: solid;
+  --confirm-popup-border-top-color: #3d3d5c;
+  --confirm-popup-border-right-width: 1px;
+  --confirm-popup-border-right-style: solid;
+  --confirm-popup-border-right-color: #3d3d5c;
+  --confirm-popup-border-bottom-width: 1px;
+  --confirm-popup-border-bottom-style: solid;
+  --confirm-popup-border-bottom-color: #3d3d5c;
+  --confirm-popup-border-left-width: 1px;
+  --confirm-popup-border-left-style: solid;
+  --confirm-popup-border-left-color: #3d3d5c;
+  
+  --confirm-popup-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  
+  --confirm-popup-text-color: #ffffff;
+  --confirm-popup-text-font-size: 16px;
+  --confirm-popup-text-margin: 0;
+  
+  /* Confirm buttons */
+  --confirm-btn-yes-color: #10b981;
+  --confirm-btn-no-color: #ef4444;
+  --confirm-btn-font-size: 28px;
+  
+  /* ==================================================================
+     21. TRANSIENT NOTIFICATION
+     ================================================================== */
+  --transient-notif-bg: rgba(0, 0, 0, 0.85);
+  --transient-notif-color: #ffffff;
+  --transient-notif-border-radius: 40px;
+  --transient-notif-padding: 8px 16px;
+  --transient-notif-font-size: 14px;
+  --transient-notif-z-index: 12000;
+  --transient-notif-bottom: 80px;
+  --transient-notif-left: 50%;
+  --transient-notif-transform: translateX(-50%);
+  --transient-notif-white-space: nowrap;
+  --transient-notif-pointer-events: none;
+  --transient-notif-backdrop-filter: blur(8px);
+  --transient-notif-border-width: 1px;
+  --transient-notif-border-style: solid;
+  --transient-notif-border-color: rgba(255, 255, 255, 0.2);
+  
+  /* ==================================================================
+     22. SCROLL TO BOTTOM BUTTON
+     ================================================================== */
+  --scroll-btn-position-right: 20px;
+  --scroll-btn-position-bottom: 70px;
+  --scroll-btn-width: 44px;
+  --scroll-btn-height: 44px;
+  --scroll-btn-bg: #0891b2;
+  --scroll-btn-color: #ffffff;
+  --scroll-btn-border-radius: 50%;
+  --scroll-btn-font-size: 24px;
+  --scroll-btn-z-index: 10000;
+  --scroll-btn-cursor: pointer;
+  --scroll-btn-transition: all 0.2s ease;
+  
+  --scroll-btn-shadow-external: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --scroll-btn-shadow-internal: none;
+  
+  /* Scroll button borders */
+  --scroll-btn-border-top-width: 2px;
+  --scroll-btn-border-top-style: solid;
+  --scroll-btn-border-top-color: #0099ff;
+  --scroll-btn-border-right-width: 2px;
+  --scroll-btn-border-right-style: solid;
+  --scroll-btn-border-right-color: #0099ff;
+  --scroll-btn-border-bottom-width: 2px;
+  --scroll-btn-border-bottom-style: solid;
+  --scroll-btn-border-bottom-color: #0099ff;
+  --scroll-btn-border-left-width: 2px;
+  --scroll-btn-border-left-style: solid;
+  --scroll-btn-border-left-color: #0099ff;
+  
+  --scroll-btn-hover-bg: #0e7c9e;
+  --scroll-btn-hover-transform: scale(1.05);
+  
+  /* ==================================================================
+     23. REPLY POPUP (popup de respuesta al hacer drag)
+     ================================================================== */
+  --reply-popup-bg: #1e1e2e;
+  --reply-popup-border-radius: 40px;
+  --reply-popup-padding: 8px 16px;
+  --reply-popup-z-index: 1000;
+  --reply-popup-position: fixed;
+  --reply-popup-bottom: 80px;
+  --reply-popup-left: 50%;
+  --reply-popup-transform: translateX(-50%);
+  --reply-popup-gap: 12px;
+  --reply-popup-align-items: center;
+  --reply-popup-pointer-events: auto;
+  
+  --reply-popup-border-top-width: 1px;
+  --reply-popup-border-top-style: solid;
+  --reply-popup-border-top-color: #3d3d5c;
+  --reply-popup-border-right-width: 1px;
+  --reply-popup-border-right-style: solid;
+  --reply-popup-border-right-color: #3d3d5c;
+  --reply-popup-border-bottom-width: 1px;
+  --reply-popup-border-bottom-style: solid;
+  --reply-popup-border-bottom-color: #3d3d5c;
+  --reply-popup-border-left-width: 1px;
+  --reply-popup-border-left-style: solid;
+  --reply-popup-border-left-color: #3d3d5c;
+  
+  --reply-popup-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  --reply-popup-backdrop-filter: blur(8px);
+  
+  --reply-popup-text-color: #ffffff;
+  --reply-popup-text-font-size: 14px;
+  
+  --reply-popup-close-btn-color: #ffffff;
+  --reply-popup-close-btn-opacity: 0.7;
+  --reply-popup-close-btn-hover-opacity: 1;
+  --reply-popup-close-btn-font-size: 16px;
+  --reply-popup-close-btn-bg: transparent;
+  --reply-popup-close-btn-border: none;
+  --reply-popup-close-btn-cursor: pointer;
+  
+  /* ==================================================================
+     24. HAMBURGER MENU
+     ================================================================== */
+  --hamburger-btn-width: 30px;
+  --hamburger-btn-height: 24px;
+  --hamburger-btn-position: relative;
+  --hamburger-btn-cursor: pointer;
+  --hamburger-btn-z-index: 20;
+  
+  /* Hamburger icon lines */
+  --hamburger-line-bg: #ffffff;
+  --hamburger-line-height: 3px;
+  --hamburger-line-width: 100%;
+  --hamburger-line-border-radius: 3px;
+  --hamburger-line-transition: all 0.3s ease;
+  --hamburger-line-gap: 6px;
+  
+  /* Hamburger menu container */
+  --hamburger-menu-bg: #1e1e2e;
+  --hamburger-menu-border-radius: 12px;
+  --hamburger-menu-padding: 8px 0;
+  --hamburger-menu-position: absolute;
+  --hamburger-menu-top: 50px;
+  --hamburger-menu-right: 10px;
+  --hamburger-menu-min-width: 180px;
+  --hamburger-menu-z-index: 1000;
+  
+  --hamburger-menu-border-top-width: 1px;
+  --hamburger-menu-border-top-style: solid;
+  --hamburger-menu-border-top-color: #3d3d5c;
+  --hamburger-menu-border-right-width: 1px;
+  --hamburger-menu-border-right-style: solid;
+  --hamburger-menu-border-right-color: #3d3d5c;
+  --hamburger-menu-border-bottom-width: 1px;
+  --hamburger-menu-border-bottom-style: solid;
+  --hamburger-menu-border-bottom-color: #3d3d5c;
+  --hamburger-menu-border-left-width: 1px;
+  --hamburger-menu-border-left-style: solid;
+  --hamburger-menu-border-left-color: #3d3d5c;
+  
+  --hamburger-menu-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  
+  /* Hamburger menu items */
+  --hamburger-item-padding: 12px 20px;
+  --hamburger-item-font-family: inherit;
+  --hamburger-item-font-size: 14px;
+  --hamburger-item-font-weight: 500;
+  --hamburger-item-color: #ffffff;
+  --hamburger-item-bg: transparent;
+  --hamburger-item-transition: all 0.15s ease;
+  --hamburger-item-cursor: pointer;
+  --hamburger-item-width: 100%;
+  --hamburger-item-text-align: left;
+  --hamburger-item-border: none;
+  
+  --hamburger-item-hover-bg: #2d2d44;
+  --hamburger-item-hover-color: #ffffff;
+  
+  /* ==================================================================
+     25. EMOJI PICKER MODAL
+     ================================================================== */
+  --emoji-picker-modal-width: 400px;
+  --emoji-picker-modal-height: 500px;
+  
+  /* Emoji picker tabs */
+  --emoji-tabs-display: flex;
+  --emoji-tabs-gap: 4px;
+  --emoji-tabs-padding: 8px;
+  --emoji-tabs-border-bottom-width: 1px;
+  --emoji-tabs-border-bottom-style: solid;
+  --emoji-tabs-border-bottom-color: #3d3d5c;
+  
+  --emoji-tab-padding-top: 8px;
+  --emoji-tab-padding-right: 16px;
+  --emoji-tab-padding-bottom: 8px;
+  --emoji-tab-padding-left: 16px;
+  --emoji-tab-font-size: 14px;
+  --emoji-tab-font-weight: 500;
+  --emoji-tab-bg: transparent;
+  --emoji-tab-color: #ffffff;
+  --emoji-tab-border-radius: 20px;
+  --emoji-tab-cursor: pointer;
+  --emoji-tab-transition: all 0.2s ease;
+  
+  --emoji-tab-active-bg: #0099ff;
+  --emoji-tab-active-color: #ffffff;
+  
+  /* Emoji picker content */
+  --emoji-content-height: calc(100% - 45px);
+  --emoji-content-overflow: hidden;
+  
+  /* Emoji grid */
+  --emoji-grid-gap: 6px;
+  --emoji-grid-padding: 8px 12px;
+  --emoji-grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  
+  /* Emoji item */
+  --emoji-item-aspect-ratio: 1;
+  --emoji-item-font-size: 32px;
+  --emoji-item-bg: transparent;
+  --emoji-item-border: none;
+  --emoji-item-cursor: pointer;
+  --emoji-item-border-radius: 12px;
+  --emoji-item-transition: all 0.15s ease;
+  --emoji-item-display: flex;
+  --emoji-item-align-items: center;
+  --emoji-item-justify-content: center;
+  
+  --emoji-item-hover-bg: rgba(255, 255, 255, 0.1);
+  --emoji-item-hover-transform: scale(1.1);
+  
+  /* Category button */
+  --category-btn-width: 40px;
+  --category-btn-height: 40px;
+  --category-btn-font-size: 22px;
+  --category-btn-border-radius: 12px;
+  --category-btn-bg: transparent;
+  --category-btn-transition: all 0.2s ease;
+  
+  --category-btn-active-bg: #0099ff;
+  --category-btn-active-color: #ffffff;
+  
+  /* Custom category accordion */
+  --custom-category-border-width: 1px;
+  --custom-category-border-style: solid;
+  --custom-category-border-color: #3d3d5c;
+  --custom-category-border-radius: 12px;
+  --custom-category-margin-bottom: 12px;
+  --custom-category-overflow: hidden;
+  
+  --category-header-padding: 12px 16px;
+  --category-header-bg: #2d2d44;
+  --category-header-cursor: pointer;
+  --category-header-user-select: none;
+  --category-header-gap: 8px;
+  
+  --category-header-text-color: #ffffff;
+  --category-header-text-font-weight: 600;
+  
+  --category-arrow-font-size: 14px;
+  
+  /* ==================================================================
+     26. STICKER PICKER
+     ================================================================== */
+  --stickers-grid-gap: 8px;
+  --stickers-grid-padding: 12px;
+  --stickers-grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  
+  --sticker-item-aspect-ratio: 1;
+  --sticker-item-bg: #2d2d44;
+  --sticker-item-border: none;
+  --sticker-item-border-radius: 16px;
+  --sticker-item-cursor: pointer;
+  --sticker-item-padding: 8px;
+  --sticker-item-transition: all 0.15s ease;
+  
+  --sticker-item-hover-bg: #3d3d5c;
+  --sticker-item-hover-transform: scale(1.05);
+  
+  --sticker-img-max-width: 100%;
+  --sticker-img-max-height: 100%;
+  --sticker-img-object-fit: contain;
+  --sticker-img-border-radius: 8px;
+  
+  /* ==================================================================
+     27. GIF PICKER
+     ================================================================== */
+  --gifs-search-padding: 12px;
+  --gifs-search-display: flex;
+  --gifs-search-gap: 8px;
+  
+  --gifs-search-input-padding: 10px;
+  --gifs-search-input-border-radius: 8px;
+  --gifs-search-input-border: 1px solid #3d3d5c;
+  --gifs-search-input-bg: #2d2d44;
+  --gifs-search-input-color: #ffffff;
+  --gifs-search-input-flex: 1;
+  
+  --gifs-search-btn-padding: 10px 16px;
+  --gifs-search-btn-border-radius: 8px;
+  --gifs-search-btn-bg: #0099ff;
+  --gifs-search-btn-color: #ffffff;
+  --gifs-search-btn-cursor: pointer;
+  
+  --gifs-grid-display: grid;
+  --gifs-grid-gap: 8px;
+  --gifs-grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  --gifs-grid-padding: 12px;
+  
+  --gif-item-width: 100%;
+  --gif-item-border-radius: 12px;
+  --gif-item-cursor: pointer;
+  --gif-item-transition: transform 0.15s ease;
+  
+  --gif-item-hover-transform: scale(1.05);
+  
+  /* ==================================================================
+     28. MODAL DE TEMA (themeManager)
+     ================================================================== */
+  --theme-modal-overlay-bg: rgba(0, 0, 0, 0.7);
+  --theme-modal-overlay-z-index: 10500;
+  
+  --theme-header-h2-color: #ffffff;
+  --theme-header-h2-font-size: 24px;
+  --theme-header-h2-font-weight: 600;
+  
+  /* Theme buttons */
+  --theme-btn-padding: 8px 16px;
+  --theme-btn-border-radius: 8px;
+  --theme-btn-font-size: 14px;
+  --theme-btn-font-weight: 500;
+  --theme-btn-bg: #2d2d44;
+  --theme-btn-color: #ffffff;
+  --theme-btn-cursor: pointer;
+  --theme-btn-transition: all 0.15s ease;
+  
+  --theme-btn-active-bg: #0099ff;
+  --theme-btn-active-color: #ffffff;
+  
+  --theme-btn-border-top-width: 2px;
+  --theme-btn-border-top-style: solid;
+  --theme-btn-border-top-color: #0099ff;
+  --theme-btn-border-right-width: 2px;
+  --theme-btn-border-right-style: solid;
+  --theme-btn-border-right-color: #0099ff;
+  --theme-btn-border-bottom-width: 2px;
+  --theme-btn-border-bottom-style: solid;
+  --theme-btn-border-bottom-color: #0099ff;
+  --theme-btn-border-left-width: 2px;
+  --theme-btn-border-left-style: solid;
+  --theme-btn-border-left-color: #0099ff;
+  
+  /* Background previews */
+  --bg-preview-width: 80px;
+  --bg-preview-height: 60px;
+  --bg-preview-border-radius: 12px;
+  --bg-preview-cursor: pointer;
+  --bg-preview-background-size: cover;
+  --bg-preview-background-position: center;
+  --bg-preview-transition: all 0.15s ease;
+  
+  --bg-preview-active-border-width: 3px;
+  --bg-preview-active-border-style: solid;
+  --bg-preview-active-border-color: #0099ff;
+  --bg-preview-active-shadow: 0 0 0 2px rgba(0, 153, 255, 0.5);
+  
+  /* Background categories */
+  --bg-category-margin-bottom: 16px;
+  --bg-category-header-padding: 10px;
+  --bg-category-header-bg: #2d2d44;
+  --bg-category-header-border-radius: 8px;
+  --bg-category-header-cursor: pointer;
+  --bg-category-header-font-weight: 500;
+  --bg-category-header-gap: 8px;
+  
+  /* File upload button */
+  --file-upload-btn-bg: #2d2d44;
+  --file-upload-btn-color: #ffffff;
+  --file-upload-btn-padding: 12px;
+  --file-upload-btn-border-radius: 8px;
+  --file-upload-btn-cursor: pointer;
+  --file-upload-btn-text-align: center;
+  --file-upload-btn-transition: all 0.15s ease;
+  
+  --file-upload-btn-hover-bg: #3d3d5c;
+  
+  /* ==================================================================
+     29. OPACITY MODAL
+     ================================================================== */
+  --opacity-modal-bg: rgba(0, 0, 0, 0.9);
+  --opacity-modal-z-index: 20000;
+  
+  --opacity-card-bg: #1e1e2e;
+  --opacity-card-border-radius: 20px;
+  --opacity-card-padding: 20px;
+  --opacity-card-width: 350px;
+  --opacity-card-max-width: 90vw;
+  
+  --opacity-card-border-top-width: 1px;
+  --opacity-card-border-top-style: solid;
+  --opacity-card-border-top-color: #3d3d5c;
+  --opacity-card-border-right-width: 1px;
+  --opacity-card-border-right-style: solid;
+  --opacity-card-border-right-color: #3d3d5c;
+  --opacity-card-border-bottom-width: 1px;
+  --opacity-card-border-bottom-style: solid;
+  --opacity-card-border-bottom-color: #3d3d5c;
+  --opacity-card-border-left-width: 1px;
+  --opacity-card-border-left-style: solid;
+  --opacity-card-border-left-color: #3d3d5c;
+  
+  --opacity-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  
+  --opacity-header-h2-color: #0099ff;
+  --opacity-header-h2-font-size: 20px;
+  --opacity-header-margin-bottom: 16px;
+  
+  /* Opacity slider */
+  --opacity-slider-width: 100%;
+  --opacity-slider-margin: 16px 0;
+  --opacity-slider-bg: #0099ff;
+  --opacity-slider-height: 4px;
+  --opacity-slider-border-radius: 2px;
+  
+  --opacity-slider-thumb-width: 16px;
+  --opacity-slider-thumb-height: 16px;
+  --opacity-slider-thumb-bg: #ffffff;
+  --opacity-slider-thumb-border-radius: 50%;
+  --opacity-slider-thumb-cursor: pointer;
+  
+  /* Opacity preview image */
+  --opacity-preview-width: 100%;
+  --opacity-preview-height: 150px;
+  --opacity-preview-border-radius: 12px;
+  --opacity-preview-object-fit: cover;
+  --opacity-preview-margin-bottom: 16px;
+  
+  /* Opacity gallery button */
+  --opacity-gallery-btn-padding: 10px;
+  --opacity-gallery-btn-border-radius: 8px;
+  --opacity-gallery-btn-bg: #2d2d44;
+  --opacity-gallery-btn-color: #ffffff;
+  --opacity-gallery-btn-cursor: pointer;
+  --opacity-gallery-btn-margin-bottom: 16px;
+  
+  /* ==================================================================
+     30. EDITOR MODAL (editor de CSS)
+     ================================================================== */
+  --editor-modal-container-width: 800px;
+  --editor-modal-container-height: 700px;
+  --editor-modal-container-max-width: 95vw;
+  --editor-modal-container-max-height: 90vh;
+  
+  /* Animation preview area */
+  --animation-preview-bg: #2d2d44;
+  --animation-preview-border-radius: 12px;
+  --animation-preview-padding: 20px;
+  --animation-preview-margin: 12px;
+  --animation-preview-min-height: 100px;
+  --animation-preview-display: flex;
+  --animation-preview-align-items: center;
+  --animation-preview-justify-content: center;
+  
+  --animation-ball-width: 60px;
+  --animation-ball-height: 60px;
+  --animation-ball-bg: #0099ff;
+  --animation-ball-border-radius: 50%;
+  --animation-ball-transition: all 0.3s ease;
+  
+  --animation-label-font-size: 11px;
+  --animation-label-color: rgba(255, 255, 255, 0.6);
+  --animation-label-text-align: center;
+  --animation-label-margin-top: 8px;
+  
+  /* Editor tabs */
+  --editor-tabs-display: flex;
+  --editor-tabs-border-bottom: 1px solid #3d3d5c;
+  
+  --editor-tab-padding: 12px 20px;
+  --editor-tab-font-size: 14px;
+  --editor-tab-font-weight: 500;
+  --editor-tab-bg: transparent;
+  --editor-tab-color: #ffffff;
+  --editor-tab-cursor: pointer;
+  --editor-tab-transition: all 0.15s ease;
+  
+  --editor-tab-active-bg: #0099ff;
+  --editor-tab-active-color: #ffffff;
+  --editor-tab-active-border-bottom: 2px solid #0099ff;
+  
+  /* Editor tab content */
+  --editor-tab-content-padding: 16px;
+  --editor-tab-content-height: 300px;
+  --editor-tab-content-overflow: auto;
+  
+  /* CSS Editor (CodeMirror) */
+  --cm-editor-bg: #1e1e2e;
+  --cm-editor-border-radius: 8px;
+  --cm-editor-border: 1px solid #3d3d5c;
+  --cm-editor-font-family: monospace;
+  --cm-editor-font-size: 13px;
+  --cm-editor-height: 100%;
+  
+  /* CSS Editor autocomplete popup */
+  --cm-autocomplete-bg: #252526;
+  --cm-autocomplete-border: 1px solid #3e3e42;
+  --cm-autocomplete-border-radius: 6px;
+  --cm-autocomplete-max-height: 220px;
+  --cm-autocomplete-min-width: 160px;
+  --cm-autocomplete-box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  --cm-autocomplete-font-family: monospace;
+  --cm-autocomplete-font-size: 13px;
+  
+  --cm-autocomplete-item-padding: 6px 12px;
+  --cm-autocomplete-item-color: #cccccc;
+  --cm-autocomplete-item-cursor: pointer;
+  --cm-autocomplete-item-white-space: nowrap;
+  
+  --cm-autocomplete-item-selected-bg: #094771;
+  --cm-autocomplete-item-selected-color: #ffffff;
+  
+  /* CSS Editor message input */
+  --editor-message-input-width: 100%;
+  --editor-message-input-padding: 12px;
+  --editor-message-input-border-radius: 8px;
+  --editor-message-input-border: 1px solid #3d3d5c;
+  --editor-message-input-bg: #2d2d44;
+  --editor-message-input-color: #ffffff;
+  --editor-message-input-font-family: inherit;
+  --editor-message-input-font-size: 14px;
+  --editor-message-input-resize: vertical;
+  --editor-message-input-min-height: 100px;
+  
+  /* Editor animation list */
+  --editor-animation-grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  --editor-animation-gap: 8px;
+  
+  --animation-item-padding: 8px;
+  --animation-item-border-radius: 8px;
+  --animation-item-bg: #2d2d44;
+  --animation-item-color: #ffffff;
+  --animation-item-cursor: pointer;
+  --animation-item-text-align: center;
+  --animation-item-transition: all 0.15s ease;
+  
+  --animation-item-hover-bg: #3d3d5c;
+  --animation-item-hover-transform: scale(1.05);
+  
+  /* Editor bottom actions */
+  --editor-actions-display: flex;
+  --editor-actions-gap: 12px;
+  --editor-actions-padding: 16px;
+  --editor-actions-justify-content: flex-end;
+  --editor-actions-border-top: 1px solid #3d3d5c;
+  
+  /* ==================================================================
+     31. FLOATING PREVIEW (para editor)
+     ================================================================== */
+  --floating-preview-bg: #1e1e2e;
+  --floating-preview-border-radius: 18px;
+  --floating-preview-padding: 12px 16px;
+  --floating-preview-max-width: 280px;
+  --floating-preview-min-width: 200px;
+  --floating-preview-z-index: 20000;
+  --floating-preview-cursor: grab;
+  --floating-preview-user-select: none;
+  
+  --floating-preview-border-top-width: 1px;
+  --floating-preview-border-top-style: solid;
+  --floating-preview-border-top-color: #3d3d5c;
+  --floating-preview-border-right-width: 1px;
+  --floating-preview-border-right-style: solid;
+  --floating-preview-border-right-color: #3d3d5c;
+  --floating-preview-border-bottom-width: 1px;
+  --floating-preview-border-bottom-style: solid;
+  --floating-preview-border-bottom-color: #3d3d5c;
+  --floating-preview-border-left-width: 1px;
+  --floating-preview-border-left-style: solid;
+  --floating-preview-border-left-color: #3d3d5c;
+  
+  --floating-preview-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  --floating-preview-backdrop-filter: blur(8px);
+  
+  /* Speech bubble arrow (opcional) */
+  --speech-bubble-arrow-size: 10px;
+  --speech-bubble-arrow-bg: #1e1e2e;
+  
+  /* Tutorial buttons dentro del floating preview */
+  --tutorial-buttons-display: flex;
+  --tutorial-buttons-justify-content: space-between;
+  --tutorial-buttons-margin-top: 12px;
+  --tutorial-buttons-gap: 8px;
+  
+  --tutorial-btn-padding: 6px 12px;
+  --tutorial-btn-border-radius: 8px;
+  --tutorial-btn-font-size: 12px;
+  --tutorial-btn-bg: #2d2d44;
+  --tutorial-btn-color: #ffffff;
+  --tutorial-btn-cursor: pointer;
+  --tutorial-btn-transition: all 0.15s ease;
+  
+  --tutorial-btn-hover-bg: #3d3d5c;
+  --tutorial-btn-disabled-opacity: 0.5;
+  --tutorial-btn-disabled-cursor: not-allowed;
+  
+  /* ==================================================================
+     32. SKIN TONE SELECTOR (para emojis)
+     ================================================================== */
+  --skin-tone-selector-position: relative;
+  --skin-tone-selector-display: inline-block;
+  --skin-tone-selector-margin: 8px;
+  
+  --skin-tone-main-btn-padding: 8px 12px;
+  --skin-tone-main-btn-border-radius: 20px;
+  --skin-tone-main-btn-bg: #2d2d44;
+  --skin-tone-main-btn-color: #ffffff;
+  --skin-tone-main-btn-cursor: pointer;
+  --skin-tone-main-btn-font-size: 16px;
+  
+  --skin-tone-dropdown-bg: #1e1e2e;
+  --skin-tone-dropdown-border-radius: 12px;
+  --skin-tone-dropdown-padding: 8px;
+  --skin-tone-dropdown-min-width: 140px;
+  --skin-tone-dropdown-z-index: 1000;
+  
+  --skin-tone-dropdown-border-top-width: 1px;
+  --skin-tone-dropdown-border-top-style: solid;
+  --skin-tone-dropdown-border-top-color: #3d3d5c;
+  --skin-tone-dropdown-border-right-width: 1px;
+  --skin-tone-dropdown-border-right-style: solid;
+  --skin-tone-dropdown-border-right-color: #3d3d5c;
+  --skin-tone-dropdown-border-bottom-width: 1px;
+  --skin-tone-dropdown-border-bottom-style: solid;
+  --skin-tone-dropdown-border-bottom-color: #3d3d5c;
+  --skin-tone-dropdown-border-left-width: 1px;
+  --skin-tone-dropdown-border-left-style: solid;
+  --skin-tone-dropdown-border-left-color: #3d3d5c;
+  
+  --skin-tone-option-padding: 8px 12px;
+  --skin-tone-option-cursor: pointer;
+  --skin-tone-option-transition: all 0.15s ease;
+  --skin-tone-option-gap: 8px;
+  
+  --skin-tone-option-hover-bg: #2d2d44;
+  
+  /* ==================================================================
+     33. MODAL DE REGISTRO DE USUARIO (user registration)
+     ================================================================== */
+  --name-modal-bg: #1e1e2e;
+  --name-modal-border-radius: 24px;
+  --name-modal-padding: 24px;
+  --name-modal-width: 400px;
+  --name-modal-max-width: 90vw;
+  --name-modal-z-index: 20000;
+  
+  --name-modal-border-top-width: 2px;
+  --name-modal-border-top-style: solid;
+  --name-modal-border-top-color: #0099ff;
+  --name-modal-border-right-width: 2px;
+  --name-modal-border-right-style: solid;
+  --name-modal-border-right-color: #0099ff;
+  --name-modal-border-bottom-width: 2px;
+  --name-modal-border-bottom-style: solid;
+  --name-modal-border-bottom-color: #0099ff;
+  --name-modal-border-left-width: 2px;
+  --name-modal-border-left-style: solid;
+  --name-modal-border-left-color: #0099ff;
+  
+  --name-card-h1-color: #0099ff;
+  --name-card-h1-font-size: 24px;
+  --name-card-h1-margin-bottom: 20px;
+  
+  --input-group-margin-bottom: 16px;
+  --input-group-label-font-size: 14px;
+  --input-group-label-font-weight: 500;
+  --input-group-label-color: #ffffff;
+  --input-group-label-margin-bottom: 6px;
+  --input-group-label-display: block;
+  
+  --name-input-padding: 12px;
+  --name-input-border-radius: 8px;
+  --name-input-border: 1px solid #3d3d5c;
+  --name-input-bg: #2d2d44;
+  --name-input-color: #ffffff;
+  --name-input-font-size: 14px;
+  --name-input-width: 100%;
+  
+  --username-hint-font-size: 11px;
+  --username-hint-color: rgba(255, 255, 255, 0.5);
+  --username-hint-margin-top: 4px;
+  
+  --error-message-color: #ef4444;
+  --error-message-font-size: 12px;
+  --error-message-margin-top: 4px;
+  
+  --name-actions-display: flex;
+  --name-actions-justify-content: flex-end;
+  --name-actions-margin-top: 20px;
+  
+  /* Botón primary del registro */
+  --btn-primary-bg: #0099ff;
+  --btn-primary-color: #ffffff;
+  --btn-primary-padding: 10px 20px;
+  --btn-primary-border-radius: 8px;
+  --btn-primary-cursor: pointer;
+  --btn-primary-transition: all 0.15s ease;
+  --btn-primary-font-weight: 600;
+  
+  --btn-primary-disabled-bg: #4a4a6a;
+  --btn-primary-disabled-cursor: not-allowed;
+  --btn-primary-disabled-opacity: 0.6;
+  
+  --btn-primary-hover-bg: #0077cc;
+  
+  /* ==================================================================
+     34. MODAL DE CACHE / LIMPIEZA DE DATOS
+     ================================================================== */
+  --cache-modal-container-width: 700px;
+  --cache-modal-container-height: 650px;
+  
+  --storage-tab-padding: 8px 16px;
+  --storage-tab-border-radius: 8px;
+  --storage-tab-bg: #2d2d44;
+  --storage-tab-color: #ffffff;
+  --storage-tab-cursor: pointer;
+  --storage-tab-transition: all 0.15s ease;
+  
+  --storage-tab-active-bg: #0099ff;
+  --storage-tab-active-color: #ffffff;
+  
+  --storage-tab-danger-bg: #7f1a1a;
+  --storage-tab-danger-color: #ffffff;
+  
+  --cache-item-bg: #2d2d44;
+  --cache-item-border-radius: 12px;
+  --cache-item-padding: 12px;
+  --cache-item-gap: 12px;
+  
+  --cache-item-checkbox-width: 18px;
+  --cache-item-checkbox-height: 18px;
+  
+  --cache-item-key-font-family: monospace;
+  --cache-item-key-font-size: 12px;
+  --cache-item-value-font-size: 11px;
+  --cache-item-value-opacity: 0.7;
+  
+  /* ==================================================================
+     35. ANIMACIONES DE PARTÍCULAS (emojis especiales)
+     ================================================================== */
+  --particle-animation-duration: 1.5s;
+  --particle-animation-timing: ease-out;
+  --particle-animation-fill: forwards;
+  
+  --heart-rain-particle-font-size-min: 15px;
+  --heart-rain-particle-font-size-max: 35px;
+  
+  --fire-particle-font-size-min: 15px;
+  --fire-particle-font-size-max: 45px;
+  
+  --tear-particle-font-size-min: 8px;
+  --tear-particle-font-size-max: 24px;
+  
+  --star-particle-font-size-min: 5px;
+  --star-particle-font-size-max: 15px;
+  
+  --glow-effect-width: 120px;
+  --glow-effect-height: 120px;
+  --glow-effect-bg: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+  --glow-effect-animation-duration: 1s;
+  
+  /* ==================================================================
+     36. VARIABLES DE TIPO DE TEMA (soportado por data-theme)
+     ================================================================== */
+  --theme-dark-bg: #17212b;
+  --theme-light-bg: #f8fafc;
+  --theme-cristal-bg: #1e293b;
+  --theme-forest-bg: #1e3a1e;
+  --theme-ocean-bg: #082f49;
+  --theme-magenta-bg: #16222F;
+  --theme-whatsapp-bg: #e5ddd5;
+  --theme-midnight-bg: #0b0f19;
+  --theme-reference-bg: #030F0F;
+  
+  /* ==================================================================
+     37. BOTONES GENERALES (btn, btn-cancel, btn-save, btn-secondary)
+     ================================================================== */
+  --btn-padding: 8px 16px;
+  --btn-border-radius: 8px;
+  --btn-font-size: 14px;
+  --btn-font-weight: 500;
+  --btn-cursor: pointer;
+  --btn-transition: all 0.15s ease;
+  
+  --btn-cancel-bg: #3d3d5c;
+  --btn-cancel-color: #ffffff;
+  --btn-cancel-hover-bg: #4a4a6a;
+  
+  --btn-save-bg: #0099ff;
+  --btn-save-color: #ffffff;
+  --btn-save-hover-bg: #0077cc;
+  
+  --btn-secondary-bg: #2d2d44;
+  --btn-secondary-color: #ffffff;
+  --btn-secondary-hover-bg: #3d3d5c;
+  
+  --btn-cancel-border-top-width: 2px;
+  --btn-cancel-border-top-style: solid;
+  --btn-cancel-border-top-color: #0099ff;
+  --btn-cancel-border-right-width: 2px;
+  --btn-cancel-border-right-style: solid;
+  --btn-cancel-border-right-color: #0099ff;
+  --btn-cancel-border-bottom-width: 2px;
+  --btn-cancel-border-bottom-style: solid;
+  --btn-cancel-border-bottom-color: #0099ff;
+  --btn-cancel-border-left-width: 2px;
+  --btn-cancel-border-left-style: solid;
+  --btn-cancel-border-left-color: #0099ff;
+  
+  --btn-save-border-top-width: 2px;
+  --btn-save-border-top-style: solid;
+  --btn-save-border-top-color: #0099ff;
+  --btn-save-border-right-width: 2px;
+  --btn-save-border-right-style: solid;
+  --btn-save-border-right-color: #0099ff;
+  --btn-save-border-bottom-width: 2px;
+  --btn-save-border-bottom-style: solid;
+  --btn-save-border-bottom-color: #0099ff;
+  --btn-save-border-left-width: 2px;
+  --btn-save-border-left-style: solid;
+  --btn-save-border-left-color: #0099ff;
+}
+
+/* ==================================================================
+   GLOBAL SCROLLBAR STYLES (usa las variables definidas arriba)
+   ================================================================== */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-bg);
+  border-radius: var(--scrollbar-track-border-radius);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-bg);
+  border-radius: var(--scrollbar-thumb-border-radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover-bg);
+}
+
+/* ==================================================================
+   CLASES DE UTILIDAD PARA BORDES (si quieres usar variables individuales)
+   ================================================================== */
+.border-custom {
+  border-top-width: var(--border-top-width, 0);
+  border-top-style: var(--border-top-style, solid);
+  border-top-color: var(--border-top-color, transparent);
+  border-right-width: var(--border-right-width, 0);
+  border-right-style: var(--border-right-style, solid);
+  border-right-color: var(--border-right-color, transparent);
+  border-bottom-width: var(--border-bottom-width, 0);
+  border-bottom-style: var(--border-bottom-style, solid);
+  border-bottom-color: var(--border-bottom-color, transparent);
+  border-left-width: var(--border-left-width, 0);
+  border-left-style: var(--border-left-style, solid);
+  border-left-color: var(--border-left-color, transparent);
+}
+
+.radius-custom {
+  border-top-left-radius: var(--radius-tl, 0);
+  border-top-right-radius: var(--radius-tr, 0);
+  border-bottom-right-radius: var(--radius-br, 0);
+  border-bottom-left-radius: var(--radius-bl, 0);
+}
+
+.shadow-custom {
+  box-shadow: var(--shadow-external, none), var(--shadow-internal, none);
+}

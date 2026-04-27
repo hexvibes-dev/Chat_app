@@ -1,0 +1,25 @@
+html[data-theme="midnight"] {
+  --msg-bg-me: linear-gradient(135deg, #6b21a8, #3b0764);
+  --msg-bg-other: linear-gradient(135deg, #1e1b4b, #312e81);
+  --msg-border-me: #6b21a8;
+  --msg-border-other: #1e1b4b;
+  --text-color: #e2e8f0;
+  --hour-color: #a78bfa;
+  --hour-color-me: #e2e8f0;
+  --header-bg: linear-gradient(135deg, #4c1d95, #2e1065);
+  --input-bg: #1e1b4b;
+  --send-btn-bg: #8b5cf6;
+  
+  --modal-bg: #1e1b4b;
+  --modal-text: #e2e8f0;
+  --modal-header: #a78bfa;
+  --modal-input-bg: #2e1065;
+  --modal-input-border: #4c1d95;
+  --modal-btn-primary: #8b5cf6;
+  --modal-btn-primary-text: #ffffff;
+  --modal-btn-secondary: #4c1d95;
+  --modal-btn-secondary-text: #e2e8f0;
+  --notification-bg: #1e1b4b;
+  --notification-text: #a78bfa;
+  --notification-border: #8b5cf6;
+}

@@ -1,0 +1,1160 @@
+.heart-beat-animation {
+  animation: heartbeat 3s ease-in-out forwards !important;
+  transform-origin: center center;
+  display: inline-block;
+  position: relative;
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  
+  10% {
+    transform: scale(1.35);
+  }
+  
+  15% {
+    transform: scale(1);
+  }
+  
+  30% {
+    transform: scale(1.3);
+  }
+  
+  35% {
+    transform: scale(1);
+  }
+  
+  55% {
+    transform: scale(1.4);
+  }
+  
+  60% {
+    transform: scale(0.95);
+  }
+  
+  65% {
+    transform: scale(1.25);
+  }
+  
+  70% {
+    transform: scale(1);
+  }
+  
+  100% {
+    transform: scale(1);
+  }
+}
+
+.heart-residual {
+  animation: subtleGlow 1s ease-out forwards;
+}
+
+@keyframes subtleGlow {
+  0% {
+    text-shadow: 0 0 8px rgba(255, 80, 120, 0.6);
+  }
+  
+  100% {
+    text-shadow: 0 0 0px rgba(255, 80, 120, 0);
+  }
+}
+
+.floating-heart {
+  position: fixed;
+  font-size: 24px;
+  pointer-events: none;
+  z-index: 10001;
+  opacity: 1;
+  animation: floatAway 1.5s ease-out forwards;
+  filter: drop-shadow(0 0 4px rgba(255, 80, 120, 0.5));
+}
+
+@keyframes floatAway {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  
+  30% {
+    opacity: 1;
+  }
+  
+  100% {
+    transform: translate(var(--dx, 0), var(--dy, -80px)) rotate(var(--rot, 0deg)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+.floating-heart:nth-child(odd) {
+  font-size: 18px;
+  animation-duration: 1.8s;
+}
+
+.floating-heart:nth-child(3n) {
+  font-size: 28px;
+  animation-duration: 1.2s;
+}
+
+.msg-drag.emoji-single {
+  background: transparent !important;
+  font-size: 4rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+  min-width: auto;
+}
+
+.msg-drag.emoji-double {
+  background: transparent !important;
+  font-size: 3rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+}
+
+.msg-drag.emoji-triple {
+  background: transparent !important;
+  font-size: 2.5rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+}
+
+.msg-drag.emoji-quad {
+  background: transparent !important;
+  font-size: 2rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+}
+
+.message.me .msg-drag.emoji-single,
+.message.me .msg-drag.emoji-double,
+.message.me .msg-drag.emoji-triple,
+.message.me .msg-drag.emoji-quad {
+  background: transparent !important;
+  color: inherit;
+}
+
+.emoji-message .msg-hour {
+  position: relative;
+  margin-top: 4px;
+  text-align: right;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.heart-beat-animation {
+  animation: heartbeat 3s ease-in-out forwards !important;
+  transform-origin: center center;
+  display: inline-block;
+  position: relative;
+}
+
+@keyframes heartbeat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  
+  10% {
+    transform: scale(1.35);
+  }
+  
+  15% {
+    transform: scale(1);
+  }
+  
+  30% {
+    transform: scale(1.3);
+  }
+  
+  35% {
+    transform: scale(1);
+  }
+  
+  55% {
+    transform: scale(1.4);
+  }
+  
+  60% {
+    transform: scale(0.95);
+  }
+  
+  65% {
+    transform: scale(1.25);
+  }
+  
+  70% {
+    transform: scale(1);
+  }
+}
+
+.floating-heart {
+  position: fixed;
+  font-size: 24px;
+  pointer-events: none;
+  z-index: 10001;
+  opacity: 1;
+  animation: floatAway 1.5s ease-out forwards;
+  filter: drop-shadow(0 0 4px rgba(255, 80, 120, 0.5));
+}
+
+@keyframes floatAway {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  
+  30% {
+    opacity: 1;
+  }
+  
+  100% {
+    transform: translate(var(--dx, 0), var(--dy, -80px)) rotate(var(--rot, 0deg)) scale(0.3);
+    opacity: 0;
+  }
+}
+/*Fuego*/
+.fire-animation {
+  animation: firePulse 2s ease-in-out forwards;
+  filter: drop-shadow(0 0 8px rgba(255, 80, 0, 0.8));
+}
+
+@keyframes firePulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  
+  20% {
+    transform: scale(1.15);
+    filter: brightness(1.3) drop-shadow(0 0 12px rgba(255, 80, 0, 0.9));
+  }
+  
+  40% {
+    transform: scale(0.95);
+    filter: brightness(0.9);
+  }
+  
+  60% {
+    transform: scale(1.1);
+    filter: brightness(1.2) drop-shadow(0 0 10px rgba(255, 80, 0, 0.7));
+  }
+  
+  80% {
+    transform: scale(1.02);
+    filter: brightness(1.05);
+  }
+}
+/* Agua */
+.water-animation {
+  animation: waterBounce 2s ease-in-out forwards;
+}
+
+@keyframes waterBounce {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  
+  15% {
+    transform: scale(1.2) translateY(-10px);
+  }
+  
+  30% {
+    transform: scale(0.9) translateY(5px);
+  }
+  
+  45% {
+    transform: scale(1.1) translateY(-5px);
+  }
+  
+  60% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Mierda */
+.poop-animation {
+  animation: poopSquash 1.5s ease-in-out forwards;
+}
+
+@keyframes poopSquash {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  
+  25% {
+    transform: scale(1.2, 0.8);
+  }
+  
+  50% {
+    transform: scale(0.9, 1.1);
+  }
+  
+  75% {
+    transform: scale(1.05, 0.95);
+  }
+}
+
+/* Fiesta */
+.party-animation {
+  animation: partyShake 2.5s ease-in-out forwards;
+}
+
+@keyframes partyShake {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: rotate(10deg);
+  }
+  
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: rotate(-10deg);
+  }
+}
+
+/* risa */
+.laugh-animation {
+  animation: laughSwing 2s ease-in-out forwards;
+}
+
+@keyframes laughSwing {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  
+  25% {
+    transform: rotate(15deg);
+  }
+  
+  50% {
+    transform: rotate(-15deg);
+  }
+  
+  75% {
+    transform: rotate(8deg);
+  }
+}
+
+/* rayo */
+.lightning-animation {
+  animation: lightningFlash 1.5s ease-in-out forwards;
+}
+
+@keyframes lightningFlash {
+
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    filter: brightness(1.5) drop-shadow(0 0 5px yellow);
+  }
+  
+  20%,
+  40%,
+  60%,
+  80% {
+    filter: brightness(0.7);
+  }
+}
+
+/*  Estrella */
+.star-animation {
+  animation: starSpin 3s ease-in-out forwards;
+  filter: drop-shadow(0 0 8px gold);
+}
+
+@keyframes starSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  
+  30% {
+    transform: rotate(120deg) scale(1.2);
+    filter: brightness(1.3) drop-shadow(0 0 15px gold);
+  }
+  
+  60% {
+    transform: rotate(240deg) scale(1.1);
+  }
+  
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/*  Calavera */
+.skull-animation {
+  animation: skullShake 2s ease-in-out forwards;
+}
+
+@keyframes skullShake {
+
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  
+  20%,
+  60% {
+    transform: scale(0.9);
+    filter: brightness(0.7);
+  }
+  
+  40%,
+  80% {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+  }
+}
+
+/* Globo */
+.balloon-animation {
+  animation: balloonInflate 2.5s ease-in-out forwards;
+}
+
+@keyframes balloonInflate {
+  0% {
+    transform: scale(1);
+  }
+  
+  50% {
+    transform: scale(1.4);
+    filter: brightness(1.2);
+  }
+  
+  75% {
+    transform: scale(1.1);
+  }
+  
+  100% {
+    transform: scale(1);
+  }
+}
+
+/*  Guitarra */
+.guitar-animation {
+  animation: guitarVibrate 2s ease-in-out forwards;
+}
+
+@keyframes guitarVibrate {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10001;
+  opacity: 1;
+  animation: particleFloat 1.5s ease-out forwards;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  
+  100% {
+    transform: translate(var(--dx, 0), var(--dy, -60px)) rotate(var(--rot, 0deg)) scale(0);
+    opacity: 0;
+  }
+}
+
+.heart-residual,
+.special-residual {
+  animation: residualGlow 1s ease-out forwards;
+}
+
+@keyframes residualGlow {
+  0% {
+    filter: drop-shadow(0 0 8px rgba(255, 80, 120, 0.6));
+  }
+  
+  100% {
+    filter: drop-shadow(0 0 0px rgba(255, 80, 120, 0));
+  }
+}
+
+
+.msg-drag.emoji-single {
+  background: transparent !important;
+  font-size: 4rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+  min-width: auto;
+}
+
+.msg-drag.emoji-double {
+  background: transparent !important;
+  font-size: 3rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+}
+
+.msg-drag.emoji-triple {
+  background: transparent !important;
+  font-size: 2.5rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+}
+
+.msg-drag.emoji-quad {
+  background: transparent !important;
+  font-size: 2rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+}
+
+.message.me .msg-drag.emoji-single,
+.message.me .msg-drag.emoji-double,
+.message.me .msg-drag.emoji-triple,
+.message.me .msg-drag.emoji-quad {
+  background: transparent !important;
+  color: inherit;
+}
+
+.emoji-message .msg-hour {
+  position: relative;
+  margin-top: 4px;
+  text-align: right;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Fantasma */
+.ghost-animation {
+  animation: ghostFloat 2.5s ease-in-out forwards;
+}
+
+@keyframes ghostFloat {
+
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  
+  25% {
+    transform: translateY(-15px) scale(1.05);
+    opacity: 0.9;
+  }
+  
+  50% {
+    transform: translateY(5px) scale(0.95);
+    opacity: 1;
+  }
+  
+  75% {
+    transform: translateY(-8px) scale(1.02);
+    opacity: 0.95;
+  }
+}
+
+/* Voz/Habla */
+.speech-animation {
+  animation: speechPulse 2s ease-in-out forwards;
+}
+
+@keyframes speechPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  
+  25% {
+    transform: scale(1.15);
+    filter: brightness(1.2);
+  }
+  
+  50% {
+    transform: scale(0.95);
+    filter: brightness(0.9);
+  }
+  
+  75% {
+    transform: scale(1.08);
+    filter: brightness(1.1);
+  }
+}
+
+/* Corazón ardiendo */
+.burningHeart-animation {
+  animation: burningHeart 2.5s ease-in-out forwards;
+  filter: drop-shadow(0 0 5px rgba(255, 80, 0, 0.8));
+}
+
+@keyframes burningHeart {
+
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px orange);
+  }
+  
+  20% {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 15px red);
+  }
+  
+  40% {
+    transform: scale(0.95);
+    filter: drop-shadow(0 0 8px darkorange);
+  }
+  
+  60% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 12px orangered);
+  }
+  
+  80% {
+    transform: scale(1.02);
+    filter: drop-shadow(0 0 6px orange);
+  }
+}
+
+/* 😞 Triste */
+.sad-animation {
+  animation: sadDrop 2s ease-in-out forwards;
+}
+
+@keyframes sadDrop {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  
+  30% {
+    transform: translateY(8px);
+  }
+  
+  60% {
+    transform: translateY(-3px);
+  }
+}
+
+/* 🤣 Rodar de risa */
+.rollingLaugh-animation {
+  animation: rollLaugh 2s ease-in-out forwards;
+}
+
+@keyframes rollLaugh {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  
+  25% {
+    transform: rotate(20deg);
+  }
+  
+  50% {
+    transform: rotate(-15deg);
+  }
+  
+  75% {
+    transform: rotate(10deg);
+  }
+}
+
+/* Llora nene llora */
+.cry-animation {
+  animation: cryShake 2s ease-in-out forwards;
+}
+
+@keyframes cryShake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  
+  20%,
+  60% {
+    transform: translateX(-5px);
+  }
+  
+  40%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/*🥹 ¿se llama? */
+.emotional-animation {
+  animation: emotionalBlink 2s ease-in-out forwards;
+}
+
+@keyframes emotionalBlink {
+
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  
+  25% {
+    transform: scale(1.1);
+    filter: brightness(1.15);
+  }
+  
+  50% {
+    transform: scale(0.95);
+    filter: brightness(0.95);
+  }
+  
+  75% {
+    transform: scale(1.05);
+    filter: brightness(1.08);
+  }
+}
+
+/* 🥺 cara de puta */
+.pleading-animation {
+  animation: pleadingShake 2s ease-in-out forwards;
+}
+
+@keyframes pleadingShake {
+
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  
+  20%,
+  60% {
+    transform: translateX(-4px) rotate(-5deg);
+  }
+  
+  40%,
+  80% {
+    transform: translateX(4px) rotate(5deg);
+  }
+}
+
+/* 😱 genifos de susto */
+.scream-animation {
+  animation: screamFlash 1.8s ease-in-out forwards;
+}
+
+@keyframes screamFlash {
+
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  
+  20%,
+  60% {
+    transform: scale(1.25);
+    filter: brightness(1.3);
+  }
+  
+  40%,
+  80% {
+    transform: scale(0.9);
+    filter: brightness(0.8);
+  }
+}
+
+/* 😒 ¿ardido? */
+.unamused-animation {
+  animation: unamusedShake 2s ease-in-out forwards;
+}
+
+@keyframes unamusedShake {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  
+  25% {
+    transform: rotate(-10deg);
+  }
+  
+  50% {
+    transform: rotate(5deg);
+  }
+  
+  75% {
+    transform: rotate(-5deg);
+  }
+}
+
+/*Miedo */
+.fearful-animation {
+  animation: fearfulTremble 2s ease-in-out forwards;
+}
+
+@keyframes fearfulTremble {
+
+  0%,
+  100% {
+    transform: translateX(0);
+    filter: brightness(1);
+  }
+  
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-3px);
+    filter: brightness(0.9);
+  }
+  
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(3px);
+    filter: brightness(1.1);
+  }
+}
+
+/* :0 */
+.astonished-animation {
+  animation: astonishedPop 2s ease-in-out forwards;
+}
+
+@keyframes astonishedPop {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  
+  30% {
+    transform: scale(1.2);
+  }
+  
+  50% {
+    transform: scale(0.9);
+  }
+  
+  70% {
+    transform: scale(1.08);
+  }
+}
+
+/*  Beso */
+.kiss-animation {
+  animation: kissFloat 2s ease-in-out forwards;
+}
+
+@keyframes kissFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    filter: brightness(1);
+  }
+  
+  30% {
+    transform: translateY(-10px);
+    filter: brightness(1.1);
+  }
+  
+  60% {
+    transform: translateY(5px);
+    filter: brightness(0.95);
+  }
+}
+
+/* Tu corazón despues de estar con ella */
+.brokenHeart-animation {
+  animation: brokenHeartCrack 2s ease-in-out forwards;
+}
+
+@keyframes brokenHeartCrack {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  
+  25% {
+    transform: scale(1.1) rotate(10deg);
+    filter: brightness(1.2);
+  }
+  
+  50% {
+    transform: scale(0.8) rotate(-15deg);
+    filter: brightness(0.8);
+  }
+  
+  75% {
+    transform: scale(1.05) rotate(5deg);
+    filter: brightness(1.05);
+  }
+  
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1);
+  }
+}
+
+.react-emoji.pressing {
+  transition: transform 0.02s linear;
+  transform: scale(1.5);
+  z-index: 10010;
+  position: relative;
+}
+
+/* Partículas de lluvia de corazones */
+.heart-rain-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10050;
+  animation: floatAway 2s ease-out forwards;
+  filter: drop-shadow(0 0 2px rgba(255, 0, 0, 0.5));
+}
+
+/* Partículas de lágrimas */
+.tear-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10050;
+  font-size: 16px;
+  animation: floatDown 1.5s ease-out forwards;
+}
+
+/* Partículas de exclamación */
+.astonished-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10050;
+  animation: floatUp 1.5s ease-out forwards;
+}
+
+/* Efecto de resplandor */
+.glow-effect {
+  position: fixed;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 0, 0.6), transparent);
+  pointer-events: none;
+  z-index: 10040;
+  animation: glowFade 1s ease-out forwards;
+}
+
+@keyframes glowFade {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Animación de temblor */
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  
+  25% {
+    transform: translateX(-5px);
+  }
+  
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Animación de 👍*/
+.thumbs-up-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10060;
+  animation: thumbsUp 1s ease-out forwards;
+}
+
+@keyframes thumbsUp {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  
+  100% {
+    transform: scale(1);
+    opacity: 0;
+    top: -100px;
+  }
+}
+
+/* Partículas de estrella */
+.star-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10050;
+  animation: floatUp 1s ease-out forwards;
+}
+
+/* Emoji bailarín */
+.dancing-emoji {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10070;
+  animation: dance 2s ease-in-out forwards;
+}
+
+@keyframes dance {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  
+  20% {
+    transform: scale(1.3) rotate(-15deg);
+  }
+  
+  40% {
+    transform: scale(0.9) rotate(10deg);
+  }
+  
+  60% {
+    transform: scale(1.2) rotate(-5deg);
+  }
+  
+  80% {
+    transform: scale(1.05) rotate(5deg);
+  }
+  
+  100% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* Animaciones de flotación */
+@keyframes floatUp {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  
+  100% {
+    transform: translate(var(--dx, 0), var(--dy, -100px)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes floatDown {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  
+  100% {
+    transform: translate(var(--dx, 0), var(--dy, 80px)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes floatAway {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  
+  100% {
+    transform: translate(var(--dx, 0), var(--dy, -120px)) rotate(var(--rot, 0deg)) scale(0.2);
+    opacity: 0;
+  }
+}
+
+
+/* Aimación para lágrimas con caída parabólica */
+@keyframes tearFall {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  
+  100% {
+    transform: translate(var(--dx, 0), var(--dy, 100px)) rotate(360deg) scale(0.2);
+    opacity: 0;
+  }
+}
+
+
+
+/* Partículas de fuego y humo */
+.fire-particle-simple {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10050;
+  will-change: transform;
+  animation: fireFloat 1.5s ease-out forwards;
+}
+
+@keyframes fireFloat {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  
+  100% {
+    transform: translate(var(--dx, 0), var(--dy, -80px)) rotate(var(--rot, 0deg)) scale(0.3);
+    opacity: 0;
+  }
+}

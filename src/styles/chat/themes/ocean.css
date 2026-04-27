@@ -1,0 +1,25 @@
+html[data-theme="ocean"] {
+  --msg-bg-me: linear-gradient(135deg, #0369a1, #0e7fbf);
+  --msg-bg-other: linear-gradient(135deg, #0891b2, #22d3ee);
+  --msg-border-me: #0e7fbf;
+  --msg-border-other: #0369a1;
+  --text-color: #e0f2fe;
+  --hour-color: #7dd3fc;
+  --hour-color-me: #e0f2fe;
+  --header-bg: linear-gradient(135deg, #082f49, #0369a1, #0e7fbf);
+  --input-bg: #0369a1;
+  --send-btn-bg: #0e7fbf;
+  
+  --modal-bg: #082f49;
+  --modal-text: #e0f2fe;
+  --modal-header: #38bdf8;
+  --modal-input-bg: #0c4a6e;
+  --modal-input-border: #0e7fbf;
+  --modal-btn-primary: #38bdf8;
+  --modal-btn-primary-text: #082f49;
+  --modal-btn-secondary: #0e7fbf;
+  --modal-btn-secondary-text: #e0f2fe;
+  --notification-bg: #082f49;
+  --notification-text: #38bdf8;
+  --notification-border: #38bdf8;
+}

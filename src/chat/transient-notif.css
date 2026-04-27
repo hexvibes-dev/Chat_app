@@ -1,0 +1,56 @@
+.transient-notif {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 18px;
+  background: var(--notification-bg);
+  color: var(--notification-text);
+  padding: 8px 14px;
+  border-radius: 18px;
+  font-size: 13px;
+  opacity: 0;
+  transition: opacity 120ms ease, transform 120ms ease;
+  z-index: 12005;
+  border: 1px solid var(--notification-border);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.transient-notif.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.notif-buttons {
+  display: inline-flex;
+  gap: 12px;
+}
+
+.notif-btn {
+  background: var(--modal-btn-secondary);
+  border: none;
+  border-radius: 16px;
+  padding: 4px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--modal-btn-secondary-text);
+  transition: background 0.2s;
+  pointer-events: auto;
+}
+
+.notif-btn:hover {
+  background: var(--modal-btn-primary);
+  color: var(--modal-btn-primary-text);
+}
+
+.message {
+  position: relative;
+}
+
+.reactions-wrap {
+  pointer-events: auto;
+}

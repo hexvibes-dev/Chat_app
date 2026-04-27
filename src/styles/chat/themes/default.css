@@ -1,0 +1,377 @@
+:root {
+  /* page */
+  --app-bg-image: none;
+  --app-bg-color: #1e293b;
+  --app-bg-opacity: 1;
+  
+  /*  general  */
+  --modal-input-border: #000099;
+  --modal-bg: #000000;
+  --input-bg: #0099df;
+  --modal-text: #ffffff;
+  --modal-btn-primary: #002741;
+  --modal-btn-primary-text: #ffffff;
+  
+  
+  /*  Header  */
+  --header-bg: #0099df;
+  --layer-header-text: #ffffff;
+  --border-top-header-width: 2px;
+  --border-top-header-style: solid;
+  --border-top-header-color: #0099ff;
+  --border-right-header-width: 2px;
+  --border-right-header-style: solid;
+  --border-right-header-color: #0099ff;
+  --border-left-header-width: 2px;
+  --border-left-header-style: solid;
+  --border-left-header-color: #0099ff;
+  --border-bottom-header-width: 2px;
+  --border-bottom-header-style: solid;
+  --border-bottom-header-color: #0099ff;
+  
+  /*   Hamburger Menu  */
+  --hamburger-bg: #ffffff;
+  --hamburger-modal-bg: #01827;
+  --hamburger-modal-text: #ffffff;
+  --border-hamburger-modal: #0099ff;
+  --border-r-hamburger-modal: #0099ff;
+  --border-top-hamburger-width: 2px;
+  --border-top-hamburger-style: solid;
+  --border-top-hamburger-color: #0099ff;
+  --border-right-hamburger-width: 2px;
+  --border-right-hamburger-style: solid;
+  --border-right-hamburger-color: #0099ff;
+  --border-left-hamburger-width: 2px;
+  --border-left-hamburger-style: solid;
+  --border-left-hamburger-color: #0099ff;
+  --border-bottom-hamburger-width: 2px;
+  --border-bottom-hamburger-style: solid;
+  --border-bottom-hamburger-color: #0099ff;
+  
+  
+  /*  select */
+  --select-mov: #FF3000;
+  --select-mov-active: #8F1B00;
+  
+  /* Modal Add Reac */
+  --text-modal-add-reac: #0099ff;
+  --bg-modal-add-reac: #fffff;
+  --ring-width-add-reac: 3px;
+  --ring-color-add-reac: #AB01FF;
+  --ring-offset-add-reac: 0px;
+  --border-top-border-add-reac-width: 2px;
+  --border-top-border-add-reac-style: solid;
+  --border-top-border-add-reac-color: #0099ff;
+  --border-right-border-add-reac-width: 2px;
+  --border-right-border-add-reac-style: solid;
+  --border-right-border-add-reac-color: #0099ff;
+  --border-left-border-add-reac-width: 2px;
+  --border-left-border-add-reac-style: solid;
+  --border-left-border-add-reac-color: #0099ff;
+  --border-bottom-border-add-reac-width: 2px;
+  --border-bottom-border-add-reac-style: solid;
+  --border-bottom-border-add-reac-color: #0099ff;
+  
+  /* Modal Opacity */
+  --opacity-modal-bg: #11000;
+  --opacity-modal-text-h2: #0099ff;
+  --cross-btn-opacity-modal-text: #ffffff;
+  --slider-bg-opacity: #0099ff;
+  --bg-opacity-btn-cross: #fffff;
+  --bg-opacity-btn-save: #0099ff;
+  --text-opacity-btn-save: #ffffff;
+  --bg-opacity-btn-cancel: #fffff;
+  --text-opacity-btn-cancel: #ffffff;
+  
+  /* Modal Edit */
+  --bg-modal-edic: #fff;
+  --ring-width-edit: 3px;
+  --ring-color-edit: #AB01FF;
+  --ring-offset-edit: 0px;
+  --bg-btn-edit-cancel: #0099ff;
+  --text-btn-edit-cancel: #ffffff;
+  --bg-btn-edit-save: #0099ff;
+  --text-btn-edit-save: #ffffff;
+  --border-top-edit-modal-width: 2px;
+  --border-top-edit-modal-style: solid;
+  --border-top-edit-modal-color: #0099ff;
+  --border-right-edit-modal-width: 2px;
+  --border-right-edit-modal-style: solid;
+  --border-right-edit-modal-color: #0099ff;
+  --border-left-edit-modal-width: 2px;
+  --border-left-edit-modal-style: solid;
+  --border-left-edit-modal-color: #0099ff;
+  --border-bottom-edit-modal-width: 2px;
+  --border-bottom-edit-modal-style: solid;
+  --border-bottom-edit-modal-color: #0099ff;
+  
+  /* Modal Category */
+  --modal-bg-category: #fffff;
+  --modal-bg-category-hover: #000999;
+  --modal-text-category: #ffffff;
+  --modal-category-header-bg: purple;
+  --modal-gategory-header-text: #ffffff;
+  --border-top-modal-category-header-width: 2px;
+  --border-top-modal-category-header-style: solid;
+  --border-top-modal-category-header-color: #0099ff;
+  --border-right-modal-category-header-width: 2px;
+  --border-right-modal-category-header-style: solid;
+  --border-right-modal-category-header-color: #0099ff;
+  --border-left-modal-category-header-width: 2px;
+  --border-left-modal-category-header-style: solid;
+  --border-left-modal-category-header-color: #0099ff;
+  --border-bottom-modal-category-header-width: 2px;
+  --border-bottom-modal-category-header-style: solid;
+  --border-bottom-modal-category-header-color: #0099ff;
+  
+  /* Opacity Btn Save */
+  --border-top-border-opacity-btn-save-width: 2px;
+  --border-top-border-opacity-btn-save-style: solid;
+  --border-top-border-opacity-btn-save-color: #0099ff;
+  --border-right-border-opacity-btn-save-width: 2px;
+  --border-right-border-opacity-btn-save-style: solid;
+  --border-right-border-opacity-btn-save-color: #0099ff;
+  --border-left-border-opacity-btn-save-width: 2px;
+  --border-left-border-opacity-btn-save-style: solid;
+  --border-left-border-opacity-btn-save-color: #0099ff;
+  --border-bottom-border-opacity-btn-save-width: 2px;
+  --border-bottom-border-opacity-btn-save-style: solid;
+  --border-bottom-border-opacity-btn-save-color: #0099ff;
+  
+  /* Opacity Btn Cancel */
+  --border-top-border-opacity-btn-cancel-width: 2px;
+  --border-top-border-opacity-btn-cancel-style: solid;
+  --border-top-border-opacity-btn-cancel-color: #0099ff;
+  --border-right-border-opacity-btn-cancel-width: 2px;
+  --border-right-border-opacity-btn-cancel-style: solid;
+  --border-right-border-opacity-btn-cancel-color: #0099ff;
+  --border-left-border-opacity-btn-cancel-width: 2px;
+  --border-left-border-opacity-btn-cancel-style: solid;
+  --border-left-border-opacity-btn-cancel-color: #0099ff;
+  --border-bottom-border-opacity-btn-cancel-width: 2px;
+  --border-bottom-border-opacity-btn-cancel-style: solid;
+  --border-bottom-border-opacity-btn-cancel-color: #0099ff;
+  
+  /* Options Pop Up */
+  --text-options-pop-up: #ffffff;
+  --bg-options-pop-up: #fffff;
+  --text-options-pop-up-hover: #ffffff;
+  --text-bg-options-pop-up-hover: #000000;
+  --border-top-border-options-pop-up-width: 2px;
+  --border-top-border-options-pop-up-style: solid;
+  --border-top-border-options-pop-up-color: #0099ff;
+  --border-right-border-options-pop-up-width: 2px;
+  --border-right-border-options-pop-up-style: solid;
+  --border-right-border-options-pop-up-color: #0099ff;
+  --border-left-border-options-pop-up-width: 2px;
+  --border-left-border-options-pop-up-style: solid;
+  --border-left-border-options-pop-up-color: #0099ff;
+  --border-bottom-border-options-pop-up-width: 2px;
+  --border-bottom-border-options-pop-up-style: solid;
+  --border-bottom-border-options-pop-up-color: #0099ff;
+  
+  /* Reactions Pop Up */
+  --reactions-bg: gray;
+  --scrollbar-bg-reactions: #000999;
+  --scrollbar-reactions: #0099ff;
+  --reactions-pop-up-text: #ffffff;
+  --reactions-bg-emoji: transparent;
+  --reactions-bg-add: transparent;
+  --border-top-border-reactions-pop-up-width: 2px;
+  --border-top-border-reactions-pop-up-style: solid;
+  --border-top-border-reactions-pop-up-color: #0099ff;
+  --border-right-border-reactions-pop-up-width: 2px;
+  --border-right-border-reactions-pop-up-style: solid;
+  --border-right-border-reactions-pop-up-color: #0099ff;
+  --border-left-border-reactions-pop-up-width: 2px;
+  --border-left-border-reactions-pop-up-style: solid;
+  --border-left-border-reactions-pop-up-color: #0099ff;
+  --border-bottom-border-reactions-pop-up-width: 2px;
+  --border-bottom-border-reactions-pop-up-style: solid;
+  --border-bottom-border-reactions-pop-up-color: #0099ff;
+  
+  /* Message Me */
+  --msg-me-shadow:
+    inset -2px 1px rgba(0, 255, 255, 0.4),
+    inset 0 6px 12px rgba(255, 255, 255, 0.3),
+    0 6px 15px rgba(0, 0, 0, 0.25);
+  --msg-me-text: #ffffff;
+  --layer-header-text: #ffffff;
+  --border-top-msg-border-me-width: 2px;
+  --border-top-msg-border-me-style: solid;
+  --border-top-msg-border-me-color: #0099ff;
+  --border-right-msg-border-me-width: 2px;
+  --border-right-msg-border-me-style: solid;
+  --border-right-msg-border-me-color: #0099ff;
+  --border-left-msg-border-me-width: 2px;
+  --border-left-msg-border-me-style: solid;
+  --border-left-msg-border-me-color: #0099ff;
+  --border-bottom-msg-border-me-width: 2px;
+  --border-bottom-msg-border-me-style: solid;
+  --border-bottom-msg-border-me-color: #0099ff;
+  
+  /* theme modal */
+  --modal-theme-header-h2: #ffffff;
+  --modal-theme-text: #ffffff;
+  --scrollbar-theme-manager: #000000;
+  --scrollbar-theme-manager-btn: #0099ff;
+  --menu-ple-btn: #00099ff;
+  --menu-ple-text: #ffffff;
+  --border-top-menu-ple-btn-width: 2px;
+  --border-top-menu-ple-btn-style: solid;
+  --border-top-menu-ple-btn-color: #0099ff;
+  --border-right-menu-ple-btn-width: 2px;
+  --border-right-menu-ple-btn-style: solid;
+  --border-right-menu-ple-btn-color: #0099ff;
+  --border-left-menu-ple-btn-width: 2px;
+  --border-left-menu-ple-btn-style: solid;
+  --border-left-menu-ple-btn-color: #0099ff;
+  --border-bottom-menu-ple-btn-width: 2px;
+  --border-bottom-menu-ple-btn-style: solid;
+  --border-bottom-menu-ple-btn-color: #0099ff;
+  --menu-ple-text-active: #ffffff;
+  --menu-ple-btn-bg-active: #0099ff;
+  --border-top-menu-ple-btn-active-width: 2px;
+  --border-top-menu-ple-btn-active-style: solid;
+  --border-top-menu-ple-btn-active-color: #0099ff;
+  --border-right-menu-ple-btn-active-width: 2px;
+  --border-right-menu-ple-btn-active-style: solid;
+  --border-right-menu-ple-btn-active-color: #0099ff;
+  --border-left-menu-ple-btn-active-width: 2px;
+  --border-left-menu-ple-btn-active-style: solid;
+  --border-left-menu-ple-btn-active-color: #0099ff;
+  --border-bottom-menu-ple-btn-active-width: 2px;
+  --border-bottom-menu-ple-btn-active-style: solid;
+  --border-bottom-menu-ple-btn-active-color: #0099ff;
+  --bg-preview-selected: #0099ff;
+  
+  /* file upload btn */
+  --modal-btn-select: #000000;
+  --modal-btn-select-text: #ffffff;
+  --border-top-modal-btn-select-width: 2px;
+  --border-top-modal-btn-select-style: solid;
+  --border-top-modal-btn-select-color: #0099ff;
+  --border-right-modal-btn-select-width: 2px;
+  --border-right-modal-btn-select-style: solid;
+  --border-right-modal-btn-select-color: #0099ff;
+  --border-left-modal-btn-select-width: 2px;
+  --border-left-modal-btn-select-style: solid;
+  --border-left-modal-btn-select-color: #0099ff;
+  --border-bottom-modal-btn-select-width: 2px;
+  --border-bottom-modal-btn-select-style: solid;
+  --border-bottom-modal-btn-select-color: #0099ff;
+  --modal-btn-select-text-hover: #0000;
+  --modal-btn-select-hover: #0099ff;
+  --border-top-modal-btn-select-hover-width: 2px;
+  --border-top-modal-btn-select-hover-style: solid;
+  --border-top-modal-btn-select-hover-color: #0099ff;
+  --border-right-modal-btn-select-hover-width: 2px;
+  --border-right-modal-btn-select-hover-style: solid;
+  --border-right-modal-btn-select-hover-color: #0099ff;
+  --border-left-modal-btn-select-hover-width: 2px;
+  --border-left-modal-btn-select-hover-style: solid;
+  --border-left-modal-btn-select-hover-color: #0099ff;
+  --border-bottom-modal-btn-select-hover-width: 2px;
+  --border-bottom-modal-btn-select-hover-style: solid;
+  --border-bottom-modal-btn-select-hover-color: #0099ff;
+  
+  /* Message Other */
+  --msg-bg-other: #00000;
+  --text-color: #ffffff;
+  --border-top-msg-border-other-width: 2px;
+  --border-top-msg-border-other-style: solid;
+  --border-top-msg-border-other-color: #0099ff;
+  --border-right-msg-border-other-width: 2px;
+  --border-right-msg-border-other-style: solid;
+  --border-right-msg-border-other-color: #0099ff;
+  --border-left-msg-border-other-width: 2px;
+  --border-left-msg-border-other-style: solid;
+  --border-left-msg-border-other-color: #0099ff;
+  --border-bottom-msg-border-other-width: 2px;
+  --border-bottom-msg-border-other-style: solid;
+  --border-bottom-msg-border-other-color: #0099ff;
+  
+  /* reactions badge */
+  --badge-bg: inherit;
+  --badge-text: #ffffff;
+  --border-top-badge-width: 2px;
+  --border-top-badge-style: solid;
+  --border-top-badge-color: #0099ff;
+  --border-right-badge-width: 2px;
+  --border-right-badge-style: solid;
+  --border-right-badge-color: #0099ff;
+  --border-left-badge-width: 2px;
+  --border-left-badge-style: solid;
+  --border-left-badge-color: #0099ff;
+  --border-bottom-badge-width: 2px;
+  --border-bottom-badge-style: solid;
+  --border-bottom-badge-color: #0099ff;
+  
+  /*  reactions badge me  */
+  --badge-bg-me: inherit;
+  --badge-text-me: #ffffff;
+  --border-top-badge-me-width: 2px;
+  --border-top-badge-me-style: solid;
+  --border-top-badge-me-color: #0099ff;
+  --border-right-badge-me-width: 2px;
+  --border-right-badge-me-style: solid;
+  --border-right-badge-me-color: #0099ff;
+  --border-left-badge-me-width: 2px;
+  --border-left-badge-me-style: solid;
+  --border-left-badge-me-color: #0099ff;
+  --border-bottom-badge-me-width: 2px;
+  --border-bottom-badge-me-style: solid;
+  --border-bottom-badge-me-color: #0099ff;
+  
+  /*  send btn  */
+  --send-btn-bg: #000999;
+  --send-btn-text: #ffffff;
+  --border-top-send-btn-width: 2px;
+  --border-top-send-btn-style: solid;
+  --border-top-send-btn-color: #0099ff;
+  --border-right-send-btn-width: 2px;
+  --border-right-send-btn-style: solid;
+  --border-right-send-btn-color: #0099ff;
+  --border-left-send-btn-width: 2px;
+  --border-left-send-btn-style: solid;
+  --border-left-send-btn-color: #0099ff;
+  --border-bottom-send-btn-width: 2px;
+  --border-bottom-send-btn-style: solid;
+  --border-bottom-send-btn-color: #0099ff;
+  
+  /* Input */
+  --input-container-bg: #000000;
+  --input-ty-bg: #00990;
+  --input-text-color: #ffffff;
+  --ring-width: 3px;
+  --ring-color: #AB01FF;
+  --ring-offset: 0px;
+  --border-top-input-border-width: 2px;
+  --border-top-input-border-style: solid;
+  --border-top-input-border-color: #0099ff;
+  --border-right-input-border-width: 2px;
+  --border-right-input-border-style: solid;
+  --border-right-input-border-color: #0099ff;
+  --border-left-input-border-width: 2px;
+  --border-left-input-border-style: solid;
+  --border-left-input-border-color: #0099ff;
+  --border-bottom-input-border-width: 2px;
+  --border-bottom-input-border-style: solid;
+  --border-bottom-input-border-color: #0099ff;
+  
+  /*  scroll btn */
+  --scroll-btn-bg: #0099ff;
+  --scroll-btn-text: #00000;
+  --border-top-scroll-btn-width: 2px;
+  --border-top-scroll-btn-style: solid;
+  --border-top-scroll-btn-color: #0099ff;
+  --border-right-scroll-btn-width: 2px;
+  --border-right-scroll-btn-style: solid;
+  --border-right-scroll-btn-color: #0099ff;
+  --border-left-scroll-btn-width: 2px;
+  --border-left-scroll-btn-style: solid;
+  --border-left-scroll-btn-color: #0099ff;
+  --border-bottom-scroll-btn-width: 2px;
+  --border-bottom-scroll-btn-style: solid;
+  --border-bottom-scroll-btn-color: #0099ff;
+}
