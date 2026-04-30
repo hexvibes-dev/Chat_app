@@ -27,15 +27,67 @@ body.keyboard-open {
 }
 
 .messages {
+  background: var(--message-container-background);
+  backdrop-filter: var(--message-container-blur);
+  opacity: var(--message-container-opacity);
+
+  box-shadow: inset var(--message-container-shadow-left), inset var(--message-container-shadow-right);
+
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   touch-action: auto;
+  overflow-y: scroll;
+}
+
+.messages::-webkit-scrollbar {
+  width: 12px;
+}
+
+.messages::-webkit-scrollbar-track {
+  background: var(--message-scrollbar-bg-background);
+  backdrop-filter: var(--message-scrollbar-bg-blur);
+  opacity: var(--message-scrollbar-bg-opacity);
+
+  border-top: var(--message-scrollbar-bg-border-top-width) var(--message-scrollbar-bg-border-top-style) var(--message-scrollbar-bg-border-top-color);
+  border-right: var(--message-scrollbar-bg-border-right-width) var(--message-scrollbar-bg-border-right-style) var(--message-scrollbar-bg-border-right-color);
+  border-bottom: var(--message-scrollbar-bg-border-bottom-width) var(--message-scrollbar-bg-border-bottom-style) var(--message-scrollbar-bg-border-bottom-color);
+  border-left: var(--message-scrollbar-bg-border-left-width) var(--message-scrollbar-bg-border-left-style) var(--message-scrollbar-bg-border-left-color);
+
+  border-top-left-radius: var(--message-scrollbar-bg-border-radius-top-left);
+  border-top-right-radius: var(--message-scrollbar-bg-border-radius-top-right);
+  border-bottom-right-radius: var(--message-scrollbar-bg-border-radius-bottom-right);
+  border-bottom-left-radius: var(--message-scrollbar-bg-border-radius-bottom-left);
+
+  box-shadow: var(--message-scrollbar-bg-shadow-external), inset var(--message-scrollbar-bg-shadow-internal);
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background: var(--message-scrollbar-button-background);
+  backdrop-filter: var(--message-scrollbar-button-blur);
+  opacity: var(--message-scrollbar-button-opacity);
+
+  border-top: var(--message-scrollbar-button-border-top-width) var(--message-scrollbar-button-border-top-style) var(--message-scrollbar-button-border-top-color);
+  border-right: var(--message-scrollbar-button-border-right-width) var(--message-scrollbar-button-border-right-style) var(--message-scrollbar-button-border-right-color);
+  border-bottom: var(--message-scrollbar-button-border-bottom-width) var(--message-scrollbar-button-border-bottom-style) var(--message-scrollbar-button-border-bottom-color);
+  border-left: var(--message-scrollbar-button-border-left-width) var(--message-scrollbar-button-border-left-style) var(--message-scrollbar-button-border-left-color);
+
+  border-top-left-radius: var(--message-scrollbar-button-border-radius-top-left);
+  border-top-right-radius: var(--message-scrollbar-button-border-radius-top-right);
+  border-bottom-right-radius: var(--message-scrollbar-button-border-radius-bottom-right);
+  border-bottom-left-radius: var(--message-scrollbar-button-border-radius-bottom-left);
+
+  box-shadow: var(--message-scrollbar-button-shadow-external), inset var(--message-scrollbar-button-shadow-internal);
 }
 
 .message {
-  opacity: 0;
+  background: var(--message-bubble-container-background);
+  backdrop-filter: var(--message-bubble-container-blur);
+  opacity: var(--message-bubble-container-opacity);
+
+  animation: var(--message-bubble-container-animation);
+  transition: var(--message-bubble-container-transition);
+
   transform: translateY(8px) scale(.995);
-  animation: msgIn 260ms cubic-bezier(.2, .9, .3, 1) forwards;
   will-change: transform, opacity;
   position: relative;
   user-select: none;
@@ -44,14 +96,41 @@ body.keyboard-open {
 }
 
 .message:not(.me) .msg-drag {
-  border-radius: 18px 18px 18px 4px;
-  background: var(--msg-bg-other);
-  border-left: var(--border-left-msg-border-other-width) var(--border-left-msg-border-other-style) var(--border-left-msg-border-other-color);
-  border-right: var(--border-right-msg-border-other-width) var(--border-right-msg-border-other-style) var(--border-right-msg-border-other-color);
-  border-top: var(--border-top-msg-border-other-width) var(--border-top-msg-border-other-style) var(--border-top-msg-border-other-color);
-  border-bottom: var(--border-bottom-msg-border-other-width) var(--border-bottom-msg-border-other-style) var(--border-bottom-msg-border-other-color);
-  border-bottom: 1px solid var();
-  color: var(--text-color);
+  background: var(--bubble-message-other-background);
+  backdrop-filter: var(--bubble-message-other-blur);
+  opacity: var(--bubble-message-other-opacity);
+
+  border-top: var(--bubble-message-other-border-top-width) var(--bubble-message-other-border-top-style) var(--bubble-message-other-border-top-color);
+  border-right: var(--bubble-message-other-border-right-width) var(--bubble-message-other-border-right-style) var(--bubble-message-other-border-right-color);
+  border-bottom: var(--bubble-message-other-border-bottom-width) var(--bubble-message-other-border-bottom-style) var(--bubble-message-other-border-bottom-color);
+  border-left: var(--bubble-message-other-border-left-width) var(--bubble-message-other-border-left-style) var(--bubble-message-other-border-left-color);
+
+  border-top-left-radius: var(--bubble-message-other-border-radius-top-left);
+  border-top-right-radius: var(--bubble-message-other-border-radius-top-right);
+  border-bottom-right-radius: var(--bubble-message-other-border-radius-bottom-right);
+  border-bottom-left-radius: var(--bubble-message-other-border-radius-bottom-left);
+
+  box-shadow: var(--bubble-message-other-shadow-external), inset var(--bubble-message-other-shadow-internal);
+
+  padding-top: var(--bubble-message-other-padding-top);
+  padding-right: var(--bubble-message-other-padding-right);
+  padding-bottom: var(--bubble-message-other-padding-bottom);
+  padding-left: var(--bubble-message-other-padding-left);
+
+  margin-top: var(--bubble-message-other-margin-top);
+  margin-right: var(--bubble-message-other-margin-right);
+  margin-bottom: var(--bubble-message-other-margin-bottom);
+  margin-left: var(--bubble-message-other-margin-left);
+
+  font-family: var(--bubble-message-other-font-family);
+  font-size: var(--bubble-message-other-font-size);
+  font-weight: var(--bubble-message-other-font-weight);
+  line-height: var(--bubble-message-other-line-height);
+  letter-spacing: var(--bubble-message-other-letter-spacing);
+  word-spacing: var(--bubble-message-other-word-spacing);
+  text-transform: var(--bubble-message-other-text-transform);
+  text-shadow: var(--bubble-message-other-text-shadow);
+  color: var(--bubble-message-other-color);
 }
 
 .message.me {
@@ -59,14 +138,43 @@ body.keyboard-open {
 }
 
 .message.me .msg-drag {
+  background: var(--bubble-message-me-background);
+  backdrop-filter: var(--bubble-message-me-blur);
+  opacity: var(--bubble-message-me-opacity);
+
+  border-top: var(--bubble-message-me-border-top-width) var(--bubble-message-me-border-top-style) var(--bubble-message-me-border-top-color);
+  border-right: var(--bubble-message-me-border-right-width) var(--bubble-message-me-border-right-style) var(--bubble-message-me-border-right-color);
+  border-bottom: var(--bubble-message-me-border-bottom-width) var(--bubble-message-me-border-bottom-style) var(--bubble-message-me-border-bottom-color);
+  border-left: var(--bubble-message-me-border-left-width) var(--bubble-message-me-border-left-style) var(--bubble-message-me-border-left-color);
+
+  border-top-left-radius: var(--bubble-message-me-border-radius-top-left);
+  border-top-right-radius: var(--bubble-message-me-border-radius-top-right);
+  border-bottom-right-radius: var(--bubble-message-me-border-radius-bottom-right);
+  border-bottom-left-radius: var(--bubble-message-me-border-radius-bottom-left);
+
+  box-shadow: var(--bubble-message-me-shadow-external), inset var(--bubble-message-me-shadow-internal);
+
+  padding-top: var(--bubble-message-me-padding-top);
+  padding-right: var(--bubble-message-me-padding-right);
+  padding-bottom: var(--bubble-message-me-padding-bottom);
+  padding-left: var(--bubble-message-me-padding-left);
+
+  margin-top: var(--bubble-message-me-margin-top);
+  margin-right: var(--bubble-message-me-margin-right);
+  margin-bottom: var(--bubble-message-me-margin-bottom);
+  margin-left: var(--bubble-message-me-margin-left);
+
+  font-family: var(--bubble-message-me-font-family);
+  font-size: var(--bubble-message-me-font-size);
+  font-weight: var(--bubble-message-me-font-weight);
+  line-height: var(--bubble-message-me-line-height);
+  letter-spacing: var(--bubble-message-me-letter-spacing);
+  word-spacing: var(--bubble-message-me-word-spacing);
+  text-transform: var(--bubble-message-me-text-transform);
+  text-shadow: var(--bubble-message-me-text-shadow);
+  color: var(--bubble-message-me-color);
+
   position: relative;
-  background: var(--msg-bg-me);
-  border-left: var(--border-left-msg-border-me-width) var(--border-left-msg-border-me-style) var(--border-left-msg-border-me-color);
-  border-right: var(--border-right-msg-border-me-width) var(--border-right-msg-border-me-style) var(--border-right-msg-border-me-color);
-  border-top: var(--border-top-msg-border-me-width) var(--border-top-msg-border-me-style) var(--border-top-msg-border-me-color);
-  border-bottom: var(--border-bottom-msg-border-me-width) var(--border-bottom-msg-border-me-style) var(--border-bottom-msg-border-me-color);
-  box-shadow: var(--msg-me-shadow);
-  color: var(--msg-me-text);
 }
 
 /* 
@@ -87,9 +195,6 @@ body.keyboard-open {
 
 .msg-drag {
   display: inline-block;
-  background: var(--msg-bg-other);
-  font-size: 14px;
-  color: var(--text-color);
   padding: 12px 12px 8px 12px;
   border-radius: 18px 18px 4px 18px;
   line-height: 1.4;
@@ -107,19 +212,136 @@ body.keyboard-open {
   display: inline;
 }
 
+.reply-quote:active{
+  transform: scale(0.95);
+}
+
 .msg-hour {
+  background: var(--bubble-message-hour-other-background);
+  backdrop-filter: var(--bubble-message-hour-other-blur);
+  opacity: var(--bubble-message-hour-other-opacity);
+
+  margin-top: var(--bubble-message-hour-other-margin-top);
+  margin-right: var(--bubble-message-hour-other-margin-right);
+  margin-bottom: var(--bubble-message-hour-other-margin-bottom);
+  margin-left: var(--bubble-message-hour-other-margin-left);
+
+  font-family: var(--bubble-message-hour-other-font-family);
+  font-size: var(--bubble-message-hour-other-font-size);
+  font-weight: var(--bubble-message-hour-other-font-weight);
+  line-height: var(--bubble-message-hour-other-line-height);
+  letter-spacing: var(--bubble-message-hour-other-letter-spacing);
+  word-spacing: var(--bubble-message-hour-other-word-spacing);
+  text-transform: var(--bubble-message-hour-other-text-transform);
+  text-shadow: var(--bubble-message-hour-other-text-shadow);
+  color: var(--bubble-message-hour-other-color);
+
   display: inline-block;
-  font-size: 10px;
-  line-height: 1.3;
-  margin-left: 8px;
   position: relative;
   top: 3px;
-  color: var(--hour-color);
   vertical-align: baseline;
 }
 
+.message:not(.me) .message-text {
+  background: var(--bubble-message-text-other-background);
+  backdrop-filter: var(--bubble-message-text-other-blur);
+  opacity: var(--bubble-message-text-other-opacity);
+
+  border-top: var(--bubble-message-text-other-border-top-width) var(--bubble-message-text-other-border-top-style) var(--bubble-message-text-other-border-top-color);
+  border-right: var(--bubble-message-text-other-border-right-width) var(--bubble-message-text-other-border-right-style) var(--bubble-message-text-other-border-right-color);
+  border-bottom: var(--bubble-message-text-other-border-bottom-width) var(--bubble-message-text-other-border-bottom-style) var(--bubble-message-text-other-border-bottom-color);
+  border-left: var(--bubble-message-text-other-border-left-width) var(--bubble-message-text-other-border-left-style) var(--bubble-message-text-other-border-left-color);
+
+  border-top-left-radius: var(--bubble-message-text-other-border-radius-top-left);
+  border-top-right-radius: var(--bubble-message-text-other-border-radius-top-right);
+  border-bottom-right-radius: var(--bubble-message-text-other-border-radius-bottom-right);
+  border-bottom-left-radius: var(--bubble-message-text-other-border-radius-bottom-left);
+
+  box-shadow: var(--bubble-message-text-other-shadow-external), inset var(--bubble-message-text-other-shadow-internal);
+
+  padding-top: var(--bubble-message-text-other-padding-top);
+  padding-right: var(--bubble-message-text-other-padding-right);
+  padding-bottom: var(--bubble-message-text-other-padding-bottom);
+  padding-left: var(--bubble-message-text-other-padding-left);
+
+  margin-top: var(--bubble-message-text-other-margin-top);
+  margin-right: var(--bubble-message-text-other-margin-right);
+  margin-bottom: var(--bubble-message-text-other-margin-bottom);
+  margin-left: var(--bubble-message-text-other-margin-left);
+
+  font-family: var(--bubble-message-text-other-font-family);
+  font-size: var(--bubble-message-text-other-font-size);
+  font-weight: var(--bubble-message-text-other-font-weight);
+  line-height: var(--bubble-message-text-other-line-height);
+  letter-spacing: var(--bubble-message-text-other-letter-spacing);
+  word-spacing: var(--bubble-message-text-other-word-spacing);
+  text-transform: var(--bubble-message-text-other-text-transform);
+  text-shadow: var(--bubble-message-text-other-text-shadow);
+  color: var(--bubble-message-text-other-color);
+}
+
+.message.me .message-text {
+  background: var(--bubble-message-text-me-background);
+  backdrop-filter: var(--bubble-message-text-me-blur);
+  opacity: var(--bubble-message-text-me-opacity);
+
+  border-top: var(--bubble-message-text-me-border-top-width) var(--bubble-message-text-me-border-top-style) var(--bubble-message-text-me-border-top-color);
+  border-right: var(--bubble-message-text-me-border-right-width) var(--bubble-message-text-me-border-right-style) var(--bubble-message-text-me-border-right-color);
+  border-bottom: var(--bubble-message-text-me-border-bottom-width) var(--bubble-message-text-me-border-bottom-style) var(--bubble-message-text-me-border-bottom-color);
+  border-left: var(--bubble-message-text-me-border-left-width) var(--bubble-message-text-me-border-left-style) var(--bubble-message-text-me-border-left-color);
+
+  border-top-left-radius: var(--bubble-message-text-me-border-radius-top-left);
+  border-top-right-radius: var(--bubble-message-text-me-border-radius-top-right);
+  border-bottom-right-radius: var(--bubble-message-text-me-border-radius-bottom-right);
+  border-bottom-left-radius: var(--bubble-message-text-me-border-radius-bottom-left);
+
+  box-shadow: var(--bubble-message-text-me-shadow-external), inset var(--bubble-message-text-me-shadow-internal);
+
+  padding-top: var(--bubble-message-text-me-padding-top);
+  padding-right: var(--bubble-message-text-me-padding-right);
+  padding-bottom: var(--bubble-message-text-me-padding-bottom);
+  padding-left: var(--bubble-message-text-me-padding-left);
+
+  margin-top: var(--bubble-message-text-me-margin-top);
+  margin-right: var(--bubble-message-text-me-margin-right);
+  margin-bottom: var(--bubble-message-text-me-margin-bottom);
+  margin-left: var(--bubble-message-text-me-margin-left);
+
+  font-family: var(--bubble-message-text-me-font-family);
+  font-size: var(--bubble-message-text-me-font-size);
+  font-weight: var(--bubble-message-text-me-font-weight);
+  line-height: var(--bubble-message-text-me-line-height);
+  letter-spacing: var(--bubble-message-text-me-letter-spacing);
+  word-spacing: var(--bubble-message-text-me-word-spacing);
+  text-transform: var(--bubble-message-text-me-text-transform);
+  text-shadow: var(--bubble-message-text-me-text-shadow);
+  color: var(--bubble-message-text-me-color);
+}
+
 .message.me .msg-hour {
-  color: var(--hour-color-me);
+  background: var(--bubble-message-hour-me-background);
+  backdrop-filter: var(--bubble-message-hour-me-blur);
+  opacity: var(--bubble-message-hour-me-opacity);
+
+  margin-top: var(--bubble-message-hour-me-margin-top);
+  margin-right: var(--bubble-message-hour-me-margin-right);
+  margin-bottom: var(--bubble-message-hour-me-margin-bottom);
+  margin-left: var(--bubble-message-hour-me-margin-left);
+
+  font-family: var(--bubble-message-hour-me-font-family);
+  font-size: var(--bubble-message-hour-me-font-size);
+  font-weight: var(--bubble-message-hour-me-font-weight);
+  line-height: var(--bubble-message-hour-me-line-height);
+  letter-spacing: var(--bubble-message-hour-me-letter-spacing);
+  word-spacing: var(--bubble-message-hour-me-word-spacing);
+  text-transform: var(--bubble-message-hour-me-text-transform);
+  text-shadow: var(--bubble-message-hour-me-text-shadow);
+  color: var(--bubble-message-hour-me-color);
+
+  position: relative;
+  top: 3px;
+  display: inline-block;
+  vertical-align: baseline;
 }
 
 .reactions-wrap {
@@ -138,11 +360,240 @@ body.keyboard-open {
 .reply-quote {
   display: block;
   margin-bottom: 6px;
+  transition: all 0.2s ease;
 }
 
 .reply-separator {
   display: block;
   margin: 6px 0;
+}
+
+.message.me .reply-quote {
+  background: var(--bubble-reply-nested-bg-me-background);
+  backdrop-filter: var(--bubble-reply-nested-bg-me-blur);
+  opacity: var(--bubble-reply-nested-bg-me-opacity);
+
+  border-top: var(--bubble-reply-nested-bg-me-border-top-width) var(--bubble-reply-nested-bg-me-border-top-style) var(--bubble-reply-nested-bg-me-border-top-color);
+  border-right: var(--bubble-reply-nested-bg-me-border-right-width) var(--bubble-reply-nested-bg-me-border-right-style) var(--bubble-reply-nested-bg-me-border-right-color);
+  border-bottom: var(--bubble-reply-nested-bg-me-border-bottom-width) var(--bubble-reply-nested-bg-me-border-bottom-style) var(--bubble-reply-nested-bg-me-border-bottom-color);
+  border-left: var(--bubble-reply-nested-bg-me-border-left-width) var(--bubble-reply-nested-bg-me-border-left-style) var(--bubble-reply-nested-bg-me-border-left-color);
+
+  border-top-left-radius: var(--bubble-reply-nested-bg-me-border-radius-top-left);
+  border-top-right-radius: var(--bubble-reply-nested-bg-me-border-radius-top-right);
+  border-bottom-right-radius: var(--bubble-reply-nested-bg-me-border-radius-bottom-right);
+  border-bottom-left-radius: var(--bubble-reply-nested-bg-me-border-radius-bottom-left);
+
+  box-shadow: var(--bubble-reply-nested-bg-me-shadow-external), inset var(--bubble-reply-nested-bg-me-shadow-internal);
+
+  padding-top: var(--bubble-reply-nested-bg-me-padding-top);
+  padding-right: var(--bubble-reply-nested-bg-me-padding-right);
+  padding-bottom: var(--bubble-reply-nested-bg-me-padding-bottom);
+  padding-left: var(--bubble-reply-nested-bg-me-padding-left);
+
+  margin-top: var(--bubble-reply-nested-bg-me-margin-top);
+  margin-right: var(--bubble-reply-nested-bg-me-margin-right);
+  margin-bottom: var(--bubble-reply-nested-bg-me-margin-bottom);
+  margin-left: var(--bubble-reply-nested-bg-me-margin-left);
+
+  font-family: var(--bubble-reply-nested-bg-me-font-family);
+  font-size: var(--bubble-reply-nested-bg-me-font-size);
+  font-weight: var(--bubble-reply-nested-bg-me-font-weight);
+  line-height: var(--bubble-reply-nested-bg-me-line-height);
+  letter-spacing: var(--bubble-reply-nested-bg-me-letter-spacing);
+  word-spacing: var(--bubble-reply-nested-bg-me-word-spacing);
+  text-transform: var(--bubble-reply-nested-bg-me-text-transform);
+  text-shadow: var(--bubble-reply-nested-bg-me-text-shadow);
+  color: var(--bubble-reply-nested-bg-me-color);
+}
+
+.message:not(.me) .reply-quote {
+  background: var(--bubble-reply-nested-bg-other-background);
+  backdrop-filter: var(--bubble-reply-nested-bg-other-blur);
+  opacity: var(--bubble-reply-nested-bg-other-opacity);
+
+  border-top: var(--bubble-reply-nested-bg-other-border-top-width) var(--bubble-reply-nested-bg-other-border-top-style) var(--bubble-reply-nested-bg-other-border-top-color);
+  border-right: var(--bubble-reply-nested-bg-other-border-right-width) var(--bubble-reply-nested-bg-other-border-right-style) var(--bubble-reply-nested-bg-other-border-right-color);
+  border-bottom: var(--bubble-reply-nested-bg-other-border-bottom-width) var(--bubble-reply-nested-bg-other-border-bottom-style) var(--bubble-reply-nested-bg-other-border-bottom-color);
+  border-left: var(--bubble-reply-nested-bg-other-border-left-width) var(--bubble-reply-nested-bg-other-border-left-style) var(--bubble-reply-nested-bg-other-border-left-color);
+
+  border-top-left-radius: var(--bubble-reply-nested-bg-other-border-radius-top-left);
+  border-top-right-radius: var(--bubble-reply-nested-bg-other-border-radius-top-right);
+  border-bottom-right-radius: var(--bubble-reply-nested-bg-other-border-radius-bottom-right);
+  border-bottom-left-radius: var(--bubble-reply-nested-bg-other-border-radius-bottom-left);
+
+  box-shadow: var(--bubble-reply-nested-bg-other-shadow-external), inset var(--bubble-reply-nested-bg-other-shadow-internal);
+
+  padding-top: var(--bubble-reply-nested-bg-other-padding-top);
+  padding-right: var(--bubble-reply-nested-bg-other-padding-right);
+  padding-bottom: var(--bubble-reply-nested-bg-other-padding-bottom);
+  padding-left: var(--bubble-reply-nested-bg-other-padding-left);
+
+  margin-top: var(--bubble-reply-nested-bg-other-margin-top);
+  margin-right: var(--bubble-reply-nested-bg-other-margin-right);
+  margin-bottom: var(--bubble-reply-nested-bg-other-margin-bottom);
+  margin-left: var(--bubble-reply-nested-bg-other-margin-left);
+
+  font-family: var(--bubble-reply-nested-bg-other-font-family);
+  font-size: var(--bubble-reply-nested-bg-other-font-size);
+  font-weight: var(--bubble-reply-nested-bg-other-font-weight);
+  line-height: var(--bubble-reply-nested-bg-other-line-height);
+  letter-spacing: var(--bubble-reply-nested-bg-other-letter-spacing);
+  word-spacing: var(--bubble-reply-nested-bg-other-word-spacing);
+  text-transform: var(--bubble-reply-nested-bg-other-text-transform);
+  text-shadow: var(--bubble-reply-nested-bg-other-text-shadow);
+  color: var(--bubble-reply-nested-bg-other-color);
+}
+
+.message.me .reply-quote-author {
+  background: var(--reply-nested-me-author-background);
+  backdrop-filter: var(--reply-nested-me-author-blur);
+  opacity: var(--reply-nested-me-author-opacity);
+
+  border-top: var(--reply-nested-me-author-border-top-width) var(--reply-nested-me-author-border-top-style) var(--reply-nested-me-author-border-top-color);
+  border-right: var(--reply-nested-me-author-border-right-width) var(--reply-nested-me-author-border-right-style) var(--reply-nested-me-author-border-right-color);
+  border-bottom: var(--reply-nested-me-author-border-bottom-width) var(--reply-nested-me-author-border-bottom-style) var(--reply-nested-me-author-border-bottom-color);
+  border-left: var(--reply-nested-me-author-border-left-width) var(--reply-nested-me-author-border-left-style) var(--reply-nested-me-author-border-left-color);
+
+  border-top-left-radius: var(--reply-nested-me-author-border-radius-top-left);
+  border-top-right-radius: var(--reply-nested-me-author-border-radius-top-right);
+  border-bottom-right-radius: var(--reply-nested-me-author-border-radius-bottom-right);
+  border-bottom-left-radius: var(--reply-nested-me-author-border-radius-bottom-left);
+
+  box-shadow: var(--reply-nested-me-author-shadow-external), inset var(--reply-nested-me-author-shadow-internal);
+
+  padding-top: var(--reply-nested-me-author-padding-top);
+  padding-right: var(--reply-nested-me-author-padding-right);
+  padding-bottom: var(--reply-nested-me-author-padding-bottom);
+  padding-left: var(--reply-nested-me-author-padding-left);
+
+  margin-top: var(--reply-nested-me-author-margin-top);
+  margin-right: var(--reply-nested-me-author-margin-right);
+  margin-bottom: var(--reply-nested-me-author-margin-bottom);
+  margin-left: var(--reply-nested-me-author-margin-left);
+
+  font-family: var(--reply-nested-me-author-font-family);
+  font-size: var(--reply-nested-me-author-font-size);
+  font-weight: var(--reply-nested-me-author-font-weight);
+  line-height: var(--reply-nested-me-author-line-height);
+  letter-spacing: var(--reply-nested-me-author-letter-spacing);
+  word-spacing: var(--reply-nested-me-author-word-spacing);
+  text-transform: var(--reply-nested-me-author-text-transform);
+  text-shadow: var(--reply-nested-me-author-text-shadow);
+  color: var(--reply-nested-me-author-color);
+}
+
+.message:not(.me) .reply-quote-author {
+  background: var(--reply-nested-other-author-background);
+  backdrop-filter: var(--reply-nested-other-author-blur);
+  opacity: var(--reply-nested-other-author-opacity);
+
+  border-top: var(--reply-nested-other-author-border-top-width) var(--reply-nested-other-author-border-top-style) var(--reply-nested-other-author-border-top-color);
+  border-right: var(--reply-nested-other-author-border-right-width) var(--reply-nested-other-author-border-right-style) var(--reply-nested-other-author-border-right-color);
+  border-bottom: var(--reply-nested-other-author-border-bottom-width) var(--reply-nested-other-author-border-bottom-style) var(--reply-nested-other-author-border-bottom-color);
+  border-left: var(--reply-nested-other-author-border-left-width) var(--reply-nested-other-author-border-left-style) var(--reply-nested-other-author-border-left-color);
+
+  border-top-left-radius: var(--reply-nested-other-author-border-radius-top-left);
+  border-top-right-radius: var(--reply-nested-other-author-border-radius-top-right);
+  border-bottom-right-radius: var(--reply-nested-other-author-border-radius-bottom-right);
+  border-bottom-left-radius: var(--reply-nested-other-author-border-radius-bottom-left);
+
+  box-shadow: var(--reply-nested-other-author-shadow-external), inset var(--reply-nested-other-author-shadow-internal);
+
+  padding-top: var(--reply-nested-other-author-padding-top);
+  padding-right: var(--reply-nested-other-author-padding-right);
+  padding-bottom: var(--reply-nested-other-author-padding-bottom);
+  padding-left: var(--reply-nested-other-author-padding-left);
+
+  margin-top: var(--reply-nested-other-author-margin-top);
+  margin-right: var(--reply-nested-other-author-margin-right);
+  margin-bottom: var(--reply-nested-other-author-margin-bottom);
+  margin-left: var(--reply-nested-other-author-margin-left);
+
+  font-family: var(--reply-nested-other-author-font-family);
+  font-size: var(--reply-nested-other-author-font-size);
+  font-weight: var(--reply-nested-other-author-font-weight);
+  line-height: var(--reply-nested-other-author-line-height);
+  letter-spacing: var(--reply-nested-other-author-letter-spacing);
+  word-spacing: var(--reply-nested-other-author-word-spacing);
+  text-transform: var(--reply-nested-other-author-text-transform);
+  text-shadow: var(--reply-nested-other-author-text-shadow);
+  color: var(--reply-nested-other-author-color);
+}
+
+.message.me .reply-quote-text {
+  background: var(--bubble-reply-nested-text-me-background);
+  backdrop-filter: var(--bubble-reply-nested-text-me-blur);
+  opacity: var(--bubble-reply-nested-text-me-opacity);
+
+  border-top: var(--bubble-reply-nested-text-me-border-top-width) var(--bubble-reply-nested-text-me-border-top-style) var(--bubble-reply-nested-text-me-border-top-color);
+  border-right: var(--bubble-reply-nested-text-me-border-right-width) var(--bubble-reply-nested-text-me-border-right-style) var(--bubble-reply-nested-text-me-border-right-color);
+  border-bottom: var(--bubble-reply-nested-text-me-border-bottom-width) var(--bubble-reply-nested-text-me-border-bottom-style) var(--bubble-reply-nested-text-me-border-bottom-color);
+  border-left: var(--bubble-reply-nested-text-me-border-left-width) var(--bubble-reply-nested-text-me-border-left-style) var(--bubble-reply-nested-text-me-border-left-color);
+
+  border-top-left-radius: var(--bubble-reply-nested-text-me-border-radius-top-left);
+  border-top-right-radius: var(--bubble-reply-nested-text-me-border-radius-top-right);
+  border-bottom-right-radius: var(--bubble-reply-nested-text-me-border-radius-bottom-right);
+  border-bottom-left-radius: var(--bubble-reply-nested-text-me-border-radius-bottom-left);
+
+  box-shadow: var(--bubble-reply-nested-text-me-shadow-external), inset var(--bubble-reply-nested-text-me-shadow-internal);
+
+  padding-top: var(--bubble-reply-nested-text-me-padding-top);
+  padding-right: var(--bubble-reply-nested-text-me-padding-right);
+  padding-bottom: var(--bubble-reply-nested-text-me-padding-bottom);
+  padding-left: var(--bubble-reply-nested-text-me-padding-left);
+
+  margin-top: var(--bubble-reply-nested-text-me-margin-top);
+  margin-right: var(--bubble-reply-nested-text-me-margin-right);
+  margin-bottom: var(--bubble-reply-nested-text-me-margin-bottom);
+  margin-left: var(--bubble-reply-nested-text-me-margin-left);
+
+  font-family: var(--bubble-reply-nested-text-me-font-family);
+  font-size: var(--bubble-reply-nested-text-me-font-size);
+  font-weight: var(--bubble-reply-nested-text-me-font-weight);
+  line-height: var(--bubble-reply-nested-text-me-line-height);
+  letter-spacing: var(--bubble-reply-nested-text-me-letter-spacing);
+  word-spacing: var(--bubble-reply-nested-text-me-word-spacing);
+  text-transform: var(--bubble-reply-nested-text-me-text-transform);
+  text-shadow: var(--bubble-reply-nested-text-me-text-shadow);
+  color: var(--bubble-reply-nested-text-me-color);
+}
+
+.message:not(.me) .reply-quote-text {
+  background: var(--reply-nested-text-other-background);
+  backdrop-filter: var(--reply-nested-text-other-blur);
+  opacity: var(--reply-nested-text-other-opacity);
+
+  border-top: var(--reply-nested-text-other-border-top-width) var(--reply-nested-text-other-border-top-style) var(--reply-nested-text-other-border-top-color);
+  border-right: var(--reply-nested-text-other-border-right-width) var(--reply-nested-text-other-border-right-style) var(--reply-nested-text-other-border-right-color);
+  border-bottom: var(--reply-nested-text-other-border-bottom-width) var(--reply-nested-text-other-border-bottom-style) var(--reply-nested-text-other-border-bottom-color);
+  border-left: var(--reply-nested-text-other-border-left-width) var(--reply-nested-text-other-border-left-style) var(--reply-nested-text-other-border-left-color);
+
+  border-top-left-radius: var(--reply-nested-text-other-border-radius-top-left);
+  border-top-right-radius: var(--reply-nested-text-other-border-radius-top-right);
+  border-bottom-right-radius: var(--reply-nested-text-other-border-radius-bottom-right);
+  border-bottom-left-radius: var(--reply-nested-text-other-border-radius-bottom-left);
+
+  box-shadow: var(--reply-nested-text-other-shadow-external), inset var(--reply-nested-text-other-shadow-internal);
+
+  padding-top: var(--reply-nested-text-other-padding-top);
+  padding-right: var(--reply-nested-text-other-padding-right);
+  padding-bottom: var(--reply-nested-text-other-padding-bottom);
+  padding-left: var(--reply-nested-text-other-padding-left);
+
+  margin-top: var(--reply-nested-text-other-margin-top);
+  margin-right: var(--reply-nested-text-other-margin-right);
+  margin-bottom: var(--reply-nested-text-other-margin-bottom);
+  margin-left: var(--reply-nested-text-other-margin-left);
+
+  font-family: var(--reply-nested-text-other-font-family);
+  font-size: var(--reply-nested-text-other-font-size);
+  font-weight: var(--reply-nested-text-other-font-weight);
+  line-height: var(--reply-nested-text-other-line-height);
+  letter-spacing: var(--reply-nested-text-other-letter-spacing);
+  word-spacing: var(--reply-nested-text-other-word-spacing);
+  text-transform: var(--reply-nested-text-other-text-transform);
+  text-shadow: var(--reply-nested-text-other-text-shadow);
+  color: var(--reply-nested-text-other-color);
 }
 
 @keyframes msgIn {
@@ -242,49 +693,373 @@ body.keyboard-open {
   transform: translateY(calc(-1 * var(--keyboard)));
 }
 
-#input:focus {
-  box-shadow:
-    0 0 0 calc(var(--ring-width) + var(--ring-offset)) var(--ring-color);
+.layer-input {
+  background: var(--input-layer-background);
+  backdrop-filter: var(--input-layer-blur);
+  opacity: var(--input-layer-opacity);
+
+  border-top: var(--input-layer-border-top-width) var(--input-layer-border-top-style) var(--input-layer-border-top-color);
+  border-right: var(--input-layer-border-right-width) var(--input-layer-border-right-style) var(--input-layer-border-right-color);
+  border-bottom: var(--input-layer-border-bottom-width) var(--input-layer-border-bottom-style) var(--input-layer-border-bottom-color);
+  border-left: var(--input-layer-border-left-width) var(--input-layer-border-left-style) var(--input-layer-border-left-color);
+
+  border-top-left-radius: var(--input-layer-border-radius-top-left);
+  border-top-right-radius: var(--input-layer-border-radius-top-right);
+  border-bottom-right-radius: var(--input-layer-border-radius-bottom-right);
+  border-bottom-left-radius: var(--input-layer-border-radius-bottom-left);
+
+  box-shadow: var(--input-layer-shadow-external), inset var(--input-layer-shadow-internal);
+
+  padding-top: var(--input-layer-padding-top);
+  padding-right: var(--input-layer-padding-right);
+  padding-bottom: var(--input-layer-padding-bottom);
+  padding-left: var(--input-layer-padding-left);
+
+  margin-top: var(--input-layer-margin-top);
+  margin-right: var(--input-layer-margin-right);
+  margin-bottom: var(--input-layer-margin-bottom);
+  margin-left: var(--input-layer-margin-left);
+
+  font-family: var(--input-layer-font-family);
+  font-size: var(--input-layer-font-size);
+  font-weight: var(--input-layer-font-weight);
+  line-height: var(--input-layer-line-height);
+  letter-spacing: var(--input-layer-letter-spacing);
+  word-spacing: var(--input-layer-word-spacing);
+  text-transform: var(--input-layer-text-transform);
+  text-shadow: var(--input-layer-text-shadow);
+  color: var(--input-layer-color);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 20;
+  touch-action: none;
+  will-change: transform;
 }
 
 .input-container {
-  padding-bottom: calc(10px + env(safe-area-inset-bottom));
-  border-left: var(--border-left-input-border-width) var(--border-left-input-border-style) var(--border-left-input-border-color);
-  border-right: var(--border-right-input-border-width) var(--border-right-input-border-style) var(--border-right-input-border-color);
-  border-top: var(--border-top-input-border-width) var(--border-top-input-border-style) var(--border-top-input-border-color);
-  border-bottom: var(--border-bottom-input-border-width) var(--border-bottom-input-border-style) var(--border-bottom-input-border-color);
+  background: var(--input-container-background);
+  backdrop-filter: var(--input-container-blur);
+  opacity: var(--input-container-opacity);
+
+  border-top: var(--input-container-border-top-width) var(--input-container-border-top-style) var(--input-container-border-top-color);
+  border-right: var(--input-container-border-right-width) var(--input-container-border-right-style) var(--input-container-border-right-color);
+  border-bottom: var(--input-container-border-bottom-width) var(--input-container-border-bottom-style) var(--input-container-border-bottom-color);
+  border-left: var(--input-container-border-left-width) var(--input-container-border-left-style) var(--input-container-border-left-color);
+
+  border-top-left-radius: var(--input-container-border-radius-top-left);
+  border-top-right-radius: var(--input-container-border-radius-top-right);
+  border-bottom-right-radius: var(--input-container-border-radius-bottom-right);
+  border-bottom-left-radius: var(--input-container-border-radius-bottom-left);
+
+  box-shadow: var(--input-container-shadow-external), inset var(--input-container-shadow-internal);
+
+  padding-top: var(--input-container-padding-top);
+  padding-right: var(--input-container-padding-right);
+  padding-bottom: var(--input-container-padding-bottom);
+  padding-left: var(--input-container-padding-left);
+
+  margin-top: var(--input-container-margin-top);
+  margin-right: var(--input-container-margin-right);
+  margin-bottom: var(--input-container-margin-bottom);
+  margin-left: var(--input-container-margin-left);
+
+  font-family: var(--input-container-font-family);
+  font-size: var(--input-container-font-size);
+  font-weight: var(--input-container-font-weight);
+  line-height: var(--input-container-line-height);
+  letter-spacing: var(--input-container-letter-spacing);
+  word-spacing: var(--input-container-word-spacing);
+  text-transform: var(--input-container-text-transform);
+  text-shadow: var(--input-container-text-shadow);
+  color: var(--input-container-color);
+
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: #334155;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
 }
 
-.layer-input .input-container {
-  background: var(--input-container-bg);
+.input-box {
+  background: var(--input-box-background);
+  backdrop-filter: var(--input-box-blur);
+  opacity: var(--input-box-opacity);
+
+  border-top: var(--input-box-border-top-width) var(--input-box-border-top-style) var(--input-box-border-top-color);
+  border-right: var(--input-box-border-right-width) var(--input-box-border-right-style) var(--input-box-border-right-color);
+  border-bottom: var(--input-box-border-bottom-width) var(--input-box-border-bottom-style) var(--input-box-border-bottom-color);
+  border-left: var(--input-box-border-left-width) var(--input-box-border-left-style) var(--input-box-border-left-color);
+
+  border-top-left-radius: var(--input-box-border-radius-top-left);
+  border-top-right-radius: var(--input-box-border-radius-top-right);
+  border-bottom-right-radius: var(--input-box-border-radius-bottom-right);
+  border-bottom-left-radius: var(--input-box-border-radius-bottom-left);
+
+  box-shadow: var(--input-box-shadow-external), inset var(--input-box-shadow-internal);
+
+  padding-top: var(--input-box-padding-top);
+  padding-right: var(--input-box-padding-right);
+  padding-bottom: var(--input-box-padding-bottom);
+  padding-left: var(--input-box-padding-left);
+
+  margin-top: var(--input-box-margin-top);
+  margin-right: var(--input-box-margin-right);
+  margin-bottom: var(--input-box-margin-bottom);
+  margin-left: var(--input-box-margin-left);
+
+  font-family: var(--input-box-font-family);
+  font-size: var(--input-box-font-size);
+  font-weight: var(--input-box-font-weight);
+  line-height: var(--input-box-line-height);
+  letter-spacing: var(--input-box-letter-spacing);
+  word-spacing: var(--input-box-word-spacing);
+  text-transform: var(--input-box-text-transform);
+  text-shadow: var(--input-box-text-shadow);
+  color: var(--input-box-color);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+#actionMenuBtn {
+  background: var(--action-menu-button-background);
+  backdrop-filter: var(--action-menu-button-blur);
+  opacity: var(--action-menu-button-opacity);
+
+  border-top: var(--action-menu-button-border-top-width) var(--action-menu-button-border-top-style) var(--action-menu-button-border-top-color);
+  border-right: var(--action-menu-button-border-right-width) var(--action-menu-button-border-right-style) var(--action-menu-button-border-right-color);
+  border-bottom: var(--action-menu-button-border-bottom-width) var(--action-menu-button-border-bottom-style) var(--action-menu-button-border-bottom-color);
+  border-left: var(--action-menu-button-border-left-width) var(--action-menu-button-border-left-style) var(--action-menu-button-border-left-color);
+
+  border-top-left-radius: var(--action-menu-button-border-radius-top-left);
+  border-top-right-radius: var(--action-menu-button-border-radius-top-right);
+  border-bottom-right-radius: var(--action-menu-button-border-radius-bottom-right);
+  border-bottom-left-radius: var(--action-menu-button-border-radius-bottom-left);
+
+  box-shadow: var(--action-menu-button-shadow-external), inset var(--action-menu-button-shadow-internal);
+
+  padding-top: var(--action-menu-button-padding-top);
+  padding-right: var(--action-menu-button-padding-right);
+  padding-bottom: var(--action-menu-button-padding-bottom);
+  padding-left: var(--action-menu-button-padding-left);
+
+  margin-top: var(--action-menu-button-margin-top);
+  margin-right: var(--action-menu-button-margin-right);
+  margin-bottom: var(--action-menu-button-margin-bottom);
+  margin-left: var(--action-menu-button-margin-left);
+
+  font-size: var(--action-menu-button-font-size);
+  color: var(--action-menu-button-color);
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: var(--action-menu-button-transition);
+  animation: var(--action-menu-button-animation);
+}
+
+#actionMenuBtn:active {
+  transform: scale(0.75);
+}
+
+#emojiPickerBtn {
+  background: var(--emoji-picker-button-background);
+  backdrop-filter: var(--emoji-picker-button-blur);
+  opacity: var(--emoji-picker-button-opacity);
+
+  border-top: var(--emoji-picker-button-border-top-width) var(--emoji-picker-button-border-top-style) var(--emoji-picker-button-border-top-color);
+  border-right: var(--emoji-picker-button-border-right-width) var(--emoji-picker-button-border-right-style) var(--emoji-picker-button-border-right-color);
+  border-bottom: var(--emoji-picker-button-border-bottom-width) var(--emoji-picker-button-border-bottom-style) var(--emoji-picker-button-border-bottom-color);
+  border-left: var(--emoji-picker-button-border-left-width) var(--emoji-picker-button-border-left-style) var(--emoji-picker-button-border-left-color);
+
+  border-top-left-radius: var(--emoji-picker-button-border-radius-top-left);
+  border-top-right-radius: var(--emoji-picker-button-border-radius-top-right);
+  border-bottom-right-radius: var(--emoji-picker-button-border-radius-bottom-right);
+  border-bottom-left-radius: var(--emoji-picker-button-border-radius-bottom-left);
+
+  box-shadow: var(--emoji-picker-button-shadow-external), inset var(--emoji-picker-button-shadow-internal);
+
+  padding-top: var(--emoji-picker-button-padding-top);
+  padding-right: var(--emoji-picker-button-padding-right);
+  padding-bottom: var(--emoji-picker-button-padding-bottom);
+  padding-left: var(--emoji-picker-button-padding-left);
+
+  margin-top: var(--emoji-picker-button-margin-top);
+  margin-right: var(--emoji-picker-button-margin-right);
+  margin-bottom: var(--emoji-picker-button-margin-bottom);
+  margin-left: var(--emoji-picker-button-margin-left);
+
+  font-size: var(--emoji-picker-button-font-size);
+  color: var(--emoji-picker-button-color);
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+
+  transition: var(--emoji-picker-button-transition);
+  animation: var(--emoji-picker-button-animation);
+}
+
+#emojiPickerBtn:active {
+  transform: scale(0.75);
 }
 
 #input {
-  background: var(--input-ty-bg);
-  color: var(--input-text-color);
+  background: var(--input-background);
+  backdrop-filter: var(--input-blur);
+  opacity: var(--input-opacity);
+  outline: none;
+  border-top: var(--input-border-top-width) var(--input-border-top-style) var(--input-border-top-color);
+  border-right: var(--input-border-right-width) var(--input-border-right-style) var(--input-border-right-color);
+  border-bottom: var(--input-border-bottom-width) var(--input-border-bottom-style) var(--input-border-bottom-color);
+  border-left: var(--input-border-left-width) var(--input-border-left-style) var(--input-border-left-color);
+
+  border-top-left-radius: var(--rfos9-radius-top-left);
+  border-top-right-radius: var(--rfos9-radius-top-right);
+  border-bottom-right-radius: var(--rfos9-radius-bottom-right);
+  border-bottom-left-radius: var(--rfos9-radius-bottom-left);
+
+  box-shadow: var(--input-ring-inset) 0 0 0 calc(var(--input-ring-width) + var(--input-ring-offset)) var(--input-ring-color);
+
+  padding-top: var(--input-padding-top);
+  padding-right: var(--input-padding-right);
+  padding-bottom: var(--input-padding-bottom);
+  padding-left: var(--input-padding-left);
+
+  margin-top: var(--input-margin-top);
+  margin-right: var(--input-margin-right);
+  margin-bottom: var(--input-margin-bottom);
+  margin-left: var(--input-margin-left);
+
+  font-family: var(--input-font-family);
+  font-size: var(--input-font-size);
+  font-weight: var(--input-font-weight);
+  line-height: var(--input-line-height);
+  letter-spacing: var(--input-letter-spacing);
+  word-spacing: var(--input-word-spacing);
+  text-transform: var(--input-text-transform);
+  text-shadow: var(--input-text-shadow);
+  color: var(--input-color);
+
+  resize: none;
+  font-weight: 500;
+  max-height: 120px;
+  min-height: 40px;
+  overflow-y: auto;
+  transition: all 0.2s;
+  width: 70%;
+  max-width: 500px;
+}
+
+#input:empty:before {
+  content: attr(data-placeholder);
+  color: var(--input-placeholder-color);
+  font-family: var(--input-placeholder-font-family);
+  font-size: var(--input-placeholder-font-size);
+  font-weight: var(--input-placeholder-font-weight);
+  line-height: var(--input-placeholder-line-height);
+  letter-spacing: var(--input-placeholder-letter-spacing);
+  word-spacing: var(--input-placeholder-word-spacing);
+  text-transform: var(--input-placeholder-text-transform);
+  text-shadow: var(--input-placeholder-text-shadow);
+  font-style: var(--input-placeholder-font-style);
+  pointer-events: none;
 }
 
 #sendBtn {
-  background: var(--send-btn-bg);
-  color: var(--send-btn-text);
-  border-left: var(--border-left-send-btn-width) var(--border-left-send-btn-style) var(--border-left-send-btn-color);
-  border-right: var(--border-right-send-btn-width) var(--border-right-send-btn-style) var(--border-right-send-btn-color);
-  border-top: var(--border-top-send-btn-width) var(--border-top-send-btn-style) var(--border-top-send-btn-color);
-  border-bottom: var(--border-bottom-send-btn-width) var(--border-bottom-send-btn-style) var(--border-bottom-send-btn-color);
+  background: var(--send-button-background);
+  backdrop-filter: var(--send-button-blur);
+  opacity: var(--send-button-opacity);
+
+  border-top: var(--send-button-border-top-width) var(--send-button-border-top-style) var(--send-button-border-top-color);
+  border-right: var(--send-button-border-right-width) var(--send-button-border-right-style) var(--send-button-border-right-color);
+  border-bottom: var(--send-button-border-bottom-width) var(--send-button-border-bottom-style) var(--send-button-border-bottom-color);
+  border-left: var(--send-button-border-left-width) var(--send-button-border-left-style) var(--send-button-border-left-color);
+
+  border-top-left-radius: var(--send-button-border-radius-top-left);
+  border-top-right-radius: var(--send-button-border-radius-top-right);
+  border-bottom-right-radius: var(--send-button-border-radius-bottom-right);
+  border-bottom-left-radius: var(--send-button-border-radius-bottom-left);
+
+  box-shadow: var(--send-button-shadow-external), inset var(--send-button-shadow-internal);
+
+  padding-top: var(--send-button-padding-top);
+  padding-right: var(--send-button-padding-right);
+  padding-bottom: var(--send-button-padding-bottom);
+  padding-left: var(--send-button-padding-left);
+
+  margin-top: var(--send-button-margin-top);
+  margin-right: var(--send-button-margin-right);
+  margin-bottom: var(--send-button-margin-bottom);
+  margin-left: var(--send-button-margin-left);
+
+  font-size: var(--send-button-font-size);
+  color: var(--send-button-color);
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: var(--send-button-transition);
+  animation: var(--send-button-animation);
 }
 
-textarea {
-  line-height: 1.3;
-  overscroll-behavior: contain;
+#sendBtn:active {
+  transform: scale(0.75);
 }
 
-button {
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
-  user-select: none;
-  touch-action: manipulation;
+.message.emoji-single .msg-drag .emoji {
+  font-size: 150px !important;
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  display: inline-block;
+  text-align: center;
+}
+
+.message.emoji-single .msg-drag .message-text {
+  font-size: 150px;
+  line-height: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.message.emoji-single .msg-drag {
+  min-width: 150px;
+  min-height: 150px;
+}
+
+.msg-drag.vertical-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.msg-drag.vertical-layout .msg-hour {
+  margin-top: 8px;
+  margin-left: auto;
+  margin-right: 0;
+  text-align: right;
+  width: auto;
+  position: relative;
+  bottom: auto;
+  right: auto;
+}
+.msg-drag.emoji-single .message-text {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.msg-drag.emoji-single .replaced-emoji,
+.msg-drag.emoji-single .emoji {
+  margin: 0 auto;
 }

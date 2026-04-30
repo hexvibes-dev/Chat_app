@@ -223,18 +223,922 @@ html[data-theme="nuevo"] {
   --hamburger-item-opacity: 1;
 }
 
+/* Messages */
+html[data-theme="nuevo"] {
+  /* Message scrollbar background */
+  --message-scrollbar-bg-background: transparent;
+  --message-scrollbar-bg-blur:
+    blur(4px);
+  --message-scrollbar-bg-opacity: 1;
+  
+  --message-scrollbar-bg-border-top-width: 0;
+  --message-scrollbar-bg-border-top-style: solid;
+  --message-scrollbar-bg-border-top-color: transparent;
+  --message-scrollbar-bg-border-right-width: 0;
+  --message-scrollbar-bg-border-right-style: solid;
+  --message-scrollbar-bg-border-right-color: transparent;
+  --message-scrollbar-bg-border-bottom-width: 0;
+  --message-scrollbar-bg-border-bottom-style: solid;
+  --message-scrollbar-bg-border-bottom-color: transparent;
+  --message-scrollbar-bg-border-left-width: 0;
+  --message-scrollbar-bg-border-left-style: solid;
+  --message-scrollbar-bg-border-left-color: transparent;
+  
+  --message-scrollbar-bg-border-radius-top-left: 5px;
+  --message-scrollbar-bg-border-radius-top-right: 5px;
+  --message-scrollbar-bg-border-radius-bottom-right: 5px;
+  --message-scrollbar-bg-border-radius-bottom-left: 5px;
+  
+  --message-scrollbar-bg-shadow-external: 0 0 0 transparent;
+  --message-scrollbar-bg-shadow-internal: 0 0 0 transparent;
+  
+  
+  /* Message scrollbar button */
+  --message-scrollbar-button-background: var(--planton-orange);
+  --message-scrollbar-button-blur: none;
+  --message-scrollbar-button-opacity: 1;
+  
+  --message-scrollbar-button-border-top-width: 0;
+  --message-scrollbar-button-border-top-style: solid;
+  --message-scrollbar-button-border-top-color: transparent;
+  --message-scrollbar-button-border-right-width: 0;
+  --message-scrollbar-button-border-right-style: solid;
+  --message-scrollbar-button-border-right-color: transparent;
+  --message-scrollbar-button-border-bottom-width: 0;
+  --message-scrollbar-button-border-bottom-style: solid;
+  --message-scrollbar-button-border-bottom-color: transparent;
+  --message-scrollbar-button-border-left-width: 0;
+  --message-scrollbar-button-border-left-style: solid;
+  --message-scrollbar-button-border-left-color: transparent;
+  
+  --message-scrollbar-button-border-radius-top-left: 5px;
+  --message-scrollbar-button-border-radius-top-right: 5px;
+  --message-scrollbar-button-border-radius-bottom-right: 5px;
+  --message-scrollbar-button-border-radius-bottom-left: 5px;
+  
+  --message-scrollbar-button-shadow-external: 0 0 0 transparent;
+  --message-scrollbar-button-shadow-internal: 0 0 0 transparent;
+  
+  /* Messages container */
+  --message-container-background: transparent;
+  --message-container-blur: none;
+  --message-container-opacity: 1;
+  
+  --message-container-shadow-left: -4px 0 6px transparent;
+  --message-container-shadow-right: 4px 0 6px transparent;
+  
+  
+  /* Messaage bubble container */
+  --message-bubble-container-background: transparent;
+  --message-bubble-container-blur: none;
+  --message-bubble-container-opacity: 0;
+  
+  --message-bubble-container-animation: msgIn 260ms cubic-bezier(.2, .9, .3, 1) forwards;
+  --message-bubble-container-transition: opacity 200ms ease, transform 200ms ease;
+  
+  /* Bubble message me */
+  --bubble-message-me-background: linear-gradient(387deg, var(--planton-green), var(--planton-green-dark));
+  --bubble-message-me-blur: none;
+  --bubble-message-me-opacity: 1;
+  
+  --bubble-message-me-border-top-width: 0;
+  --bubble-message-me-border-top-style: solid;
+  --bubble-message-me-border-top-color: transparent;
+  --bubble-message-me-border-right-width: 0;
+  --bubble-message-me-border-right-style: solid;
+  --bubble-message-me-border-right-color: transparent;
+  --bubble-message-me-border-bottom-width: 0;
+  --bubble-message-me-border-bottom-style: solid;
+  --bubble-message-me-border-bottom-color: transparent;
+  --bubble-message-me-border-left-width: 0;
+  --bubble-message-me-border-left-style: solid;
+  --bubble-message-me-border-left-color: transparent;
+  
+  --bubble-message-me-border-radius-top-left: 18px;
+  --bubble-message-me-border-radius-top-right: 18px;
+  --bubble-message-me-border-radius-bottom-right: 18px;
+  --bubble-message-me-border-radius-bottom-left: 18px;
+  
+  --bubble-message-me-shadow-external: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --bubble-message-me-shadow-internal: 0 0 0 transparent;
+  
+  --bubble-message-me-padding-top: 8px;
+  --bubble-message-me-padding-right: 12px;
+  --bubble-message-me-padding-bottom: 8px;
+  --bubble-message-me-padding-left: 12px;
+  
+  --bubble-message-me-margin-top: 4px;
+  --bubble-message-me-margin-right: 0;
+  --bubble-message-me-margin-bottom: 4px;
+  --bubble-message-me-margin-left: 0;
+  
+  --bubble-message-me-font-family: system-ui;
+  --bubble-message-me-font-size: 14px;
+  --bubble-message-me-font-weight: 500;
+  --bubble-message-me-line-height: 1.4;
+  --bubble-message-me-letter-spacing: 0.3px;
+  --bubble-message-me-word-spacing: 0;
+  --bubble-message-me-text-transform: none;
+  --bubble-message-me-text-shadow: none;
+  --bubble-message-me-color: var(--planton-white);
+  
+  /* Bubble message text me */
+  --bubble-message-text-me-background: transparent;
+  --bubble-message-text-me-blur: none;
+  --bubble-message-text-me-opacity: 1;
+  
+  --bubble-message-text-me-border-top-width: 0;
+  --bubble-message-text-me-border-top-style: solid;
+  --bubble-message-text-me-border-top-color: transparent;
+  --bubble-message-text-me-border-right-width: 0;
+  --bubble-message-text-me-border-right-style: solid;
+  --bubble-message-text-me-border-right-color: transparent;
+  --bubble-message-text-me-border-bottom-width: 0;
+  --bubble-message-text-me-border-bottom-style: solid;
+  --bubble-message-text-me-border-bottom-color: transparent;
+  --bubble-message-text-me-border-left-width: 0;
+  --bubble-message-text-me-border-left-style: solid;
+  --bubble-message-text-me-border-left-color: transparent;
+  
+  --bubble-message-text-me-border-radius-top-left: 18px;
+  --bubble-message-text-me-border-radius-top-right: 18px;
+  --bubble-message-text-me-border-radius-bottom-right: 4px;
+  --bubble-message-text-me-border-radius-bottom-left: 18px;
+  
+  --bubble-message-text-me-shadow-external: 0 0 0 transparent;
+  --bubble-message-text-me-shadow-internal: 0 0 0 transparent;
+  
+  --bubble-message-text-me-padding-top: 8px;
+  --bubble-message-text-me-padding-right: 12px;
+  --bubble-message-text-me-padding-bottom: 8px;
+  --bubble-message-text-me-padding-left: 2px;
+  
+  --bubble-message-text-me-margin-top: 4px;
+  --bubble-message-text-me-margin-right: 0;
+  --bubble-message-text-me-margin-bottom: 4px;
+  --bubble-message-text-me-margin-left: 0;
+  
+  --bubble-message-text-me-font-family: system-ui;
+  --bubble-message-text-me-font-size: 14px;
+  --bubble-message-text-me-font-weight: 500;
+  --bubble-message-text-me-line-height: 1.4;
+  --bubble-message-text-me-letter-spacing: 0.3px;
+  --bubble-message-text-me-word-spacing: 0;
+  --bubble-message-text-me-text-transform: none;
+  --bubble-message-text-me-text-shadow: none;
+  --bubble-message-text-me-color: var(--planton-white);
+  
+  /* Bubble message hour me */
+  --bubble-message-hour-me-background: transparent;
+  --bubble-message-hour-me-blur: none;
+  --bubble-message-hour-me-opacity: 0.8;
+  
+  --bubble-message-hour-me-margin-top: 0;
+  --bubble-message-hour-me-margin-right: 6px;
+  --bubble-message-hour-me-margin-bottom: 0;
+  --bubble-message-hour-me-margin-left: 0;
+  
+  --bubble-message-hour-me-font-family: monospace;
+  --bubble-message-hour-me-font-size: 11px;
+  --bubble-message-hour-me-font-weight: 400;
+  --bubble-message-hour-me-line-height: 1.3;
+  --bubble-message-hour-me-letter-spacing: 0.2px;
+  --bubble-message-hour-me-word-spacing: 0;
+  --bubble-message-hour-me-text-transform: none;
+  --bubble-message-hour-me-text-shadow: none;
+  --bubble-message-hour-me-color: var(--planton-white);
+  
+  /* Reply nested background me */
+  --bubble-reply-nested-bg-me-background: var(--planton-green);
+  --bubble-reply-nested-bg-me-blur: none;
+  --bubble-reply-nested-bg-me-opacity: 1;
+  
+  --bubble-reply-nested-bg-me-border-top-width: 0;
+  --bubble-reply-nested-bg-me-border-top-style: solid;
+  --bubble-reply-nested-bg-me-border-top-color: transparent;
+  --bubble-reply-nested-bg-me-border-right-width: 0;
+  --bubble-reply-nested-bg-me-border-right-style: solid;
+  --bubble-reply-nested-bg-me-border-right-color: transparent;
+  --bubble-reply-nested-bg-me-border-bottom-width: 0;
+  --bubble-reply-nested-bg-me-border-bottom-style: solid;
+  --bubble-reply-nested-bg-me-border-bottom-color: transparent;
+  --bubble-reply-nested-bg-me-border-left-width: 3px;
+  --bubble-reply-nested-bg-me-border-left-style: solid;
+  --bubble-reply-nested-bg-me-border-left-color: var(--planton-orange);
+  
+  --bubble-reply-nested-bg-me-border-radius-top-left: 8px;
+  --bubble-reply-nested-bg-me-border-radius-top-right: 8px;
+  --bubble-reply-nested-bg-me-border-radius-bottom-right: 8px;
+  --bubble-reply-nested-bg-me-border-radius-bottom-left: 8px;
+  
+  --bubble-reply-nested-bg-me-shadow-external: 0 0 0 transparent;
+  --bubble-reply-nested-bg-me-shadow-internal: inset 0 0 0 transparent;
+  
+  --bubble-reply-nested-bg-me-padding-top: 6px;
+  --bubble-reply-nested-bg-me-padding-right: 10px;
+  --bubble-reply-nested-bg-me-padding-bottom: 6px;
+  --bubble-reply-nested-bg-me-padding-left: 10px;
+  
+  --bubble-reply-nested-bg-me-margin-top: 4px;
+  --bubble-reply-nested-bg-me-margin-right: 0;
+  --bubble-reply-nested-bg-me-margin-bottom: 4px;
+  --bubble-reply-nested-bg-me-margin-left: 0;
+  
+  --bubble-reply-nested-bg-me-font-family: system-ui;
+  --bubble-reply-nested-bg-me-font-size: 13px;
+  --bubble-reply-nested-bg-me-font-weight: 500;
+  --bubble-reply-nested-bg-me-line-height: 1.4;
+  --bubble-reply-nested-bg-me-letter-spacing: 0.3px;
+  --bubble-reply-nested-bg-me-word-spacing: 0;
+  --bubble-reply-nested-bg-me-text-transform: none;
+  --bubble-reply-nested-bg-me-text-shadow: none;
+  --bubble-reply-nested-bg-me-color: var(--planton-white);
+  
+  /* Reply mested me author */
+  --reply-nested-me-author-background: transparent;
+  --reply-nested-me-author-blur: none;
+  --reply-nested-me-author-opacity: 1;
+  
+  --reply-nested-me-author-border-top-width: 0;
+  --reply-nested-me-author-border-top-style: none;
+  --reply-nested-me-author-border-top-color: transparent;
+  --reply-nested-me-author-border-right-width: 0;
+  --reply-nested-me-author-border-right-style: none;
+  --reply-nested-me-author-border-right-color: transparent;
+  --reply-nested-me-author-border-bottom-width: 0;
+  --reply-nested-me-author-border-bottom-style: none;
+  --reply-nested-me-author-border-bottom-color: transparent;
+  --reply-nested-me-author-border-left-width: 0;
+  --reply-nested-me-author-border-left-style: none;
+  --reply-nested-me-author-border-left-color: transparent;
+  
+  --reply-nested-me-author-border-radius-top-left: 0;
+  --reply-nested-me-author-border-radius-top-right: 0;
+  --reply-nested-me-author-border-radius-bottom-right: 0;
+  --reply-nested-me-author-border-radius-bottom-left: 0;
+  
+  --reply-nested-me-author-shadow-external: none;
+  --reply-nested-me-author-shadow-internal: none;
+  
+  --reply-nested-me-author-padding-top: 0;
+  --reply-nested-me-author-padding-right: 0;
+  --reply-nested-me-author-padding-bottom: 0;
+  --reply-nested-me-author-padding-left: 0;
+  
+  --reply-nested-me-author-margin-top: 0;
+  --reply-nested-me-author-margin-right: 0;
+  --reply-nested-me-author-margin-bottom: 0;
+  --reply-nested-me-author-margin-left: 0;
+  
+  --reply-nested-me-author-font-family: system-ui;
+  --reply-nested-me-author-font-size: 12px;
+  --reply-nested-me-author-font-weight: 600;
+  --reply-nested-me-author-line-height: 1.4;
+  --reply-nested-me-author-letter-spacing: 0.3px;
+  --reply-nested-me-author-word-spacing: 0;
+  --reply-nested-me-author-text-transform: none;
+  --reply-nested-me-author-text-shadow: none;
+  --reply-nested-me-author-color: var(--planton-orange);
+  
+  
+  /* reply nested text me */
+  --bubble-reply-nested-text-me-background: transparent;
+  --bubble-reply-nested-text-me-blur: none;
+  --bubble-reply-nested-text-me-opacity: 1;
+  
+  --bubble-reply-nested-text-me-border-top-width: 0;
+  --bubble-reply-nested-text-me-border-top-style: none;
+  --bubble-reply-nested-text-me-border-top-color: transparent;
+  --bubble-reply-nested-text-me-border-right-width: 0;
+  --bubble-reply-nested-text-me-border-right-style: none;
+  --bubble-reply-nested-text-me-border-right-color: transparent;
+  --bubble-reply-nested-text-me-border-bottom-width: 0;
+  --bubble-reply-nested-text-me-border-bottom-style: none;
+  --bubble-reply-nested-text-me-border-bottom-color: transparent;
+  --bubble-reply-nested-text-me-border-left-width: 0;
+  --bubble-reply-nested-text-me-border-left-style: none;
+  --bubble-reply-nested-text-me-border-left-color: transparent;
+  
+  --bubble-reply-nested-text-me-border-radius-top-left: 0;
+  --bubble-reply-nested-text-me-border-radius-top-right: 0;
+  --bubble-reply-nested-text-me-border-radius-bottom-right: 0;
+  --bubble-reply-nested-text-me-border-radius-bottom-left: 0;
+  
+  --bubble-reply-nested-text-me-shadow-external: none;
+  --bubble-reply-nested-text-me-shadow-internal: none;
+  
+  --bubble-reply-nested-text-me-padding-top: 0;
+  --bubble-reply-nested-text-me-padding-right: 0;
+  --bubble-reply-nested-text-me-padding-bottom: 0;
+  --bubble-reply-nested-text-me-padding-left: 0;
+  
+  --bubble-reply-nested-text-me-margin-top: 0;
+  --bubble-reply-nested-text-me-margin-right: 0;
+  --bubble-reply-nested-text-me-margin-bottom: 0;
+  --bubble-reply-nested-text-me-margin-left: 0;
+  
+  --bubble-reply-nested-text-me-font-family: system-ui;
+  --bubble-reply-nested-text-me-font-size: 13px;
+  --bubble-reply-nested-text-me-font-weight: 500;
+  --bubble-reply-nested-text-me-line-height: 1.4;
+  --bubble-reply-nested-text-me-letter-spacing: 0.3px;
+  --bubble-reply-nested-text-me-word-spacing: 0;
+  --bubble-reply-nested-text-me-text-transform: none;
+  --bubble-reply-nested-text-me-text-shadow: none;
+  --bubble-reply-nested-text-me-color: var(--planton-white);
+  
+  /* Bubble message other */
+  --bubble-message-other-background: var(--planton-green-dark);
+  --bubble-message-other-blur: none;
+  --bubble-message-other-opacity: 1;
+  
+  --bubble-message-other-border-top-width: 0;
+  --bubble-message-other-border-top-style: solid;
+  --bubble-message-other-border-top-color: transparent;
+  --bubble-message-other-border-right-width: 0;
+  --bubble-message-other-border-right-style: solid;
+  --bubble-message-other-border-right-color: transparent;
+  --bubble-message-other-border-bottom-width: 0;
+  --bubble-message-other-border-bottom-style: solid;
+  --bubble-message-other-border-bottom-color: transparent;
+  --bubble-message-other-border-left-width: 0;
+  --bubble-message-other-border-left-style: solid;
+  --bubble-message-other-border-left-color: transparent;
+  
+  --bubble-message-other-border-radius-top-left: 18px;
+  --bubble-message-other-border-radius-top-right: 18px;
+  --bubble-message-other-border-radius-bottom-right: 18px;
+  --bubble-message-other-border-radius-bottom-left: 4px;
+  
+  --bubble-message-other-shadow-external: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --bubble-message-other-shadow-internal: 0 0 0 transparent;
+  
+  --bubble-message-other-padding-top: 8px;
+  --bubble-message-other-padding-right: 12px;
+  --bubble-message-other-padding-bottom: 8px;
+  --bubble-message-other-padding-left: 12px;
+  
+  --bubble-message-other-margin-top: 4px;
+  --bubble-message-other-margin-right: 0;
+  --bubble-message-other-margin-bottom: 4px;
+  --bubble-message-other-margin-left: 0;
+  
+  --bubble-message-other-font-family: system-ui;
+  --bubble-message-other-font-size: 14px;
+  --bubble-message-other-font-weight: 500;
+  --bubble-message-other-line-height: 1.4;
+  --bubble-message-other-letter-spacing: 0.3px;
+  --bubble-message-other-word-spacing: 0;
+  --bubble-message-other-text-transform: none;
+  --bubble-message-other-text-shadow: none;
+  --bubble-message-other-color: var(--planton-white);
+  
+  /* Bubble message text other */
+  --bubble-message-text-other-background: transparent;
+  --bubble-message-text-other-blur: none;
+  --bubble-message-text-other-opacity: 1;
+  
+  --bubble-message-text-other-border-top-width: 0;
+  --bubble-message-text-other-border-top-style: solid;
+  --bubble-message-text-other-border-top-color: transparent;
+  --bubble-message-text-other-border-right-width: 0;
+  --bubble-message-text-other-border-right-style: solid;
+  --bubble-message-text-other-border-right-color: transparent;
+  --bubble-message-text-other-border-bottom-width: 0;
+  --bubble-message-text-other-border-bottom-style: solid;
+  --bubble-message-text-other-border-bottom-color: transparent;
+  --bubble-message-text-other-border-left-width: 0;
+  --bubble-message-text-other-border-left-style: solid;
+  --bubble-message-text-other-border-left-color: transparent;
+  
+  --bubble-message-text-other-border-radius-top-left: 12px;
+  --bubble-message-text-other-border-radius-top-right: 12px;
+  --bubble-message-text-other-border-radius-bottom-right: 12px;
+  --bubble-message-text-other-border-radius-bottom-left: 12px;
+  
+  --bubble-message-text-other-shadow-external: 0 0 0 transparent;
+  --bubble-message-text-other-shadow-internal: 0 0 0 transparent;
+  
+  --bubble-message-text-other-padding-top: 8px;
+  --bubble-message-text-other-padding-right: 12px;
+  --bubble-message-text-other-padding-bottom: 8px;
+  --bubble-message-text-other-padding-left: 12px;
+  
+  --bubble-message-text-other-margin-top: 2px;
+  --bubble-message-text-other-margin-right: 0;
+  --bubble-message-text-other-margin-bottom: 2px;
+  --bubble-message-text-other-margin-left: 0;
+  
+  --bubble-message-text-other-font-family: system-ui;
+  --bubble-message-text-other-font-size: 14px;
+  --bubble-message-text-other-font-weight: 400;
+  --bubble-message-text-other-line-height: 1.5;
+  --bubble-message-text-other-letter-spacing: 0.3px;
+  --bubble-message-text-other-word-spacing: 0;
+  --bubble-message-text-other-text-transform: none;
+  --bubble-message-text-other-text-shadow: none;
+  --bubble-message-text-other-color: var(--planton-white);
+  
+  
+  /* Bubble messsage hour other */
+  --bubble-message-hour-other-background: transparent;
+  --bubble-message-hour-other-blur: none;
+  --bubble-message-hour-other-opacity: 1;
+  
+  --bubble-message-hour-other-margin-top: 0;
+  --bubble-message-hour-other-margin-right: 0;
+  --bubble-message-hour-other-margin-bottom: 0;
+  --bubble-message-hour-other-margin-left: 8px;
+  
+  --bubble-message-hour-other-font-family: monospace;
+  --bubble-message-hour-other-font-size: 10px;
+  --bubble-message-hour-other-font-weight: 400;
+  --bubble-message-hour-other-line-height: 1.3;
+  --bubble-message-hour-other-letter-spacing: 0.2px;
+  --bubble-message-hour-other-word-spacing: 0;
+  --bubble-message-hour-other-text-transform: none;
+  --bubble-message-hour-other-text-shadow: none;
+  --bubble-message-hour-other-color: var(--planton-white);
+  
+  
+  /* Reply nested background other */
+  --bubble-reply-nested-bg-other-background: var(--planton-green-dark);
+  --bubble-reply-nested-bg-other-blur: none;
+  --bubble-reply-nested-bg-other-opacity: 1;
+  
+  --bubble-reply-nested-bg-other-border-top-width: 0;
+  --bubble-reply-nested-bg-other-border-top-style: solid;
+  --bubble-reply-nested-bg-other-border-top-color: transparent;
+  --bubble-reply-nested-bg-other-border-right-width: 0;
+  --bubble-reply-nested-bg-other-border-right-style: solid;
+  --bubble-reply-nested-bg-other-border-right-color: transparent;
+  --bubble-reply-nested-bg-other-border-bottom-width: 0;
+  --bubble-reply-nested-bg-other-border-bottom-style: solid;
+  --bubble-reply-nested-bg-other-border-bottom-color: transparent;
+  --bubble-reply-nested-bg-other-border-left-width: 3px;
+  --bubble-reply-nested-bg-other-border-left-style: solid;
+  --bubble-reply-nested-bg-other-border-left-color: var(--planton-orange);
+  
+  --bubble-reply-nested-bg-other-border-radius-top-left: 8px;
+  --bubble-reply-nested-bg-other-border-radius-top-right: 8px;
+  --bubble-reply-nested-bg-other-border-radius-bottom-right: 8px;
+  --bubble-reply-nested-bg-other-border-radius-bottom-left: 8px;
+  
+  --bubble-reply-nested-bg-other-shadow-external: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --bubble-reply-nested-bg-other-shadow-internal: inset 0 0 2px rgba(0, 0, 0, 0.2);
+  
+  --bubble-reply-nested-bg-other-padding-top: 6px;
+  --bubble-reply-nested-bg-other-padding-right: 10px;
+  --bubble-reply-nested-bg-other-padding-bottom: 6px;
+  --bubble-reply-nested-bg-other-padding-left: 10px;
+  
+  --bubble-reply-nested-bg-other-margin-top: 4px;
+  --bubble-reply-nested-bg-other-margin-right: 0;
+  --bubble-reply-nested-bg-other-margin-bottom: 4px;
+  --bubble-reply-nested-bg-other-margin-left: 0;
+  
+  --bubble-reply-nested-bg-other-font-family: system-ui;
+  --bubble-reply-nested-bg-other-font-size: 13px;
+  --bubble-reply-nested-bg-other-font-weight: 500;
+  --bubble-reply-nested-bg-other-line-height: 1.4;
+  --bubble-reply-nested-bg-other-letter-spacing: 0.3px;
+  --bubble-reply-nested-bg-other-word-spacing: 0;
+  --bubble-reply-nested-bg-other-text-transform: none;
+  --bubble-reply-nested-bg-other-text-shadow: none;
+  --bubble-reply-nested-bg-other-color: var(--planton-white);
+  
+  /* Reply nested author other */
+  --reply-nested-other-author-background: transparent;
+  --reply-nested-other-author-blur: none;
+  --reply-nested-other-author-opacity: 1;
+  
+  --reply-nested-other-author-border-top-width: 0;
+  --reply-nested-other-author-border-top-style: none;
+  --reply-nested-other-author-border-top-color: transparent;
+  --reply-nested-other-author-border-right-width: 0;
+  --reply-nested-other-author-border-right-style: none;
+  --reply-nested-other-author-border-right-color: transparent;
+  --reply-nested-other-author-border-bottom-width: 0;
+  --reply-nested-other-author-border-bottom-style: none;
+  --reply-nested-other-author-border-bottom-color: transparent;
+  --reply-nested-other-author-border-left-width: 0;
+  --reply-nested-other-author-border-left-style: none;
+  --reply-nested-other-author-border-left-color: transparent;
+  
+  --reply-nested-other-author-border-radius-top-left: 0;
+  --reply-nested-other-author-border-radius-top-right: 0;
+  --reply-nested-other-author-border-radius-bottom-right: 0;
+  --reply-nested-other-author-border-radius-bottom-left: 0;
+  
+  --reply-nested-other-author-shadow-external: none;
+  --reply-nested-other-author-shadow-internal: none;
+  
+  --reply-nested-other-author-padding-top: 0;
+  --reply-nested-other-author-padding-right: 0;
+  --reply-nested-other-author-padding-bottom: 0;
+  --reply-nested-other-author-padding-left: 0;
+  
+  --reply-nested-other-author-margin-top: 0;
+  --reply-nested-other-author-margin-right: 0;
+  --reply-nested-other-author-margin-bottom: 0;
+  --reply-nested-other-author-margin-left: 0;
+  
+  --reply-nested-other-author-font-family: system-ui;
+  --reply-nested-other-author-font-size: 12px;
+  --reply-nested-other-author-font-weight: 600;
+  --reply-nested-other-author-line-height: 1.4;
+  --reply-nested-other-author-letter-spacing: 0.3px;
+  --reply-nested-other-author-word-spacing: 0;
+  --reply-nested-other-author-text-transform: none;
+  --reply-nested-other-author-text-shadow: none;
+  --reply-nested-other-author-color: var(--planton-orange-dark);
+  
+  /* Reply nested text other */
+  --reply-nested-text-other-background: transparent;
+  --reply-nested-text-other-blur: none;
+  --reply-nested-text-other-opacity: 1;
+  
+  --reply-nested-text-other-border-top-width: 0;
+  --reply-nested-text-other-border-top-style: none;
+  --reply-nested-text-other-border-top-color: transparent;
+  --reply-nested-text-other-border-right-width: 0;
+  --reply-nested-text-other-border-right-style: none;
+  --reply-nested-text-other-border-right-color: transparent;
+  --reply-nested-text-other-border-bottom-width: 0;
+  --reply-nested-text-other-border-bottom-style: none;
+  --reply-nested-text-other-border-bottom-color: transparent;
+  --reply-nested-text-other-border-left-width: 0;
+  --reply-nested-text-other-border-left-style: none;
+  --reply-nested-text-other-border-left-color: transparent;
+  
+  --reply-nested-text-other-border-radius-top-left: 0;
+  --reply-nested-text-other-border-radius-top-right: 0;
+  --reply-nested-text-other-border-radius-bottom-right: 0;
+  --reply-nested-text-other-border-radius-bottom-left: 0;
+  
+  --reply-nested-text-other-shadow-external: none;
+  --reply-nested-text-other-shadow-internal: none;
+  
+  --reply-nested-text-other-padding-top: 0;
+  --reply-nested-text-other-padding-right: 0;
+  --reply-nested-text-other-padding-bottom: 0;
+  --reply-nested-text-other-padding-left: 0;
+  
+  --reply-nested-text-other-margin-top: 0;
+  --reply-nested-text-other-margin-right: 0;
+  --reply-nested-text-other-margin-bottom: 0;
+  --reply-nested-text-other-margin-left: 0;
+  
+  --reply-nested-text-other-font-family: system-ui;
+  --reply-nested-text-other-font-size: 13px;
+  --reply-nested-text-other-font-weight: 500;
+  --reply-nested-text-other-line-height: 1.4;
+  --reply-nested-text-other-letter-spacing: 0.3px;
+  --reply-nested-text-other-word-spacing: 0;
+  --reply-nested-text-other-text-transform: none;
+  --reply-nested-text-other-text-shadow: none;
+  --reply-nested-text-other-color: var(--planton-white);
+}
+
+/* #input */
+html[data-theme="nuevo"] {
+  /* Layer input */
+  --input-layer-background: transparent;
+  --input-layer-blur: none;
+  --input-layer-opacity: 1;
+  
+  --input-layer-border-top-width: 0;
+  --input-layer-border-top-style: solid;
+  --input-layer-border-top-color: transparent;
+  --input-layer-border-right-width: 0;
+  --input-layer-border-right-style: solid;
+  --input-layer-border-right-color: transparent;
+  --input-layer-border-bottom-width: 0;
+  --input-layer-border-bottom-style: solid;
+  --input-layer-border-bottom-color: transparent;
+  --input-layer-border-left-width: 0;
+  --input-layer-border-left-style: solid;
+  --input-layer-border-left-color: transparent;
+  
+  --input-layer-border-radius-top-left: 8px;
+  --input-layer-border-radius-top-right: 8px;
+  --input-layer-border-radius-bottom-right: 8px;
+  --input-layer-border-radius-bottom-left: 8px;
+  
+  --input-layer-shadow-external: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --input-layer-shadow-internal: none;
+  
+  --input-layer-padding-top: 8px;
+  --input-layer-padding-right: 0;
+  --input-layer-padding-bottom: 0;
+  --input-layer-padding-left: 0;
+  
+  --input-layer-margin-top: 0;
+  --input-layer-margin-right: 0;
+  --input-layer-margin-bottom: 0;
+  --input-layer-margin-left: 0;
+  
+  --input-layer-font-family: system-ui;
+  --input-layer-font-size: 14px;
+  --input-layer-font-weight: 500;
+  --input-layer-line-height: 1.4;
+  --input-layer-letter-spacing: 0.3px;
+  --input-layer-word-spacing: 0;
+  --input-layer-text-transform: none;
+  --input-layer-text-shadow: none;
+  --input-layer-color: var(--planton-white);
+  
+  /* Input Container */
+  --input-container-background: var(--planton-green);
+  --input-container-blur: none;
+  --input-container-opacity: 1;
+  
+  --input-container-border-top-width: 1px;
+  --input-container-border-top-style: solid;
+  --input-container-border-top-color: #334155;
+  --input-container-border-right-width: 0;
+  --input-container-border-right-style: none;
+  --input-container-border-right-color: transparent;
+  --input-container-border-bottom-width: 0;
+  --input-container-border-bottom-style: none;
+  --input-container-border-bottom-color: transparent;
+  --input-container-border-left-width: 0;
+  --input-container-border-left-style: none;
+  --input-container-border-left-color: transparent;
+  
+  --input-container-border-radius-top-left: 1.5rem;
+  --input-container-border-radius-top-right: 1.5rem;
+  --input-container-border-radius-bottom-right: 0;
+  --input-container-border-radius-bottom-left: 0;
+  
+  --input-container-shadow-external: none;
+  --input-container-shadow-internal: none;
+  
+  --input-container-padding-top: 10px;
+  --input-container-padding-right: 12px;
+  --input-container-padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  --input-container-padding-left: 12px;
+  
+  --input-container-margin-top: 0;
+  --input-container-margin-right: 0;
+  --input-container-margin-bottom: 0;
+  --input-container-margin-left: 0;
+  
+  --input-container-font-family: system-ui;
+  --input-container-font-size: 14px;
+  --input-container-font-weight: 500;
+  --input-container-line-height: 1.4;
+  --input-container-letter-spacing: 0.3px;
+  --input-container-word-spacing: 0;
+  --input-container-text-transform: none;
+  --input-container-text-shadow: none;
+  --input-container-color: var(--planton-white);
+  
+  /* Inout box */
+  --input-box-background: transparent;
+  --input-box-blur: none;
+  --input-box-opacity: 1;
+  
+  --input-box-border-top-width: 0;
+  --input-box-border-top-style: none;
+  --input-box-border-top-color: transparent;
+  --input-box-border-right-width: 0;
+  --input-box-border-right-style: none;
+  --input-box-border-right-color: transparent;
+  --input-box-border-bottom-width: 0;
+  --input-box-border-bottom-style: none;
+  --input-box-border-bottom-color: transparent;
+  --input-box-border-left-width: 0;
+  --input-box-border-left-style: none;
+  --input-box-border-left-color: transparent;
+  
+  --input-box-border-radius-top-left: 0;
+  --input-box-border-radius-top-right: 0;
+  --input-box-border-radius-bottom-right: 0;
+  --input-box-border-radius-bottom-left: 0;
+  
+  --input-box-shadow-external: none;
+  --input-box-shadow-internal: none;
+  
+  --input-box-padding-top: 0;
+  --input-box-padding-right: 0;
+  --input-box-padding-bottom: 0;
+  --input-box-padding-left: 0;
+  
+  --input-box-margin-top: 0;
+  --input-box-margin-right: 0;
+  --input-box-margin-bottom: 0;
+  --input-box-margin-left: 0;
+  
+  --input-box-font-family: system-ui;
+  --input-box-font-size: 14px;
+  --input-box-font-weight: 500;
+  --input-box-line-height: 1.4;
+  --input-box-letter-spacing: 0.3px;
+  --input-box-word-spacing: 0;
+  --input-box-text-transform: none;
+  --input-box-text-shadow: none;
+  --input-box-color: var(--planton-white);
+  
+  /* Input */
+  --input-background: var(--planton-green-dark);
+  --input-blur: none;
+  --input-opacity: 1;
+  
+  --input-border-top-width: 0;
+  --input-border-top-style: none;
+  --input-border-top-color: transparent;
+  --input-border-right-width: 0;
+  --input-border-right-style: none;
+  --input-border-right-color: transparent;
+  --input-border-bottom-width: 0;
+  --input-border-bottom-style: none;
+  --input-border-bottom-color: transparent;
+  --input-border-left-width: 0;
+  --input-border-left-style: none;
+  --input-border-left-color: transparent;
+  
+  --rfos9-radius-top-left: 1rem;
+  --rfos9-radius-top-right: 1rem;
+  --rfos9-radius-bottom-right: 1rem;
+  --rfos9-radius-bottom-left: 1rem;
+  
+  --input-padding-top: 16px;
+  --input-padding-right: 12px;
+  --input-padding-bottom: 12px;
+  --input-padding-left: 20px;
+  
+  --input-margin-top: 0;
+  --input-margin-right: 0;
+  --input-margin-bottom: 0;
+  --input-margin-left: 0;
+  
+  --input-font-family: system-ui;
+  --input-font-size: 14px;
+  --input-font-weight: 500;
+  --input-line-height: 1.4;
+  --input-letter-spacing: 0.3px;
+  --input-word-spacing: 0;
+  --input-text-transform: none;
+  --input-text-shadow: none;
+  --input-color: var(--planton-white);
+  
+  --input-ring-width: 3px;
+  --input-ring-color: var(--planton-green);
+  --input-ring-offset: 0px;
+  --input-ring-inset: ;
+  --input-ring-offset-color: ;
+  
+  /* Input placeholder */
+  --input-placeholder-color: #9ca3af;
+  --input-placeholder-font-family: system-ui;
+  --input-placeholder-font-size: 14px;
+  --input-placeholder-font-weight: 400;
+  --input-placeholder-line-height: 1.4;
+  --input-placeholder-letter-spacing: 0.3px;
+  --input-placeholder-word-spacing: 0;
+  --input-placeholder-text-transform: none;
+  --input-placeholder-text-shadow: none;
+  --input-placeholder-font-style: italic;
+  
+  /*Emoji picker button */
+  --emoji-picker-button-background: var(--planton-green-dark);
+  --emoji-picker-button-blur: none;
+  --emoji-picker-button-opacity: 1;
+  
+  --emoji-picker-button-border-top-width: 0;
+  --emoji-picker-button-border-top-style: none;
+  --emoji-picker-button-border-top-color: transparent;
+  --emoji-picker-button-border-right-width: 0;
+  --emoji-picker-button-border-right-style: none;
+  --emoji-picker-button-border-right-color: transparent;
+  --emoji-picker-button-border-bottom-width: 0;
+  --emoji-picker-button-border-bottom-style: none;
+  --emoji-picker-button-border-bottom-color: transparent;
+  --emoji-picker-button-border-left-width: 0;
+  --emoji-picker-button-border-left-style: none;
+  --emoji-picker-button-border-left-color: transparent;
+  
+  --emoji-picker-button-border-radius-top-left: 0.75rem;
+  --emoji-picker-button-border-radius-top-right: 0.75rem;
+  --emoji-picker-button-border-radius-bottom-right: 0.75rem;
+  --emoji-picker-button-border-radius-bottom-left: 0.75rem;
+  
+  --emoji-picker-button-shadow-external: 0 2px 4px rgba(0, 0, 0, 0.15);
+  --emoji-picker-button-shadow-internal: none;
+  
+  --emoji-picker-button-padding-top: 0.75rem;
+  --emoji-picker-button-padding-right: 1.25rem;
+  --emoji-picker-button-padding-bottom: 0.75rem;
+  --emoji-picker-button-padding-left: 1.25rem;
+  
+  --emoji-picker-button-margin-top: 0;
+  --emoji-picker-button-margin-right: 0;
+  --emoji-picker-button-margin-bottom: 0;
+  --emoji-picker-button-margin-left: 0;
+  
+  --emoji-picker-button-font-size: 14px;
+  --emoji-picker-button-color: var(--planton-white);
+  
+  --emoji-picker-button-transition: all 0.2s ease;
+  --emoji-picker-button-animation: none;
+  
+  /* Action menu buttom */
+  --action-menu-button-background: var(--planton-black);
+  --action-menu-button-blur: none;
+  --action-menu-button-opacity: 1;
+  
+  --action-menu-button-border-top-width: 0;
+  --action-menu-button-border-top-style: none;
+  --action-menu-button-border-top-color: transparent;
+  --action-menu-button-border-right-width: 0;
+  --action-menu-button-border-right-style: none;
+  --action-menu-button-border-right-color: transparent;
+  --action-menu-button-border-bottom-width: 0;
+  --action-menu-button-border-bottom-style: none;
+  --action-menu-button-border-bottom-color: transparent;
+  --action-menu-button-border-left-width: 0;
+  --action-menu-button-border-left-style: none;
+  --action-menu-button-border-left-color: transparent;
+  
+  --action-menu-button-border-radius-top-left: 0.75rem;
+  --action-menu-button-border-radius-top-right: 0.75rem;
+  --action-menu-button-border-radius-bottom-right: 0.75rem;
+  --action-menu-button-border-radius-bottom-left: 0.75rem;
+  
+  --action-menu-button-shadow-external: 0 2px 4px rgba(0, 0, 0, 0.15);
+  --action-menu-button-shadow-internal: none;
+  
+  --action-menu-button-padding-top: 0.75rem;
+  --action-menu-button-padding-right: 1.25rem;
+  --action-menu-button-padding-bottom: 0.75rem;
+  --action-menu-button-padding-left: 1.25rem;
+  
+  --action-menu-button-margin-top: 0;
+  --action-menu-button-margin-right: 0;
+  --action-menu-button-margin-bottom: 0;
+  --action-menu-button-margin-left: 0;
+  
+  --action-menu-button-font-size: 14px;
+  --action-menu-button-color: var(--planton-white);
+  
+  --action-menu-button-transition: all 0.2s ease;
+  --action-menu-button-animation: none;
+  
+  /* Send button */
+  --send-button-background: linear-gradient(389deg, var(--planton-green), var(--planton-green-dark));
+  --send-button-blur: none;
+  --send-button-opacity: 1;
+  
+  --send-button-border-top-width: 0;
+  --send-button-border-top-style: none;
+  --send-button-border-top-color: transparent;
+  --send-button-border-right-width: 0;
+  --send-button-border-right-style: none;
+  --send-button-border-right-color: transparent;
+  --send-button-border-bottom-width: 0;
+  --send-button-border-bottom-style: none;
+  --send-button-border-bottom-color: transparent;
+  --send-button-border-left-width: 0;
+  --send-button-border-left-style: none;
+  --send-button-border-left-color: transparent;
+  
+  --send-button-border-radius-top-left: 0.75rem;
+  --send-button-border-radius-top-right: 0.75rem;
+  --send-button-border-radius-bottom-right: 0.75rem;
+  --send-button-border-radius-bottom-left: 0.75rem;
+  
+  --send-button-shadow-external: 0 2px 4px rgba(0, 0, 0, 0.15);
+  --send-button-shadow-internal: none;
+  
+  --send-button-padding-top: 0.75rem;
+  --send-button-padding-right: 1.25rem;
+  --send-button-padding-bottom: 0.75rem;
+  --send-button-padding-left: 1.25rem;
+  
+  --send-button-margin-top: 0;
+  --send-button-margin-right: 0;
+  --send-button-margin-bottom: 0;
+  --send-button-margin-left: 0;
+  
+  --send-button-font-size: 14px;
+  --send-button-color: var(--planton-white);
+  
+  --send-button-transition: all 0.2s ease;
+  --send-button-animation: none;
+}
+
 /* Theme modal */
 html[data-theme="nuevo"] {
   /* modal overlay */
-  --modal-overlay-bg: var(--planton-green);
+  --modal-overlay-background: rgba(22, 147, 105, 0.5);
+  --modal-overlay-shadow-inset: inset 0 0 10px rgba(0, 0, 0, 0.5);
   --modal-overlay-blur: none;
-  --modal-overlay-opacity: 0;
-  --modal-overlay-visible-opacity: 1;
-  --modal-overlay-transition: opacity 200ms ease;
-  --modal-overlay-visible-opacity: 1;
+  --modal-overlay-opacity: 0.8;
+  --modal-overlay-transition: opacity 0.3s ease, background 0.5s ease;
   
   /* modal header resize handle */
-  --modal-header-resize-handle-background: var(--planton-green-dark);
+  --modal-header-resize-handle-background: transparent;
   
   --modal-header-resize-handle-border-top-width: 0;
   --modal-header-resize-handle-border-top-style: solid;
@@ -1357,7 +2261,15 @@ html[data-theme="nuevo"] {
   --theme-modal-btn-saved-transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-
+/* Action menu */
+html[data-theme="nuevo"] {
+  /* Action modal overlay */
+  --action-modal-overlay-background: rgba(22, 147, 105, 0.5);
+  --action-modal-overlay-blur: none;
+  --action-modal-overlay-shadow-internal: none;
+  --action-modal-overlay-opacity: 1;
+  --action-modal-overlay-transition: opacity 0.3s ease, background 0.3s ease;
+}
 
 
 
@@ -1365,9 +2277,6 @@ html[data-theme="nuevo"] {
 
 
 /* estados */
-html[data-theme="nuevo"] .resize-handle:active{
-  --modal-header-resize-handle-background: red !important;
-}
 
 html[data-theme="nuevo"] .hamburger-menu li button:hover {
   --hamburger-item-bg: var(--planton-green);
@@ -1405,37 +2314,8 @@ html[data-theme="nuevo"] .file-upload-btn:active {
   transform: scale(0.80);
 }
 
-html[data-theme="nuevo"] {
-  
-  /* MODAL OVERLAY */
-  --modal-overlay-bg: transparent;
-  --modal-overlay-opacity: 0;
-  --modal-overlay-visible-opacity: 1;
-  --modal-overlay-transition: opacity 200ms ease;
-  /* BACKGROUND PREVIEW*/
-  --bg-preview-width: 70px;
-  --bg-preview-height: 70px;
-  --bg-preview-border-radius: 16px;
-  --bg-preview-border-top-width: 2px;
-  --bg-preview-border-top-style: solid;
-  --bg-preview-border-top-color: #ff0000;
-  --bg-preview-border-right-width: 2px;
-  --bg-preview-border-right-style: solid;
-  --bg-preview-border-right-color: #00ff00;
-  --bg-preview-border-bottom-width: 2px;
-  --bg-preview-border-bottom-style: solid;
-  --bg-preview-border-bottom-color: #0000ff;
-  --bg-preview-border-left-width: 2px;
-  --bg-preview-border-left-style: solid;
-  --bg-preview-border-left-color: #ffff00;
-  --bg-preview-transition: transform 0.1s, border-color 0.1s;
-  --bg-preview-opacity: 1;
-  
-  --bg-preview-selected-border-top-color: #14b8a6;
-  --bg-preview-selected-border-right-color: #14b8a6;
-  --bg-preview-selected-border-bottom-color: #14b8a6;
-  --bg-preview-selected-border-left-color: #14b8a6;
-  --bg-preview-selected-transform: scale(1.05);
+html[data-theme="nuevo"] #input:focus {
+  --input-ring-color: lime;
 }
 
 

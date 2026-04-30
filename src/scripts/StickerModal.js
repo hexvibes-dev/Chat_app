@@ -1,5 +1,5 @@
-// src/scripts/StickerModal.js
 import interact from 'interactjs';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
 import {
   getCategories,
   canCreateCategory,
@@ -11,16 +11,11 @@ import {
   removeCustomSticker,
   deleteCategory
 } from './StickerManager.js';
-import { registerModal, bringModalToFront } from './modalStackManager.js';
 
-let modal = null;
-let isOpen = false;
-let isAnimating = false;
-let container = null;
-let header = null;
-let closeBtn = null;
+let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
-let modalId = 'custom-sticker-modal';
+let isModalOpen = false;
+let expandedCategories = new Set();
 
 let cropModal = null;
 let cropOverlay = null;
@@ -37,9 +32,7 @@ let dragStartX = 0, dragStartY = 0;
 let dragStartOffsetX = 0, dragStartOffsetY = 0;
 let pendingCategoryForUpload = null;
 let isQuickUpload = false;
-
 let confirmPopup = null;
-let expandedCategories = new Set();
 
 function showTransientNotification(text, duration = 2000) {
   let notif = document.querySelector('.transient-notif');
@@ -227,7 +220,7 @@ function showCategorySelectorForUpload(croppedDataUrl) {
         }, categoryName);
         showTransientNotification('✅ Sticker añadido correctamente', 2000);
         refreshStickersInPicker();
-        if (isOpen) renderModalContent();
+        if (isModalOpen) renderModalContent();
         cleanup();
       } catch (err) {
         showTransientNotification('Error: ' + err.message, 3000);
@@ -250,163 +243,6 @@ function showCategorySelectorForUpload(croppedDataUrl) {
   selectorModal.querySelector('#cancel-selector').addEventListener('click', () => {
     cleanup();
   });
-}
-
-function addResizeHandles(element) {
-  const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
-  handles.forEach(dir => {
-    const handle = document.createElement('div');
-    handle.className = `resize-handle resize-${dir}`;
-    element.appendChild(handle);
-  });
-}
-
-function setupInteract(element, dragHandle) {
-  interact(element).resizable({
-    edges: { top: true, left: true, bottom: true, right: true },
-    inertia: false,
-    modifiers: [
-      interact.modifiers.restrictSize({
-        min: { width: 300, height: 400 },
-        max: { width: window.innerWidth * 0.9, height: window.innerHeight * 0.9 }
-      })
-    ],
-    listeners: {
-      move(event) {
-        let width = event.rect.width;
-        let height = event.rect.height;
-        element.style.width = `${width}px`;
-        element.style.height = `${height}px`;
-        windowX += event.deltaRect.left;
-        windowY += event.deltaRect.top;
-        element.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
-        element.setAttribute('data-x', windowX);
-        element.setAttribute('data-y', windowY);
-      }
-    }
-  });
-
-  interact(dragHandle).draggable({
-    inertia: false,
-    manualStart: false,
-    allowFrom: dragHandle,
-    preventDefault: 'always',
-    modifiers: [
-      interact.modifiers.restrictRect({
-        restriction: 'parent',
-        endOnly: true
-      })
-    ],
-    listeners: {
-      start() {
-        window.isDraggingModal = true;
-      },
-      move(event) {
-        windowX += event.dx;
-        windowY += event.dy;
-        element.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
-        element.setAttribute('data-x', windowX);
-        element.setAttribute('data-y', windowY);
-      },
-      end() {
-        window.isDraggingModal = false;
-      }
-    }
-  });
-}
-
-function toggleCategory(categoryId) {
-  const content = document.getElementById(`sticker-category-content-${categoryId}`);
-  const arrow = document.getElementById(`sticker-category-arrow-${categoryId}`);
-  if (!content || !arrow) return;
-  const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
-  if (isExpanded) {
-    content.style.maxHeight = '0px';
-    content.style.paddingTop = '0';
-    arrow.textContent = '▼';
-    expandedCategories.delete(categoryId);
-  } else {
-    content.style.maxHeight = content.scrollHeight + 'px';
-    content.style.paddingTop = '12px';
-    arrow.textContent = '▲';
-    expandedCategories.add(categoryId);
-  }
-}
-
-function restoreExpandedState() {
-  expandedCategories.forEach(categoryId => {
-    const content = document.getElementById(`sticker-category-content-${categoryId}`);
-    const arrow = document.getElementById(`sticker-category-arrow-${categoryId}`);
-    if (content && arrow && content.style.maxHeight === '0px') {
-      content.style.maxHeight = content.scrollHeight + 'px';
-      content.style.paddingTop = '12px';
-      arrow.textContent = '▲';
-    }
-  });
-}
-
-async function deleteCategoryHandler(categoryName) {
-  const confirmed = await showConfirmPopup(`¿Eliminar categoría "${categoryName}" y todos sus stickers?`);
-  if (confirmed) {
-    deleteCategory(categoryName);
-    showTransientNotification(`Categoría "${categoryName}" eliminada`, 2000);
-    refreshStickersInPicker();
-    renderModalContent();
-    restoreExpandedState();
-  }
-}
-
-async function deleteStickerHandler(categoryName, stickerId) {
-  const confirmed = await showConfirmPopup('¿Eliminar este sticker?');
-  if (confirmed) {
-    removeCustomSticker(categoryName, stickerId);
-    showTransientNotification('Sticker eliminado', 2000);
-    refreshStickersInPicker();
-    renderModalContent();
-    restoreExpandedState();
-  }
-}
-
-function addStickerHandler(categoryName) {
-  pendingCategoryForUpload = categoryName;
-  const fileInput = document.createElement('input');
-  fileInput.type = 'file';
-  fileInput.accept = 'image/png,image/jpeg,image/gif';
-  fileInput.style.display = 'none';
-  document.body.appendChild(fileInput);
-  fileInput.onchange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) {
-      document.body.removeChild(fileInput);
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      currentImageDataUrl = ev.target.result;
-      showCropModal(async (croppedDataUrl) => {
-        if (!canAddStickerToCategory(pendingCategoryForUpload)) {
-          showTransientNotification(`La categoría "${pendingCategoryForUpload}" está llena.`, 2000);
-          return;
-        }
-        try {
-          const id = `sticker_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-          await addCustomSticker({
-            id: id,
-            url: croppedDataUrl
-          }, pendingCategoryForUpload);
-          showTransientNotification('✅ Sticker añadido correctamente', 2000);
-          refreshStickersInPicker();
-          renderModalContent();
-          restoreExpandedState();
-        } catch (err) {
-          showTransientNotification('Error: ' + err.message, 3000);
-        }
-        document.body.removeChild(fileInput);
-      });
-    };
-    reader.readAsDataURL(file);
-  };
-  fileInput.click();
 }
 
 function showCropModal(onSave) {
@@ -595,11 +431,204 @@ function showCropModal(onSave) {
   }
 }
 
+function toggleCategory(categoryId) {
+  const content = document.getElementById(`sticker-category-content-${categoryId}`);
+  const arrow = document.getElementById(`sticker-category-arrow-${categoryId}`);
+  if (!content || !arrow) return;
+  const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+  if (isExpanded) {
+    content.style.maxHeight = '0px';
+    content.style.paddingTop = '0';
+    arrow.textContent = '▼';
+    expandedCategories.delete(categoryId);
+  } else {
+    content.style.maxHeight = content.scrollHeight + 'px';
+    content.style.paddingTop = '12px';
+    arrow.textContent = '▲';
+    expandedCategories.add(categoryId);
+  }
+}
+
+function restoreExpandedState() {
+  expandedCategories.forEach(categoryId => {
+    const content = document.getElementById(`sticker-category-content-${categoryId}`);
+    const arrow = document.getElementById(`sticker-category-arrow-${categoryId}`);
+    if (content && arrow && content.style.maxHeight === '0px') {
+      content.style.maxHeight = content.scrollHeight + 'px';
+      content.style.paddingTop = '12px';
+      arrow.textContent = '▲';
+    }
+  });
+}
+
+async function deleteCategoryHandler(categoryName) {
+  const confirmed = await showConfirmPopup(`¿Eliminar categoría "${categoryName}" y todos sus stickers?`);
+  if (confirmed) {
+    deleteCategory(categoryName);
+    showTransientNotification(`Categoría "${categoryName}" eliminada`, 2000);
+    refreshStickersInPicker();
+    renderModalContent();
+    restoreExpandedState();
+  }
+}
+
+async function deleteStickerHandler(categoryName, stickerId) {
+  const confirmed = await showConfirmPopup('¿Eliminar este sticker?');
+  if (confirmed) {
+    removeCustomSticker(categoryName, stickerId);
+    showTransientNotification('Sticker eliminado', 2000);
+    refreshStickersInPicker();
+    renderModalContent();
+    restoreExpandedState();
+  }
+}
+
+function addStickerHandler(categoryName) {
+  pendingCategoryForUpload = categoryName;
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/png,image/jpeg,image/gif';
+  fileInput.style.display = 'none';
+  document.body.appendChild(fileInput);
+  fileInput.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      document.body.removeChild(fileInput);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      currentImageDataUrl = ev.target.result;
+      showCropModal(async (croppedDataUrl) => {
+        if (!canAddStickerToCategory(pendingCategoryForUpload)) {
+          showTransientNotification(`La categoría "${pendingCategoryForUpload}" está llena.`, 2000);
+          return;
+        }
+        try {
+          const id = `sticker_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+          await addCustomSticker({
+            id: id,
+            url: croppedDataUrl
+          }, pendingCategoryForUpload);
+          showTransientNotification('✅ Sticker añadido correctamente', 2000);
+          refreshStickersInPicker();
+          renderModalContent();
+          restoreExpandedState();
+        } catch (err) {
+          showTransientNotification('Error: ' + err.message, 3000);
+        }
+        document.body.removeChild(fileInput);
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+  fileInput.click();
+}
+
+function addResizeHandlesToModal(element) {
+  const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
+  handles.forEach(dir => {
+    const handle = document.createElement('div');
+    handle.className = `resize-custom-sticker resize-${dir}`;
+    element.appendChild(handle);
+  });
+}
+
+function centerModal() {
+  if (!windowElement) return;
+  const rect = windowElement.getBoundingClientRect();
+  windowX = (window.innerWidth - rect.width) / 2;
+  windowY = (window.innerHeight - rect.height) / 2;
+  windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+  windowElement.setAttribute('data-x', windowX);
+  windowElement.setAttribute('data-y', windowY);
+}
+
+function isLessThan10PercentVisible(element) {
+  const rect = element.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const visibleWidth = Math.min(rect.right, viewportWidth) - Math.max(rect.left, 0);
+  const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+  if (visibleWidth <= 0 || visibleHeight <= 0) return true;
+  const visibleArea = visibleWidth * visibleHeight;
+  const totalArea = rect.width * rect.height;
+  return (visibleArea / totalArea) < 0.1;
+}
+
+function setupInteractForModal() {
+  interact(windowElement).resizable({
+    edges: { top: true, left: true, bottom: true, right: true },
+    inertia: false,
+    modifiers: [
+      interact.modifiers.restrictSize({
+        min: { width: 300, height: 400 },
+        max: { width: window.innerWidth * 0.9, height: window.innerHeight * 0.9 }
+      })
+    ],
+    listeners: {
+      move(event) {
+        let width = event.rect.width;
+        let height = event.rect.height;
+        windowElement.style.width = `${width}px`;
+        windowElement.style.height = `${height}px`;
+        windowX += event.deltaRect.left;
+        windowY += event.deltaRect.top;
+        windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+        windowElement.setAttribute('data-x', windowX);
+        windowElement.setAttribute('data-y', windowY);
+        constrainAllModals();
+      }
+    }
+  });
+
+  interact(headerElement).draggable({
+    inertia: false,
+    manualStart: false,
+    allowFrom: headerElement,
+    preventDefault: 'always',
+    modifiers: [
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true
+      })
+    ],
+    listeners: {
+      start() { window.isDraggingModal = true; },
+      move(event) {
+        const keyboardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
+        if (keyboardHeight > 0) {
+          const inputElement = document.getElementById('layerInput');
+          if (inputElement) {
+            const inputRect = inputElement.getBoundingClientRect();
+            const modalRect = windowElement.getBoundingClientRect();
+            const inputTop = inputRect.top;
+            const modalBottom = modalRect.bottom;
+            if (modalBottom + event.dy > inputTop - 10) return;
+          }
+        }
+        windowX += event.dx;
+        windowY += event.dy;
+        windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+        windowElement.setAttribute('data-x', windowX);
+        windowElement.setAttribute('data-y', windowY);
+        constrainAllModals();
+      },
+      end() {
+        window.isDraggingModal = false;
+        if (isLessThan10PercentVisible(windowElement)) {
+          hideModal();
+        }
+        constrainAllModals();
+      }
+    }
+  });
+}
+
 function renderModalContent() {
-  if (!modal) return;
-  const categories = getCategories();
-  const contentDiv = modal.querySelector('.action-menu-content');
+  const contentDiv = document.getElementById('custom-sticker-inner-content');
   if (!contentDiv) return;
+  const categories = getCategories();
   let html = `<div style="padding: 16px; overflow-y: auto; height: 100%; color: var(--modal-text);">`;
   categories.forEach((cat, idx) => {
     const categoryId = `sticker-cat-${idx}`;
@@ -695,59 +724,32 @@ function renderModalContent() {
 }
 
 function showModal() {
-  if (isOpen || isAnimating) return;
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = modalId;
-    modal.className = 'action-menu-modal';
-    modal.innerHTML = `
-      <div class="action-menu-container" style="width: 500px; height: 600px;">
-        <div class="action-menu-header" id="custom-sticker-header">
-          <h3 style="color: var(--modal-text);">🖼️ Gestionar stickers personalizados</h3>
-          <button class="action-menu-close" id="custom-sticker-close" style="color: var(--modal-text);">&times;</button>
-        </div>
-        <div class="action-menu-content" style="padding: 0; overflow: hidden;"></div>
-      </div>
-    `;
-    document.body.appendChild(modal);
-    container = modal.querySelector('.action-menu-container');
-    header = modal.querySelector('#custom-sticker-header');
-    closeBtn = modal.querySelector('#custom-sticker-close');
-    addResizeHandles(container);
-    setupInteract(container, header);
-    closeBtn.addEventListener('click', () => hideModal());
-    registerModal(modal, modalId);
+  if (isModalOpen) return;
+  if (!windowElement) {
+    windowElement = document.getElementById('custom-sticker-movable-window');
+    headerElement = document.getElementById('custom-sticker-modal-header');
+    closeBtn = document.getElementById('close-custom-sticker-modal');
+    overlay = document.getElementById('custom-sticker-overlay');
+    if (!windowElement || !headerElement) return;
+    associateOverlay(windowElement, overlay);
+    addResizeHandlesToModal(windowElement);
+    setupInteractForModal();
+    if (closeBtn) closeBtn.onclick = () => hideModal();
+    registerModal(windowElement, 'custom-sticker-modal');
   }
   renderModalContent();
-  isOpen = true;
-  modal.classList.remove('closing');
-  modal.style.display = 'flex';
-  modal.getBoundingClientRect();
-  modal.classList.add('open');
-  windowX = 0;
-  windowY = 0;
-  if (container) {
-    container.style.transform = '';
-    container.removeAttribute('data-x');
-    container.removeAttribute('data-y');
-    container.style.width = '';
-    container.style.height = '';
-  }
-  bringModalToFront(modalId);
+  overlay.classList.add('active');
+  windowElement.style.display = 'flex';
+  centerModal();
+  isModalOpen = true;
+  bringModalToFront('custom-sticker-modal');
 }
 
 function hideModal() {
-  if (!isOpen || isAnimating) return;
-  if (!modal) return;
-  isAnimating = true;
-  modal.classList.remove('open');
-  modal.classList.add('closing');
-  setTimeout(() => {
-    modal.style.display = 'none';
-    modal.classList.remove('closing');
-    isOpen = false;
-    isAnimating = false;
-  }, 300);
+  if (!isModalOpen) return;
+  if (windowElement) windowElement.style.display = 'none';
+  if (overlay) overlay.classList.remove('active');
+  isModalOpen = false;
 }
 
 export function showCustomStickerModal() {

@@ -1,194 +1,46 @@
-// src/scripts/ActionMenu.js
 import interact from 'interactjs';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
 import { showCustomEmojiModal, showQuickEmojiUpload } from './CustomEmojiModal.js';
 import { showCustomStickerModal, showQuickStickerUpload } from './StickerModal.js';
 import { insertAtCursor } from './input.js';
-import { registerModal, bringModalToFront } from './modalStackManager.js';
 
-let modal = null;
-let isOpen = false;
-let isAnimating = false;
-let container = null;
-let header = null;
-let closeBtn = null;
+let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
+let isModalOpen = false;
 
-let isKeyboardOpen = false;
-let originalModalTop = null;
-let originalContainerTransform = null;
-
-const input = document.getElementById('input');
-const layerInput = document.getElementById('layerInput');
-
-function showTransientNotification(text, duration = 2000) {
-  let notif = document.querySelector('.transient-notif');
-  if (!notif) {
-    notif = document.createElement('div');
-    notif.className = 'transient-notif';
-    document.body.appendChild(notif);
-  }
-  notif.textContent = text;
-  notif.classList.add('visible');
-  setTimeout(() => notif.classList.remove('visible'), duration);
-}
-
-function addResizeHandles(element) {
+function addResizeHandlesToModal(element) {
   const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
   handles.forEach(dir => {
     const handle = document.createElement('div');
-    handle.className = `resize-handle resize-${dir}`;
+    handle.className = `resize-action resize-${dir}`;
     element.appendChild(handle);
   });
 }
 
-function getInputTop() {
-  if (!layerInput) return Infinity;
-  const rect = layerInput.getBoundingClientRect();
-  return rect.top;
+function centerModal() {
+  if (!windowElement) return;
+  const rect = windowElement.getBoundingClientRect();
+  windowX = (window.innerWidth - rect.width) / 2;
+  windowY = (window.innerHeight - rect.height) / 2;
+  windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+  windowElement.setAttribute('data-x', windowX);
+  windowElement.setAttribute('data-y', windowY);
 }
 
-function updateKeyboardStatus() {
-  if (!window.visualViewport) return;
-  
-  const viewportHeight = window.visualViewport.height;
-  const windowHeight = window.innerHeight;
-  const keyboardHeight = windowHeight - viewportHeight;
-  const wasOpen = isKeyboardOpen;
-  isKeyboardOpen = keyboardHeight > 80;
-  
-  if (isKeyboardOpen && !wasOpen) {
-    adjustModalPositionForKeyboard();
-  } else if (!isKeyboardOpen && wasOpen) {
-    resetModalPosition();
-  }
+function isLessThan10PercentVisible(element) {
+  const rect = element.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const visibleWidth = Math.min(rect.right, viewportWidth) - Math.max(rect.left, 0);
+  const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+  if (visibleWidth <= 0 || visibleHeight <= 0) return true;
+  const visibleArea = visibleWidth * visibleHeight;
+  const totalArea = rect.width * rect.height;
+  return (visibleArea / totalArea) < 0.1;
 }
 
-function adjustModalPositionForKeyboard() {
-  if (!container || !isOpen) return;
-  
-  const inputTop = getInputTop();
-  if (inputTop === Infinity) return;
-  
-  const modalRect = container.getBoundingClientRect();
-  const maxAllowedBottom = inputTop - 20;
-  
-  if (modalRect.bottom > maxAllowedBottom) {
-    if (originalContainerTransform === null) {
-      originalContainerTransform = container.style.transform;
-      originalModalTop = container.getAttribute('data-y') || '0';
-    }
-    
-    const currentY = parseFloat(container.getAttribute('data-y')) || 0;
-    const delta = modalRect.bottom - maxAllowedBottom;
-    const newY = currentY - delta;
-    
-    container.style.transform = `translate3d(${parseFloat(container.getAttribute('data-x')) || 0}px, ${newY}px, 0)`;
-    container.setAttribute('data-y', newY);
-    windowY = newY;
-  }
-}
-
-function resetModalPosition() {
-  if (!container) return;
-  
-  if (originalContainerTransform !== null) {
-    container.style.transform = originalContainerTransform;
-    const originalY = parseFloat(originalModalTop) || 0;
-    container.setAttribute('data-y', originalY);
-    windowY = originalY;
-    originalContainerTransform = null;
-    originalModalTop = null;
-  }
-}
-
-function createModal() {
-  if (modal) return modal;
-  modal = document.createElement('div');
-  modal.id = 'action-menu-modal';
-  modal.className = 'action-menu-modal';
-  modal.innerHTML = `
-    <div class="action-menu-container">
-      <div class="action-menu-header">
-        <h3>Acciones</h3>
-        <button class="action-menu-close">&times;</button>
-      </div>
-      <div class="action-menu-content">
-        <div class="action-menu-options">
-          <button class="action-option" data-action="sticker">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"/>
-              <path d="M8 12h8"/>
-              <path d="M12 8v8"/>
-              <circle cx="12" cy="12" r="4"/>
-            </svg>
-            <span>Crear sticker</span>
-          </button>
-          <button class="action-option" data-action="emoji">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-              <line x1="9" y1="9" x2="9.01" y2="9"/>
-              <line x1="15" y1="9" x2="15.01" y2="9"/>
-            </svg>
-            <span>Crear emoji</span>
-          </button>
-          <button class="action-option" data-action="image">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
-              <circle cx="8.5" cy="8.5" r="1.5"/>
-              <path d="M21 15l-5-4-3 3-4-4-5 5"/>
-            </svg>
-            <span>Enviar imagen</span>
-          </button>
-          <button class="action-option" data-action="manage_emoji">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="8" r="4"/>
-              <path d="M5.5 20v-4a6.5 6.5 0 0 1 13 0v4"/>
-              <path d="M12 12v6"/>
-              <path d="M9 15h6"/>
-            </svg>
-            <span>Gestionar emojis</span>
-          </button>
-          <button class="action-option" data-action="manage_sticker">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
-              <circle cx="8.5" cy="8.5" r="1.5"/>
-              <path d="M21 15l-5-4-3 3-4-4-5 5"/>
-            </svg>
-            <span>Gestionar stickers</span>
-          </button>
-          <button class="action-option" data-action="editor">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M17 3l4 4-7 7H10v-4l7-7z"/>
-              <path d="M4 20h16"/>
-              <path d="M12 10L4 18v4h4l8-8"/>
-            </svg>
-            <span>Editor</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-  container = modal.querySelector('.action-menu-container');
-  header = modal.querySelector('.action-menu-header');
-  closeBtn = modal.querySelector('.action-menu-close');
-  addResizeHandles(container);
-  setupInteract(container, header);
-  registerModal(modal, 'action-menu-modal');
-  closeBtn.addEventListener('click', () => hideModal());
-  modal.querySelectorAll('.action-option').forEach(opt => {
-    opt.addEventListener('click', (e) => {
-      const action = opt.dataset.action;
-      handleAction(action);
-      hideModal();
-    });
-  });
-  return modal;
-}
-
-function setupInteract(element, dragHandle) {
-  interact(element).resizable({
+function setupInteractForModal() {
+  interact(windowElement).resizable({
     edges: { top: true, left: true, bottom: true, right: true },
     inertia: false,
     modifiers: [
@@ -201,34 +53,57 @@ function setupInteract(element, dragHandle) {
       move(event) {
         let width = event.rect.width;
         let height = event.rect.height;
-        element.style.width = `${width}px`;
-        element.style.height = `${height}px`;
+        windowElement.style.width = `${width}px`;
+        windowElement.style.height = `${height}px`;
         windowX += event.deltaRect.left;
         windowY += event.deltaRect.top;
-        element.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
-        element.setAttribute('data-x', windowX);
-        element.setAttribute('data-y', windowY);
-        if (isKeyboardOpen) adjustModalPositionForKeyboard();
+        windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+        windowElement.setAttribute('data-x', windowX);
+        windowElement.setAttribute('data-y', windowY);
+        constrainAllModals();
       }
     }
   });
-  interact(dragHandle).draggable({
+
+  interact(headerElement).draggable({
     inertia: false,
     manualStart: false,
-    allowFrom: dragHandle,
+    allowFrom: headerElement,
     preventDefault: 'always',
-    modifiers: [interact.modifiers.restrictRect({ restriction: 'parent', endOnly: true })],
+    modifiers: [
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true
+      })
+    ],
     listeners: {
       start() { window.isDraggingModal = true; },
       move(event) {
+        const keyboardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
+        if (keyboardHeight > 0) {
+          const inputElement = document.getElementById('layerInput');
+          if (inputElement) {
+            const inputRect = inputElement.getBoundingClientRect();
+            const modalRect = windowElement.getBoundingClientRect();
+            const inputTop = inputRect.top;
+            const modalBottom = modalRect.bottom;
+            if (modalBottom + event.dy > inputTop - 10) return;
+          }
+        }
         windowX += event.dx;
         windowY += event.dy;
-        element.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
-        element.setAttribute('data-x', windowX);
-        element.setAttribute('data-y', windowY);
-        if (isKeyboardOpen) adjustModalPositionForKeyboard();
+        windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+        windowElement.setAttribute('data-x', windowX);
+        windowElement.setAttribute('data-y', windowY);
+        constrainAllModals();
       },
-      end() { window.isDraggingModal = false; }
+      end() {
+        window.isDraggingModal = false;
+        if (isLessThan10PercentVisible(windowElement)) {
+          hideModal();
+        }
+        constrainAllModals();
+      }
     }
   });
 }
@@ -243,7 +118,6 @@ function handleAction(action) {
       break;
     case 'image':
       const fileInput = document.createElement('input');
-      fileInput.className = 'hidden-file-input';
       fileInput.type = 'file';
       fileInput.accept = 'image/*';
       fileInput.onchange = (e) => {
@@ -251,7 +125,7 @@ function handleAction(action) {
         if (file) {
           const reader = new FileReader();
           reader.onload = (ev) => {
-            const imgHtml = `<img src="${ev.target.result}" style="max-width: 100%; max-height: 150px; border-radius: 8px;">`;
+            const imgHtml = `<img src="${ev.target.result}" style="max-width:100%;max-height:150px;border-radius:8px;">`;
             insertAtCursor(imgHtml, window.keyboardOpen);
           };
           reader.readAsDataURL(file);
@@ -266,73 +140,55 @@ function handleAction(action) {
       showCustomStickerModal();
       break;
     case 'editor':
-      import('./editor/FloatingPreview.js').then(module => {
-        if (module.showFloatingPreview) module.showFloatingPreview();
-      }).catch(err => console.error('Error cargando FloatingPreview:', err));
-      import('./editor/EditorModal.js').then(module => {
-        if (module.showEditorModal) module.showEditorModal();
-      }).catch(err => console.error('Error cargando EditorModal:', err));
+      import('./editor/FloatingPreview.js').then(m => m.showFloatingPreview());
+      import('./editor/EditorModal.js').then(m => m.showEditorModal());
       break;
   }
 }
 
 function showModal() {
-  if (isOpen || isAnimating) return;
-  const modalEl = createModal();
-  isOpen = true;
-  modalEl.classList.remove('closing');
-  modalEl.style.display = 'flex';
-  modalEl.getBoundingClientRect();
-  modalEl.classList.add('open');
-  windowX = 0;
-  windowY = 0;
-  if (container) {
-    container.style.transform = '';
-    container.removeAttribute('data-x');
-    container.removeAttribute('data-y');
-    container.style.width = '';
-    container.style.height = '';
+  if (isModalOpen) return;
+  if (!windowElement) {
+    windowElement = document.getElementById('action-movable-window');
+    headerElement = document.getElementById('action-modal-header');
+    closeBtn = document.getElementById('close-action-modal');
+    overlay = document.getElementById('action-menu-overlay');
+    if (!windowElement || !headerElement) return;
+    associateOverlay(windowElement, overlay);
+    addResizeHandlesToModal(windowElement);
+    setupInteractForModal();
+    if (closeBtn) {
+      closeBtn.onclick = () => hideModal();
+    }
+    windowElement.querySelectorAll('.action-option').forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        const action = opt.dataset.action;
+        handleAction(action);
+        hideModal();
+      });
+    });
+    registerModal(windowElement, 'action-menu-modal');
   }
+  overlay.classList.add('active');
+  windowElement.style.display = 'block';
+  centerModal();
+  isModalOpen = true;
   bringModalToFront('action-menu-modal');
-  originalContainerTransform = null;
-  originalModalTop = null;
-  if (isKeyboardOpen) setTimeout(() => adjustModalPositionForKeyboard(), 10);
 }
 
 function hideModal() {
-  if (!isOpen || isAnimating) return;
-  const modalEl = modal;
-  if (!modalEl) return;
-  isAnimating = true;
-  modalEl.classList.remove('open');
-  modalEl.classList.add('closing');
-  setTimeout(() => {
-    modalEl.style.display = 'none';
-    modalEl.classList.remove('closing');
-    isOpen = false;
-    isAnimating = false;
-    originalContainerTransform = null;
-    originalModalTop = null;
-  }, 300);
+  if (!isModalOpen) return;
+  if (windowElement) windowElement.style.display = 'none';
+  if (overlay) overlay.classList.remove('active');
+  isModalOpen = false;
 }
-
-if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', updateKeyboardStatus);
-  window.visualViewport.addEventListener('scroll', updateKeyboardStatus);
-} else {
-  window.addEventListener('resize', updateKeyboardStatus);
-}
-window.addEventListener('load', updateKeyboardStatus);
-window.addEventListener('keyboardchange', updateKeyboardStatus);
 
 export function initActionMenu() {
   const button = document.getElementById('actionMenuBtn');
   if (!button) return;
-  button.addEventListener('mousedown', (e) => e.preventDefault());
   button.addEventListener('click', (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    if (isOpen) hideModal();
+    if (isModalOpen) hideModal();
     else showModal();
   });
 }

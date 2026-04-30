@@ -1,5 +1,4 @@
-//src/scripts/emojiMessage.js
-
+// src/scripts/emojiMessage.js
 const EMOJI_REGEX = /^(\p{Emoji}(\p{Emoji_Modifier}?|\uFE0F\u20E3?)?(\u200D\p{Emoji}(\p{Emoji_Modifier}?|\uFE0F\u20E3?)?)*)(\s+(\p{Emoji}(\p{Emoji_Modifier}?|\uFE0F\u20E3?)?(\u200D\p{Emoji}(\p{Emoji_Modifier}?|\uFE0F\u20E3?)?)*))*$/u;
 const SIMPLE_EMOJI_REGEX = /^(\p{Extended_Pictographic}|\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)(\s+(\p{Extended_Pictographic}|\p{Emoji_Presentation}|\p{Emoji}\uFE0F?))*$/u;
 
@@ -293,8 +292,17 @@ function createFloatingHearts(messageEl, dragWrap, count = 12) {
   }
 }
 
+function resetAndApplyAnimation(element, animationClass, durationMs) {
+  element.classList.remove(animationClass);
+  void element.offsetHeight;
+  element.classList.add(animationClass);
+  setTimeout(() => {
+    element.classList.remove(animationClass);
+  }, durationMs);
+}
+
 export function applyHeartAnimation(messageEl, dragWrap) {
-  dragWrap.classList.add('heart-beat-animation');
+  resetAndApplyAnimation(dragWrap, 'heart-beat-animation', 3000);
   messageEl.classList.add('heart-message');
   createFloatingHearts(messageEl, dragWrap, 15);
   
@@ -308,7 +316,8 @@ export function applyHeartAnimation(messageEl, dragWrap) {
 }
 
 export function applySpecialEmojiAnimation(messageEl, dragWrap, emojiType) {
-  dragWrap.classList.add(`${emojiType}-animation`);
+  const animationClass = `${emojiType}-animation`;
+  resetAndApplyAnimation(dragWrap, animationClass, 3000);
   messageEl.classList.add('special-emoji');
   
   switch (emojiType) {
@@ -385,7 +394,7 @@ export function applySpecialEmojiAnimation(messageEl, dragWrap, emojiType) {
   }
   
   setTimeout(() => {
-    dragWrap.classList.remove(`${emojiType}-animation`);
+    dragWrap.classList.remove(animationClass);
     dragWrap.classList.add('special-residual');
     setTimeout(() => {
       dragWrap.classList.remove('special-residual');

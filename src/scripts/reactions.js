@@ -17,6 +17,7 @@ import { enqueueEvent } from './queue.js';
 import { loadCustomEmojis } from './emojiUtils.js';
 import { showQuickStickerUpload } from './StickerModal.js';
 import { isStickerSaved, getStickerCategoryByUrl, removeCustomSticker, refreshStickersInPicker } from './StickerManager.js';
+import { shouldReplaceReactionEmoji, reactionEmojiMap, initReactionEmojiAnimations } from './reactionEmojiReplacement.js';
 
 const DEFAULT_EMOJIS = ['👍','❤️','😂','😮','😭','🔥'];
 const MAX_REACTIONS_PER_BUBBLE = 4;
@@ -25,7 +26,7 @@ const NOTIF_DURATION = 1000;
 const messagesEl = document.getElementById('messages');
 let activePopup = null;
 let activeMenu = null;
-let activeThoughtBubbles = []; 
+let activeThoughtBubbles = [];
 let notifEl = null;
 let notifTimeout = null;
 
@@ -145,6 +146,15 @@ function getCustomEmojiUrl(shortcode) {
   return found ? found.url : null;
 }
 
+function escapeAttr(str) {
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+}
+
 export function renderReactionsOnBubble(messageEl) {
   const dragWrap = messageEl.querySelector('.msg-drag');
   if (!dragWrap) return;
@@ -157,41 +167,83 @@ export function renderReactionsOnBubble(messageEl) {
   }
 
   const reactions = JSON.parse(messageEl.dataset.reactions || '[]');
-  wrap.innerHTML = '';
+  const currentBadges = Array.from(wrap.children);
+  const newReactionsMap = new Map();
+
   reactions.slice(0, MAX_REACTIONS_PER_BUBBLE).forEach(r => {
-    const btn = document.createElement('button');
-    btn.className = 'reaction-badge';
-    
-    const isCustom = (r.emoji && r.emoji.includes(':') && r.emoji.includes('custom_')) || 
-                     (r.emoji && r.emoji.startsWith(':') && r.emoji.endsWith(':'));
-    
-    if (isCustom) {
-      const url = getCustomEmojiUrl(r.emoji);
-      if (url) {
+    newReactionsMap.set(r.emoji, r);
+  });
+
+  for (let i = currentBadges.length - 1; i >= 0; i--) {
+    const badge = currentBadges[i];
+    const emoji = badge.getAttribute('data-emoji');
+    if (!newReactionsMap.has(emoji)) {
+      badge.remove();
+    }
+  }
+
+  reactions.slice(0, MAX_REACTIONS_PER_BUBBLE).forEach(r => {
+    let existingBadge = wrap.querySelector(`.reaction-badge[data-emoji="${escapeAttr(r.emoji)}"]`);
+    if (existingBadge) {
+      if (r.you) existingBadge.classList.add('you');
+      else existingBadge.classList.remove('you');
+      const bubble = dragWrap;
+      const bg = getComputedStyle(bubble).backgroundColor || '#fff';
+      existingBadge.style.borderColor = bg;
+      if (r.you) existingBadge.style.backgroundColor = bg;
+    } else {
+      const btn = document.createElement('button');
+      btn.className = 'reaction-badge';
+      btn.setAttribute('data-emoji', r.emoji);
+
+      const isCustom = (r.emoji && r.emoji.includes(':') && r.emoji.includes('custom_')) ||
+                       (r.emoji && r.emoji.startsWith(':') && r.emoji.endsWith(':'));
+
+      if (isCustom) {
+        const url = getCustomEmojiUrl(r.emoji);
+        if (url) {
+          const img = document.createElement('img');
+          img.src = url;
+          img.alt = r.emoji;
+          img.style.width = '1.2em';
+          img.style.height = '1.2em';
+          img.style.verticalAlign = 'middle';
+          btn.appendChild(img);
+        } else {
+          btn.innerText = r.emoji;
+        }
+      } else if (shouldReplaceReactionEmoji(r.emoji)) {
+        const config = reactionEmojiMap[r.emoji];
         const img = document.createElement('img');
-        img.src = url;
+        img.src = config.url;
         img.alt = r.emoji;
-        img.style.width = '1.2em';
-        img.style.height = '1.2em';
-        img.style.verticalAlign = 'middle';
+        img.style.width = '32px';
+        img.style.height = '32px';
+        img.style.objectFit = 'contain';
+        img.style.display = 'inline-block';
+        img.className = 'reaction-replaced-emoji';
+        img.setAttribute('data-animated', config.type === 'webp' ? 'gif' : config.type);
+        img.setAttribute('data-duration', config.duration);
+        img.setAttribute('data-original-emoji', r.emoji);
         btn.appendChild(img);
+        initReactionEmojiAnimations(btn);
       } else {
         btn.innerText = r.emoji;
       }
-    } else {
-      btn.innerText = r.emoji;
+
+      if (r.you) btn.classList.add('you');
+      const bubble = dragWrap;
+      const bg = getComputedStyle(bubble).backgroundColor || '#fff';
+      btn.style.borderColor = bg;
+      if (r.you) btn.style.backgroundColor = bg;
+
+      btn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        toggleReactionOnMessage(messageEl, r.emoji);
+      });
+
+      wrap.appendChild(btn);
     }
-    
-    if (r.you) btn.classList.add('you');
-    const bubble = dragWrap;
-    const bg = getComputedStyle(bubble).backgroundColor || '#fff';
-    btn.style.borderColor = bg;
-    if (r.you) btn.style.backgroundColor = bg;
-    btn.addEventListener('click', (ev) => {
-      ev.stopPropagation();
-      toggleReactionOnMessage(messageEl, r.emoji);
-    });
-    wrap.appendChild(btn);
   });
 }
 
@@ -387,7 +439,7 @@ function createThoughtBubbles(messageEl, popupEl) {
     bubble.style.backgroundColor = bubbleColors[i % bubbleColors.length];
     bubble.style.border = '2px solid #333';
     bubble.style.boxShadow = '2px 2px 6px rgba(0,0,0,0.2)';
-    bubble.style.zIndex = '500'; 
+    bubble.style.zIndex = '500';
     bubble.style.opacity = '0';
     bubble.style.transform = 'scale(0.5)';
     bubble.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
@@ -677,7 +729,7 @@ function hidePopup() {
   }
   hideOptionsMenu();
   removeLiftEffect();
-  removeThoughtBubbles(); 
+  removeThoughtBubbles();
   window.removeEventListener('pointerdown', onOutside);
 }
 
@@ -693,6 +745,16 @@ if (messagesEl) {
     const bubble = e.target.closest('.msg-drag');
     if (!bubble) return;
     const messageEl = bubble.closest('.message');
+    
+    const gifImg = messageEl.querySelector('.sticker-message img[src$=".gif"], .message-text img[src$=".gif"]');
+    if (gifImg) {
+      const src = gifImg.src;
+      const newSrc = src.includes('?') 
+        ? src.replace(/\?t=\d+/, '?t=' + Date.now())
+        : src + (src.includes('?') ? '&' : '?') + 't=' + Date.now();
+      gifImg.src = newSrc;
+    }
+    
     const rect = bubble.getBoundingClientRect();
     showReactionsPopup(messageEl, rect);
   });

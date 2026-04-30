@@ -1,19 +1,3 @@
-
-.bg-options {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 12px;
-  margin-bottom: 16px;
-}
-#drag-handle {
-  background: var(--);
-  transition: background 0.7s ease;
-}
-
-#drag-handle:active {
-  background: var(--select-mov-active);
-}
-
 #modal-header {
   background: var(--theme-modal-header-background);
   backdrop-filter: var(--theme-modal-header-blur);
@@ -122,176 +106,12 @@
   color: var(--theme-modal-header-text-color);
 }
 
-.theme-close-btn {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 20px;
-  transition: background 0.2s;
-}
-
-.theme-close-btn:hover {
-  background: #334155;
-  color: white;
-}
-
-.theme-scroll-content {
-  max-height: 60vh;
-  overflow-y: auto;
-  padding-right: 8px;
-}
-
-.theme-scroll-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.theme-scroll-content::-webkit-scrollbar-track {
-  background: #1e293b;
-  border-radius: 10px;
-}
-
-.theme-scroll-content::-webkit-scrollbar-thumb {
-  background: #14b8a6;
-  border-radius: 10px;
-}
-
-.theme-card h3 {
-  font-size: 16px;
-  margin: 16px 0 8px 0;
-  color: #cbd5e1;
-}
-
 .bg-options {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 12px;
   margin-bottom: 16px;
 }
-
-.theme-btn {
-  padding: 8px 20px;
-  border-radius: 40px;
-  background: #1e293b;
-  border: 1px solid #334155;
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.bg-preview {
-  width: 70px;
-  height: 70px;
-  border-radius: 16px;
-  background-size: cover;
-  background-position: center;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: transform 0.1s, border-color 0.1s;
-}
-
-.bg-preview.selected {
-  border-color: #14b8a6;
-  transform: scale(1.05);
-}
-
-.custom-file-upload {
-  margin-bottom: 20px;
-}
-
-.file-upload-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: #334155;
-  color: #e2e8f0;
-  padding: 10px 20px;
-  border-radius: 40px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.file-upload-btn:hover {
-  background: #14b8a6;
-  color: #0f172a;
-  transform: translateY(-2px);
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.modal-actions button {
-  padding: 10px 24px;
-  border-radius: 40px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s ease;
-}
-
-.btn-save {
-  background: #14b8a6;
-  color: #0f172a;
-}
-
-.btn-save:hover {
-  background: #0d9488;
-  transform: scale(0.98);
-}
-
-.btn-cancel {
-  background: #334155;
-  color: white;
-}
-
-.btn-cancel:hover {
-  background: #475569;
-  transform: scale(0.98);
-}
-
-.theme-modal.enter .theme-card {
-  transform: scale(0.95);
-  opacity: 0;
-  transition: transform 0.2s, opacity 0.2s;
-}
-
-.theme-modal .theme-card {
-  transform: scale(1);
-  opacity: 1;
-  transition: transform 0.2s, opacity 0.2s;
-}
-
-.theme-modal.leave .theme-card {
-  transform: scale(0.95);
-  opacity: 0;
-}
-
-.theme-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 10999;
-  opacity: 0;
-  transition: opacity 200ms ease;
-  pointer-events: auto;
-}
-
-.theme-modal-overlay.visible {
-  opacity: 1;
-}
-
-
 
 .theme-header {
   display: grid;
@@ -446,24 +266,27 @@
   color: var(--themes-tittle-color);
 }
 
-
 .theme-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--modal-overlay-background);
+  box-shadow: var(--modal-overlay-shadow-inset);
+  backdrop-filter: var(--modal-overlay-blur);
+  opacity: var(--modal-overlay-opacity);
+  transition: var(--modal-overlay-transition);
   z-index: 10999;
   display: none;
-  pointer-events: none; /* Permite interactuar con el fondo */
+  pointer-events: none;
 }
 
 .theme-modal-overlay.active {
   display: block;
 }
 
-.modal-movable-window > .resize-handle {
+.resize-theme-modal {
   background: var(--modal-header-resize-handle-background);
 
   border-top: var(--modal-header-resize-handle-border-top-width) var(--modal-header-resize-handle-border-top-style) var(--modal-header-resize-handle-border-top-color);
@@ -481,6 +304,7 @@
   z-index: 10;
   touch-action: none;
 }
+
 .resize-n,
 .resize-s {
   left: 10px;
@@ -586,6 +410,7 @@
 
   box-shadow: var(--theme-modal-scrollbar-thumb-shadow-external), inset var(--theme-modal-scrollbar-thumb-shadow-internal);
 }
+
 .theme-options {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -930,13 +755,13 @@
   margin-left: var(--menu-ple-container-margin-left);
 }
 
-
 .bg-category-content {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.6s ease-out, padding 0.3s ease;
   padding-top: 0;
 }
+
 .bg-category-header {
   width: 100%;
   text-align: var(--menu-ple-text-align);
@@ -1226,4 +1051,175 @@
   text-transform: var(--adjust-opacity-btn-text-transform);
   text-shadow: var(--adjust-opacity-btn-text-shadow);
   color: var(--adjust-opacity-btn-color);
+}
+
+/* Añadir al final del archivo themeModal.css */
+
+/* Handles para Action Menu */
+.resize-action,
+.resize-emoji,
+.resize-custom-emoji,
+.resize-custom-sticker,
+.resize-editor,
+.resize-cache {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.1s;
+  z-index: 10;
+  touch-action: none;
+}
+
+.resize-action:hover,
+.resize-emoji:hover,
+.resize-custom-emoji:hover,
+.resize-custom-sticker:hover,
+.resize-editor:hover,
+.resize-cache:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.resize-action.resize-n,
+.resize-action.resize-s,
+.resize-emoji.resize-n,
+.resize-emoji.resize-s,
+.resize-custom-emoji.resize-n,
+.resize-custom-emoji.resize-s,
+.resize-custom-sticker.resize-n,
+.resize-custom-sticker.resize-s,
+.resize-editor.resize-n,
+.resize-editor.resize-s,
+.resize-cache.resize-n,
+.resize-cache.resize-s {
+  left: 10px;
+  right: 10px;
+  height: 12px;
+}
+
+.resize-action.resize-n,
+.resize-emoji.resize-n,
+.resize-custom-emoji.resize-n,
+.resize-custom-sticker.resize-n,
+.resize-editor.resize-n,
+.resize-cache.resize-n {
+  top: 0;
+  cursor: n-resize;
+}
+
+.resize-action.resize-s,
+.resize-emoji.resize-s,
+.resize-custom-emoji.resize-s,
+.resize-custom-sticker.resize-s,
+.resize-editor.resize-s,
+.resize-cache.resize-s {
+  bottom: 0;
+  cursor: s-resize;
+}
+
+.resize-action.resize-e,
+.resize-action.resize-w,
+.resize-emoji.resize-e,
+.resize-emoji.resize-w,
+.resize-custom-emoji.resize-e,
+.resize-custom-emoji.resize-w,
+.resize-custom-sticker.resize-e,
+.resize-custom-sticker.resize-w,
+.resize-editor.resize-e,
+.resize-editor.resize-w,
+.resize-cache.resize-e,
+.resize-cache.resize-w {
+  top: 10px;
+  bottom: 10px;
+  width: 12px;
+}
+
+.resize-action.resize-e,
+.resize-emoji.resize-e,
+.resize-custom-emoji.resize-e,
+.resize-custom-sticker.resize-e,
+.resize-editor.resize-e,
+.resize-cache.resize-e {
+  right: 0;
+  cursor: e-resize;
+}
+
+.resize-action.resize-w,
+.resize-emoji.resize-w,
+.resize-custom-emoji.resize-w,
+.resize-custom-sticker.resize-w,
+.resize-editor.resize-w,
+.resize-cache.resize-w {
+  left: 0;
+  cursor: w-resize;
+}
+
+.resize-action.resize-ne,
+.resize-action.resize-nw,
+.resize-action.resize-se,
+.resize-action.resize-sw,
+.resize-emoji.resize-ne,
+.resize-emoji.resize-nw,
+.resize-emoji.resize-se,
+.resize-emoji.resize-sw,
+.resize-custom-emoji.resize-ne,
+.resize-custom-emoji.resize-nw,
+.resize-custom-emoji.resize-se,
+.resize-custom-emoji.resize-sw,
+.resize-custom-sticker.resize-ne,
+.resize-custom-sticker.resize-nw,
+.resize-custom-sticker.resize-se,
+.resize-custom-sticker.resize-sw,
+.resize-editor.resize-ne,
+.resize-editor.resize-nw,
+.resize-editor.resize-se,
+.resize-editor.resize-sw,
+.resize-cache.resize-ne,
+.resize-cache.resize-nw,
+.resize-cache.resize-se,
+.resize-cache.resize-sw {
+  width: 18px;
+  height: 18px;
+}
+
+.resize-action.resize-ne,
+.resize-emoji.resize-ne,
+.resize-custom-emoji.resize-ne,
+.resize-custom-sticker.resize-ne,
+.resize-editor.resize-ne,
+.resize-cache.resize-ne {
+  top: 0;
+  right: 0;
+  cursor: ne-resize;
+}
+
+.resize-action.resize-nw,
+.resize-emoji.resize-nw,
+.resize-custom-emoji.resize-nw,
+.resize-custom-sticker.resize-nw,
+.resize-editor.resize-nw,
+.resize-cache.resize-nw {
+  top: 0;
+  left: 0;
+  cursor: nw-resize;
+}
+
+.resize-action.resize-se,
+.resize-emoji.resize-se,
+.resize-custom-emoji.resize-se,
+.resize-custom-sticker.resize-se,
+.resize-editor.resize-se,
+.resize-cache.resize-se {
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
+}
+
+.resize-action.resize-sw,
+.resize-emoji.resize-sw,
+.resize-custom-emoji.resize-sw,
+.resize-custom-sticker.resize-sw,
+.resize-editor.resize-sw,
+.resize-cache.resize-sw {
+  bottom: 0;
+  left: 0;
+  cursor: sw-resize;
 }

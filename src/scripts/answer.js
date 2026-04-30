@@ -5,6 +5,7 @@ import { getCustomEmojiByShortcode } from './CustomEmojiPicker.js';
 import { convertShortcodesToImages } from './emojiUtils.js';
 import { isStickerSaved, getStickerCategoryByUrl } from './StickerManager.js';
 import { showQuickStickerUpload } from './StickerModal.js';
+import { normalizeReplacedEmojisToText } from './emojiReplacement.js';
 
 let currentQuotedMessage = null;
 
@@ -142,6 +143,14 @@ function extractPlainText(dragWrap) {
     const shortcode = img.getAttribute('data-shortcode');
     const textNode = document.createTextNode(shortcode);
     img.parentNode.replaceChild(textNode, img);
+  });
+  
+  clone.querySelectorAll('img.replaced-emoji').forEach(img => {
+    const originalEmoji = img.getAttribute('alt');
+    if (originalEmoji) {
+      const textNode = document.createTextNode(originalEmoji);
+      img.parentNode.replaceChild(textNode, img);
+    }
   });
   
   clone.querySelectorAll('img').forEach(img => {

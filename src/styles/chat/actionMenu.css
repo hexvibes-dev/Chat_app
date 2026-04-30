@@ -1,101 +1,54 @@
-/* ========== ACTION MENU MODAL CON ANIMACIÓN DE CONO 3D ========== */
-.action-menu-modal {
+#action-menu-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 11001;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  visibility: hidden;
-  pointer-events: none; /* Permite clics en el fondo cuando el modal está cerrado */
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 10999;
+  display: none;
+  pointer-events: none;
+}
+#action-menu-overlay.active {
+  display: block;
+  pointer-events: auto;
 }
 
-.action-menu-modal.open {
-  visibility: visible;
-  pointer-events: none; /* Sigue permitiendo clics en el fondo */
-}
-
-/* El contenedor del modal es el único que recibe eventos */
-.action-menu-container {
-  position: relative;
+#action-movable-window {
+  position: fixed;
+  transform-origin: top left;
+  touch-action: none;
+  will-change: transform, width, height;
+  width: 500px;
+  height: 400px;
+  min-width: 200px;
+  min-height: 250px;
+  max-width: 95vw;
+  max-height: 90vh;
+  display: none;
+  z-index: 11000;
   background: var(--modal-bg);
   border-radius: 28px;
-  width: 320px;
-  max-width: 90vw;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   border: 1px solid var(--modal-input-border);
-  transform-origin: center bottom;
-  transform: scale(0.2) rotateX(90deg);
-  opacity: 0;
-  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity 0.3s ease;
-  display: flex;
   flex-direction: column;
-  will-change: transform, width, height;
-  touch-action: none;
+  overflow: hidden;
   cursor: grab;
-  pointer-events: auto; /* Solo el contenedor recibe eventos */
 }
-
-.action-menu-container:active {
+#action-movable-window:active {
   cursor: grabbing;
 }
 
-.action-menu-modal.open .action-menu-container {
-  transform: scale(1) rotateX(0deg);
-  opacity: 1;
-}
-
-.action-menu-modal.closing .action-menu-container {
-  transform: scale(0.2) rotateX(90deg);
-  opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.6, 1), opacity 0.2s;
-}
-
-.action-menu-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px 12px 20px;
+#action-modal-header {
+  background: var(--theme-modal-header-background);
+  backdrop-filter: var(--theme-modal-header-blur);
   border-bottom: 1px solid var(--modal-input-border);
   cursor: grab;
-  user-select: none;
-  flex-shrink: 0;
+  padding: 12px 16px;
 }
-
-.action-menu-header:active {
+#action-modal-header:active {
   cursor: grabbing;
-}
-
-.action-menu-header h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--modal-text);
-}
-
-.action-menu-close {
-  background: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: var(--modal-text);
-  padding: 0;
-  line-height: 1;
-  transition: transform 0.1s;
-}
-
-.action-menu-close:hover {
-  transform: scale(1.1);
-}
-
-.action-menu-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px 20px 20px 20px;
-  max-height: 60vh;
 }
 
 .action-menu-options {
@@ -103,9 +56,8 @@
   grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
   gap: 12px;
 }
-
 .action-option {
-  background: var(--input-bg);
+  background: var(--modal-input-bg);
   border: 1px solid var(--modal-input-border);
   border-radius: 20px;
   padding: 16px 8px;
@@ -116,63 +68,53 @@
   cursor: pointer;
   transition: transform 0.1s, background 0.1s;
   color: var(--modal-text);
-  min-width: 0;
 }
-
 .action-option:hover {
   background: var(--modal-btn-primary);
   transform: translateY(-2px);
+  color: var(--modal-btn-primary-text);
 }
-
 .action-option svg {
   width: 40px;
   height: 40px;
   stroke: currentColor;
   fill: none;
-  flex-shrink: 0;
 }
 
-.action-option span {
-  font-size: 12px;
-  font-weight: 500;
-  text-align: center;
-  word-break: break-word;
-}
-
-/* Redimensionadores */
-.resize-handle {
+.resize-action {
   position: absolute;
   background: rgba(255, 255, 255, 0.1);
   transition: background 0.1s;
   z-index: 10;
   touch-action: none;
 }
-
-.resize-handle:hover {
+.resize-action:hover {
   background: rgba(255, 255, 255, 0.3);
 }
-
-.resize-n, .resize-s {
+.resize-action.resize-n,
+.resize-action.resize-s {
   left: 10px;
   right: 10px;
   height: 12px;
 }
-.resize-n { top: 0; cursor: n-resize; }
-.resize-s { bottom: 0; cursor: s-resize; }
-
-.resize-e, .resize-w {
+.resize-action.resize-n { top: 0; cursor: n-resize; }
+.resize-action.resize-s { bottom: 0; cursor: s-resize; }
+.resize-action.resize-e,
+.resize-action.resize-w {
   top: 10px;
   bottom: 10px;
   width: 12px;
 }
-.resize-e { right: 0; cursor: e-resize; }
-.resize-w { left: 0; cursor: w-resize; }
-
-.resize-ne, .resize-nw, .resize-se, .resize-sw {
+.resize-action.resize-e { right: 0; cursor: e-resize; }
+.resize-action.resize-w { left: 0; cursor: w-resize; }
+.resize-action.resize-ne,
+.resize-action.resize-nw,
+.resize-action.resize-se,
+.resize-action.resize-sw {
   width: 18px;
   height: 18px;
 }
-.resize-ne { top: 0; right: 0; cursor: ne-resize; }
-.resize-nw { top: 0; left: 0; cursor: nw-resize; }
-.resize-se { bottom: 0; right: 0; cursor: se-resize; }
-.resize-sw { bottom: 0; left: 0; cursor: sw-resize; }
+.resize-action.resize-ne { top: 0; right: 0; cursor: ne-resize; }
+.resize-action.resize-nw { top: 0; left: 0; cursor: nw-resize; }
+.resize-action.resize-se { bottom: 0; right: 0; cursor: se-resize; }
+.resize-action.resize-sw { bottom: 0; left: 0; cursor: sw-resize; }

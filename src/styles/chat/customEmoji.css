@@ -1,0 +1,79 @@
+.custom-emoji-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 10999;
+  display: none;
+  pointer-events: none;
+}
+.custom-emoji-overlay.active {
+  display: block;
+}
+.custom-emoji-movable-window {
+  position: fixed;
+  transform-origin: top left;
+  touch-action: none;
+  will-change: transform, width, height;
+  min-width: 300px;
+  min-height: 400px;
+  max-width: 95vw;
+  max-height: 90vh;
+  display: none;
+  z-index: 11000;
+  background: var(--modal-bg);
+  border-radius: 28px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--modal-input-border);
+  flex-direction: column;
+  overflow: hidden;
+}
+#custom-emoji-modal-header {
+  background: var(--theme-modal-header-background);
+  backdrop-filter: var(--theme-modal-header-blur);
+  border-bottom: 1px solid var(--modal-input-border);
+  cursor: grab;
+}
+#custom-emoji-modal-header:active {
+  cursor: grabbing;
+}
+.resize-custom-emoji {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.1s;
+  z-index: 10;
+  touch-action: none;
+}
+.resize-custom-emoji:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+.resize-custom-emoji.resize-n,
+.resize-custom-emoji.resize-s {
+  left: 10px;
+  right: 10px;
+  height: 12px;
+}
+.resize-custom-emoji.resize-n { top: 0; cursor: n-resize; }
+.resize-custom-emoji.resize-s { bottom: 0; cursor: s-resize; }
+.resize-custom-emoji.resize-e,
+.resize-custom-emoji.resize-w {
+  top: 10px;
+  bottom: 10px;
+  width: 12px;
+}
+.resize-custom-emoji.resize-e { right: 0; cursor: e-resize; }
+.resize-custom-emoji.resize-w { left: 0; cursor: w-resize; }
+.resize-custom-emoji.resize-ne,
+.resize-custom-emoji.resize-nw,
+.resize-custom-emoji.resize-se,
+.resize-custom-emoji.resize-sw {
+  width: 18px;
+  height: 18px;
+}
+.resize-custom-emoji.resize-ne { top: 0; right: 0; cursor: ne-resize; }
+.resize-custom-emoji.resize-nw { top: 0; left: 0; cursor: nw-resize; }
+.resize-custom-emoji.resize-se { bottom: 0; right: 0; cursor: se-resize; }
+.resize-custom-emoji.resize-sw { bottom: 0; left: 0; cursor: sw-resize; }

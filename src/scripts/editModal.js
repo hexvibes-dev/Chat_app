@@ -14,7 +14,27 @@ function getEditText(editor) {
     const textNode = document.createTextNode(shortcode);
     img.parentNode.replaceChild(textNode, img);
   });
+  clone.querySelectorAll('img.replaced-emoji').forEach(img => {
+    const originalEmoji = img.getAttribute('alt');
+    if (originalEmoji) {
+      const textNode = document.createTextNode(originalEmoji);
+      img.parentNode.replaceChild(textNode, img);
+    }
+  });
   return clone.innerText.trim();
+}
+
+function normalizeReplacedEmojis(html) {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  div.querySelectorAll('img.replaced-emoji').forEach(img => {
+    const originalEmoji = img.getAttribute('alt');
+    if (originalEmoji) {
+      const textNode = document.createTextNode(originalEmoji);
+      img.parentNode.replaceChild(textNode, img);
+    }
+  });
+  return div.innerHTML;
 }
 
 export function showEditModal(messageEl, onSave) {
@@ -24,6 +44,7 @@ export function showEditModal(messageEl, onSave) {
   const textEl = messageEl.querySelector('.message-text');
   let originalHtml = textEl ? textEl.innerHTML : '';
   originalHtml = originalHtml.replace(/\s*\(editado\)/g, '');
+  originalHtml = normalizeReplacedEmojis(originalHtml);
 
   blurOverlay = document.createElement('div');
   blurOverlay.className = 'modal-blur-overlay';

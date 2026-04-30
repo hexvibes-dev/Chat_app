@@ -1,7 +1,8 @@
 // src/scripts/editor/EmojiPickerCore.js
 
 import { getCategoryEmojis, addRecentEmoji, getRecentEmojis, searchEmojis, getCustomEmojiData, loadCustomEmojis, refreshCustomEmojis, updateRecentCategory } from './EmojiData.js';
-import { polyfillEmojis, setSkinTone, getSkinTone, applySkinToneToEmoji } from './emojiPolyfill.js';
+import { polyfillEmojis } from './emojiPolyfill.js';
+import { applySkinToneToText, getSkinTone, setSkinTone } from './skinToneManager.js';
 
 let activeCategory = 'recent';
 let searchQuery = '';
@@ -40,7 +41,8 @@ function createEmojiButton(emoji, onClick) {
   let insertEmoji = emoji;
   
   if (typeof emoji === 'string' && !emoji.startsWith(':')) {
-    displayEmoji = applySkinToneToEmoji(emoji);
+    // Aplica el tono de piel según el mapa manual
+    displayEmoji = applySkinToneToText(emoji);
     insertEmoji = displayEmoji;
     btn.setAttribute('aria-label', `Emoji ${displayEmoji}`);
   } else {
@@ -329,6 +331,8 @@ function buildSkinToneSelector(onToneChange) {
       setSkinTone(tone.key);
       mainBtn.innerHTML = `${tone.icon} <span style="font-size: 12px;">▼</span>`;
       dropdown.style.display = 'none';
+      
+      // Recargar todas las secciones para aplicar nuevo tono
       for (const [key, section] of categorySections.entries()) {
         if (section && key !== 'custom') {
           const oldGrid = section.querySelector('.emoji-grid');

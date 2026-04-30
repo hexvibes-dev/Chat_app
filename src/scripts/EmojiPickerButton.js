@@ -1,65 +1,44 @@
-// src/scripts/EmojiPickerButton.js
-
 import interact from 'interactjs';
 import { showEmojiPicker, hideEmojiPicker } from './EmojiPicker.js';
-import { registerModal, unregisterModal, bringModalToFront } from './modalStackManager.js';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
 
-let modalContainer = null;
-let isOpen = false;
-let isAnimating = false;
-let container = null;
-let header = null;
-let closeBtn = null;
+let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
-let modalId = 'emoji-picker-modal';
+let isModalOpen = false;
 
-function addResizeHandles(element) {
+function addResizeHandlesToModal(element) {
   const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
   handles.forEach(dir => {
     const handle = document.createElement('div');
-    handle.className = `resize-handle resize-${dir}`;
+    handle.className = `resize-emoji-picker resize-${dir}`;
     element.appendChild(handle);
   });
 }
 
-function createModal() {
-  if (modalContainer) return modalContainer;
-  
-  modalContainer = document.createElement('div');
-  modalContainer.id = 'emoji-picker-modal';
-  modalContainer.className = 'action-menu-modal';
-  modalContainer.innerHTML = `
-    <div class="action-menu-container" id="emoji-picker-container" style="width: 400px; height: 500px;">
-      <div class="action-menu-header" id="emoji-picker-header">
-        <h3>Emojis</h3>
-        <button class="action-menu-close" id="emoji-picker-close">&times;</button>
-      </div>
-      <div class="action-menu-content" id="emoji-picker-content" style="padding: 0; overflow: hidden; flex: 1;">
-      </div>
-    </div>
-  `;
-  
-  document.body.appendChild(modalContainer);
-  
-  container = modalContainer.querySelector('.action-menu-container');
-  header = modalContainer.querySelector('#emoji-picker-header');
-  closeBtn = modalContainer.querySelector('#emoji-picker-close');
-  const contentDiv = modalContainer.querySelector('#emoji-picker-content');
-  
-  addResizeHandles(container);
-  setupInteract(container, header);
-  
-  closeBtn.addEventListener('click', () => hideModal());
-  
-  registerModal(modalContainer, modalId);
-  
-  showEmojiPicker(contentDiv);
-  
-  return modalContainer;
+function centerModal() {
+  if (!windowElement) return;
+  const rect = windowElement.getBoundingClientRect();
+  windowX = (window.innerWidth - rect.width) / 2;
+  windowY = (window.innerHeight - rect.height) / 2;
+  windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+  windowElement.setAttribute('data-x', windowX);
+  windowElement.setAttribute('data-y', windowY);
 }
 
-function setupInteract(element, dragHandle) {
-  interact(element).resizable({
+function isLessThan10PercentVisible(element) {
+  const rect = element.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const visibleWidth = Math.min(rect.right, viewportWidth) - Math.max(rect.left, 0);
+  const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+  if (visibleWidth <= 0 || visibleHeight <= 0) return true;
+  const visibleArea = visibleWidth * visibleHeight;
+  const totalArea = rect.width * rect.height;
+  return (visibleArea / totalArea) < 0.1;
+}
+
+function setupInteractForModal() {
+  interact(windowElement).resizable({
     edges: { top: true, left: true, bottom: true, right: true },
     inertia: false,
     modifiers: [
@@ -72,28 +51,22 @@ function setupInteract(element, dragHandle) {
       move(event) {
         let width = event.rect.width;
         let height = event.rect.height;
-        element.style.width = `${width}px`;
-        element.style.height = `${height}px`;
-        
+        windowElement.style.width = `${width}px`;
+        windowElement.style.height = `${height}px`;
         windowX += event.deltaRect.left;
         windowY += event.deltaRect.top;
-        element.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
-        element.setAttribute('data-x', windowX);
-        element.setAttribute('data-y', windowY);
-        
-        const contentDiv = document.getElementById('emoji-picker-content');
-        if (contentDiv) {
-          const newContentHeight = height - 60;
-          contentDiv.style.height = `${newContentHeight}px`;
-        }
+        windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+        windowElement.setAttribute('data-x', windowX);
+        windowElement.setAttribute('data-y', windowY);
+        constrainAllModals();
       }
     }
   });
-  
-  interact(dragHandle).draggable({
+
+  interact(headerElement).draggable({
     inertia: false,
     manualStart: false,
-    allowFrom: dragHandle,
+    allowFrom: headerElement,
     preventDefault: 'always',
     modifiers: [
       interact.modifiers.restrictRect({
@@ -104,71 +77,72 @@ function setupInteract(element, dragHandle) {
     listeners: {
       start() { window.isDraggingModal = true; },
       move(event) {
+        const keyboardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
+        if (keyboardHeight > 0) {
+          const inputElement = document.getElementById('layerInput');
+          if (inputElement) {
+            const inputRect = inputElement.getBoundingClientRect();
+            const modalRect = windowElement.getBoundingClientRect();
+            const inputTop = inputRect.top;
+            const modalBottom = modalRect.bottom;
+            if (modalBottom + event.dy > inputTop - 10) return;
+          }
+        }
         windowX += event.dx;
         windowY += event.dy;
-        
-        element.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
-        element.setAttribute('data-x', windowX);
-        element.setAttribute('data-y', windowY);
+        windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+        windowElement.setAttribute('data-x', windowX);
+        windowElement.setAttribute('data-y', windowY);
+        constrainAllModals();
       },
-      end() { 
+      end() {
         window.isDraggingModal = false;
+        if (isLessThan10PercentVisible(windowElement)) {
+          hideModal();
+        }
+        constrainAllModals();
       }
     }
   });
 }
 
 function showModal() {
-  if (isOpen || isAnimating) return;
-  const modalEl = createModal();
-  isOpen = true;
-  modalEl.classList.remove('closing');
-  modalEl.style.display = 'flex';
-  modalEl.getBoundingClientRect();
-  modalEl.classList.add('open');
-  windowX = 0;
-  windowY = 0;
-  if (container) {
-    container.style.transform = '';
-    container.removeAttribute('data-x');
-    container.removeAttribute('data-y');
-    container.style.width = '';
-    container.style.height = '';
+  if (isModalOpen) return;
+  if (!windowElement) {
+    windowElement = document.getElementById('emoji-picker-movable-window');
+    headerElement = document.getElementById('emoji-picker-modal-header');
+    closeBtn = document.getElementById('close-emoji-picker-modal');
+    overlay = document.getElementById('emoji-picker-overlay');
+    if (!windowElement || !headerElement) return;
+    associateOverlay(windowElement, overlay);
+    addResizeHandlesToModal(windowElement);
+    setupInteractForModal();
+    if (closeBtn) closeBtn.onclick = () => hideModal();
+    registerModal(windowElement, 'emoji-picker-modal');
+    const contentContainer = document.getElementById('emoji-picker-inner-content');
+    if (contentContainer) showEmojiPicker(contentContainer);
   }
-  bringModalToFront(modalId);
+  overlay.classList.add('active');
+  windowElement.style.display = 'flex';
+  centerModal();
+  isModalOpen = true;
+  bringModalToFront('emoji-picker-modal');
 }
 
 function hideModal() {
-  if (!isOpen || isAnimating) return;
-  const modalEl = modalContainer;
-  if (!modalEl) return;
-  isAnimating = true;
-  modalEl.classList.remove('open');
-  modalEl.classList.add('closing');
-  setTimeout(() => {
-    modalEl.style.display = 'none';
-    modalEl.classList.remove('closing');
-    isOpen = false;
-    isAnimating = false;
-  }, 300);
-}
-
-function toggleModal() {
-  if (isOpen) {
-    hideModal();
-  } else {
-    showModal();
-  }
+  if (!isModalOpen) return;
+  if (windowElement) windowElement.style.display = 'none';
+  if (overlay) overlay.classList.remove('active');
+  isModalOpen = false;
 }
 
 export function initEmojiPickerButton() {
   const button = document.getElementById('emojiPickerBtn');
-  if (!button) return;
-  
-  button.addEventListener('mousedown', (e) => e.preventDefault());
-  button.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleModal();
-  });
+  if (button) {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isModalOpen) hideModal();
+      else showModal();
+    });
+  }
 }

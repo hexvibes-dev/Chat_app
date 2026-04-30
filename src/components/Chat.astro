@@ -17,27 +17,24 @@
   <div id="hamburgerMenuContainer"></div>
   <div id="themeModalContainer"></div>
 </div>
-<div class="layer-input fixed left-0 bottom-0 w-full z-20 touch-none will-change-transform" id="layerInput">
-  <div class="input-container border-t border-slate-700 rounded-t-3xl" style="padding: 10px 12px; padding-bottom: calc(10px + env(safe-area-inset-bottom)); background: var(--input-bg);">
-    <div class="input-box w-full flex justify-center items-center gap-3">
-  <button id="actionMenuBtn" type="button" class="text-white font-semibold py-3 px-5 rounded-xl transform active:scale-75 transition-all" style="background: var(--send-btn-bg, #0891b2);">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
-  </button>
-  <button id="emojiPickerBtn" type="button" class="text-white font-semibold py-3 px-5 rounded-xl transform active:scale-75 transition-all" style="background: var(--send-btn-bg, #0891b2);">
-    😀
-  </button>
+
+<div class="layer-input" id="layerInput">
+  <div class="input-container">
+    <div class="input-box">
+      <button id="actionMenuBtn" type="button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <button id="emojiPickerBtn" type="button">😀</button>
       <div id="input" 
-     contenteditable="true" 
-     data-placeholder="Escribe un mensaje..."
-     class="resize-none font-medium max-h-[120px] min-h-[40px] overflow-y-auto text-white focus:outline-none transition-all duration-200 rounded-l-2xl rounded-r-2xl input-editable empty"
-     style="padding: 16px 12px 12px 20px; width: 70%; max-width: 500px; background: var(--input-bg); color: var(--text-color); line-height: 1.4;"
-     role="textbox" 
-     aria-multiline="true"></div>
-      <button id="sendBtn" type="button" class="text-white font-semibold py-3 px-5 rounded-xl transform active:scale-75 transition-all" style="background: var(--send-btn-bg, #0891b2);">
+           contenteditable="true" 
+           data-placeholder="Escribe un mensaje..."
+           role="textbox" 
+           aria-multiline="true"></div>
+      <button id="sendBtn" type="button">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M21.864 3.549l-6.454 17.868a1.55 1.55 0 0 1 -1.41 .903a1.54 1.54 0 0 1 -1.394 -.874l-2.88 -5.759zm-1.414 -1.414l-12.139 12.138l-5.728 -2.864a1.55 1.55 0 0 1 -.903 -1.409c0 -.606 .353 -1.157 .981 -1.44z" />
@@ -70,92 +67,347 @@
   </div>
 </div>
 
+<!-- Overlay y modales estáticos (todos siguen la misma estructura que themeManager) -->
 <div id="theme-modal-overlay" class="theme-modal-overlay"></div>
 
-<div id="movable-window" 
-     class="modal-movable-window overflow-hidden">
-
-<div 
-  id="modal-header" 
-  class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing" >
-  
-  <div>
-    
+<!-- Modal de temas -->
+<div id="movable-window" class="modal-movable-window overflow-hidden">
+  <div id="modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Menú</span>
+    </div>
+    <button id="close-theme-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
   </div>
-  
-  <div
-    class="grid place-content-center w-full h-full">
-    <span
-      class="modal-header-text">
-      Menú 
-    </span>
-  </div>
-  
-  <button 
-    id="close-theme-modal" 
-    class="justify-self-end hover:opacity-70 text-lg leading-none" 
-    style="color: var(--modal-text);">
-    
-    <svg 
-      width="32" 
-      height="32" 
-      viewBox="0 0 24 24" 
-      fill="none" stroke="currentColor" 
-      stroke-width="1.75" 
-      stroke-linecap="round" 
-      stroke-linejoin="round">
-      <path 
-        stroke="none" 
-        d="M0 0h24v24H0z" 
-        fill="none" />
-      <path 
-        d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
-    </svg>
-    
-  </button>
+  <div id="theme-content" class="p-4 overflow-auto flex flex-col gap-4" style="height: calc(100% - 48px);"></div>
+  <div class="resize-theme-modal resize-n"></div>
+  <div class="resize-theme-modal resize-s"></div>
+  <div class="resize-theme-modal resize-e"></div>
+  <div class="resize-theme-modal resize-w"></div>
+  <div class="resize-theme-modal resize-ne"></div>
+  <div class="resize-theme-modal resize-nw"></div>
+  <div class="resize-theme-modal resize-se"></div>
+  <div class="resize-theme-modal resize-sw"></div>
 </div>
 
-  <div 
-    id="theme-content" 
-    class="p-4 overflow-auto flex flex-col gap-4" 
-    style="height: calc(100% - 48px);">
+<!-- Action Menu -->
+<div id="action-menu-overlay" class="action-menu-overlay"></div>
+<div id="action-movable-window" class="action-movable-window overflow-hidden" style="display: none;">
+  <div id="action-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Acciones</span>
+    </div>
+    <button id="close-action-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="action-menu-content" class="p-4 overflow-auto flex flex-col gap-4" style="height: calc(100% - 48px);">
+    <div class="action-menu-options">
+      <button class="action-option" data-action="sticker">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"/>
+          <path d="M8 12h8"/>
+          <path d="M12 8v8"/>
+          <circle cx="12" cy="12" r="4"/>
+        </svg>
+        <span>Crear sticker</span>
+      </button>
+      <button class="action-option" data-action="emoji">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <line x1="9" y1="9" x2="9.01" y2="9"/>
+          <line x1="15" y1="9" x2="15.01" y2="9"/>
+        </svg>
+        <span>Crear emoji</span>
+      </button>
+      <button class="action-option" data-action="image">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-4-3 3-4-4-5 5"/>
+        </svg>
+        <span>Enviar imagen</span>
+      </button>
+      <button class="action-option" data-action="manage_emoji">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M5.5 20v-4a6.5 6.5 0 0 1 13 0v4"/>
+          <path d="M12 12v6"/>
+          <path d="M9 15h6"/>
+        </svg>
+        <span>Gestionar emojis</span>
+      </button>
+      <button class="action-option" data-action="manage_sticker">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-4-3 3-4-4-5 5"/>
+        </svg>
+        <span>Gestionar stickers</span>
+      </button>
+      <button class="action-option" data-action="editor">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M17 3l4 4-7 7H10v-4l7-7z"/>
+          <path d="M4 20h16"/>
+          <path d="M12 10L4 18v4h4l8-8"/>
+        </svg>
+        <span>Editor</span>
+      </button>
+    </div>
+  </div>
+  <div class="resize-action resize-n"></div>
+  <div class="resize-action resize-s"></div>
+  <div class="resize-action resize-e"></div>
+  <div class="resize-action resize-w"></div>
+  <div class="resize-action resize-ne"></div>
+  <div class="resize-action resize-nw"></div>
+  <div class="resize-action resize-se"></div>
+  <div class="resize-action resize-sw"></div>
+</div>
+
+<!-- Emoji Picker -->
+<div id="emoji-picker-overlay" class="emoji-picker-overlay"></div>
+<div id="emoji-picker-movable-window" class="emoji-picker-movable-window overflow-hidden" style="display: none; width: 400px; height: 500px;">
+  <div id="emoji-picker-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Emojis</span>
+    </div>
+    <button id="close-emoji-picker-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="emoji-picker-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div class="resize-emoji-picker resize-n"></div>
+  <div class="resize-emoji-picker resize-s"></div>
+  <div class="resize-emoji-picker resize-e"></div>
+  <div class="resize-emoji-picker resize-w"></div>
+  <div class="resize-emoji-picker resize-ne"></div>
+  <div class="resize-emoji-picker resize-nw"></div>
+  <div class="resize-emoji-picker resize-se"></div>
+  <div class="resize-emoji-picker resize-sw"></div>
+</div>
+
+<!-- Custom Emoji Modal -->
+<div id="custom-emoji-overlay" class="custom-emoji-overlay"></div>
+<div id="custom-emoji-movable-window" class="custom-emoji-movable-window overflow-hidden" style="display: none; width: 500px; height: 600px;">
+  <div id="custom-emoji-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">📁 Gestionar emojis personalizados</span>
+    </div>
+    <button id="close-custom-emoji-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="custom-emoji-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div class="resize-custom-emoji resize-n"></div>
+  <div class="resize-custom-emoji resize-s"></div>
+  <div class="resize-custom-emoji resize-e"></div>
+  <div class="resize-custom-emoji resize-w"></div>
+  <div class="resize-custom-emoji resize-ne"></div>
+  <div class="resize-custom-emoji resize-nw"></div>
+  <div class="resize-custom-emoji resize-se"></div>
+  <div class="resize-custom-emoji resize-sw"></div>
+</div>
+
+<!-- Custom Sticker Modal -->
+<div id="custom-sticker-overlay" class="custom-sticker-overlay"></div>
+<div id="custom-sticker-movable-window" class="custom-sticker-movable-window overflow-hidden" style="display: none; width: 500px; height: 600px;">
+  <div id="custom-sticker-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">🖼️ Gestionar stickers personalizados</span>
+    </div>
+    <button id="close-custom-sticker-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="custom-sticker-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div class="resize-custom-sticker resize-n"></div>
+  <div class="resize-custom-sticker resize-s"></div>
+  <div class="resize-custom-sticker resize-e"></div>
+  <div class="resize-custom-sticker resize-w"></div>
+  <div class="resize-custom-sticker resize-ne"></div>
+  <div class="resize-custom-sticker resize-nw"></div>
+  <div class="resize-custom-sticker resize-se"></div>
+  <div class="resize-custom-sticker resize-sw"></div>
+</div>
+
+<!-- Editor Modal -->
+<div id="editor-overlay" class="editor-overlay"></div>
+<div id="editor-movable-window" class="editor-movable-window overflow-hidden" style="display: none; width: 700px; height: 600px;">
+  <div id="editor-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">✏️ Customiza tus mensajes</span>
+    </div>
+    <button id="close-editor-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div class="animation-preview-area">
+    <div id="animation-preview"><div class="animation-ball"></div></div>
+    <div class="animation-label">Vista previa de animación</div>
+  </div>
+  <div class="editor-tabs"></div>
+  <div class="editor-tab-content"></div>
+  <div class="editor-bottom-actions">
+    <button id="editor-send" class="btn primary">Enviar mensaje</button>
+    <button id="editor-save-style" class="btn">Guardar estilo</button>
+    <button id="editor-cancel" class="btn-cancel">Cancelar</button>
+  </div>
+  <div class="resize-editor resize-n"></div>
+  <div class="resize-editor resize-s"></div>
+  <div class="resize-editor resize-e"></div>
+  <div class="resize-editor resize-w"></div>
+  <div class="resize-editor resize-ne"></div>
+  <div class="resize-editor resize-nw"></div>
+  <div class="resize-editor resize-se"></div>
+  <div class="resize-editor resize-sw"></div>
+</div>
+
+<!-- Cache Cleaner Modal -->
+<div id="cache-cleaner-overlay" class="cache-cleaner-overlay"></div>
+<div id="cache-cleaner-movable-window" class="cache-cleaner-movable-window overflow-hidden" style="display: none; width: 600px; height: 500px;">
+  <div id="cache-cleaner-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Limpiar almacenamiento</span>
+    </div>
+    <button id="close-cache-cleaner-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div style="display: flex; gap:8px; padding:12px; border-bottom:1px solid var(--modal-input-border); flex-wrap:wrap;">
+    <button id="storage-local-btn" class="storage-tab active" data-storage="local">📦 localStorage</button>
+    <button id="storage-session-btn" class="storage-tab" data-storage="session">🔄 sessionStorage</button>
+    <button id="storage-cache-btn" class="storage-tab" data-storage="cache">💾 Cache Storage</button>
+    <button id="delete-all-storage-btn" class="storage-tab danger" style="background:#7f1a1a; color:white;">⚠️ BORRAR TODO</button>
+  </div>
+  <div id="cache-cleaner-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div style="display:flex; justify-content:flex-end; gap:12px; padding:16px; border-top:1px solid var(--modal-input-border);">
+    <button id="cache-cancel-btn" class="btn-cancel">Cancelar</button>
+    <button id="cache-accept-btn" class="btn primary">Eliminar seleccionados</button>
+  </div>
+  <div class="resize-cache-cleaner resize-n"></div>
+  <div class="resize-cache-cleaner resize-s"></div>
+  <div class="resize-cache-cleaner resize-e"></div>
+  <div class="resize-cache-cleaner resize-w"></div>
+  <div class="resize-cache-cleaner resize-ne"></div>
+  <div class="resize-cache-cleaner resize-nw"></div>
+  <div class="resize-cache-cleaner resize-se"></div>
+  <div class="resize-cache-cleaner resize-sw"></div>
+</div>
+
+<!-- Color Picker + Image Eyedropper Modal -->
+<div id="color-picker-overlay" class="color-picker-overlay" style="display:none;"></div>
+
+<div id="color-picker-movable-window" class="color-picker-movable-window overflow-hidden" style="display:none; width:420px; height:420px;">
+  <div id="color-picker-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Selector de color</span>
+    </div>
+    <button id="close-color-picker-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" aria-label="Cerrar">
+      ✕
+    </button>
   </div>
 
-  <div class="resize-handle resize-n"></div>
-  <div class="resize-handle resize-s"></div>
-  <div class="resize-handle resize-e"></div>
-  <div class="resize-handle resize-w"></div>
-  <div class="resize-handle resize-ne"></div>
-  <div class="resize-handle resize-nw"></div>
-  <div class="resize-handle resize-se"></div>
-  <div class="resize-handle resize-sw"></div>
+  <div id="color-picker-tabs" style="display:flex; gap:8px; padding:12px; border-bottom:1px solid var(--modal-input-border);">
+    <button id="tab-color" class="tab active" data-tab="color">Color</button>
+    <button id="tab-image" class="tab" data-tab="image">Imagen</button>
+    <button id="tab-history" class="tab" data-tab="history">Historial</button>
+  </div>
+
+  <div id="color-picker-inner-content" style="height: calc(100% - 112px); overflow:auto; padding:12px;">
+    <!-- Contenido dinámico: renderColorPicker() y renderImagePicker() lo rellenan -->
+  </div>
+
+  <div style="display:flex; gap:8px; justify-content:flex-end; padding:12px; border-top:1px solid var(--modal-input-border);">
+    <button id="color-picker-cancel" class="btn-cancel">Cancelar</button>
+    <button id="color-picker-insert" class="btn primary">Insertar</button>
+  </div>
+
+  <div class="resize-color-picker resize-n"></div>
+  <div class="resize-color-picker resize-s"></div>
+  <div class="resize-color-picker resize-e"></div>
+  <div class="resize-color-picker resize-w"></div>
+  <div class="resize-color-picker resize-ne"></div>
+  <div class="resize-color-picker resize-nw"></div>
+  <div class="resize-color-picker resize-se"></div>
+  <div class="resize-color-picker resize-sw"></div>
+</div>
+
+<!-- Minimal styles required for overlay and magnifier (puedes mover a tu CSS) -->
+<style>
+  .color-picker-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 10000; }
+  .color-picker-movable-window { position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); background: var(--modal-bg, #fff); color: var(--modal-text, #111); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); z-index: 10001; }
+  .tab { background: transparent; border: 1px solid transparent; padding:6px 10px; border-radius:8px; cursor:pointer; }
+  .tab.active { background: var(--modal-input-bg, #f3f4f6); border-color: var(--modal-input-border, #e5e7eb); }
+  #image-canvas { display:block; max-width:100%; border-radius:6px; background:#f8f8f8; touch-action: none; }
+  #image-overlay { position:absolute; left:0; top:0; pointer-events:none; width:100%; height:100%; }
+  .cm-search-highlight { background-color: rgba(255,235,59,0.6); border-radius: 3px; }
+  .magnifier-lens { position: absolute; pointer-events: none; border-radius: 999px; box-shadow: 0 4px 18px rgba(0,0,0,0.35); border: 2px solid #fff; overflow: hidden; z-index: 10002; }
+  .transient-notif { position: fixed; left: 50%; transform: translateX(-50%); bottom: 90px; background: rgba(0,0,0,0.85); color: #fff; padding:8px 12px; border-radius:8px; z-index:10003; opacity:0; transition:opacity .18s; }
+  .transient-notif.visible { opacity:1; }
+</style>
+
+<!-- Search Modal (solo arrastre, sin redimensionado) -->
+<div id="search-overlay" class="search-overlay"></div>
+<div id="search-movable-window" class="search-movable-window overflow-hidden" style="display: none; width: 320px; min-height: 150px;">
+  <div id="search-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Buscar en CSS</span>
+    </div>
+    <button id="close-search-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="search-inner-content" class="p-0 overflow-auto"></div>
 </div>
 
 <script>
   import { initThemeManager } from '../scripts/themeManager.js';
   initThemeManager();
 </script>
+
 <script>
-  const input = document.getElementById('input');
-  
-  function updateInputState() {
-    if (!input) return;
-    const hasContent = input.innerText.trim().length > 0 || input.querySelector('img');
-    if (hasContent) {
-      input.classList.remove('empty');
-    } else {
-      input.classList.add('empty');
+  const input = document.getElementById("input");
+  input.addEventListener("input", () => {
+    if (input.innerHTML === "<br>" || input.innerHTML.trim() === "") {
+      input.innerHTML = "";
     }
-  }
-  
-  if (input) {
-    const observer = new MutationObserver(updateInputState);
-    observer.observe(input, { childList: true, subtree: true, characterData: true });
-    input.addEventListener('input', updateInputState);
-    input.addEventListener('blur', updateInputState);
-    input.addEventListener('keyup', updateInputState);
-    updateInputState();
-  }
+  });
 </script>
 
 <script>

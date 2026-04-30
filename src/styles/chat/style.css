@@ -1,9 +1,17 @@
+@import url('./emojiFont.css');
 @import url('./themes.css');
 @import url('./reset.css');
 @import url('./reply-popup.css');
 @import url('./reply-indicator.css');
 @import url('./reactions.css');
 @import url('./modals.css');
+@import url('./emojiPicker.css');
+@import url('./customEmoji.css');
+@import url('./customSticker.css');
+@import url('./editorModal.css');
+@import url('./colorPicker.css');
+@import url('./cacheCleaner.css');
+@import url('./searchModal.css');
 @import url('./scrollButton.css');
 @import url('./emoji-messages.css');
 @import url('./animations.css');

@@ -47,48 +47,6 @@
   text-overflow: ellipsis;
 }
 
-.reply-quote {
-  background: rgba(255, 255, 255, 0.05);
-  border-left: 3px solid #14b8a6;
-  border-radius: 6px;
-  padding: 6px 10px;
-  margin-bottom: 8px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 120ms ease;
-}
-
-.reply-quote:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.message.me .reply-quote {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.reply-quote-author {
-  font-weight: 600;
-  color: #2dd4bf;
-  margin-bottom: 4px;
-  font-size: 11px;
-}
-
-.reply-quote-text {
-  color: #cbd5e1;
-  word-break: break-word;
-  white-space: pre-wrap;
-}
-
-.message.me .reply-quote-text {
-  color: #ccfbf1;
-}
-
-.reply-separator {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 6px 0;
-}
-
 .message-text {
   word-break: break-word;
   white-space: pre-wrap;

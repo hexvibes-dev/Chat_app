@@ -588,7 +588,7 @@ function addResizeHandlesToModal(element) {
   const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
   handles.forEach(dir => {
     const handle = document.createElement('div');
-    handle.className = `resize-handle resize-${dir}`;
+    handle.className = `resize-theme-modal resize-${dir}`;
     element.appendChild(handle);
   });
 }

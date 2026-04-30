@@ -1,176 +1,88 @@
-// src/scripts/editor/emojiPolyfill.js
-
-import twemoji from 'twemoji';
-
 let activeObserver = null;
 let processedNodes = new WeakSet();
 
-const SKIN_TONE_MODIFIERS = {
-  'light': 'рҹҸ»',
-  'medium-light': 'рҹҸј',
-  'medium': 'рҹҸҪ',
-  'medium-dark': 'рҹҸҫ',
-  'dark': 'рҹҸҝ'
-};
-
-let currentSkinTone = localStorage.getItem('emoji_skin_tone') || 'default';
-
-function getSkinToneChar() {
-  if (currentSkinTone === 'default') return '';
-  return SKIN_TONE_MODIFIERS[currentSkinTone] || '';
+function isEmojiCharacter(text) {
+  const emojiRegex = /(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)(?:\u200D(\p{Emoji_Presentation}|\p{Emoji}\uFE0F))*|(\p{Extended_Pictographic})/gu;
+  return emojiRegex.test(text);
 }
 
-export function setSkinTone(tone) {
-  currentSkinTone = tone;
-  localStorage.setItem('emoji_skin_tone', tone);
-}
+function wrapEmojiTextNode(textNode) {
+  const text = textNode.textContent;
+  if (!text) return;
+  const matches = [...text.matchAll(/(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)(?:\u200D(\p{Emoji_Presentation}|\p{Emoji}\uFE0F))*|(\p{Extended_Pictographic})/gu)];
+  if (!matches.length) return;
 
-export function getSkinTone() {
-  return currentSkinTone;
-}
-
-export function applySkinToneToEmoji(emoji) {
-  if (currentSkinTone === 'default') return emoji;
-  const toneChar = SKIN_TONE_MODIFIERS[currentSkinTone];
-  if (!toneChar) return emoji;
-  
-  if (/[\u{1F3FB}-\u{1F3FF}]/u.test(emoji)) return emoji;
-  
-  const skinToneBaseEmojis = [
-    'рҹ‘Ӣ', 'рҹӨҡ', 'рҹ–җпёҸ', 'вңӢ', 'рҹ––', 'рҹ‘Ң', 'рҹӨҢ', 'рҹӨҸ', 'вңҢпёҸ', 'рҹӨһ', 'рҹ«°', 'рҹӨҹ', 'рҹӨҳ', 'рҹӨҷ',
-    'рҹ‘Ҳ', 'рҹ‘ү', 'рҹ‘Ҷ', 'рҹ–•', 'рҹ‘Ү', 'вҳқпёҸ', 'рҹ‘Қ', 'рҹ‘Һ', 'вңҠ', 'рҹ‘Ҡ', 'рҹӨӣ', 'рҹӨң', 'рҹ‘Ҹ', 'рҹҷҢ',
-    'рҹ«¶', 'рҹ‘җ', 'рҹӨІ', 'рҹӨқ', 'рҹҷҸ', 'рҹ’Ә', 'рҹҰө', 'рҹҰ¶', 'рҹ‘Ӯ', 'рҹҰ»', 'рҹ‘ғ', 'рҹ‘¶', 'рҹ§’', 'рҹ‘Ұ',
-    'рҹ‘§', 'рҹ§‘', 'рҹ‘©', 'рҹ§”', 'рҹ‘Ё', 'рҹ‘®', 'рҹ•өпёҸ', 'рҹ’Ӯ', 'рҹҘ·', 'рҹ‘·', 'рҹ«…', 'рҹӨҙ', 'рҹ‘ё', 'рҹ‘°',
-    'рҹӨө', 'рҹ‘ј', 'рҹҺ…', 'рҹӨ¶', 'рҹҰё', 'рҹҰ№', 'рҹ§ҷ', 'рҹ§ҡ', 'рҹ§ӣ', 'рҹ§ң', 'рҹ§қ', 'рҹ’Ҷ', 'рҹ’Ү', 'рҹҡ¶',
-    'рҹ§Қ', 'рҹ§Һ', 'рҹҸғ', 'вӣ№пёҸ', 'рҹҸӢпёҸ', 'рҹҡҙ', 'рҹҡө', 'рҹӨё', 'рҹҸҢпёҸ', 'рҹҸ„', 'рҹҸҠ', 'рҹӨҪ', 'рҹ§ҳ'
-  ];
-  
-  let normalized = emoji.normalize('NFC');
-  for (const base of skinToneBaseEmojis) {
-    if (normalized === base || normalized.startsWith(base)) {
-      return normalized + toneChar;
+  let lastIndex = 0;
+  const fragment = document.createDocumentFragment();
+  for (const match of matches) {
+    if (match.index > lastIndex) {
+      fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
     }
+    const span = document.createElement('span');
+    span.className = 'emoji';
+    span.textContent = match[0];
+    span.style.fontFamily = "'Noto Color Emoji', 'Segoe UI Emoji', 'Apple Color Emoji', 'Android Emoji', 'EmojiOne Color', 'Twemoji Mozilla', sans-serif";
+    span.style.fontSize = 'inherit';
+    span.style.display = 'inline-block';
+    fragment.appendChild(span);
+    lastIndex = match.index + match[0].length;
   }
-  return emoji;
+  if (lastIndex < text.length) {
+    fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
+  }
+  textNode.parentNode.replaceChild(fragment, textNode);
+}
+
+function processNode(node) {
+  if (!node || processedNodes.has(node)) return;
+
+  if (node.nodeType === Node.TEXT_NODE) {
+    const parent = node.parentElement;
+    if (parent && parent.closest('.message')) {
+      return;
+    }
+    if (isEmojiCharacter(node.textContent)) {
+      wrapEmojiTextNode(node);
+    }
+  } else if (node.nodeType === Node.ELEMENT_NODE) {
+    if (node.classList?.contains('message')) {
+      return; 
+    }
+    if (node.classList?.contains('emoji') || node.classList?.contains('emoji-item') || node.classList?.contains('category-btn')) {
+      return;
+    }
+    Array.from(node.childNodes).forEach(child => processNode(child));
+  }
+  processedNodes.add(node);
 }
 
 export function polyfillEmojis(container) {
   if (!container) return null;
-  
-  const options = {
-    base: 'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/',
-    ext: '.svg',
-    className: 'twemoji-emoji',
-    size: 'svg',
-    folder: 'svg'
-  };
-  
-  const parse = (el) => {
-    if (!el || processedNodes.has(el)) return;
-    
-    const textNodes = [];
-    const walker = document.createTreeWalker(
-      el,
-      NodeFilter.SHOW_TEXT,
-      {
-        acceptNode: (node) => {
-          const parent = node.parentElement;
-          if (parent && (parent.classList?.contains('twemoji-emoji') || 
-              parent.classList?.contains('emoji-item') === false)) {
-            return NodeFilter.FILTER_SKIP;
-          }
-          if (node.textContent && /[\u{1F300}-\u{1FAFF}]/u.test(node.textContent)) {
-            return NodeFilter.FILTER_ACCEPT;
-          }
-          return NodeFilter.FILTER_SKIP;
-        }
-      }
-    );
-    
-    while (walker.nextNode()) {
-      textNodes.push(walker.currentNode);
-    }
-    
-    textNodes.forEach(textNode => {
-      let text = textNode.textContent;
-      if (currentSkinTone !== 'default') {
-        const skinToneBaseEmojis = [
-          'рҹ‘Ӣ', 'рҹӨҡ', 'рҹ–җпёҸ', 'вңӢ', 'рҹ––', 'рҹ‘Ң', 'рҹӨҢ', 'рҹӨҸ', 'вңҢпёҸ', 'рҹӨһ', 'рҹ«°', 'рҹӨҹ', 'рҹӨҳ', 'рҹӨҷ',
-          'рҹ‘Ҳ', 'рҹ‘ү', 'рҹ‘Ҷ', 'рҹ–•', 'рҹ‘Ү', 'вҳқпёҸ', 'рҹ‘Қ', 'рҹ‘Һ', 'вңҠ', 'рҹ‘Ҡ', 'рҹӨӣ', 'рҹӨң', 'рҹ‘Ҹ', 'рҹҷҢ',
-          'рҹ«¶', 'рҹ‘җ', 'рҹӨІ', 'рҹӨқ', 'рҹҷҸ', 'рҹ’Ә', 'рҹҰө', 'рҹҰ¶', 'рҹ‘Ӯ', 'рҹҰ»', 'рҹ‘ғ', 'рҹ‘¶', 'рҹ§’', 'рҹ‘Ұ',
-          'рҹ‘§', 'рҹ§‘', 'рҹ‘©', 'рҹ§”', 'рҹ‘Ё', 'рҹ‘®', 'рҹ•өпёҸ', 'рҹ’Ӯ', 'рҹҘ·', 'рҹ‘·', 'рҹ«…', 'рҹӨҙ', 'рҹ‘ё', 'рҹ‘°',
-          'рҹӨө', 'рҹ‘ј', 'рҹҺ…', 'рҹӨ¶', 'рҹҰё', 'рҹҰ№', 'рҹ§ҷ', 'рҹ§ҡ', 'рҹ§ӣ', 'рҹ§ң', 'рҹ§қ', 'рҹ’Ҷ', 'рҹ’Ү', 'рҹҡ¶',
-          'рҹ§Қ', 'рҹ§Һ', 'рҹҸғ', 'вӣ№пёҸ', 'рҹҸӢпёҸ', 'рҹҡҙ', 'рҹҡө', 'рҹӨё', 'рҹҸҢпёҸ', 'рҹҸ„', 'рҹҸҠ', 'рҹӨҪ', 'рҹ§ҳ'
-        ];
-        for (const base of skinToneBaseEmojis) {
-          const regex = new RegExp(`(${base})(?![\u{1F3FB}-\u{1F3FF}])`, 'gu');
-          text = text.replace(regex, `$1${SKIN_TONE_MODIFIERS[currentSkinTone]}`);
-        }
-      }
-      if (text !== textNode.textContent) {
-        const span = document.createElement('span');
-        span.className = 'emoji-text-replacement';
-        span.textContent = text;
-        textNode.parentNode.replaceChild(span, textNode);
-      }
-    });
-    
-    const targets = el.querySelectorAll('.emoji-item, .category-btn, .emoji-section-title, .emoji-section');
-    targets.forEach(node => {
-      if (processedNodes.has(node)) return;
-      if (!node.classList.contains('twemoji-processed')) {
-        node.classList.add('twemoji-processed');
-        twemoji.parse(node, options);
-        processedNodes.add(node);
-      }
-    });
-    processedNodes.add(el);
-  };
-  
-  const style = () => {
-    const twemojis = document.querySelectorAll('.twemoji-emoji');
-    twemojis.forEach(img => {
-      if (img.style.cssText !== 'width:1.2em;height:1.2em;vertical-align:middle;display:inline-block;object-fit:contain;') {
-        img.style.cssText = 'width:1.2em;height:1.2em;vertical-align:middle;display:inline-block;object-fit:contain;';
-      }
-    });
-    document.querySelectorAll('.category-btn .twemoji-emoji').forEach(img => {
-      img.style.width = '22px';
-      img.style.height = '22px';
-    });
-    document.querySelectorAll('.emoji-item .twemoji-emoji').forEach(img => {
-      img.style.width = '32px';
-      img.style.height = '32px';
-    });
-  };
-  
-  parse(container);
-  style();
-  
+  processNode(container);
+
   if (activeObserver) activeObserver.disconnect();
-  
-  let parseTimeout = null;
-  const throttledParse = () => {
-    if (parseTimeout) return;
-    parseTimeout = setTimeout(() => {
-      parse(container);
-      style();
-      parseTimeout = null;
+
+  let timeout = null;
+  const debouncedProcess = () => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      processNode(container);
+      timeout = null;
     }, 50);
   };
-  
-  const observer = new MutationObserver((mutations) => {
-    let needsParse = false;
+
+  const observer = new MutationObserver(mutations => {
+    let needsProcess = false;
     for (const mutation of mutations) {
-      if (mutation.addedNodes.length) {
-        needsParse = true;
+      if (mutation.addedNodes.length || mutation.type === 'characterData') {
+        needsProcess = true;
         break;
       }
     }
-    if (needsParse) throttledParse();
+    if (needsProcess) debouncedProcess();
   });
-  
-  observer.observe(container, { childList: true, subtree: true });
+
+  observer.observe(container, { childList: true, subtree: true, characterData: true });
   activeObserver = observer;
   return observer;
 }
@@ -181,4 +93,14 @@ export function destroyEmojiPolyfill() {
     activeObserver = null;
   }
   processedNodes.clear();
+}
+
+export function setSkinTone(tone) {
+  localStorage.setItem('emoji_skin_tone', tone);
+}
+export function getSkinTone() {
+  return localStorage.getItem('emoji_skin_tone') || 'default';
+}
+export function applySkinToneToEmoji(emoji) {
+  return emoji;
 }
