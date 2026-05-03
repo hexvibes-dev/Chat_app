@@ -12,12 +12,13 @@ let startTranslateX = 0, startTranslateY = 0;
 
 const TUTORIAL_KEY = 'floating_preview_tutorial_seen';
 const tutorialSteps = [
-  "¡Bienvenido al Editor! Personaliza tus mensajes.",
+  "Bienvenido al editor puto",
   "Usa 'bubble' para el estilo visual de la burbuja, 'text' para el texto.",
   "Usa 'anima' para animar la burbuja y 'anima-text' para animar el texto.",
   "También puedes personalizar la hora con 'hour'.",
   "Las animaciones se ven en la bolita dentro del editor.",
   "Guarda tus estilos en la pestaña Custom.",
+  "Aqui veras la preview en tiempo real de tus cambios",
   "¡Arrastra esta burbuja a donde quieras!"
 ];
 

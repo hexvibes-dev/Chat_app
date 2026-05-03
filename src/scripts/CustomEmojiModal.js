@@ -5,7 +5,6 @@ import {
   canCreateCategory,
   createCategory,
   addCustomEmoji,
-  processImageFile,
   canAddEmojiToCategory,
   refreshCustomEmojisInPicker,
   removeCustomEmoji,
@@ -23,16 +22,17 @@ let currentImageDataUrl = null;
 let cropCanvas = null;
 let cropCtx = null;
 let cropImage = null;
-let cropZoom = 1;
 let cropRotation = 0;
-let cropOffsetX = 0, cropOffsetY = 0;
-let cropImageOriginalWidth = 0, cropImageOriginalHeight = 0;
-let isDraggingCrop = false;
-let dragStartX = 0, dragStartY = 0;
-let dragStartOffsetX = 0, dragStartOffsetY = 0;
 let pendingCategoryForUpload = null;
 let isQuickUpload = false;
 let confirmPopup = null;
+
+let cropTransform = { zoom: 1, posX: 0, posY: 0 };
+let isDraggingCropImage = false;
+let cropDragStart = { x: 0, y: 0 };
+let cropLastTransform = { zoom: 1, posX: 0, posY: 0 };
+let cropInitialDistance = 0;
+let cropIsPinching = false;
 
 function showTransientNotification(text, duration = 2000) {
   let notif = document.querySelector('.transient-notif');
@@ -247,15 +247,146 @@ function showCategorySelectorForUpload(croppedDataUrl) {
   });
 }
 
+function redrawCropCanvas() {
+  if (!cropCanvas || !cropCtx || !cropImage) return;
+  const canvas = cropCanvas;
+  const ctx = cropCtx;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.translate(canvas.width / 2 + cropTransform.posX, canvas.height / 2 + cropTransform.posY);
+  ctx.scale(cropTransform.zoom, cropTransform.zoom);
+  ctx.rotate(cropRotation * Math.PI / 180);
+  ctx.drawImage(cropImage, -cropImage.width / 2, -cropImage.height / 2);
+  ctx.restore();
+}
+
+function initCropZoomPan() {
+  if (!cropCanvas || !cropCtx || !cropImage) return;
+  const canvas = cropCanvas;
+  cropTransform.zoom = 1;
+  cropTransform.posX = 0;
+  cropTransform.posY = 0;
+  redrawCropCanvas();
+  function getCanvasCoords(clientX, clientY) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY
+    };
+  }
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+    let newZoom = cropTransform.zoom * delta;
+    newZoom = Math.min(Math.max(newZoom, 0.5), 8);
+    const coords = getCanvasCoords(e.clientX, e.clientY);
+    const before = {
+      x: (coords.x - canvas.width/2 - cropTransform.posX) / cropTransform.zoom,
+      y: (coords.y - canvas.height/2 - cropTransform.posY) / cropTransform.zoom
+    };
+    cropTransform.zoom = newZoom;
+    const after = {
+      x: (coords.x - canvas.width/2 - cropTransform.posX) / cropTransform.zoom,
+      y: (coords.y - canvas.height/2 - cropTransform.posY) / cropTransform.zoom
+    };
+    cropTransform.posX += (before.x - after.x) * cropTransform.zoom;
+    cropTransform.posY += (before.y - after.y) * cropTransform.zoom;
+    redrawCropCanvas();
+  });
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      const dx = t1.clientX - t2.clientX;
+      const dy = t1.clientY - t2.clientY;
+      cropInitialDistance = Math.hypot(dx, dy);
+      cropIsPinching = true;
+    }
+  });
+  canvas.addEventListener('touchmove', (e) => {
+    if (cropIsPinching && e.touches.length === 2) {
+      e.preventDefault();
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      const dx = t1.clientX - t2.clientX;
+      const dy = t1.clientY - t2.clientY;
+      const newDistance = Math.hypot(dx, dy);
+      const scale = newDistance / cropInitialDistance;
+      let newZoom = cropTransform.zoom * scale;
+      newZoom = Math.min(Math.max(newZoom, 0.5), 8);
+      if (newZoom !== cropTransform.zoom) {
+        const centerX = (t1.clientX + t2.clientX) / 2;
+        const centerY = (t1.clientY + t2.clientY) / 2;
+        const coords = getCanvasCoords(centerX, centerY);
+        const before = {
+          x: (coords.x - canvas.width/2 - cropTransform.posX) / cropTransform.zoom,
+          y: (coords.y - canvas.height/2 - cropTransform.posY) / cropTransform.zoom
+        };
+        cropTransform.zoom = newZoom;
+        const after = {
+          x: (coords.x - canvas.width/2 - cropTransform.posX) / cropTransform.zoom,
+          y: (coords.y - canvas.height/2 - cropTransform.posY) / cropTransform.zoom
+        };
+        cropTransform.posX += (before.x - after.x) * cropTransform.zoom;
+        cropTransform.posY += (before.y - after.y) * cropTransform.zoom;
+        redrawCropCanvas();
+      }
+    }
+  });
+  canvas.addEventListener('touchend', () => { cropIsPinching = false; });
+  canvas.addEventListener('mousedown', (e) => {
+    isDraggingCropImage = true;
+    cropLastTransform = { zoom: cropTransform.zoom, posX: cropTransform.posX, posY: cropTransform.posY };
+    cropDragStart = { x: e.clientX, y: e.clientY };
+    canvas.style.cursor = 'grabbing';
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1 && !cropIsPinching) {
+      e.preventDefault();
+      isDraggingCropImage = true;
+      cropLastTransform = { zoom: cropTransform.zoom, posX: cropTransform.posX, posY: cropTransform.posY };
+      cropDragStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      canvas.style.cursor = 'grabbing';
+    }
+  });
+  function onCropMove(clientX, clientY) {
+    if (!isDraggingCropImage) return;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const dx = (clientX - cropDragStart.x) * scaleX;
+    const dy = (clientY - cropDragStart.y) * scaleY;
+    cropTransform.posX = cropLastTransform.posX + dx;
+    cropTransform.posY = cropLastTransform.posY + dy;
+    redrawCropCanvas();
+  }
+  window.addEventListener('mousemove', (e) => onCropMove(e.clientX, e.clientY));
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 1 && isDraggingCropImage && !cropIsPinching) {
+      e.preventDefault();
+      onCropMove(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  });
+  window.addEventListener('mouseup', () => { isDraggingCropImage = false; canvas.style.cursor = 'grab'; });
+  window.addEventListener('touchend', () => { isDraggingCropImage = false; canvas.style.cursor = 'grab'; });
+  canvas.style.cursor = 'grab';
+  canvas.addEventListener('dblclick', () => {
+    cropTransform = { zoom: 1, posX: 0, posY: 0 };
+    redrawCropCanvas();
+  });
+}
+
 function showCropModal(onSave) {
   if (cropModal) return;
-
   cropOverlay = document.createElement('div');
   cropOverlay.className = 'modal-blur-overlay';
   cropOverlay.style.zIndex = '20001';
   document.body.appendChild(cropOverlay);
   cropOverlay.classList.add('visible');
-
   cropModal = document.createElement('div');
   cropModal.className = 'add-reaction-modal enter';
   cropModal.style.zIndex = '20002';
@@ -285,134 +416,65 @@ function showCropModal(onSave) {
   cropModal.style.left = '50%';
   cropModal.style.top = '50%';
   cropModal.style.transform = 'translate(-50%, -50%)';
-
   const canvas = cropModal.querySelector('#crop-canvas');
   cropCanvas = canvas;
   cropCtx = canvas.getContext('2d');
-
   const img = new Image();
   img.onload = () => {
     cropImage = img;
-    cropImageOriginalWidth = img.width;
-    cropImageOriginalHeight = img.height;
-    cropZoom = 1;
-    cropRotation = 0;
-    cropOffsetX = 0;
-    cropOffsetY = 0;
-    updateCropCanvasSize();
-    drawCropImage();
+    const container = canvas.parentElement;
+    const size = container.clientWidth;
+    canvas.width = size;
+    canvas.height = size;
+    redrawCropCanvas();
+    initCropZoomPan();
   };
   img.src = currentImageDataUrl;
-
   function updateCropCanvasSize() {
     const container = canvas.parentElement;
     const size = container.clientWidth;
     canvas.width = size;
     canvas.height = size;
+    redrawCropCanvas();
   }
-
-  function drawCropImage() {
-    if (!cropImage) return;
-    cropCtx.clearRect(0, 0, canvas.width, canvas.height);
-    cropCtx.save();
-    cropCtx.translate(canvas.width / 2, canvas.height / 2);
-    cropCtx.rotate(cropRotation * Math.PI / 180);
-    const scaledWidth = cropImageOriginalWidth * cropZoom;
-    const scaledHeight = cropImageOriginalHeight * cropZoom;
-    const drawX = cropOffsetX - scaledWidth / 2;
-    const drawY = cropOffsetY - scaledHeight / 2;
-    cropCtx.drawImage(cropImage, drawX, drawY, scaledWidth, scaledHeight);
-    cropCtx.restore();
-  }
-
-  function handleMouseDown(e) {
-    isDraggingCrop = true;
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const mouseX = (e.clientX - rect.left) * scaleX;
-    const mouseY = (e.clientY - rect.top) * scaleY;
-    dragStartX = mouseX;
-    dragStartY = mouseY;
-    dragStartOffsetX = cropOffsetX;
-    dragStartOffsetY = cropOffsetY;
-    canvas.style.cursor = 'grabbing';
-  }
-
-  function handleMouseMove(e) {
-    if (!isDraggingCrop) return;
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const mouseX = (e.clientX - rect.left) * scaleX;
-    const mouseY = (e.clientY - rect.top) * scaleY;
-    const deltaX = mouseX - dragStartX;
-    const deltaY = mouseY - dragStartY;
-    cropOffsetX = dragStartOffsetX + deltaX;
-    cropOffsetY = dragStartOffsetY + deltaY;
-    drawCropImage();
-  }
-
-  function handleMouseUp() {
-    isDraggingCrop = false;
-    canvas.style.cursor = 'grab';
-  }
-
-  canvas.addEventListener('mousedown', handleMouseDown);
-  window.addEventListener('mousemove', handleMouseMove);
-  window.addEventListener('mouseup', handleMouseUp);
-
-  cropModal.querySelector('#crop-zoom-in').addEventListener('click', () => {
-    cropZoom = Math.min(cropZoom + 0.1, 3);
-    drawCropImage();
+  window.addEventListener('resize', () => {
+    if (cropModal) updateCropCanvasSize();
   });
   cropModal.querySelector('#crop-zoom-out').addEventListener('click', () => {
-    cropZoom = Math.max(cropZoom - 0.1, 0.5);
-    drawCropImage();
+    cropTransform.zoom = Math.max(0.5, cropTransform.zoom - 0.1);
+    redrawCropCanvas();
+  });
+  cropModal.querySelector('#crop-zoom-in').addEventListener('click', () => {
+    cropTransform.zoom = Math.min(8, cropTransform.zoom + 0.1);
+    redrawCropCanvas();
   });
   cropModal.querySelector('#crop-rotate-left').addEventListener('click', () => {
     cropRotation = (cropRotation - 90) % 360;
-    drawCropImage();
+    redrawCropCanvas();
   });
   cropModal.querySelector('#crop-rotate-right').addEventListener('click', () => {
     cropRotation = (cropRotation + 90) % 360;
-    drawCropImage();
+    redrawCropCanvas();
   });
   cropModal.querySelector('#crop-reset').addEventListener('click', () => {
-    cropZoom = 1;
+    cropTransform = { zoom: 1, posX: 0, posY: 0 };
     cropRotation = 0;
-    cropOffsetX = 0;
-    cropOffsetY = 0;
-    drawCropImage();
+    redrawCropCanvas();
   });
-
   cropModal.querySelector('#crop-cancel').addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
     hideCropModal();
   });
-
   cropModal.querySelector('#crop-save').addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (cropCanvas.width === 0 || cropCanvas.height === 0) return;
     const croppedDataUrl = cropCanvas.toDataURL('image/png');
     hideCropModal();
-    if (onSave) {
-      onSave(croppedDataUrl);
-    }
+    if (onSave) onSave(croppedDataUrl);
   });
-
-  window.addEventListener('resize', () => {
-    if (cropModal) {
-      updateCropCanvasSize();
-      drawCropImage();
-    }
-  });
-
   function hideCropModal() {
-    window.removeEventListener('mousemove', handleMouseMove);
-    window.removeEventListener('mouseup', handleMouseUp);
     if (cropModal) {
       cropModal.classList.add('leave');
       setTimeout(() => {
@@ -430,6 +492,9 @@ function showCropModal(onSave) {
     cropImage = null;
     cropCanvas = null;
     cropCtx = null;
+    cropTransform = { zoom: 1, posX: 0, posY: 0 };
+    isDraggingCropImage = false;
+    cropIsPinching = false;
   }
 }
 
@@ -586,7 +651,6 @@ function setupInteractForModal() {
       }
     }
   });
-
   interact(headerElement).draggable({
     inertia: false,
     manualStart: false,
@@ -677,7 +741,6 @@ function renderModalContent() {
   }
   html += `</div>`;
   contentDiv.innerHTML = html;
-
   document.querySelectorAll('.category-header').forEach(header => {
     const arrowSpan = header.querySelector('[id^="category-arrow-"]');
     if (arrowSpan) {

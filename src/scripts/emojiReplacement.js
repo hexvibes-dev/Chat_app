@@ -1,8 +1,23 @@
 // src/scripts/emojiReplacement.js
 export const emojiReplacementMap = {
-  '🫠': { url: '/emojis/512.webp', type: 'webp' },
-  '🥺': { url: '/emojis/512-18.webp', type: 'webp' },
-  '😭': { url: '/img/emojis/cry.svg', type: 'svg' },
+  '🫠': {
+    url: '/emojis/512.webp',
+    type: 'webp',
+    duration: 2000,
+    iterations: 1
+  },
+  '🥺': {
+    url: '/emojis/512-18.webp',
+    type: 'webp',
+    duration: 2500,
+    iterations: 1
+  },
+  '😭': {
+    url: '/img/emojis/cry.svg',
+    type: 'svg',
+    duration: 3000,
+    iterations: 1
+  }
 };
 
 export function shouldReplaceEmoji(text) {
@@ -16,8 +31,9 @@ export function replaceEmojisInHtml(html, skipReplacement = false) {
   if (!html) return html;
   let result = html;
   for (const [emoji, config] of Object.entries(emojiReplacementMap)) {
-    const regex = new RegExp(emoji.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-    result = result.replace(regex, `<img src="${config.url}" class="replaced-emoji" data-animated="${config.type === 'webp' ? 'gif' : config.type}" data-original-emoji="${emoji}" alt="${emoji}">`);
+    const escapedEmoji = emoji.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escapedEmoji, 'g');
+    result = result.replace(regex, `<img src="${config.url}" class="replaced-emoji" data-animated="${config.type === 'webp' ? 'gif' : config.type}" data-duration="${config.duration}" data-iterations="${config.iterations}" data-original-emoji="${emoji}" alt="${emoji}">`);
   }
   return result;
 }
@@ -43,7 +59,7 @@ function loadImagePromise(img) {
   });
 }
 
-async function playAnimationOnce(img) {
+function playAnimationOnce(img) {
   const animated = img.getAttribute('data-animated');
   if (animated === 'gif') {
     const src = img.src;
@@ -60,6 +76,9 @@ async function playAnimationOnce(img) {
 
 async function freezeGif(img) {
   if (img.dataset.state === 'frozen') return;
+  // Esperar un frame para asegurar el último fotograma visible
+  await new Promise(resolve => requestAnimationFrame(resolve));
+  // Capturar el frame actual sin que el img se modifique después
   const rect = img.getBoundingClientRect();
   if (rect.width === 0 || rect.height === 0) return;
   const canvas = document.createElement('canvas');
@@ -77,9 +96,42 @@ async function freezeGif(img) {
   img.parentNode.replaceChild(canvas, img);
 }
 
+async function animateWithIterations(img, remainingIterations, duration) {
+  if (!img || !img.parentNode) return;
+  let remaining = remainingIterations;
+  if (remaining === 'infinite') {
+    playAnimationOnce(img);
+    setTimeout(() => {
+      animateWithIterations(img, 'infinite', duration);
+    }, duration);
+    return;
+  }
+  let num = parseInt(remaining, 10);
+  if (isNaN(num)) num = 0;
+  if (num <= 0) {
+    freezeGif(img);
+    return;
+  }
+  playAnimationOnce(img);
+  setTimeout(() => {
+    animateWithIterations(img, num - 1, duration);
+  }, duration);
+}
+
 async function animateOnceAndFreeze(img) {
   if (!img || img.tagName !== 'IMG') return;
   if (img.dataset.state === 'playing' || img.dataset.state === 'frozen') return;
+  
+  let iterationsAttr = img.getAttribute('data-iterations');
+  let remainingIterations;
+  if (iterationsAttr === 'infinite') {
+    remainingIterations = 'infinite';
+  } else {
+    let parsed = parseInt(iterationsAttr, 10);
+    remainingIterations = isNaN(parsed) ? 1 : parsed;
+  }
+  const duration = parseInt(img.getAttribute('data-duration')) || 2500;
+  
   img.dataset.state = 'loading';
   await loadImagePromise(img);
   if (!img.parentNode) return;
@@ -89,10 +141,11 @@ async function animateOnceAndFreeze(img) {
     img.style.height = '1.5em';
   }
   img.dataset.state = 'playing';
-  await playAnimationOnce(img);
-  setTimeout(() => {
-    if (img.parentNode && img.dataset.state === 'playing') freezeGif(img);
-  }, 3000);
+  if (remainingIterations === 0) {
+    freezeGif(img);
+    return;
+  }
+  animateWithIterations(img, remainingIterations, duration);
 }
 
 function handleReplacedEmojiClick(e) {
@@ -107,11 +160,16 @@ function handleReplacedEmojiClick(e) {
       newImg.src = config.url;
       newImg.className = target.className;
       newImg.setAttribute('data-animated', config.type === 'webp' ? 'gif' : config.type);
+      newImg.setAttribute('data-duration', config.duration);
+      newImg.setAttribute('data-iterations', config.iterations);
       newImg.setAttribute('data-original-emoji', originalEmoji);
       newImg.alt = originalEmoji;
       const rect = target.getBoundingClientRect();
-      newImg.style.width = rect.width + 'px';
-      newImg.style.height = rect.height + 'px';
+      if (rect.width && rect.height) {
+        newImg.style.width = rect.width + 'px';
+        newImg.style.height = rect.height + 'px';
+        newImg.style.objectFit = target.style.objectFit || 'contain';
+      }
       target.parentNode.replaceChild(newImg, target);
       animateOnceAndFreeze(newImg);
     }
@@ -128,6 +186,7 @@ export function initReplacedEmojiAnimations(container) {
       if (rect.width && rect.height) {
         img.style.width = rect.width + 'px';
         img.style.height = rect.height + 'px';
+        img.style.objectFit = img.style.objectFit || 'contain';
       }
       animateOnceAndFreeze(img);
     }

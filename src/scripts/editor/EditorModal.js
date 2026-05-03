@@ -1,3 +1,4 @@
+// src/scripts/editor/EditorModal.js
 import interact from 'interactjs';
 import { EditorView } from '@codemirror/view';
 import { undo, redo } from '@codemirror/commands';
@@ -7,6 +8,7 @@ import { EditorCSSValidator } from './EditorCSSValidator.js';
 import { EditorCSSEditor } from './EditorCSSEditor.js';
 import { updateFloatingPreviewStyles, updateFloatingPreviewMessage, hideFloatingPreview } from './FloatingPreview.js';
 import { appendMessage } from '../messages.js';
+import { showGlobalColorPicker } from './GlobalColorPicker.js'; // <-- Cambio aquí
 
 let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
@@ -224,8 +226,7 @@ function renderToolbar() {
     }
   });
   document.getElementById('editor-color')?.addEventListener('click', async () => {
-    const { showColorPicker } = await import('./ColorPickerModal.js');
-    showColorPicker((color) => {
+    showGlobalColorPicker((color) => {
       if (cssEditor && cssEditor.view) {
         const cursor = cssEditor.view.state.selection.main.head;
         cssEditor.view.dispatch({

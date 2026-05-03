@@ -163,6 +163,13 @@
         </svg>
         <span>Editor</span>
       </button>
+      <button class="action-option" data-action="paint">
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M3 21l9-9m5-5l5-5m-5 5l-4 4m4-4l-4 4"/>
+    <rect x="7" y="7" width="10" height="10" rx="2"/>
+  </svg>
+  <span>Dibujar</span>
+</button>
     </div>
   </div>
   <div class="resize-action resize-n"></div>
@@ -377,6 +384,188 @@
   .transient-notif { position: fixed; left: 50%; transform: translateX(-50%); bottom: 90px; background: rgba(0,0,0,0.85); color: #fff; padding:8px 12px; border-radius:8px; z-index:10003; opacity:0; transition:opacity .18s; }
   .transient-notif.visible { opacity:1; }
 </style>
+
+<!-- Paint Modal -->
+<div id="paint-overlay" class="paint-overlay"></div>
+<div id="paint-movable-window" class="paint-movable-window overflow-hidden" style="display: none; width: 850px; height: 650px;">
+  <div id="paint-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">🎨 Pintor de stickers</span>
+    </div>
+    <button id="close-paint-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="paint-toolbar">
+    <div style="position: relative;">
+      <button id="paint-main-tool" class="paint-tool active" title="Herramientas">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 21l9-9m5-5l5-5m-5 5l-4 4m4-4l-4 4"/>
+          <rect x="7" y="7" width="10" height="10" rx="2"/>
+        </svg>
+      </button>
+      <div id="tool-dropdown" class="tool-dropdown-menu" style="display: none;">
+        <div class="dropdown-group">
+          <div class="dropdown-label">✍️ Trazos</div>
+          <button id="brush-round" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="6"/></svg>Redondo</button>
+          <button id="brush-square" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="6" width="12" height="12"/></svg>Cuadrado</button>
+          <button id="brush-dashed" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="12" x2="20" y2="12" stroke-dasharray="4 4"/></svg>Discontinuo</button>
+        </div>
+        <div class="dropdown-group">
+          <div class="dropdown-label">🔺 Figuras</div>
+          <button id="shape-line" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="20" x2="20" y2="4"/></svg>Línea recta</button>
+          <button id="shape-circle" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/></svg>Círculo</button>
+          <button id="shape-square" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14"/></svg>Cuadrado</button>
+          <button id="shape-rectangle" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="6" width="16" height="12"/></svg>Rectángulo</button>
+          <button id="shape-triangle" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12,4 20,20 4,20"/></svg>Triángulo</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="paint-eraser" class="paint-tool" title="Goma">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 21l18-18M8 21l13-13M6 21l3-3"/>
+        <rect x="12" y="12" width="8" height="8" rx="1" transform="rotate(45 12 12)"/>
+      </svg>
+    </button>
+
+    <button id="paint-color-picker" class="paint-tool" style="background: #000000; width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--modal-input-border);" title="Color del pincel"></button>
+
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="color: var(--modal-text); font-size: 12px;">Grosor</span>
+      <input type="range" id="paint-size" min="1" max="50" value="4" style="width: 100px;">
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="color: var(--modal-text); font-size: 12px;">Opacidad</span>
+      <input type="range" id="paint-opacity" min="0" max="100" value="100" style="width: 100px;">
+      <span id="paint-opacity-value" style="color: var(--modal-text); width: 40px;">100%</span>
+    </div>
+
+    <div style="position: relative;">
+      <button id="layout-selector-btn" class="paint-tool" title="Cambiar diseño">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+          <rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+      </button>
+      <div id="layout-dropdown" class="layout-dropdown-menu" style="display: none;">
+        <button class="layout-option" data-layout="classic">📐 Clásico</button>
+        <button class="layout-option" data-layout="right-sidebar">➡️ Lateral derecho</button>
+        <button class="layout-option" data-layout="floating">🪟 Herramientas flotantes</button>
+        <button class="layout-option" data-layout="tools-only">🔧 Solo herramientas</button>
+        <button class="layout-option" data-layout="mini">📱 Mini</button>
+      </div>
+    </div>
+
+    <button id="paint-text" class="paint-tool" title="Añadir texto">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4 7h16M4 12h10M4 17h6" />
+          <rect x="14" y="7" width="6" height="10" rx="1" />
+        </svg>
+    </button>
+
+    <button id="paint-undo" class="paint-tool" title="Deshacer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 7v6h6M3 13l4-4 4 4"/>
+        <path d="M21 17v-2a4 4 0 0 0-4-4H7"/>
+      </svg>
+    </button>
+
+    <button id="paint-redo" class="paint-tool" title="Rehacer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M21 7v6h-6M21 13l-4-4-4 4"/>
+        <path d="M3 17v-2a4 4 0 0 1 4-4h10"/>
+      </svg>
+    </button>
+
+    <button id="paint-clear" class="paint-tool" title="Limpiar todo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        <line x1="10" y1="11" x2="10" y2="17"/>
+        <line x1="14" y1="11" x2="14" y2="17"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="paint-main-area">
+    <div class="paint-sidebar" id="paint-sidebar">
+      <div style="font-weight: bold; color: var(--modal-text);">Fondo</div>
+      <button id="paint-bg-color" class="paint-bg-option" data-bg="color">🎨 Color sólido</button>
+      <button id="paint-bg-image" class="paint-bg-option" data-bg="image">🖼️ Imagen de galería</button>
+      <button id="paint-bg-transparent" class="paint-bg-option active" data-bg="transparent">▦ Transparente</button>
+      <div id="paint-bg-preview" class="paint-bg-preview"></div>
+
+      <div id="bg-image-controls" style="display: none;">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px;">
+          <button id="bg-zoom-in" class="paint-bg-option">🔍 +</button>
+          <button id="bg-zoom-out" class="paint-bg-option">🔍 -</button>
+          <button id="bg-reset" class="paint-bg-option">⟳</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 8px;">
+          <button id="bg-rotate-left" class="paint-bg-option">↺</button>
+          <button id="bg-rotate-right" class="paint-bg-option">↻</button>
+          <button id="bg-flip-h" class="paint-bg-option">⇄</button>
+          <button id="bg-flip-v" class="paint-bg-option">⇅</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+          <button id="bg-move-left" class="paint-bg-option">←</button>
+          <button id="bg-move-up" class="paint-bg-option">↑</button>
+          <button id="bg-move-down" class="paint-bg-option">↓</button>
+          <button id="bg-move-right" class="paint-bg-option">→</button>
+        </div>
+      </div>
+
+      <hr style="border-color: var(--modal-input-border); margin: 12px 0;">
+      <button id="paint-save-sticker" class="btn primary" style="width: 100%;">💾 Guardar como sticker</button>
+      <button id="paint-send" class="btn" style="width: 100%;">📤 Enviar como sticker</button>
+    </div>
+
+    <div class="paint-canvas-container">
+      <div class="canvas-zoom-wrapper" style="position: relative;">
+        <canvas id="background-canvas" width="512" height="512" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+        <canvas id="drawing-canvas" width="512" height="512" style="position: relative; z-index: 2; width: 100%; height: 100%;"></canvas>
+      </div>
+      <div class="zoom-controls-bottom">
+        <button id="zoom-out-btn" class="zoom-btn" title="Alejar">−</button>
+        <button id="zoom-in-btn" class="zoom-btn" title="Acercar">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="resize-paint resize-n"></div>
+  <div class="resize-paint resize-s"></div>
+  <div class="resize-paint resize-e"></div>
+  <div class="resize-paint resize-w"></div>
+  <div class="resize-paint resize-ne"></div>
+  <div class="resize-paint resize-nw"></div>
+  <div class="resize-paint resize-se"></div>
+  <div class="resize-paint resize-sw"></div>
+</div>
+
+<!-- Modal flotante independiente para herramientas (solo para layout floating) -->
+<div id="floating-sidebar-modal" class="floating-sidebar-modal" style="display: none;">
+  <div class="floating-sidebar-header">
+    <span>🛠️ Herramientas</span>
+    <button id="close-floating-sidebar" class="close-floating-btn">✕</button>
+  </div>
+  <div class="floating-sidebar-content"></div>
+  <div class="resize-floating resize-n"></div>
+  <div class="resize-floating resize-s"></div>
+  <div class="resize-floating resize-e"></div>
+  <div class="resize-floating resize-w"></div>
+  <div class="resize-floating resize-ne"></div>
+  <div class="resize-floating resize-nw"></div>
+  <div class="resize-floating resize-se"></div>
+  <div class="resize-floating resize-sw"></div>
+</div>
 
 <!-- Search Modal (solo arrastre, sin redimensionado) -->
 <div id="search-overlay" class="search-overlay"></div>

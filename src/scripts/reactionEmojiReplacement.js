@@ -3,17 +3,20 @@ export const reactionEmojiMap = {
   '🥺': {
     url: '/emojis/reaction-512-18.webp',
     type: 'webp',
-    duration: 2000
+    duration: 2000,
+    iterations: 1
   },
   '😭': {
     url: '/img/emojis/reaction-cry.svg',
     type: 'svg',
-    duration: 2000
+    duration: 2000,
+    iterations: 1
   },
   '🫠': {
     url: '/emojis/512.webp',
     type: 'webp',
-    duration: 2000
+    duration: 2000,
+    iterations: 1
   }
 };
 
@@ -24,27 +27,20 @@ export function shouldReplaceReactionEmoji(emoji) {
 
 function loadImagePromise(img) {
   return new Promise((resolve) => {
-    if (img.complete && img.naturalWidth > 0) {
-      resolve();
-    } else {
-      img.onload = () => resolve();
-      img.onerror = () => resolve();
-    }
+    if (img.complete && img.naturalWidth > 0) resolve();
+    else { img.onload = () => resolve(); img.onerror = () => resolve(); }
   });
 }
 
 function playAnimationOnce(img) {
-  if (!img) return;
   const animated = img.getAttribute('data-animated');
   if (animated === 'gif') {
     const src = img.src;
     img.src = '';
     img.src = src;
   } else if (animated === 'svg') {
-    const svgDoc = img.contentDocument;
-    if (svgDoc) {
-      const animElements = svgDoc.querySelectorAll('animate, animateTransform, animateMotion, set');
-      animElements.forEach(el => el.beginElement());
+    if (img.contentDocument) {
+      img.contentDocument.querySelectorAll('animate, animateTransform, animateMotion, set').forEach(el => el.beginElement());
     } else {
       img.src = img.src;
     }
@@ -52,7 +48,8 @@ function playAnimationOnce(img) {
 }
 
 async function freezeGif(img) {
-  if (!img || img.dataset.state === 'frozen') return;
+  if (img.dataset.state === 'frozen') return;
+  await new Promise(resolve => requestAnimationFrame(resolve));
   const rect = img.getBoundingClientRect();
   if (rect.width === 0 || rect.height === 0) return;
   const canvas = document.createElement('canvas');
@@ -70,9 +67,42 @@ async function freezeGif(img) {
   img.parentNode.replaceChild(canvas, img);
 }
 
+async function animateWithIterations(img, remainingIterations, duration) {
+  if (!img || !img.parentNode) return;
+  let remaining = remainingIterations;
+  if (remaining === 'infinite') {
+    playAnimationOnce(img);
+    setTimeout(() => {
+      animateWithIterations(img, 'infinite', duration);
+    }, duration);
+    return;
+  }
+  let num = parseInt(remaining, 10);
+  if (isNaN(num)) num = 0;
+  if (num <= 0) {
+    freezeGif(img);
+    return;
+  }
+  playAnimationOnce(img);
+  setTimeout(() => {
+    animateWithIterations(img, num - 1, duration);
+  }, duration);
+}
+
 async function animateOnceAndFreeze(img) {
   if (!img || img.tagName !== 'IMG') return;
   if (img.dataset.state === 'playing' || img.dataset.state === 'frozen') return;
+  
+  let iterationsAttr = img.getAttribute('data-iterations');
+  let remainingIterations;
+  if (iterationsAttr === 'infinite') {
+    remainingIterations = 'infinite';
+  } else {
+    let parsed = parseInt(iterationsAttr, 10);
+    remainingIterations = isNaN(parsed) ? 1 : parsed;
+  }
+  const duration = parseInt(img.getAttribute('data-duration')) || 2000;
+  
   img.dataset.state = 'loading';
   await loadImagePromise(img);
   if (!img.parentNode) return;
@@ -82,13 +112,11 @@ async function animateOnceAndFreeze(img) {
     img.style.height = '32px';
   }
   img.dataset.state = 'playing';
-  playAnimationOnce(img);
-  let duration = parseInt(img.getAttribute('data-duration')) || 2000;
-  setTimeout(async () => {
-    if (img.parentNode) {
-      await freezeGif(img);
-    }
-  }, duration);
+  if (remainingIterations === 0) {
+    freezeGif(img);
+    return;
+  }
+  animateWithIterations(img, remainingIterations, duration);
 }
 
 function handleReactionEmojiClick(e) {
@@ -104,12 +132,15 @@ function handleReactionEmojiClick(e) {
       newImg.className = target.className;
       newImg.setAttribute('data-animated', config.type === 'webp' ? 'gif' : config.type);
       newImg.setAttribute('data-duration', config.duration);
+      newImg.setAttribute('data-iterations', config.iterations);
       newImg.setAttribute('data-original-emoji', originalEmoji);
       newImg.alt = originalEmoji;
       const rect = target.getBoundingClientRect();
-      newImg.style.width = rect.width + 'px';
-      newImg.style.height = rect.height + 'px';
-      newImg.style.objectFit = target.style.objectFit || 'contain';
+      if (rect.width && rect.height) {
+        newImg.style.width = rect.width + 'px';
+        newImg.style.height = rect.height + 'px';
+        newImg.style.objectFit = target.style.objectFit || 'contain';
+      }
       target.parentNode.replaceChild(newImg, target);
       animateOnceAndFreeze(newImg);
     }
