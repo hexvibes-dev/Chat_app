@@ -2564,6 +2564,149 @@ html[data-theme="nuevo"] {
   --btn-clear-chat-yes-width:50px;
 }
 
+/* cache cleaner */
+html[data-theme="nuevo"] {
+  
+  /*cache cleanner overlay*/
+  --cache-cleaner-overlay-background:  transparent;
+  --cache-cleaner-overlay-blur: none;
+  --cache-cleaner-overlay-opacity:1;
+
+  --cache-cleaner-overlay-border-top-width:0;
+  --cache-cleaner-overlay-border-top-style:none;
+  --cache-cleaner-overlay-border-top-color:transparent;
+  --cache-cleaner-overlay-border-right-width:0;
+  --cache-cleaner-overlay-border-right-style:none;
+  --cache-cleaner-overlay-border-right-color:transparent;
+  --cache-cleaner-overlay-border-bottom-width:0;
+  --cache-cleaner-overlay-border-bottom-style:none;
+  --cache-cleaner-overlay-border-bottom-color:transparent;
+  --cache-cleaner-overlay-border-left-width:0;
+  --cache-cleaner-overlay-border-left-style:none;
+  --cache-cleaner-overlay-border-left-color:transparent;
+
+  --cache-cleaner-overlay-border-radius-top-left:0;
+  --cache-cleaner-overlay-border-radius-top-right:0;
+  --cache-cleaner-overlay-border-radius-bottom-right:0;
+  --cache-cleaner-overlay-border-radius-bottom-left:0;
+
+  --cache-cleaner-overlay-shadow-external:none;
+  --cache-cleaner-overlay-shadow-internal:none;
+
+  --cache-cleaner-overlay-padding-top:0;
+  --cache-cleaner-overlay-padding-right:0;
+  --cache-cleaner-overlay-padding-bottom:0;
+  --cache-cleaner-overlay-padding-left:0;
+
+  --cache-cleaner-overlay-margin-top:0;
+  --cache-cleaner-overlay-margin-right:0;
+  --cache-cleaner-overlay-margin-bottom:0;
+  --cache-cleaner-overlay-margin-left:0;
+
+  --cache-cleaner-overlay-color: var(--planton-white);
+  --cache-cleaner-overlay-font-size:16px;
+  --cache-cleaner-overlay-font-family:system-ui;
+  --cache-cleaner-overlay-font-weight:400;
+  --cache-cleaner-overlay-line-height:1.4;
+  --cache-cleaner-overlay-letter-spacing:0;
+  --cache-cleaner-overlay-word-spacing:0;
+  --cache-cleaner-overlay-text-transform:none;
+  --cache-cleaner-overlay-text-shadow:none;
+  
+  /* Cache cleanner header */
+  --header-cache-cleanner-background: var(--planton-green);
+  --header-cache-cleanner-blur:var(--theme-modal-header-blur);
+  --header-cache-cleanner-opacity:1;
+
+  --header-cache-cleanner-border-top-width:0;
+  --header-cache-cleanner-border-top-style:none;
+  --header-cache-cleanner-border-top-color:transparent;
+  --header-cache-cleanner-border-right-width:2px;
+  --header-cache-cleanner-border-right-style:none;
+  --header-cache-cleanner-border-right-color:var(--planton-green-dark);
+  --header-cache-cleanner-border-bottom-width:2px;
+  --header-cache-cleanner-border-bottom-style:solid;
+  --header-cache-cleanner-border-bottom-color:var(--planton-green-dark);
+  --header-cache-cleanner-border-left-width:2px;
+  --header-cache-cleanner-border-left-style:none;
+  --header-cache-cleanner-border-left-color: var(--planton-green-dark);
+
+  --header-cache-cleanner-border-radius-top-left:0;
+  --header-cache-cleanner-border-radius-top-right:0;
+  --header-cache-cleanner-border-radius-bottom-right:0;
+  --header-cache-cleanner-border-radius-bottom-left:0;
+
+  --header-cache-cleanner-shadow-external:none;
+  --header-cache-cleanner-shadow-internal:none;
+
+  --header-cache-cleanner-padding-top:12px;
+  --header-cache-cleanner-padding-right:16px;
+  --header-cache-cleanner-padding-bottom:12px;
+  --header-cache-cleanner-padding-left:16px;
+
+  --header-cache-cleanner-margin-top:0;
+  --header-cache-cleanner-margin-right:0;
+  --header-cache-cleanner-margin-bottom:0;
+  --header-cache-cleanner-margin-left:0;
+
+  --header-cache-cleanner-color: var(--planton-white);
+  --header-cache-cleanner-font-size:16px;
+  --header-cache-cleanner-font-family:system-ui;
+  --header-cache-cleanner-font-weight:400;
+  --header-cache-cleanner-line-height:1.4;
+  --header-cache-cleanner-letter-spacing:0;
+  --header-cache-cleanner-word-spacing:0;
+  --header-cache-cleanner-text-transform:none;
+  --header-cache-cleanner-text-shadow:none;
+  
+  /* Cache cleanner background */
+  --cache-cleanner-bg-background: var(--planton-green-dark);
+  --cache-cleanner-bg-blur:none;
+  --cache-cleanner-bg-opacity:1;
+
+  --cache-cleanner-bg-border-top-width:1px;
+  --cache-cleanner-bg-border-top-style:solid;
+  --cache-cleanner-bg-border-top-color:var(--modal-input-border);
+  --cache-cleanner-bg-border-right-width:1px;
+  --cache-cleanner-bg-border-right-style:solid;
+  --cache-cleanner-bg-border-right-color: transparent;
+  --cache-cleanner-bg-border-bottom-width:1px;
+  --cache-cleanner-bg-border-bottom-style:solid;
+  --cache-cleanner-bg-border-bottom-color: transparent;
+  --cache-cleanner-bg-border-left-width:1px;
+  --cache-cleanner-bg-border-left-style:solid;
+  --cache-cleanner-bg-border-left-color:transparent;
+
+  --cache-cleanner-bg-border-radius-top-left:28px;
+  --cache-cleanner-bg-border-radius-top-right:28px;
+  --cache-cleanner-bg-border-radius-bottom-right:28px;
+  --cache-cleanner-bg-border-radius-bottom-left:28px;
+
+  --cache-cleanner-bg-shadow-external:0 20px 40px rgba(0,0,0,0.4);
+  --cache-cleanner-bg-shadow-internal:none;
+
+  --cache-cleanner-bg-padding-top:0;
+  --cache-cleanner-bg-padding-right:0;
+  --cache-cleanner-bg-padding-bottom:0;
+  --cache-cleanner-bg-padding-left:0;
+
+  --cache-cleanner-bg-margin-top:0;
+  --cache-cleanner-bg-margin-right:0;
+  --cache-cleanner-bg-margin-bottom:0;
+  --cache-cleanner-bg-margin-left:0;
+
+  --cache-cleanner-bg-color: var(--planton-white);
+  --cache-cleanner-bg-font-size:16px;
+  --cache-cleanner-bg-font-family:system-ui;
+  --cache-cleanner-bg-font-weight:400;
+  --cache-cleanner-bg-line-height:1.4;
+  --cache-cleanner-bg-letter-spacing:0;
+  --cache-cleanner-bg-word-spacing:0;
+  --cache-cleanner-bg-text-transform:none;
+  --cache-cleanner-bg-text-shadow:none;
+  
+  /**/
+}
 
 
 
