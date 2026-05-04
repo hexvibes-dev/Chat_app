@@ -12,7 +12,7 @@
 
 /* General y header*/
 html[data-theme="nuevo"] {
-  --app-bg-image: url('/img/dark.jpg');
+  --app-bg-image: url('/img/planton.jpg');
   --app-bg-color: var(--planton-green);
   --app-bg-opacity: 1;
   
@@ -2271,7 +2271,298 @@ html[data-theme="nuevo"] {
   --action-modal-overlay-transition: opacity 0.3s ease, background 0.3s ease;
 }
 
+/* Pop up clear chat */
+html[data-theme="nuevo"] {  
+  
+  /*Pop Up clear chat backgrond*/
+  --confirm-popup-background: var(--planton-green);
+  --confirm-popup-blur:none;
+  --confirm-popup-opacity:1;
 
+  --confirm-popup-border-top-width:0;
+  --confirm-popup-border-top-style:solid;
+  --confirm-popup-border-top-color: transparent;
+  
+  --confirm-popup-border-right-width:0;
+  --confirm-popup-border-right-style:solid;
+  --confirm-popup-border-right-color: transparent;
+  
+  --confirm-popup-border-bottom-width:0;
+  --confirm-popup-border-bottom-style:solid;
+  --confirm-popup-border-bottom-color: transparent;
+  
+  --confirm-popup-border-left-width:0;
+  --confirm-popup-border-left-style:solid;
+  --confirm-popup-border-left-color: transparent;
+
+  --confirm-popup-border-radius-top-left:20px;
+  --confirm-popup-border-radius-top-right:20px;
+  --confirm-popup-border-radius-bottom-right:20px;
+  --confirm-popup-border-radius-bottom-left:20px;
+
+  --confirm-popup-shadow-external:0 10px 30px rgba(0,0,0,0.5);
+  --confirm-popup-shadow-internal:none;
+
+  --confirm-popup-padding-top:20px;
+  --confirm-popup-padding-right:20px;
+  --confirm-popup-padding-bottom:20px;
+  --confirm-popup-padding-left:20px;
+
+  --confirm-popup-margin-top:0;
+
+  --confirm-popup-margin-right:0;
+  --confirm-popup-margin-bottom:0;
+  --confirm-popup-margin-left:0;
+
+  --confirm-popup-font-family:system-ui;
+  --confirm-popup-font-size:16px;
+  --confirm-popup-font-weight:400;
+  --confirm-popup-line-height:1.4;
+  --confirm-popup-letter-spacing:0;
+  --confirm-popup-word-spacing:0;
+  --confirm-popup-text-transform:none;
+  --confirm-popup-text-shadow:none;
+  --confirm-popup-color: rgba(255,255,255,0.4);
+  
+  /*Alert text clear pop up*/
+  --alert-text-pop-up-clear-chat-background:transparent;
+  --alert-text-pop-up-clear-chat-blur:none;
+  --alert-text-pop-up-clear-chat-opacity:1;
+
+  --alert-text-pop-up-clear-chat-border-top-width:0;
+  --alert-text-pop-up-clear-chat-border-top-style:none;
+  --alert-text-pop-up-clear-chat-border-top-color:transparent;
+  --alert-text-pop-up-clear-chat-border-right-width:0;
+  --alert-text-pop-up-clear-chat-border-right-style:none;
+  --alert-text-pop-up-clear-chat-border-right-color:transparent;
+  --alert-text-pop-up-clear-chat-border-bottom-width:0;
+  --alert-text-pop-up-clear-chat-border-bottom-style:none;
+  --alert-text-pop-up-clear-chat-border-bottom-color:transparent;
+  --alert-text-pop-up-clear-chat-border-left-width:0;
+  --alert-text-pop-up-clear-chat-border-left-style:none;
+  --alert-text-pop-up-clear-chat-border-left-color:transparent;
+
+  --alert-text-pop-up-clear-chat-border-radius-top-left:0;
+  --alert-text-pop-up-clear-chat-border-radius-top-right:0;
+  --alert-text-pop-up-clear-chat-border-radius-bottom-right:0;
+  --alert-text-pop-up-clear-chat-border-radius-bottom-left:0;
+
+  --alert-text-pop-up-clear-chat-shadow-external:none;
+  --alert-text-pop-up-clear-chat-shadow-internal:none;
+
+  --alert-text-pop-up-clear-chat-padding-top:0;
+  --alert-text-pop-up-clear-chat-padding-right:0;
+  --alert-text-pop-up-clear-chat-padding-bottom:0;
+  --alert-text-pop-up-clear-chat-padding-left:0;
+
+  --alert-text-pop-up-clear-chat-margin-top:0;
+  --alert-text-pop-up-clear-chat-margin-right:0;
+  --alert-text-pop-up-clear-chat-margin-bottom:0;
+  --alert-text-pop-up-clear-chat-margin-left:0;
+
+  --alert-text-pop-up-clear-chat-color: var(--planton-orange-dark);
+  --alert-text-pop-up-clear-chat-font-size:16px;
+  --alert-text-pop-up-clear-chat-font-family:system-ui;
+  --alert-text-pop-up-clear-chat-font-weight:400;
+  --alert-text-pop-up-clear-chat-line-height:1.4;
+  --alert-text-pop-up-clear-chat-letter-spacing:0;
+  --alert-text-pop-up-clear-chat-word-spacing:0;
+  --alert-text-pop-up-clear-chat-text-transform: uppercase;
+  --alert-text-pop-up-clear-chat-text-shadow:none;
+  --alert-text-pop-up-clear-chat-font-style:normal;
+  
+  /*texr clear pop up*/
+  --text-pop-up-clear-chat-background:transparent;
+  --text-pop-up-clear-chat-blur:none;
+  --text-pop-up-clear-chat-opacity:1;
+
+  --text-pop-up-clear-chat-border-top-width:0;
+  --text-pop-up-clear-chat-border-top-style:none;
+  --text-pop-up-clear-chat-border-top-color:transparent;
+  --text-pop-up-clear-chat-border-right-width:0;
+  --text-pop-up-clear-chat-border-right-style:none;
+  --text-pop-up-clear-chat-border-right-color:transparent;
+  --text-pop-up-clear-chat-border-bottom-width:0;
+  --text-pop-up-clear-chat-border-bottom-style:none;
+  --text-pop-up-clear-chat-border-bottom-color:transparent;
+  --text-pop-up-clear-chat-border-left-width:0;
+  --text-pop-up-clear-chat-border-left-style:none;
+  --text-pop-up-clear-chat-border-left-color:transparent;
+
+  --text-pop-up-clear-chat-border-radius-top-left:0;
+  --text-pop-up-clear-chat-border-radius-top-right:0;
+  --text-pop-up-clear-chat-border-radius-bottom-right:0;
+  --text-pop-up-clear-chat-border-radius-bottom-left:0;
+
+  --text-pop-up-clear-chat-shadow-external:none;
+  --text-pop-up-clear-chat-shadow-internal:none;
+
+  --text-pop-up-clear-chat-padding-top:0;
+  --text-pop-up-clear-chat-padding-right:0;
+  --text-pop-up-clear-chat-padding-bottom:0;
+  --text-pop-up-clear-chat-padding-left:0;
+
+  --text-pop-up-clear-chat-margin-top:0;
+  --text-pop-up-clear-chat-margin-right:0;
+  --text-pop-up-clear-chat-margin-bottom:0;
+  --text-pop-up-clear-chat-margin-left:0;
+
+  --text-pop-up-clear-chat-color: var(--planton-white);
+  --text-pop-up-clear-chat-font-size:16px;
+  --text-pop-up-clear-chat-font-family:system-ui;
+  --text-pop-up-clear-chat-font-weight:400;
+  --text-pop-up-clear-chat-line-height:1.4;
+  --text-pop-up-clear-chat-letter-spacing:0;
+  --text-pop-up-clear-chat-word-spacing:0;
+  --text-pop-up-clear-chat-text-transform: lowercase;
+  --text-pop-up-clear-chat-text-shadow:none;
+  --text-pop-up-clear-chat-font-style:normal;
+  
+  
+  /* clear chat btn container */
+  --clear-chat-btn-container-background: transparent;
+  --clear-chat-btn-container-blur:none;
+  --clear-chat-btn-container-opacity:1;
+
+  --clear-chat-btn-container-border-top-width:0;
+  --clear-chat-btn-container-border-top-style:none;
+  --clear-chat-btn-container-border-top-color:transparent;
+  --clear-chat-btn-container-border-right-width:0;
+  --clear-chat-btn-container-border-right-style:none;
+  --clear-chat-btn-container-border-right-color:transparent;
+  --clear-chat-btn-container-border-bottom-width:0;
+  --clear-chat-btn-container-border-bottom-style:none;
+  --clear-chat-btn-container-border-bottom-color:transparent;
+  --clear-chat-btn-container-border-left-width:0;
+  --clear-chat-btn-container-border-left-style:none;
+  --clear-chat-btn-container-border-left-color:transparent;
+
+  --clear-chat-btn-container-border-radius-top-left:0;
+  --clear-chat-btn-container-border-radius-top-right:0;
+  --clear-chat-btn-container-border-radius-bottom-right:0;
+  --clear-chat-btn-container-border-radius-bottom-left:0;
+
+  --clear-chat-btn-container-shadow-external:none;
+  --clear-chat-btn-container-shadow-internal:none;
+
+  --clear-chat-btn-container-padding-top:0;
+  --clear-chat-btn-container-padding-right:0;
+  --clear-chat-btn-container-padding-bottom:0;
+  --clear-chat-btn-container-padding-left:0;
+
+  --clear-chat-btn-container-margin-top:0;
+  --clear-chat-btn-container-margin-right:0;
+  --clear-chat-btn-container-margin-bottom:0;
+  --clear-chat-btn-container-margin-left:0;
+
+  --clear-chat-btn-container-color: var(--planton-white);
+  --clear-chat-btn-container-font-size:16px;
+  --clear-chat-btn-container-font-family:system-ui;
+  --clear-chat-btn-container-font-weight:400;
+  --clear-chat-btn-container-line-height:1.4;
+  --clear-chat-btn-container-letter-spacing:0;
+  --clear-chat-btn-container-word-spacing:0;
+  --clear-chat-btn-container-text-transform:none;
+  --clear-chat-btn-container-text-shadow:none;
+  
+  /* Button clear confirm not */
+  --btn-clear-chat-not-background: transparent;
+  --btn-clear-chat-not-blur:none;
+  --btn-clear-chat-not-opacity:1;
+
+  --btn-clear-chat-not-border-top-width:0;
+  --btn-clear-chat-not-border-top-style:none;
+  --btn-clear-chat-not-border-top-color:transparent;
+  --btn-clear-chat-not-border-right-width:0;
+  --btn-clear-chat-not-border-right-style:none;
+  --btn-clear-chat-not-border-right-color:transparent;
+  --btn-clear-chat-not-border-bottom-width:0;
+  --btn-clear-chat-not-border-bottom-style:none;
+  --btn-clear-chat-not-border-bottom-color:transparent;
+  --btn-clear-chat-not-border-left-width:0;
+  --btn-clear-chat-not-border-left-style:none;
+  --btn-clear-chat-not-border-left-color:transparent;
+
+  --btn-clear-chat-not-border-radius-top-left:0;
+  --btn-clear-chat-not-border-radius-top-right:0;
+  --btn-clear-chat-not-border-radius-bottom-right:0;
+  --btn-clear-chat-not-border-radius-bottom-left:0;
+
+  --btn-clear-chat-not-shadow-external:none;
+  --btn-clear-chat-not-shadow-internal:none;
+
+  --btn-clear-chat-not-padding-top:0;
+  --btn-clear-chat-not-padding-right:0;
+  --btn-clear-chat-not-padding-bottom:0;
+  --btn-clear-chat-not-padding-left:0;
+
+  --btn-clear-chat-not-margin-top:0;
+  --btn-clear-chat-not-margin-right:0;
+  --btn-clear-chat-not-margin-bottom:0;
+  --btn-clear-chat-not-margin-left:0;
+
+  --btn-clear-chat-not-color: red;
+  --btn-clear-chat-not-font-size:28px;
+  --btn-clear-chat-not-font-family:system-ui;
+  --btn-clear-chat-not-font-weight:400;
+  --btn-clear-chat-not-line-height:1.4;
+  --btn-clear-chat-not-letter-spacing:0;
+  --btn-clear-chat-not-word-spacing:0;
+  --btn-clear-chat-not-text-transform:none;
+  --btn-clear-chat-not-text-shadow:none;
+  --btn-clear-chat-not-font-style:normal;
+
+  --btn-clear-chat-not-width:50px;
+  
+  /* btn clear chat confirm yes */
+  --btn-clear-chat-yes-background: transparent;
+  --btn-clear-chat-yes-blur:none;
+  --btn-clear-chat-yes-opacity:1;
+
+  --btn-clear-chat-yes-border-top-width:0;
+  --btn-clear-chat-yes-border-top-style:none;
+  --btn-clear-chat-yes-border-top-color:transparent;
+  --btn-clear-chat-yes-border-right-width:0;
+  --btn-clear-chat-yes-border-right-style:none;
+  --btn-clear-chat-yes-border-right-color:transparent;
+  --btn-clear-chat-yes-border-bottom-width:0;
+  --btn-clear-chat-yes-border-bottom-style:none;
+  --btn-clear-chat-yes-border-bottom-color:transparent;
+  --btn-clear-chat-yes-border-left-width:0;
+  --btn-clear-chat-yes-border-left-style:none;
+  --btn-clear-chat-yes-border-left-color:transparent;
+
+  --btn-clear-chat-yes-border-radius-top-left:0;
+  --btn-clear-chat-yes-border-radius-top-right:0;
+  --btn-clear-chat-yes-border-radius-bottom-right:0;
+  --btn-clear-chat-yes-border-radius-bottom-left:0;
+
+  --btn-clear-chat-yes-shadow-external:none;
+  --btn-clear-chat-yes-shadow-internal:none;
+
+  --btn-clear-chat-yes-padding-top:0;
+  --btn-clear-chat-yes-padding-right:0;
+  --btn-clear-chat-yes-padding-bottom:0;
+  --btn-clear-chat-yes-padding-left:0;
+
+  --btn-clear-chat-yes-margin-top:0;
+  --btn-clear-chat-yes-margin-right:0;
+  --btn-clear-chat-yes-margin-bottom:0;
+  --btn-clear-chat-yes-margin-left:0;
+
+  --btn-clear-chat-yes-color: lime;
+  --btn-clear-chat-yes-font-size:28px;
+  --btn-clear-chat-yes-font-family:system-ui;
+  --btn-clear-chat-yes-font-weight:400;
+  --btn-clear-chat-yes-line-height:1.4;
+  --btn-clear-chat-yes-letter-spacing:0;
+  --btn-clear-chat-yes-word-spacing:0;
+  --btn-clear-chat-yes-text-transform:none;
+  --btn-clear-chat-yes-text-shadow:none;
+  --btn-clear-chat-yes-font-style:normal;
+
+  --btn-clear-chat-yes-width:50px;
+}
 
 
 

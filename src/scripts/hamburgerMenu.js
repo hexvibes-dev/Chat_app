@@ -33,28 +33,11 @@ function showConfirmPopup(message) {
 
     const popup = document.createElement('div');
     popup.className = 'confirm-popup';
-    popup.style.cssText = `
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: var(--modal-bg);
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      z-index: 30002;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      min-width: 250px;
-      text-align: center;
-      border: 1px solid var(--modal-input-border);
-    `;
     popup.innerHTML = `
-      <p style="margin: 0; font-size: 16px; color: var(--modal-text);">${message}</p>
-      <div style="display: flex; justify-content: center; gap: 20px;">
-        <button class="confirm-no" style="background: transparent; border: none; cursor: pointer; font-size: 28px; color: #ef4444;">✗</button>
-        <button class="confirm-yes" style="background: transparent; border: none; cursor: pointer; font-size: 28px; color: #10b981;">✓</button>
+      <p id="text-alert-clear-chat">${message}</p>
+      <div id="clear-chat">
+        <button id="clear-chat-btn-confirm-no" class="confirm-no">✗</button>
+        <button id="clear-chat-btn-confirm-yes" class="confirm-yes">✓</button>
       </div>
     `;
     document.body.appendChild(popup);
@@ -80,7 +63,7 @@ function showConfirmPopup(message) {
 }
 
 async function deleteAllMessages() {
-  const confirmed = await showConfirmPopup('¿Eliminar todos los mensajes del chat? Esta acción no se puede deshacer.');
+  const confirmed = await showConfirmPopup('<span class="alert-text-pop-up"></spapn>¿Eliminar todos los mensajes del chat?</span><br> Esta acción no se puede deshacer.');
   if (!confirmed) return;
 
   const messagesContainer = document.getElementById('messages');

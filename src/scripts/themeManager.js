@@ -21,13 +21,14 @@ const themes = {
   whatsapp: { name: 'WhatsApp', bg: '/img/dark.jpg', color: '#e5ddd5' },
   midnight: { name: 'Midnight', bg: '/img/magic.jpg', color: '#0b0f19' },
   reference: { name: 'Referencia', bg: '/img/dark.jpg', color: '#030F0F' },
-  nuevo: { name: 'nuevo', bg: '/img/dark.jpg', color: '#030F0F' }
+  nuevo: { name: 'nuevo', bg: '/img/planton.jpg', color: '#169369' }
 };
 
 const nativeBackgroundsGrouped = {
   movil: [
     { name: 'Bosque encantado version movil', url: '/img/bg.jpg' },
-    { name: 'Nubes', url: '/img/nubes.jpg' }
+    { name: 'Nubes', url: '/img/nubes.jpg' },
+    {name: 'Planton' , url: '/img/planton.jpg' }
   ],
   tableta: [
     { name: 'Ballena', url: '/img/ballena.jpg' }

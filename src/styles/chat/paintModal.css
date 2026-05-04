@@ -507,6 +507,248 @@ hr {
   background: #ef4444;
   color: white;
 }
+.gradient-modal {
+  position: fixed;
+  background: var(--modal-bg, #1e1e2f);
+  border-radius: 28px;
+  border: 1px solid var(--modal-input-border, #3a3a4a);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  z-index: 11000;
+  width: 360px;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  touch-action: none;
+}
+.gradient-modal-header {
+  background: var(--theme-modal-header-background, #2a2a3a);
+  backdrop-filter: var(--theme-modal-header-blur);
+  border-bottom: 1px solid var(--modal-input-border, #3a3a4a);
+  padding: 12px 16px;
+  cursor: grab;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  color: var(--modal-text, #e0e0e0);
+}
+.gradient-modal-header:active {
+  cursor: grabbing;
+}
+.gradient-modal-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.gradient-preview {
+  width: 100%;
+  height: 80px;
+  border-radius: 12px;
+  border: 1px solid var(--modal-input-border);
+}
+.gradient-angle {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.gradient-angle label {
+  font-size: 14px;
+  color: var(--modal-text);
+}
+.gradient-angle input {
+  flex: 1;
+}
+.gradient-colors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.gradient-color-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gradient-color-item .color-preview {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--modal-input-border);
+  cursor: pointer;
+}
+.gradient-color-item button {
+  background: #ef4444;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: white;
+  cursor: pointer;
+}
+.gradient-add-color {
+  background: #4a6fa5;
+  border: none;
+  border-radius: 8px;
+  padding: 6px;
+  color: white;
+  cursor: pointer;
+}
+.gradient-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--modal-input-border);
+  margin-top: 8px;
+}
+.gradient-tab {
+  background: transparent;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: var(--modal-text);
+}
+.gradient-tab.active {
+  border-bottom: 2px solid #4a6fa5;
+  color: #4a6fa5;
+}
+.gradient-presets, .gradient-custom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+.gradient-saved-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background: var(--modal-input-bg);
+  padding: 6px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.gradient-saved-item:hover {
+  background: rgba(255,255,255,0.1);
+}
+.gradient-saved-item .preview {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+.gradient-saved-item .name {
+  flex: 1;
+  color: var(--modal-text);
+}
+.gradient-saved-item button {
+  background: none;
+  border: none;
+  color: var(--modal-text);
+  cursor: pointer;
+}
+.gradient-custom input {
+  background: var(--modal-input-bg);
+  border: 1px solid var(--modal-input-border);
+  border-radius: 8px;
+  padding: 6px;
+  color: var(--modal-text);
+  width: 100%;
+  margin-top: 8px;
+}
+.gradient-save-btn {
+  background: #4a6fa5;
+  border: none;
+  border-radius: 8px;
+  padding: 6px;
+  color: white;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.gradient-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+.gradient-modal-actions button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+.gradient-apply {
+  background: #22c55e;
+  color: white;
+}
+.gradient-cancel {
+  background: #ef4444;
+  color: white;
+}
+.resize-gradient {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.2);
+  transition: background 0.1s;
+  z-index: 10;
+  touch-action: none;
+}
+.resize-gradient:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+.resize-gradient.resize-n,
+.resize-gradient.resize-s {
+  left: 10px;
+  right: 10px;
+  height: 12px;
+}
+.resize-gradient.resize-n {
+  top: 0;
+  cursor: n-resize;
+}
+.resize-gradient.resize-s {
+  bottom: 0;
+  cursor: s-resize;
+}
+.resize-gradient.resize-e,
+.resize-gradient.resize-w {
+  top: 10px;
+  bottom: 10px;
+  width: 12px;
+}
+.resize-gradient.resize-e {
+  right: 0;
+  cursor: e-resize;
+}
+.resize-gradient.resize-w {
+  left: 0;
+  cursor: w-resize;
+}
+.resize-gradient.resize-ne,
+.resize-gradient.resize-nw,
+.resize-gradient.resize-se,
+.resize-gradient.resize-sw {
+  width: 18px;
+  height: 18px;
+}
+.resize-gradient.resize-ne {
+  top: 0;
+  right: 0;
+  cursor: ne-resize;
+}
+.resize-gradient.resize-nw {
+  top: 0;
+  left: 0;
+  cursor: nw-resize;
+}
+.resize-gradient.resize-se {
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
+}
+.resize-gradient.resize-sw {
+  bottom: 0;
+  left: 0;
+  cursor: sw-resize;
+}
 .confirm-modal {
   position: fixed;
   background: var(--modal-bg, #1e1e2f);

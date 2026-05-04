@@ -1,8 +1,8 @@
 // src/scripts/editor/GlobalColorPicker.js
 import interact from 'interactjs';
-import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../modalStackManager.js';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals, unregisterModal } from '../modalStackManager.js';
 
-let windowElement, headerElement, closeBtn, overlay;
+let windowElement, headerElement, closeBtn, cancelBtn, overlay;
 let isModalOpen = false;
 let currentColor = '#000000';
 let lastSampledColor = '#000000';
@@ -418,6 +418,7 @@ function showModal(callback) {
         windowElement = document.getElementById('color-picker-movable-window');
         headerElement = document.getElementById('color-picker-modal-header');
         closeBtn = document.getElementById('close-color-picker-modal');
+        cancelBtn = document.getElementById('color-picker-cancel');
         overlay = document.getElementById('color-picker-overlay');
         if (!windowElement || !headerElement) return;
         associateOverlay(windowElement, overlay);
@@ -477,6 +478,8 @@ function showModal(callback) {
             }
         });
         if (closeBtn) closeBtn.onclick = () => { deactivateImageSampling(); hideModal(); };
+        if (cancelBtn) cancelBtn.onclick = () => { deactivateImageSampling(); hideModal(); };
+        if (overlay) overlay.onclick = () => { deactivateImageSampling(); hideModal(); };
         registerModal(windowElement, 'color-picker-modal');
     }
     buildModalStructureIfNeeded();

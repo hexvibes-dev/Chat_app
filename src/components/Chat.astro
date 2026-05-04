@@ -465,11 +465,30 @@
       </div>
     </div>
 
+    <!-- Botones nuevos -->
+    <button id="paint-mirror" class="paint-tool" title="Modo espejo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 12h18M12 3v18M12 3L8 7M12 3l4 4M12 21l-4-4M12 21l4-4"/>
+      </svg>
+    </button>
+    <button id="paint-floodfill" class="paint-tool" title="Cubo de pintura">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 21l9-9m5-5l5-5m-5 5l-4 4m4-4l-4 4"/>
+        <rect x="7" y="7" width="10" height="10" rx="2"/>
+      </svg>
+    </button>
+    <button id="paint-gradient" class="paint-tool" title="Modo degradado (pincel)">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <path d="M3 9h18M3 15h18"/>
+      </svg>
+    </button>
+
     <button id="paint-text" class="paint-tool" title="Añadir texto">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M4 7h16M4 12h10M4 17h6" />
-          <rect x="14" y="7" width="6" height="10" rx="1" />
-        </svg>
+        <path d="M4 7h16M4 12h10M4 17h6" />
+        <rect x="14" y="7" width="6" height="10" rx="1" />
+      </svg>
     </button>
 
     <button id="paint-undo" class="paint-tool" title="Deshacer">
@@ -501,6 +520,7 @@
       <button id="paint-bg-color" class="paint-bg-option" data-bg="color">🎨 Color sólido</button>
       <button id="paint-bg-image" class="paint-bg-option" data-bg="image">🖼️ Imagen de galería</button>
       <button id="paint-bg-transparent" class="paint-bg-option active" data-bg="transparent">▦ Transparente</button>
+      <button id="paint-bg-gradient" class="paint-bg-option" data-bg="gradient">🌈 Degradado</button>
       <div id="paint-bg-preview" class="paint-bg-preview"></div>
 
       <div id="bg-image-controls" style="display: none;">
@@ -548,6 +568,84 @@
   <div class="resize-paint resize-nw"></div>
   <div class="resize-paint resize-se"></div>
   <div class="resize-paint resize-sw"></div>
+</div>
+
+<!-- Modal para fondo degradado -->
+<div id="gradient-bg-modal" class="gradient-modal" style="display: none;">
+  <div class="gradient-modal-header">
+    <span>🌈 Fondo degradado</span>
+    <button class="close-gradient-modal">✕</button>
+  </div>
+  <div class="gradient-modal-content">
+    <div class="gradient-preview" id="gradient-bg-preview"></div>
+    <div class="gradient-angle">
+      <label>Ángulo: <span id="gradient-bg-angle-value">0°</span></label>
+      <input type="range" id="gradient-bg-angle" min="0" max="360" value="0" step="1">
+    </div>
+    <div class="gradient-colors-list" id="gradient-bg-colors"></div>
+    <button class="gradient-add-color">+ Añadir color</button>
+    <div class="gradient-tabs">
+      <button class="gradient-tab active" data-tab="presets">Presets</button>
+      <button class="gradient-tab" data-tab="custom">Custom</button>
+    </div>
+    <div class="gradient-presets" id="gradient-bg-presets"></div>
+    <div class="gradient-custom" id="gradient-bg-custom" style="display: none;">
+      <div class="gradient-saved-list" id="gradient-bg-saved-list"></div>
+      <input type="text" id="gradient-bg-save-name" placeholder="Nombre del degradado">
+      <button id="gradient-bg-save-btn" class="gradient-save-btn">Guardar actual</button>
+    </div>
+    <div class="gradient-modal-actions">
+      <button class="gradient-apply">Aplicar</button>
+      <button class="gradient-cancel">Cancelar</button>
+    </div>
+  </div>
+  <div class="resize-gradient resize-n"></div>
+  <div class="resize-gradient resize-s"></div>
+  <div class="resize-gradient resize-e"></div>
+  <div class="resize-gradient resize-w"></div>
+  <div class="resize-gradient resize-ne"></div>
+  <div class="resize-gradient resize-nw"></div>
+  <div class="resize-gradient resize-se"></div>
+  <div class="resize-gradient resize-sw"></div>
+</div>
+
+<!-- Modal para pincel degradado -->
+<div id="gradient-paint-modal" class="gradient-modal" style="display: none;">
+  <div class="gradient-modal-header">
+    <span>🎨 Pincel degradado</span>
+    <button class="close-gradient-modal">✕</button>
+  </div>
+  <div class="gradient-modal-content">
+    <div class="gradient-preview" id="gradient-paint-preview"></div>
+    <div class="gradient-angle">
+      <label>Ángulo: <span id="gradient-paint-angle-value">0°</span></label>
+      <input type="range" id="gradient-paint-angle" min="0" max="360" value="0" step="1">
+    </div>
+    <div class="gradient-colors-list" id="gradient-paint-colors"></div>
+    <button class="gradient-add-color">+ Añadir color</button>
+    <div class="gradient-tabs">
+      <button class="gradient-tab active" data-tab="presets">Presets</button>
+      <button class="gradient-tab" data-tab="custom">Custom</button>
+    </div>
+    <div class="gradient-presets" id="gradient-paint-presets"></div>
+    <div class="gradient-custom" id="gradient-paint-custom" style="display: none;">
+      <div class="gradient-saved-list" id="gradient-paint-saved-list"></div>
+      <input type="text" id="gradient-paint-save-name" placeholder="Nombre del degradado">
+      <button id="gradient-paint-save-btn" class="gradient-save-btn">Guardar actual</button>
+    </div>
+    <div class="gradient-modal-actions">
+      <button class="gradient-apply">Aplicar</button>
+      <button class="gradient-cancel">Cancelar</button>
+    </div>
+  </div>
+  <div class="resize-gradient resize-n"></div>
+  <div class="resize-gradient resize-s"></div>
+  <div class="resize-gradient resize-e"></div>
+  <div class="resize-gradient resize-w"></div>
+  <div class="resize-gradient resize-ne"></div>
+  <div class="resize-gradient resize-nw"></div>
+  <div class="resize-gradient resize-se"></div>
+  <div class="resize-gradient resize-sw"></div>
 </div>
 
 <!-- Modal flotante independiente para herramientas (solo para layout floating) -->

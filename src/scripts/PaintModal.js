@@ -44,6 +44,35 @@ let savedStateBeforeShape = null;
 let tempTextData = null;
 let textTransformControls = null;
 
+let mirrorMode = false;
+let gradientMode = false;
+let gradientColors = ['#ff0000', '#00ff00', '#0000ff'];
+let gradientAngle = 0;
+let gradientStops = [];
+
+function updateGradientStops() {
+  if (gradientColors.length > 1) {
+    gradientStops = gradientColors.map((color, i) => ({ color, pos: i / (gradientColors.length - 1) }));
+  } else {
+    gradientStops = [{ color: gradientColors[0], pos: 0 }];
+  }
+}
+
+function getGradientColor(ctx, x, y, width, height) {
+  if (!gradientMode || gradientColors.length < 2) return drawColor;
+  const rad = gradientAngle * Math.PI / 180;
+  const dx = Math.cos(rad);
+  const dy = Math.sin(rad);
+  const len = Math.hypot(width, height);
+  const startX = width/2 - dx * len/2;
+  const startY = height/2 - dy * len/2;
+  const endX = width/2 + dx * len/2;
+  const endY = height/2 + dy * len/2;
+  const grad = ctx.createLinearGradient(startX, startY, endX, endY);
+  gradientStops.forEach(stop => grad.addColorStop(stop.pos, stop.color));
+  return grad;
+}
+
 function showTransientNotification(text, duration = 2000) {
   let notif = document.querySelector('.transient-notif');
   if (!notif) {
@@ -222,8 +251,7 @@ function showLayoutDropdown(anchorBtn) {
   document.body.appendChild(dropdown);
   activeLayoutDropdown = dropdown;
   const closeHandler = (e) => {
-    const targetNode = e.target;
-    if (targetNode && !dropdown.contains(targetNode) && targetNode !== anchorBtn) {
+    if (!dropdown.contains(e.target) && e.target !== anchorBtn) {
       dropdown.remove();
       activeLayoutDropdown = null;
       document.removeEventListener('click', closeHandler);
@@ -262,7 +290,6 @@ function showLayoutDropdown(anchorBtn) {
 
 let activeTextDropdown = null;
 let selectedTextColor = '#ffffff';
-
 function showTextDropdown(anchorBtn) {
   if (activeTextDropdown) {
     activeTextDropdown.remove();
@@ -273,7 +300,6 @@ function showTextDropdown(anchorBtn) {
   const dropdown = document.createElement('div');
   dropdown.className = 'text-dropdown';
   dropdown.style.position = 'fixed';
-  dropdown.style.right = `${window.innerWidth - rect.right}px`;
   dropdown.style.top = `${rect.bottom + 5}px`;
   dropdown.style.transform = 'none';
   dropdown.innerHTML = `
@@ -291,11 +317,16 @@ function showTextDropdown(anchorBtn) {
     <button id="text-dropdown-insert" class="insert-btn">Insertar</button>
   `;
   document.body.appendChild(dropdown);
-  activeTextDropdown = dropdown;
+  const dropdownWidth = dropdown.offsetWidth;
+  let leftPos = rect.left + rect.width / 2 - dropdownWidth / 2;
+  const minLeft = 10;
+  const maxLeft = window.innerWidth - dropdownWidth - 10;
+  leftPos = Math.min(maxLeft, Math.max(minLeft, leftPos));
+  dropdown.style.left = `${leftPos}px`;
   
+  activeTextDropdown = dropdown;
   const closeHandler = (e) => {
-    const targetNode = e.target;
-    if (targetNode && !dropdown.contains(targetNode) && targetNode !== anchorBtn) {
+    if (!dropdown.contains(e.target) && e.target !== anchorBtn) {
       dropdown.remove();
       activeTextDropdown = null;
       document.removeEventListener('click', closeHandler);
@@ -306,7 +337,6 @@ function showTextDropdown(anchorBtn) {
     document.addEventListener('click', closeHandler);
     document.addEventListener('touchstart', closeHandler);
   }, 0);
-  
   const colorPreview = dropdown.querySelector('#text-dropdown-color');
   colorPreview.addEventListener('click', () => {
     showGlobalColorPicker((color) => {
@@ -314,36 +344,33 @@ function showTextDropdown(anchorBtn) {
       colorPreview.style.backgroundColor = color;
     });
   });
-  
   dropdown.querySelector('#text-dropdown-insert').addEventListener('click', () => {
     const text = dropdown.querySelector('#text-dropdown-input').value;
-    if (!text.trim()) {
+    if (text.trim()) {
+      const fontFamily = dropdown.querySelector('#text-dropdown-font').value;
+      const color = selectedTextColor;
+      const centerX = drawingCanvas.width / 2;
+      const centerY = drawingCanvas.height / 2;
+      showTextTransformControls({
+        text: text,
+        x: centerX,
+        y: centerY,
+        fontSize: 32,
+        rotation: 0,
+        fontFamily: fontFamily,
+        color: color
+      });
+      dropdown.remove();
+      activeTextDropdown = null;
+    } else {
       showTransientNotification('El texto no puede estar vacío');
-      return;
     }
-    const fontFamily = dropdown.querySelector('#text-dropdown-font').value;
-    const color = selectedTextColor;
-    const centerX = drawingCanvas.width / 2;
-    const centerY = drawingCanvas.height / 2;
-    const textData = {
-      text: text,
-      x: centerX,
-      y: centerY,
-      fontSize: 32,
-      rotation: 0,
-      fontFamily: fontFamily,
-      color: color
-    };
-    showTextTransformControls(textData);
-    dropdown.remove();
-    activeTextDropdown = null;
   });
 }
 
 function initTextTransformControls() {
   const sidebar = document.getElementById('paint-sidebar');
   if (!sidebar) return;
-  
   const referenceNode = sidebar.querySelector('hr');
   if (!document.getElementById('text-transform-controls')) {
     const controlsDiv = document.createElement('div');
@@ -370,7 +397,6 @@ function initTextTransformControls() {
       sidebar.appendChild(controlsDiv);
     }
     textTransformControls = controlsDiv;
-    
     controlsDiv.querySelectorAll('[data-action]').forEach(btn => {
       btn.addEventListener('click', () => {
         if (!tempTextData) return;
@@ -391,7 +417,6 @@ function initTextTransformControls() {
         drawTempText();
       });
     });
-    
     controlsDiv.querySelector('#text-accept-btn').addEventListener('click', () => {
       if (!tempTextData) return;
       drawingCtx.putImageData(tempTextData.savedState, 0, 0);
@@ -407,7 +432,6 @@ function initTextTransformControls() {
       saveDrawingState();
       hideTextTransformControls();
     });
-    
     controlsDiv.querySelector('#text-cancel-btn').addEventListener('click', () => {
       if (!tempTextData) return;
       drawingCtx.putImageData(tempTextData.savedState, 0, 0);
@@ -443,6 +467,52 @@ function drawTempText() {
   drawingCtx.textBaseline = 'middle';
   drawingCtx.fillText(tempTextData.text, 0, 0);
   drawingCtx.restore();
+}
+
+function floodFill(x, y, targetColor, fillColor) {
+  const imageData = drawingCtx.getImageData(0, 0, drawingCanvas.width, drawingCanvas.height);
+  const data = imageData.data;
+  const w = drawingCanvas.width;
+  const h = drawingCanvas.height;
+  const targetR = (targetColor >> 16) & 0xff;
+  const targetG = (targetColor >> 8) & 0xff;
+  const targetB = targetColor & 0xff;
+  const fillR = (fillColor >> 16) & 0xff;
+  const fillG = (fillColor >> 8) & 0xff;
+  const fillB = fillColor & 0xff;
+  if (targetR === fillR && targetG === fillG && targetB === fillB) return;
+  const stack = [[x, y]];
+  const visited = new Uint8Array(w * h);
+  while (stack.length) {
+    const [px, py] = stack.pop();
+    const idx = (py * w + px) * 4;
+    if (px < 0 || px >= w || py < 0 || py >= h) continue;
+    if (visited[py * w + px]) continue;
+    if (data[idx] !== targetR || data[idx+1] !== targetG || data[idx+2] !== targetB) continue;
+    visited[py * w + px] = 1;
+    data[idx] = fillR;
+    data[idx+1] = fillG;
+    data[idx+2] = fillB;
+    stack.push([px+1, py], [px-1, py], [px, py+1], [px, py-1]);
+  }
+  drawingCtx.putImageData(imageData, 0, 0);
+  saveDrawingState();
+}
+
+function toggleMirrorMode() {
+  mirrorMode = !mirrorMode;
+  const btn = document.getElementById('paint-mirror');
+  if (btn) btn.classList.toggle('active', mirrorMode);
+  showTransientNotification(mirrorMode ? 'Modo espejo activado' : 'Modo espejo desactivado');
+}
+
+function drawStrokeWithMirror(x, y, lastX, lastY, size, color, opacity, brushType) {
+  drawStroke(x, y, lastX, lastY, size, color, opacity, brushType);
+  if (mirrorMode) {
+    const mirroredX = drawingCanvas.width - x;
+    const mirroredLastX = lastX !== null ? drawingCanvas.width - lastX : null;
+    drawStroke(mirroredX, y, mirroredLastX, lastY, size, color, opacity, brushType);
+  }
 }
 
 function saveDrawingState() {
@@ -494,8 +564,11 @@ function setBackgroundSolidColor() {
     bgSolidColor = color;
     backgroundColor = 'color';
     applyBackground();
-    document.getElementById('paint-bg-preview').style.background = color;
+    document.getElementById('paint-bg-preview').style.background = bgSolidColor;
     document.getElementById('bg-image-controls').style.display = 'none';
+    document.querySelectorAll('.paint-bg-option').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('paint-bg-color').classList.add('active');
+    showTransientNotification('Fondo: color sólido');
   });
 }
 
@@ -522,6 +595,9 @@ function setBackgroundImageFromGallery() {
         document.getElementById('paint-bg-preview').style.backgroundImage = `url(${ev.target.result})`;
         document.getElementById('paint-bg-preview').style.backgroundSize = 'cover';
         document.getElementById('bg-image-controls').style.display = 'block';
+        document.querySelectorAll('.paint-bg-option').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('paint-bg-image').classList.add('active');
+        showTransientNotification('Fondo: imagen');
       };
       img.src = ev.target.result;
     };
@@ -535,6 +611,32 @@ function setBackgroundTransparent() {
   applyBackground();
   document.getElementById('paint-bg-preview').style.background = 'repeating-linear-gradient(45deg, #ccc 0px, #ccc 10px, #999 10px, #999 20px)';
   document.getElementById('bg-image-controls').style.display = 'none';
+  document.querySelectorAll('.paint-bg-option').forEach(btn => btn.classList.remove('active'));
+  document.getElementById('paint-bg-transparent').classList.add('active');
+  showTransientNotification('Fondo: transparente');
+}
+
+function setBackgroundGradientFromData(colors, angle) {
+  if (!backgroundCtx) return;
+  const w = backgroundCanvas.width;
+  const h = backgroundCanvas.height;
+  const rad = angle * Math.PI / 180;
+  const dx = Math.cos(rad);
+  const dy = Math.sin(rad);
+  const len = Math.hypot(w, h);
+  const startX = w/2 - dx * len/2;
+  const startY = h/2 - dy * len/2;
+  const endX = w/2 + dx * len/2;
+  const endY = h/2 + dy * len/2;
+  const grad = backgroundCtx.createLinearGradient(startX, startY, endX, endY);
+  colors.forEach((color, i) => {
+    grad.addColorStop(i / (colors.length - 1), color);
+  });
+  backgroundCtx.fillStyle = grad;
+  backgroundCtx.fillRect(0, 0, w, h);
+  backgroundColor = 'custom-gradient';
+  document.querySelectorAll('.paint-bg-option').forEach(btn => btn.classList.remove('active'));
+  showTransientNotification('Fondo degradado aplicado');
 }
 
 function transformBackground(deltaZoom = 0, deltaRot = 0, flipH = false, flipV = false, deltaX = 0, deltaY = 0) {
@@ -567,8 +669,14 @@ function drawStroke(x, y, lastX, lastY, size, color, opacity, brushType) {
   drawingCtx.lineCap = brushType === 'round' ? 'round' : 'square';
   drawingCtx.lineJoin = 'round';
   drawingCtx.lineWidth = size;
-  const rgba = `rgba(${parseInt(color.slice(1,3),16)}, ${parseInt(color.slice(3,5),16)}, ${parseInt(color.slice(5,7),16)}, ${opacity/100})`;
-  drawingCtx.strokeStyle = rgba;
+  let strokeStyle;
+  if (gradientMode && gradientColors.length >= 2) {
+    strokeStyle = getGradientColor(drawingCtx, x, y, drawingCanvas.width, drawingCanvas.height);
+  } else {
+    strokeStyle = `rgba(${parseInt(color.slice(1,3),16)}, ${parseInt(color.slice(3,5),16)}, ${parseInt(color.slice(5,7),16)}, ${opacity/100})`;
+  }
+  drawingCtx.strokeStyle = strokeStyle;
+  drawingCtx.fillStyle = strokeStyle;
   if (brushType === 'dashed') drawingCtx.setLineDash([size * 2, size]);
   else drawingCtx.setLineDash([]);
   if (lastX && lastY) {
@@ -576,7 +684,6 @@ function drawStroke(x, y, lastX, lastY, size, color, opacity, brushType) {
     drawingCtx.lineTo(x, y);
     drawingCtx.stroke();
   } else {
-    drawingCtx.fillStyle = rgba;
     drawingCtx.fillRect(x - size/2, y - size/2, size, size);
   }
   drawingCtx.restore();
@@ -591,13 +698,18 @@ function drawShapeOnCanvas(shapeType, start, end, color, opacity, size) {
   const y = Math.min(start.y, end.y);
   const width = Math.abs(end.x - start.x);
   const height = Math.abs(end.y - start.y);
-  const rgba = `rgba(${parseInt(color.slice(1,3),16)}, ${parseInt(color.slice(3,5),16)}, ${parseInt(color.slice(5,7),16)}, ${opacity/100})`;
-  
+  let strokeStyle;
+  if (gradientMode && gradientColors.length >= 2) {
+    strokeStyle = getGradientColor(drawingCtx, x, y, drawingCanvas.width, drawingCanvas.height);
+  } else {
+    strokeStyle = `rgba(${parseInt(color.slice(1,3),16)}, ${parseInt(color.slice(3,5),16)}, ${parseInt(color.slice(5,7),16)}, ${opacity/100})`;
+  }
+  drawingCtx.strokeStyle = strokeStyle;
+  drawingCtx.fillStyle = strokeStyle;
+  drawingCtx.lineWidth = size;
   if (shapeType === 'line') {
     drawingCtx.moveTo(start.x, start.y);
     drawingCtx.lineTo(end.x, end.y);
-    drawingCtx.strokeStyle = rgba;
-    drawingCtx.lineWidth = size;
     drawingCtx.stroke();
   } else {
     if (shapeType === 'circle') {
@@ -615,8 +727,6 @@ function drawShapeOnCanvas(shapeType, start, end, color, opacity, size) {
       drawingCtx.lineTo(x, y + height);
       drawingCtx.closePath();
     }
-    drawingCtx.strokeStyle = rgba;
-    drawingCtx.lineWidth = size;
     drawingCtx.stroke();
   }
   drawingCtx.restore();
@@ -645,6 +755,17 @@ function startDrawing(e) {
   if (e.button !== undefined && e.button !== 0) return;
   e.preventDefault();
   const pos = getCanvasCoords(e, drawingCanvas);
+  if (currentTool === 'floodfill') {
+    const pixel = drawingCtx.getImageData(pos.x, pos.y, 1, 1).data;
+    const targetColor = (pixel[0] << 16) | (pixel[1] << 8) | pixel[2];
+    if (gradientMode) {
+      showTransientNotification('El cubo de pintura no funciona con degradado');
+      return;
+    }
+    const fillColor = parseInt(drawColor.slice(1), 16);
+    floodFill(Math.floor(pos.x), Math.floor(pos.y), targetColor, fillColor);
+    return;
+  }
   if (currentShape) {
     savedStateBeforeShape = drawingCtx.getImageData(0, 0, drawingCanvas.width, drawingCanvas.height);
     shapeStart = pos;
@@ -652,7 +773,7 @@ function startDrawing(e) {
   } else if (currentTool === 'brush') {
     drawing = true;
     lastPoint = pos;
-    drawStroke(pos.x, pos.y, null, null, currentSize, drawColor, currentOpacity, currentBrushType);
+    drawStrokeWithMirror(pos.x, pos.y, null, null, currentSize, drawColor, currentOpacity, currentBrushType);
   } else if (currentTool === 'eraser') {
     drawing = true;
     lastPoint = pos;
@@ -672,7 +793,7 @@ function draw(e) {
     drawingCtx.putImageData(savedStateBeforeShape, 0, 0);
     drawShapeOnCanvas(currentShape, shapeStart, pos, drawColor, currentOpacity, currentSize);
   } else if (currentTool === 'brush' && lastPoint) {
-    drawStroke(pos.x, pos.y, lastPoint.x, lastPoint.y, currentSize, drawColor, currentOpacity, currentBrushType);
+    drawStrokeWithMirror(pos.x, pos.y, lastPoint.x, lastPoint.y, currentSize, drawColor, currentOpacity, currentBrushType);
     lastPoint = pos;
   } else if (currentTool === 'eraser' && lastPoint) {
     drawingCtx.save();
@@ -684,6 +805,19 @@ function draw(e) {
     drawingCtx.lineTo(pos.x, pos.y);
     drawingCtx.stroke();
     drawingCtx.restore();
+    if (mirrorMode) {
+      const mirroredX = drawingCanvas.width - pos.x;
+      const mirroredLastX = drawingCanvas.width - lastPoint.x;
+      drawingCtx.save();
+      drawingCtx.globalCompositeOperation = 'destination-out';
+      drawingCtx.beginPath();
+      drawingCtx.lineCap = 'round';
+      drawingCtx.lineWidth = currentSize;
+      drawingCtx.moveTo(mirroredLastX, lastPoint.y);
+      drawingCtx.lineTo(mirroredX, pos.y);
+      drawingCtx.stroke();
+      drawingCtx.restore();
+    }
     lastPoint = pos;
   }
 }
@@ -726,7 +860,6 @@ function setCanvasZoom(zoom) {
 function toggleFloatingSidebar(enable) {
   if (!sidebarOriginal) sidebarOriginal = document.getElementById('paint-sidebar');
   if (!sidebarOriginal) return;
-
   if (enable && !floatingSidebarActive) {
     sidebarParent = sidebarOriginal.parentNode;
     document.body.appendChild(sidebarOriginal);
@@ -740,7 +873,6 @@ function toggleFloatingSidebar(enable) {
     sidebarOriginal.style.display = 'flex';
     sidebarOriginal.style.overflowY = 'auto';
     sidebarOriginal.style.transition = 'none';
-    
     if (!sidebarOriginal.querySelector('.floating-sidebar-header')) {
       const headerDiv = document.createElement('div');
       headerDiv.className = 'floating-sidebar-header';
@@ -753,7 +885,6 @@ function toggleFloatingSidebar(enable) {
         if (classicBtn) classicBtn.click();
       });
     }
-    
     if (sidebarOriginal._interact) sidebarOriginal._interact.unset();
     sidebarOriginal._interact = interact(sidebarOriginal).resizable({
       edges: { top: true, bottom: true },
@@ -815,6 +946,356 @@ function toggleFloatingSidebar(enable) {
   }
 }
 
+// --------------------- MODALES DE DEGRADADO ---------------------
+let bgGradientModal = null, paintGradientModal = null;
+let bgGradientData = { colors: ['#ff0000', '#0000ff'], angle: 0, savedPresets: [] };
+let paintGradientData = { colors: ['#ff0000', '#0000ff'], angle: 0, savedPresets: [] };
+
+function loadGradientPresets() {
+  try {
+    const storedBg = localStorage.getItem('gradient_presets_bg');
+    if (storedBg) bgGradientData.savedPresets = JSON.parse(storedBg);
+    const storedPaint = localStorage.getItem('gradient_presets_paint');
+    if (storedPaint) paintGradientData.savedPresets = JSON.parse(storedPaint);
+  } catch(e) {}
+  if (!bgGradientData.savedPresets.length) {
+    bgGradientData.savedPresets = [
+      { name: 'Arcoíris', colors: ['#ff0000', '#ffff00', '#00ff00', '#0000ff', '#ff00ff'], angle: 0 },
+      { name: 'Atardecer', colors: ['#ff7e5f', '#feb47b'], angle: 45 },
+      { name: 'Océano', colors: ['#00c6ff', '#0072ff'], angle: 90 }
+    ];
+  }
+  if (!paintGradientData.savedPresets.length) {
+    paintGradientData.savedPresets = [
+      { name: 'Arcoíris', colors: ['#ff0000', '#ffff00', '#00ff00', '#0000ff', '#ff00ff'], angle: 0 },
+      { name: 'Atardecer', colors: ['#ff7e5f', '#feb47b'], angle: 45 },
+      { name: 'Océano', colors: ['#00c6ff', '#0072ff'], angle: 90 }
+    ];
+  }
+}
+
+function saveGradientPresets(type, presets) {
+  localStorage.setItem(type === 'bg' ? 'gradient_presets_bg' : 'gradient_presets_paint', JSON.stringify(presets));
+}
+
+function renderGradientModal(modalId, data, isBg) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+  const colorsContainer = modal.querySelector('.gradient-colors-list');
+  const angleSlider = modal.querySelector('.gradient-angle input');
+  const angleValueSpan = modal.querySelector('.gradient-angle span');
+  const previewDiv = modal.querySelector('.gradient-preview');
+  const presetsContainer = modal.querySelector('.gradient-presets');
+  const savedList = modal.querySelector('.gradient-saved-list');
+  const saveNameInput = modal.querySelector('.gradient-custom input');
+  const saveBtn = modal.querySelector('.gradient-save-btn');
+  
+  // Actualizar lista de colores
+  colorsContainer.innerHTML = '';
+  data.colors.forEach((color, idx) => {
+    const row = document.createElement('div');
+    row.className = 'gradient-color-item';
+    row.innerHTML = `
+      <div class="color-preview" style="background: ${color};" data-index="${idx}"></div>
+      <input type="range" min="0" max="100" value="${idx * 100 / (data.colors.length-1)}" step="1" disabled style="opacity:0.5; flex:1;">
+      <button class="remove-color" data-index="${idx}" ${data.colors.length <= 2 ? 'disabled style="opacity:0.5"' : ''}>✕</button>
+    `;
+    const preview = row.querySelector('.color-preview');
+    preview.addEventListener('click', () => {
+      showGlobalColorPicker((newColor) => {
+        data.colors[idx] = newColor;
+        preview.style.backgroundColor = newColor;
+        updateGradientPreview(modalId, data, previewDiv);
+      });
+    });
+    const removeBtn = row.querySelector('.remove-color');
+    if (removeBtn && !removeBtn.disabled) {
+      removeBtn.addEventListener('click', () => {
+        if (data.colors.length > 2) {
+          data.colors.splice(idx, 1);
+          renderGradientModal(modalId, data, isBg);
+        }
+      });
+    }
+    colorsContainer.appendChild(row);
+  });
+  
+  // Botón añadir color
+  const addBtn = modal.querySelector('.gradient-add-color');
+  if (addBtn) {
+    addBtn.onclick = () => {
+      if (data.colors.length < 4) {
+        data.colors.push('#ffffff');
+        renderGradientModal(modalId, data, isBg);
+      } else {
+        showTransientNotification('Máximo 4 colores');
+      }
+    };
+  }
+  
+  // Ángulo
+  if (angleSlider) {
+    angleSlider.value = data.angle;
+    angleSlider.oninput = (e) => {
+      data.angle = parseInt(e.target.value);
+      angleValueSpan.innerText = data.angle + '°';
+      updateGradientPreview(modalId, data, previewDiv);
+    };
+    angleValueSpan.innerText = data.angle + '°';
+  }
+  
+  // Presets y custom (usando la misma lista de presets)
+  const presets = isBg ? bgGradientData.savedPresets : paintGradientData.savedPresets;
+  presetsContainer.innerHTML = '';
+  savedList.innerHTML = '';
+  
+  presets.forEach(preset => {
+    // Presets (tab "Presets")
+    const presetDiv = document.createElement('div');
+    presetDiv.className = 'gradient-saved-item';
+    presetDiv.innerHTML = `
+      <div class="preview" style="background: linear-gradient(${preset.angle}deg, ${preset.colors.join(', ')});"></div>
+      <span class="name">${escapeHtml(preset.name)}</span>
+      <button class="apply-preset">Aplicar</button>
+      <button class="delete-preset">🗑️</button>
+    `;
+    presetDiv.querySelector('.apply-preset').onclick = () => {
+      data.colors = [...preset.colors];
+      data.angle = preset.angle;
+      renderGradientModal(modalId, data, isBg);
+    };
+    presetDiv.querySelector('.delete-preset').onclick = () => {
+      const idx = presets.indexOf(preset);
+      if (idx !== -1) presets.splice(idx, 1);
+      saveGradientPresets(isBg ? 'bg' : 'paint', presets);
+      renderGradientModal(modalId, data, isBg);
+    };
+    presetsContainer.appendChild(presetDiv);
+    
+    // Custom (tab "Custom") – mostramos los mismos elementos pero con otro contenedor
+    const customItem = document.createElement('div');
+    customItem.className = 'gradient-saved-item';
+    customItem.innerHTML = `
+      <div class="preview" style="background: linear-gradient(${preset.angle}deg, ${preset.colors.join(', ')});"></div>
+      <span class="name">${escapeHtml(preset.name)}</span>
+      <button class="apply-preset">Aplicar</button>
+      <button class="delete-preset">🗑️</button>
+    `;
+    customItem.querySelector('.apply-preset').onclick = () => {
+      data.colors = [...preset.colors];
+      data.angle = preset.angle;
+      renderGradientModal(modalId, data, isBg);
+    };
+    customItem.querySelector('.delete-preset').onclick = () => {
+      const idx = presets.indexOf(preset);
+      if (idx !== -1) presets.splice(idx, 1);
+      saveGradientPresets(isBg ? 'bg' : 'paint', presets);
+      renderGradientModal(modalId, data, isBg);
+    };
+    savedList.appendChild(customItem);
+  });
+  
+  // Guardar nuevo preset
+  if (saveBtn) {
+    saveBtn.onclick = () => {
+      const name = saveNameInput.value.trim();
+      if (!name) {
+        showTransientNotification('Introduce un nombre');
+        return;
+      }
+      const newPreset = { name, colors: [...data.colors], angle: data.angle };
+      const arr = isBg ? bgGradientData.savedPresets : paintGradientData.savedPresets;
+      // Evitar duplicados por nombre
+      if (!arr.some(p => p.name === name)) {
+        arr.push(newPreset);
+        saveGradientPresets(isBg ? 'bg' : 'paint', arr);
+        saveNameInput.value = '';
+        renderGradientModal(modalId, data, isBg);
+      } else {
+        showTransientNotification('Ya existe un preset con ese nombre');
+      }
+    };
+  }
+  
+  // Tabs
+  const tabs = modal.querySelectorAll('.gradient-tab');
+  const presetsPanel = modal.querySelector('.gradient-presets');
+  const customPanel = modal.querySelector('.gradient-custom');
+  tabs.forEach(tab => {
+    tab.onclick = () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      if (tab.dataset.tab === 'presets') {
+        presetsPanel.style.display = 'flex';
+        customPanel.style.display = 'none';
+      } else {
+        presetsPanel.style.display = 'none';
+        customPanel.style.display = 'flex';
+      }
+    };
+  });
+  
+  updateGradientPreview(modalId, data, previewDiv);
+}
+
+function updateGradientPreview(modalId, data, previewDiv) {
+  if (!previewDiv) return;
+  const gradient = `linear-gradient(${data.angle}deg, ${data.colors.join(', ')})`;
+  previewDiv.style.background = gradient;
+}
+
+function initGradientModals() {
+  loadGradientPresets();
+  
+  bgGradientModal = document.getElementById('gradient-bg-modal');
+  if (bgGradientModal) {
+    const header = bgGradientModal.querySelector('.gradient-modal-header');
+    interact(header).draggable({
+      inertia: false,
+      allowFrom: header,
+      modifiers: [interact.modifiers.restrictRect({ restriction: 'parent', endOnly: true })],
+      listeners: {
+        start() { header.style.cursor = 'grabbing'; },
+        move(event) {
+          let left = parseFloat(bgGradientModal.style.left) || 0;
+          let top = parseFloat(bgGradientModal.style.top) || 0;
+          bgGradientModal.style.left = `${left + event.dx}px`;
+          bgGradientModal.style.top = `${top + event.dy}px`;
+          bgGradientModal.style.transform = 'none';
+        },
+        end() { header.style.cursor = 'grab'; }
+      }
+    });
+    interact(bgGradientModal).resizable({
+      edges: { top: true, left: true, bottom: true, right: true },
+      modifiers: [interact.modifiers.restrictSize({ min: { width: 320, height: 400 }, max: { width: 500, height: 600 } })],
+      listeners: {
+        move(event) {
+          let width = event.rect.width;
+          let height = event.rect.height;
+          bgGradientModal.style.width = `${width}px`;
+          bgGradientModal.style.height = `${height}px`;
+          let left = parseFloat(bgGradientModal.style.left) || 0;
+          let top = parseFloat(bgGradientModal.style.top) || 0;
+          bgGradientModal.style.left = `${left + event.deltaRect.left}px`;
+          bgGradientModal.style.top = `${top + event.deltaRect.top}px`;
+          bgGradientModal.style.transform = 'none';
+        }
+      }
+    });
+    bgGradientModal.querySelector('.close-gradient-modal').onclick = () => {
+      bgGradientModal.style.display = 'none';
+      if (bgGradientModal._overlay) bgGradientModal._overlay.classList.remove('visible');
+    };
+    bgGradientModal.querySelector('.gradient-cancel').onclick = () => {
+      bgGradientModal.style.display = 'none';
+      if (bgGradientModal._overlay) bgGradientModal._overlay.classList.remove('visible');
+    };
+    bgGradientModal.querySelector('.gradient-apply').onclick = () => {
+      setBackgroundGradientFromData(bgGradientData.colors, bgGradientData.angle);
+      bgGradientModal.style.display = 'none';
+      if (bgGradientModal._overlay) bgGradientModal._overlay.classList.remove('visible');
+    };
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-blur-overlay';
+    overlay.style.zIndex = '10999';
+    document.body.appendChild(overlay);
+    bgGradientModal._overlay = overlay;
+    associateOverlay(bgGradientModal, overlay);
+    registerModal(bgGradientModal, 'gradient-bg');
+  }
+  
+  paintGradientModal = document.getElementById('gradient-paint-modal');
+  if (paintGradientModal) {
+    const header = paintGradientModal.querySelector('.gradient-modal-header');
+    interact(header).draggable({
+      inertia: false,
+      allowFrom: header,
+      modifiers: [interact.modifiers.restrictRect({ restriction: 'parent', endOnly: true })],
+      listeners: {
+        start() { header.style.cursor = 'grabbing'; },
+        move(event) {
+          let left = parseFloat(paintGradientModal.style.left) || 0;
+          let top = parseFloat(paintGradientModal.style.top) || 0;
+          paintGradientModal.style.left = `${left + event.dx}px`;
+          paintGradientModal.style.top = `${top + event.dy}px`;
+          paintGradientModal.style.transform = 'none';
+        },
+        end() { header.style.cursor = 'grab'; }
+      }
+    });
+    interact(paintGradientModal).resizable({
+      edges: { top: true, left: true, bottom: true, right: true },
+      modifiers: [interact.modifiers.restrictSize({ min: { width: 320, height: 400 }, max: { width: 500, height: 600 } })],
+      listeners: {
+        move(event) {
+          let width = event.rect.width;
+          let height = event.rect.height;
+          paintGradientModal.style.width = `${width}px`;
+          paintGradientModal.style.height = `${height}px`;
+          let left = parseFloat(paintGradientModal.style.left) || 0;
+          let top = parseFloat(paintGradientModal.style.top) || 0;
+          paintGradientModal.style.left = `${left + event.deltaRect.left}px`;
+          paintGradientModal.style.top = `${top + event.deltaRect.top}px`;
+          paintGradientModal.style.transform = 'none';
+        }
+      }
+    });
+    paintGradientModal.querySelector('.close-gradient-modal').onclick = () => {
+      paintGradientModal.style.display = 'none';
+      if (paintGradientModal._overlay) paintGradientModal._overlay.classList.remove('visible');
+    };
+    paintGradientModal.querySelector('.gradient-cancel').onclick = () => {
+      paintGradientModal.style.display = 'none';
+      if (paintGradientModal._overlay) paintGradientModal._overlay.classList.remove('visible');
+    };
+    paintGradientModal.querySelector('.gradient-apply').onclick = () => {
+      gradientMode = true;
+      gradientColors = [...paintGradientData.colors];
+      gradientAngle = paintGradientData.angle;
+      updateGradientStops();
+      const gradientToolBtn = document.getElementById('paint-gradient');
+      if (gradientToolBtn) gradientToolBtn.classList.add('active');
+      const gradientControls = document.getElementById('gradient-controls');
+      if (gradientControls) gradientControls.classList.add('visible');
+      showTransientNotification('Pincel degradado activado');
+      paintGradientModal.style.display = 'none';
+      if (paintGradientModal._overlay) paintGradientModal._overlay.classList.remove('visible');
+    };
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-blur-overlay';
+    overlay.style.zIndex = '10999';
+    document.body.appendChild(overlay);
+    paintGradientModal._overlay = overlay;
+    associateOverlay(paintGradientModal, overlay);
+    registerModal(paintGradientModal, 'gradient-paint');
+  }
+}
+
+function openBgGradientModal() {
+  if (!bgGradientModal) return;
+  renderGradientModal('gradient-bg-modal', bgGradientData, true);
+  bgGradientModal.style.display = 'flex';
+  bgGradientModal.style.left = `${(window.innerWidth - 360) / 2}px`;
+  bgGradientModal.style.top = `${(window.innerHeight - 450) / 2}px`;
+  bgGradientModal.style.transform = 'none';
+  bgGradientModal._overlay.classList.add('visible');
+  bringModalToFront('gradient-bg');
+}
+
+function openPaintGradientModal() {
+  if (!paintGradientModal) return;
+  renderGradientModal('gradient-paint-modal', paintGradientData, false);
+  paintGradientModal.style.display = 'flex';
+  paintGradientModal.style.left = `${(window.innerWidth - 360) / 2}px`;
+  paintGradientModal.style.top = `${(window.innerHeight - 450) / 2}px`;
+  paintGradientModal.style.transform = 'none';
+  paintGradientModal._overlay.classList.add('visible');
+  bringModalToFront('gradient-paint');
+}
+
+// -------------------------------------------------------------
+
 function initTools() {
   const mainToolBtn = document.getElementById('paint-main-tool');
   const toolDropdown = document.getElementById('tool-dropdown');
@@ -845,6 +1326,10 @@ function initTools() {
   const zoomCanvasIn = document.getElementById('zoom-in-btn');
   const layoutSelectorBtn = document.getElementById('layout-selector-btn');
   const textBtn = document.getElementById('paint-text');
+  const mirrorBtn = document.getElementById('paint-mirror');
+  const floodFillBtn = document.getElementById('paint-floodfill');
+  const bgGradientSidebarBtn = document.getElementById('paint-bg-gradient');
+  const paintGradientToolbarBtn = document.getElementById('paint-gradient');
 
   const brushRound = document.getElementById('brush-round');
   const brushSquare = document.getElementById('brush-square');
@@ -867,6 +1352,15 @@ function initTools() {
     } else if (shapeType !== null) {
       currentTool = 'shape';
       currentShape = shapeType;
+    } else if (toolType === 'floodfill') {
+      currentTool = 'floodfill';
+      currentShape = null;
+    } else if (toolType === 'mirror') {
+      toggleMirrorMode();
+      return;
+    } else if (toolType === 'gradient') {
+      openPaintGradientModal();
+      return;
     }
     toolDropdown.style.display = 'none';
   }
@@ -916,6 +1410,34 @@ function initTools() {
       eraserBtn.classList.add('active');
       currentShape = null;
       toolDropdown.style.display = 'none';
+    });
+  }
+
+  if (mirrorBtn) {
+    mirrorBtn.addEventListener('click', () => {
+      toggleMirrorMode();
+      mirrorBtn.classList.toggle('active', mirrorMode);
+    });
+  }
+  if (floodFillBtn) {
+    floodFillBtn.addEventListener('click', () => {
+      currentTool = 'floodfill';
+      document.querySelectorAll('.paint-tool').forEach(btn => btn.classList.remove('active'));
+      floodFillBtn.classList.add('active');
+      currentShape = null;
+      toolDropdown.style.display = 'none';
+    });
+  }
+  if (bgGradientSidebarBtn) {
+    bgGradientSidebarBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openBgGradientModal();
+    });
+  }
+  if (paintGradientToolbarBtn) {
+    paintGradientToolbarBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openPaintGradientModal();
     });
   }
 
@@ -998,7 +1520,6 @@ function initTools() {
       showLayoutDropdown(layoutSelectorBtn);
     });
   }
-
   if (textBtn) {
     textBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -1088,6 +1609,7 @@ function initModal() {
   saveDrawingState();
   bindCanvasEvents();
   initTools();
+  initGradientModals();
   setCanvasZoom(1);
 }
 
