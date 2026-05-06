@@ -1,4 +1,3 @@
-// src/scripts/scrollButton.js
 (function() {
   const btn = document.getElementById('scrollToBottomBtn');
   const messagesEl = document.getElementById('messages');
@@ -13,7 +12,7 @@
 
   function updateButtonPosition() {
     const keyboardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
-    btn.style.bottom = (keyboardHeight + 70) + 'px';
+    btn.style.bottom = `calc(60px + ${keyboardHeight}px + 10px)`;
   }
 
   messagesEl.addEventListener('scroll', updateButtonVisibility);

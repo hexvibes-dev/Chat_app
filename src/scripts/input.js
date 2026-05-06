@@ -1,5 +1,3 @@
-// src/scripts/input.js
-
 import { appendMessage } from './messages.js';
 import { getAndClearQuotedMessage, hideReplyPopup } from './answer.js';
 import { connectToBackend, sendMessageViaSocket, isSocketConnected, disconnectSocket } from './socket.js';
@@ -10,8 +8,21 @@ export const sendBtn = document.getElementById('sendBtn');
 
 let editingMessageId = null;
 let lastCursorPosition = null;
+let isUserTyping = false;
+let preventFocus = false;
+
+window._ignoreBlurForPicker = false;
+
+if (input) {
+  input.contentEditable = 'false';
+  input.style.cursor = 'text';
+  input.style.wordWrap = 'break-word';
+  input.style.whiteSpace = 'pre-wrap';
+  input.style.overflowWrap = 'break-word';
+}
 
 function saveCursorPosition() {
+  if (preventFocus) return;
   const sel = window.getSelection();
   if (sel.rangeCount > 0 && input.contains(sel.anchorNode)) {
     lastCursorPosition = sel.getRangeAt(0).cloneRange();
@@ -30,7 +41,11 @@ function restoreCursorPosition() {
 
 function getInputText() {
   if (!input) return '';
+  const wasEditable = input.contentEditable === 'true';
+  if (!wasEditable) input.contentEditable = 'true';
   const clone = input.cloneNode(true);
+  if (!wasEditable) input.contentEditable = 'false';
+  
   clone.querySelectorAll('img[data-shortcode]').forEach(img => {
     const shortcode = img.getAttribute('data-shortcode');
     const textNode = document.createTextNode(shortcode);
@@ -40,11 +55,16 @@ function getInputText() {
     const imgClone = img.cloneNode(true);
     img.parentNode.replaceChild(imgClone, img);
   });
-  return clone.innerText.trim();
+  let text = clone.innerText || '';
+  return text.trim();
 }
 
 function setInputText(text) {
   if (!input) return;
+  preventFocus = true;
+  const wasEditable = input.contentEditable === 'true';
+  if (!wasEditable) input.contentEditable = 'true';
+  
   input.innerText = text;
   const range = document.createRange();
   const sel = window.getSelection();
@@ -54,10 +74,17 @@ function setInputText(text) {
   sel.addRange(range);
   input.dispatchEvent(new Event('input', { bubbles: true }));
   setTimeout(() => convertShortcodesToImagesInNode(input), 10);
+  
+  if (!wasEditable) input.contentEditable = 'false';
+  if (document.activeElement === input) input.blur();
+  preventFocus = false;
 }
 
-export function insertAtCursor(html, shouldKeepFocus = true) {
+export function insertAtCursor(html, shouldKeepFocus = false) {
   if (!input) return;
+  preventFocus = true;
+  const wasEditable = input.contentEditable === 'true';
+  if (!wasEditable) input.contentEditable = 'true';
 
   let processedHtml = html;
   if (typeof html === 'string' && html.match(/^:[a-zA-Z0-9_]+:$/)) {
@@ -67,7 +94,6 @@ export function insertAtCursor(html, shouldKeepFocus = true) {
   let range;
   const sel = window.getSelection();
   let validSelection = false;
-
   if (sel.rangeCount > 0) {
     const testRange = sel.getRangeAt(0);
     if (input.contains(testRange.commonAncestorContainer)) {
@@ -75,14 +101,12 @@ export function insertAtCursor(html, shouldKeepFocus = true) {
       validSelection = true;
     }
   }
-
   if (!validSelection && lastCursorPosition && input.contains(lastCursorPosition.startContainer)) {
     range = lastCursorPosition;
     validSelection = true;
     sel.removeAllRanges();
     sel.addRange(range);
   }
-
   if (!validSelection) {
     range = document.createRange();
     range.selectNodeContents(input);
@@ -100,9 +124,12 @@ export function insertAtCursor(html, shouldKeepFocus = true) {
 
   input.dispatchEvent(new Event('input', { bubbles: true }));
   saveCursorPosition();
-  
   setTimeout(() => convertShortcodesToImagesInNode(input), 10);
 
+  if (!wasEditable) input.contentEditable = 'false';
+  if (document.activeElement === input) input.blur();
+  preventFocus = false;
+  
   if (shouldKeepFocus) {
     setTimeout(() => input.focus(), 0);
   }
@@ -131,6 +158,11 @@ function showTransientNotification(text, duration = 1000) {
 }
 
 export function sendMessageFromInput() {
+  window._ignoreBlurForPicker = true;
+  setTimeout(() => {
+    window._ignoreBlurForPicker = false;
+  }, 300);
+
   let text = getInputText();
 
   if (text.startsWith('/connect')) {
@@ -168,16 +200,12 @@ export function sendMessageFromInput() {
   if (!text) return;
 
   const quoted = getAndClearQuotedMessage();
-  const hadFocus = document.activeElement === input;
 
   if (isSocketConnected()) {
-    const sent = sendMessageViaSocket(text, quoted);
-    if (sent) {
-      setInputText('');
-      adjustTextareaHeight();
-      if (typeof hideReplyPopup === 'function') hideReplyPopup();
-      if (hadFocus) input.focus();
-    }
+    sendMessageViaSocket(text, quoted);
+    setInputText('');
+    adjustTextareaHeight();
+    if (typeof hideReplyPopup === 'function') hideReplyPopup();
     return;
   }
 
@@ -186,7 +214,6 @@ export function sendMessageFromInput() {
   adjustTextareaHeight();
   if (typeof hideReplyPopup === 'function') hideReplyPopup();
   if (window.isAtBottom && typeof window.smoothScrollToBottom === 'function') window.smoothScrollToBottom();
-  if (hadFocus) input.focus();
 }
 
 if (sendBtn) {
@@ -202,10 +229,13 @@ if (sendBtn) {
 if (input) {
   input.addEventListener('input', adjustTextareaHeight);
   input.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      sendMessageFromInput();
-    } else if (e.key === 'Enter' && !e.shiftKey) {
+      document.execCommand('insertLineBreak');
+      adjustTextareaHeight();
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
       sendMessageFromInput();
     } else if (e.key === 'Escape') {
@@ -222,9 +252,35 @@ if (input) {
 
   input.addEventListener('click', saveCursorPosition);
   input.addEventListener('keyup', saveCursorPosition);
-  input.addEventListener('focus', saveCursorPosition);
   input.addEventListener('paste', (e) => {
     setTimeout(() => convertShortcodesToImagesInNode(input), 10);
+  });
+
+  input.addEventListener('mousedown', () => {
+    if (input.contentEditable !== 'true') {
+      input.contentEditable = 'true';
+    }
+    isUserTyping = true;
+    preventFocus = false;
+  });
+
+  input.addEventListener('focus', () => {
+    if ((!isUserTyping || preventFocus) && input.contentEditable === 'false') {
+      input.blur();
+    }
+  });
+
+  input.addEventListener('mouseup', () => {
+    setTimeout(() => {
+      isUserTyping = false;
+    }, 100);
+  });
+
+  input.addEventListener('blur', () => {
+    if (!editingMessageId && !isUserTyping) {
+      input.contentEditable = 'false';
+    }
+    isUserTyping = false;
   });
 }
 
@@ -237,6 +293,7 @@ window.addEventListener('message-edit', (e) => {
   if (!textEl) return;
   editingMessageId = id;
   const plainText = textEl.textContent.trim();
+  input.contentEditable = 'true';
   setInputText(plainText);
   adjustTextareaHeight();
   input.focus();

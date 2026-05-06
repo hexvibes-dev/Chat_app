@@ -1,4 +1,3 @@
-// src/scripts/answer.js
 import { appendMessage } from './messages.js';
 import { getUsername } from './user.js';
 import { getCustomEmojiByShortcode } from './CustomEmojiPicker.js';
@@ -96,15 +95,12 @@ function startDrag(e) {
         const plainText = extractPlainText(dragWrap);
         contentForPopup = convertShortcodesToImages(plainText);
       }
-      
       const popup = document.getElementById('replyPopup');
       if (popup && keyboardWasOpen) {
         popup.style.pointerEvents = 'none';
       }
-      
       showReplyPopup(target, contentForPopup, isSticker);
       setQuotedMessage(target, contentForPopup);
-      
       if (popup && keyboardWasOpen) {
         popup.style.pointerEvents = 'auto';
         setTimeout(() => {
@@ -114,7 +110,6 @@ function startDrag(e) {
           }
         }, 50);
       }
-      
       dragWrap.style.transform = 'translate3d(0,0,0)';
       dragWrap.style.opacity = 1;
       setTimeout(() => {
@@ -138,13 +133,11 @@ function startDrag(e) {
 function extractPlainText(dragWrap) {
   const clone = dragWrap.cloneNode(true);
   clone.querySelectorAll('.reply-quote, .msg-hour, .reactions-wrap').forEach(el => el.remove());
-  
   clone.querySelectorAll('img[data-shortcode]').forEach(img => {
     const shortcode = img.getAttribute('data-shortcode');
     const textNode = document.createTextNode(shortcode);
     img.parentNode.replaceChild(textNode, img);
   });
-  
   clone.querySelectorAll('img.replaced-emoji').forEach(img => {
     const originalEmoji = img.getAttribute('alt');
     if (originalEmoji) {
@@ -152,13 +145,11 @@ function extractPlainText(dragWrap) {
       img.parentNode.replaceChild(textNode, img);
     }
   });
-  
   clone.querySelectorAll('img').forEach(img => {
     const alt = img.getAttribute('alt') || 'imagen';
     const textNode = document.createTextNode(`[${alt}]`);
     img.parentNode.replaceChild(textNode, img);
   });
-  
   let text = clone.textContent || '';
   text = text.replace(/\s*\(editado\)/g, '').trim();
   return text || '[Mensaje]';
@@ -208,7 +199,7 @@ function showReplyPopup(messageElement, content, isSticker = false) {
 
   popup.classList.add('visible');
   popup.setAttribute('aria-hidden', 'false');
-  
+
   popup.addEventListener('mousedown', (e) => {
     e.preventDefault();
   });
@@ -232,11 +223,23 @@ function showReplyPopup(messageElement, content, isSticker = false) {
       clearQuotedMessage();
     }
   };
+
+  const updateReplyPosition = () => {
+    const keyboardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
+    popup.style.bottom = `calc(60px + ${keyboardHeight}px + 10px)`;
+  };
+  updateReplyPosition();
+  popup._keyboardHandler = updateReplyPosition;
+  window.addEventListener('keyboardchange', updateReplyPosition);
 }
 
 export function hideReplyPopup() {
   const popup = document.getElementById('replyPopup');
   if (!popup) return;
+  if (popup._keyboardHandler) {
+    window.removeEventListener('keyboardchange', popup._keyboardHandler);
+    delete popup._keyboardHandler;
+  }
   popup.classList.remove('visible');
   popup.setAttribute('aria-hidden', 'true');
   popup.innerHTML = '';

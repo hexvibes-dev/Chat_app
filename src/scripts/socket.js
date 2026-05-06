@@ -1,9 +1,9 @@
-// public/socket.js
 import { getUsername } from './user.js';
 import { setSocket as setUtilsSocket, emitSocketEvent, isSocketConnected } from './socketUtils.js';
 import { setSocket as setQueueSocket } from './queue.js';
 import { addReactionRemotely, removeReactionRemotely, playReactionAnimation, syncLocalReactionsToServer } from './reactions.js';
-import { deleteMessageRemotely, editMessageRemotely, appendMessage, messages, spacer } from './messages.js';
+import { deleteMessageRemotely, editMessageRemotely, appendMessage, messages } from './messages.js';
+import { updateContactStatus } from './contactStatus.js';
 
 let socket = null;
 let heartbeatInterval = null;
@@ -40,7 +40,6 @@ function showTransientNotification(text, duration = 2000) {
 function loadSocketIO(baseUrl) {
   return new Promise((resolve, reject) => {
     if (typeof window.io !== 'undefined') return resolve(window.io);
-
     const script = document.createElement('script');
     script.src = `${baseUrl}/socket.io/socket.io.js`;
     script.onload = () => {
@@ -85,10 +84,22 @@ export async function connectToBackend(url) {
           socket.emit('heartbeat', { timestamp: Date.now() });
         }
       }, 15000);
+
+      socket.emit('get:contact:status', (response) => {
+        if (response && response.online !== undefined) {
+          updateContactStatus(response.online, response.lastSeen);
+        }
+      });
     });
 
     socket.on('heartbeat-ack', () => {
       console.log('💓 Heartbeat OK');
+    });
+
+    socket.on('user:status', ({ userId, online, lastSeen }) => {
+      if (userId === 'contact') {
+        updateContactStatus(online, lastSeen);
+      }
     });
 
     socket.on('history', (messagesHistory) => {

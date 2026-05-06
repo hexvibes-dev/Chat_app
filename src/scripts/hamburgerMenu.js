@@ -1,6 +1,7 @@
 import { initThemeManager } from './themeManager.js';
 import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
 import interact from 'interactjs';
+import { showAvatarEditor } from './AvatarEditorModal.js';
 
 let menuElement = null;
 let isMenuOpen = false;
@@ -519,9 +520,10 @@ function createMenuStructure() {
   menu.style.display = 'none';
   menu.innerHTML = `
     <ul>
-      <li><button id="themeOptionBtn">Cambiar tema</button></li>
-      <li><button id="deleteChatBtn">Eliminar chat</button></li>
-      <li><button id="clearCacheBtn">Limpiar caché</button></li>
+      <li><button id="avatarOptionBtn">🖼️ Cambiar foto de perfil</button></li>
+      <li><button id="themeOptionBtn">🎨 Cambiar tema</button></li>
+      <li><button id="deleteChatBtn">🗑️ Eliminar chat</button></li>
+      <li><button id="clearCacheBtn">🧹 Limpiar caché</button></li>
     </ul>
   `;
   container.appendChild(menu);
@@ -536,14 +538,20 @@ function attachEvents() {
     toggleMenu();
   });
 
+  const avatarBtn = document.getElementById('avatarOptionBtn');
+  if (avatarBtn) {
+    avatarBtn.addEventListener('click', () => {
+      closeMenu();
+      showAvatarEditor();
+    });
+  }
+
   const themeBtn = document.getElementById('themeOptionBtn');
   if (themeBtn) {
     themeBtn.addEventListener('click', () => {
       closeMenu();
       if (typeof window.showThemeModal === 'function') {
         window.showThemeModal();
-      } else {
-        console.error('showThemeModal no está definido');
       }
     });
   }

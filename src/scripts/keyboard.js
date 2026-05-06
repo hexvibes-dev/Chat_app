@@ -1,24 +1,13 @@
-// src/scripts/keyboard.js
-import { input } from './input.js';
-
-if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
-if (typeof window.smoothScrollToBottom !== 'function') window.smoothScrollToBottom = () => {};
-
-export let keyboardOpen = false;
+let keyboardOpen = false;
 window.keyboardOpen = keyboardOpen;
-
-let lastViewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
 
 function detectKeyboard() {
   const vv = window.visualViewport;
   if (!vv) return;
-  
-  const viewportHeight = vv.height;
-  const keyboardHeight = Math.max(0, window.innerHeight - viewportHeight);
-  const isOpen = keyboardHeight > 80;
-  
-  document.documentElement.style.setProperty('--keyboard', keyboardHeight + 'px');
-  
+  const kbHeight = Math.max(0, window.innerHeight - vv.height);
+  const isOpen = kbHeight > 80;
+  document.documentElement.style.setProperty('--keyboard', kbHeight + 'px');
+
   if (isOpen !== keyboardOpen) {
     keyboardOpen = isOpen;
     window.keyboardOpen = keyboardOpen;
@@ -29,10 +18,7 @@ function detectKeyboard() {
       document.documentElement.classList.remove('keyboard-open');
       document.body.classList.remove('keyboard-open');
     }
-    try {
-      const ev = new CustomEvent('keyboardchange', { detail: { keyboard: keyboardHeight, isOpen } });
-      window.dispatchEvent(ev);
-    } catch (err) {}
+    window.dispatchEvent(new CustomEvent('keyboardchange', { detail: { keyboard: kbHeight, isOpen } }));
   }
 }
 
@@ -43,10 +29,7 @@ if (window.visualViewport) {
 }
 
 if (window.ResizeObserver) {
-  const resizeObserver = new ResizeObserver(() => {
-    detectKeyboard();
-  });
-  resizeObserver.observe(document.documentElement);
+  new ResizeObserver(detectKeyboard).observe(document.documentElement);
 }
 
 export function updateKeyboard() {

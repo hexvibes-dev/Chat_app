@@ -33,6 +33,11 @@ function processCustomEmojis(text) {
   return convertShortcodesToImages(text);
 }
 
+function preserveLineBreaks(text) {
+  if (!text) return text;
+  return text.replace(/\n/g, '<br>');
+}
+
 function applyEmojiFontSize(dragWrap) {
   if (!dragWrap) return;
   const messageText = dragWrap.querySelector('.message-text');
@@ -113,6 +118,10 @@ export function appendMessage(text, opts = {}) {
   } else {
     processedText = normalizeReplacedEmojisToText(processedText);
   }
+  
+  if (!isSticker && !isOnlyOneReplacedEmoji) {
+    processedText = preserveLineBreaks(processedText);
+  }
 
   const isEmojiOnly = !isSticker && applyEmojiStyle(dragWrap, plainText);
   const isSingleHeartEmoji = !isSticker && isSingleHeart(plainText);
@@ -130,6 +139,7 @@ export function appendMessage(text, opts = {}) {
     let quotedContent = opts.replyTo.text;
     quotedContent = normalizeReplacedEmojisToText(quotedContent);
     if (!quotedContent.includes('<img')) quotedContent = processCustomEmojis(quotedContent);
+    quotedContent = preserveLineBreaks(quotedContent);
     replyBlock.innerHTML = `
       <div class="reply-quote-author">${escapeHtml(opts.replyTo.author)}</div>
       <div class="reply-quote-text">${quotedContent}</div>
@@ -199,6 +209,16 @@ export function appendMessage(text, opts = {}) {
       }
     }
   });
+
+  if (opts.me) {
+    setTimeout(() => {
+      if (typeof window.smoothScrollToBottom === 'function') window.smoothScrollToBottom();
+      const keyboardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
+      if (typeof window.ensureLastMessageAboveInput === 'function') {
+        window.ensureLastMessageAboveInput(keyboardHeight);
+      }
+    }, 80);
+  }
 
   return div;
 }

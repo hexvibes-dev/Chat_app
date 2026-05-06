@@ -76,14 +76,14 @@ html[data-theme="nuevo"] .Ctc-name {
   --header-text-backdrop-filter: none;
   --header-text-width: auto;
   --header-text-height: auto;
-  --header-text-margin-top: 20px;
-  --header-text-margin-right: 15px;
-  --header-text-margin-bottom: 20px;
-  --header-text-margin-left: 15px;
-  --header-text-padding-top: 20px;
+  --header-text-margin-top: 0;
+  --header-text-margin-right: 0;
+  --header-text-margin-bottom: 0;
+  --header-text-margin-left: 0;
+  --header-text-padding-top: 0;
   --header-text-padding-right: 15px;
-  --header-text-padding-bottom: 25px;
-  --header-text-padding-left: 15px;
+  --header-text-padding-bottom: 0;
+  --header-text-padding-left: 0;
   --header-text-padding-block: auto;
   --header-text-padding-block-start: auto;
   --header-text-padding-block-end: auto;
@@ -1387,47 +1387,47 @@ html[data-theme="nuevo"] {
   --theme-modal-2do-header-color: var(--planton-white);
   
   
-  /* h2 theme modal header 2 */
-  --theme-modal-2do-header-txt-background: transparent;
-  --theme-modal-2do-header-txt-blur: none;
-  --theme-modal-2do-header-txt-opacity: 1;
+  /* div theme modal header 2 */
+  --theme-modal-2do-header-div-background: transparent;
+  --theme-modal-2do-header-div-blur: none;
+  --theme-modal-2do-header-div-opacity: 1;
   
-  --theme-modal-2do-header-txt-border-top-width: 0;
-  --theme-modal-2do-header-txt-border-top-style: solid;
-  --theme-modal-2do-header-txt-border-top-color: transparent;
-  --theme-modal-2do-header-txt-border-right-width: 0;
-  --theme-modal-2do-header-txt-border-right-style: solid;
-  --theme-modal-2do-header-txt-border-right-color: transparent;
-  --theme-modal-2do-header-txt-border-bottom-width: 0;
-  --theme-modal-2do-header-txt-border-bottom-style: solid;
-  --theme-modal-2do-header-txt-border-bottom-color: transparent;
-  --theme-modal-2do-header-txt-border-left-width: 0;
-  --theme-modal-2do-header-txt-border-left-style: solid;
-  --theme-modal-2do-header-txt-border-left-color: transparent;
+  --theme-modal-2do-header-div-border-top-width: 0;
+  --theme-modal-2do-header-div-border-top-style: solid;
+  --theme-modal-2do-header-div-border-top-color: transparent;
+  --theme-modal-2do-header-div-border-right-width: 0;
+  --theme-modal-2do-header-div-border-right-style: solid;
+  --theme-modal-2do-header-div-border-right-color: transparent;
+  --theme-modal-2do-header-div-border-bottom-width: 0;
+  --theme-modal-2do-header-div-border-bottom-style: solid;
+  --theme-modal-2do-header-div-border-bottom-color: transparent;
+  --theme-modal-2do-header-div-border-left-width: 0;
+  --theme-modal-2do-header-div-border-left-style: solid;
+  --theme-modal-2do-header-div-border-left-color: transparent;
   
-  --theme-modal-2do-header-txt-border-radius-top-left: 0;
-  --theme-modal-2do-header-txt-border-radius-top-right: 0;
-  --theme-modal-2do-header-txt-border-radius-bottom-right: 0;
-  --theme-modal-2do-header-txt-border-radius-bottom-left: 0;
+  --theme-modal-2do-header-div-border-radius-top-left: 0;
+  --theme-modal-2do-header-div-border-radius-top-right: 0;
+  --theme-modal-2do-header-div-border-radius-bottom-right: 0;
+  --theme-modal-2do-header-div-border-radius-bottom-left: 0;
   
-  --theme-modal-2do-header-txt-shadow-external: 0 0 0 transparent;
-  --theme-modal-2do-header-txt-shadow-internal: 0 0 0 transparent;
+  --theme-modal-2do-header-div-shadow-external: 0 0 0 transparent;
+  --theme-modal-2do-header-div-shadow-internal: 0 0 0 transparent;
   
-  --theme-modal-2do-header-txt-padding-top: 0;
-  --theme-modal-2do-header-txt-padding-right: 0;
-  --theme-modal-2do-header-txt-padding-bottom: 0;
-  --theme-modal-2do-header-txt-padding-left: 0;
+  --theme-modal-2do-header-div-padding-top: 0;
+  --theme-modal-2do-header-div-padding-right: 0;
+  --theme-modal-2do-header-div-padding-bottom: 0;
+  --theme-modal-2do-header-div-padding-left: 0;
   
-  --theme-modal-2do-header-txt-font-family: system-ui;
-  --theme-modal-2do-header-txt-font-size: 18px;
-  --theme-modal-2do-header-txt-font-weight: 600;
-  --theme-modal-2do-header-txt-line-height: 1.4;
-  --theme-modal-2do-header-txt-letter-spacing: normal;
-  --theme-modal-2do-header-txt-word-spacing: normal;
-  --theme-modal-2do-header-txt-text-align: left;
-  --theme-modal-2do-header-txt-text-transform: lowercase;
-  --theme-modal-2do-header-txt-text-shadow: none;
-  --theme-modal-2do-header-txt-color: var(--planton-white);
+  --theme-modal-2do-header-div-font-family: system-ui;
+  --theme-modal-2do-header-div-font-size: 18px;
+  --theme-modal-2do-header-div-font-weight: 600;
+  --theme-modal-2do-header-div-line-height: 1.4;
+  --theme-modal-2do-header-div-letter-spacing: normal;
+  --theme-modal-2do-header-div-word-spacing: normal;
+  --theme-modal-2do-header-div-text-align: left;
+  --theme-modal-2do-header-div-text-transform: lowercase;
+  --theme-modal-2do-header-div-text-shadow: none;
+  --theme-modal-2do-header-div-color: var(--planton-white);
   
   
   /* theme options */

@@ -154,38 +154,40 @@
   color: var(--theme-modal-2do-header-color);
 }
 
-.theme-header h2 {
-  background: var(--theme-modal-2do-header-txt-background);
-  backdrop-filter: var(--theme-modal-2do-header-txt-blur);
-  opacity: var(--theme-modal-2do-header-txt-opacity);
+.theme-header div {
+  width: 100%;
+  height: 20px;
+  background: var(--theme-modal-2do-header-div-background);
+  backdrop-filter: var(--theme-modal-2do-header-div-blur);
+  opacity: var(--theme-modal-2do-header-div-opacity);
 
-  border-top: var(--theme-modal-2do-header-txt-border-top-width) var(--theme-modal-2do-header-txt-border-top-style) var(--theme-modal-2do-header-txt-border-top-color);
-  border-right: var(--theme-modal-2do-header-txt-border-right-width) var(--theme-modal-2do-header-txt-border-right-style) var(--theme-modal-2do-header-txt-border-right-color);
-  border-bottom: var(--theme-modal-2do-header-txt-border-bottom-width) var(--theme-modal-2do-header-txt-border-bottom-style) var(--theme-modal-2do-header-txt-border-bottom-color);
-  border-left: var(--theme-modal-2do-header-txt-border-left-width) var(--theme-modal-2do-header-txt-border-left-style) var(--theme-modal-2do-header-txt-border-left-color);
+  border-top: var(--theme-modal-2do-header-div-border-top-width) var(--theme-modal-2do-header-div-border-top-style) var(--theme-modal-2do-header-div-border-top-color);
+  border-right: var(--theme-modal-2do-header-div-border-right-width) var(--theme-modal-2do-header-div-border-right-style) var(--theme-modal-2do-header-div-border-right-color);
+  border-bottom: var(--theme-modal-2do-header-div-border-bottom-width) var(--theme-modal-2do-header-div-border-bottom-style) var(--theme-modal-2do-header-div-border-bottom-color);
+  border-left: var(--theme-modal-2do-header-div-border-left-width) var(--theme-modal-2do-header-div-border-left-style) var(--theme-modal-2do-header-div-border-left-color);
 
-  border-top-left-radius: var(--theme-modal-2do-header-txt-border-radius-top-left);
-  border-top-right-radius: var(--theme-modal-2do-header-txt-border-radius-top-right);
-  border-bottom-right-radius: var(--theme-modal-2do-header-txt-border-radius-bottom-right);
-  border-bottom-left-radius: var(--theme-modal-2do-header-txt-border-radius-bottom-left);
+  border-top-left-radius: var(--theme-modal-2do-header-div-border-radius-top-left);
+  border-top-right-radius: var(--theme-modal-2do-header-div-border-radius-top-right);
+  border-bottom-right-radius: var(--theme-modal-2do-header-div-border-radius-bottom-right);
+  border-bottom-left-radius: var(--theme-modal-2do-header-div-border-radius-bottom-left);
 
-  box-shadow: var(--theme-modal-2do-header-txt-shadow-external), inset var(--theme-modal-2do-header-txt-shadow-internal);
+  box-shadow: var(--theme-modal-2do-header-div-shadow-external), inset var(--theme-modal-2do-header-div-shadow-internal);
 
-  padding-top: var(--theme-modal-2do-header-txt-padding-top);
-  padding-right: var(--theme-modal-2do-header-txt-padding-right);
-  padding-bottom: var(--theme-modal-2do-header-txt-padding-bottom);
-  padding-left: var(--theme-modal-2do-header-txt-padding-left);
+  padding-top: var(--theme-modal-2do-header-div-padding-top);
+  padding-right: var(--theme-modal-2do-header-div-padding-right);
+  padding-bottom: var(--theme-modal-2do-header-div-padding-bottom);
+  padding-left: var(--theme-modal-2do-header-div-padding-left);
 
-  font-family: var(--theme-modal-2do-header-txt-font-family);
-  font-size: var(--theme-modal-2do-header-txt-font-size);
-  font-weight: var(--theme-modal-2do-header-txt-font-weight);
-  line-height: var(--theme-modal-2do-header-txt-line-height);
-  letter-spacing: var(--theme-modal-2do-header-txt-letter-spacing);
-  word-spacing: var(--theme-modal-2do-header-txt-word-spacing);
-  text-align: var(--theme-modal-2do-header-txt-text-align);
-  text-transform: var(--theme-modal-2do-header-txt-text-transform);
-  text-shadow: var(--theme-modal-2do-header-txt-text-shadow);
-  color: var(--theme-modal-2do-header-txt-color);
+  font-family: var(--theme-modal-2do-header-div-font-family);
+  font-size: var(--theme-modal-2do-header-div-font-size);
+  font-weight: var(--theme-modal-2do-header-div-font-weight);
+  line-height: var(--theme-modal-2do-header-div-line-height);
+  letter-spacing: var(--theme-modal-2do-header-div-letter-spacing);
+  word-spacing: var(--theme-modal-2do-header-div-word-spacing);
+  text-align: var(--theme-modal-2do-header-div-text-align);
+  text-transform: var(--theme-modal-2do-header-div-text-transform);
+  text-shadow: var(--theme-modal-2do-header-div-text-shadow);
+  color: var(--theme-modal-2do-header-div-color);
 }
 
 .choose-from-gallery {

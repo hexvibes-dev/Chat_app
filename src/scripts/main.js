@@ -1,4 +1,3 @@
-// src/scripts/main.js
 import './messages.js';
 import './scroll.js';
 import './keyboard.js';
@@ -10,12 +9,12 @@ import './reactions.js';
 import { initUserRegistration } from './user.js';
 import { initHamburgerMenu } from './hamburgerMenu.js';
 import { loadCustomEmojis } from './EmojiPicker/EmojiData.js';
-
 import { updateIsAtBottom } from './scroll.js';
 import { updateKeyboard } from './keyboard.js';
 import { input } from './input.js';
 import { appendMessage } from './messages.js';
 import { enableAnswerGestures } from './answer.js';
+import { loadContactAvatar, loadContactName } from './contactStatus.js';
 
 function inicializarApp() {
   if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
@@ -74,6 +73,9 @@ function inicializarApp() {
   } else {
     initHamburgerMenu();
   }
+
+  loadContactAvatar();
+  loadContactName();
 }
 
 export default inicializarApp;

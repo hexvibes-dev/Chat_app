@@ -729,7 +729,7 @@ function loadThemeContent() {
     `;
   }
   contentDiv.innerHTML = `
-    <div class="theme-header"><h2>Opciones</h2></div>
+    <div class="theme-header"><div></div></div>
     <h3 class="tittle">Temas</h3>
     <div class="theme-options ">
       ${Object.entries(themes).map(([id, t]) => `

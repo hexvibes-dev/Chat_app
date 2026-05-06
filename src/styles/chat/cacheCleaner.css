@@ -7,6 +7,7 @@
   z-index: 10999;
   display: none;
   pointer-events: none;
+  touch-action: none;
 
   background: var(--cache-cleaner-overlay-background);
   backdrop-filter: var(--cache-cleaner-overlay-blur);
@@ -112,7 +113,7 @@
 
   border-top: var(--header-cache-cleanner-border-top-width) var(--header-cache-cleanner-border-top-style) var(--header-cache-cleanner-border-top-color);
   border-right: var(--header-cache-cleanner-border-right-width) var(--header-cache-cleanner-border-right-style) var(--header-cache-cleanner-border-right-color);
-  border-bottom: var(--header-cache-cleanner-border-bottom-width) var(--header-cache-cleanner-border-bottom-style) var(--header-cache-cleanner-border-bottom-color) !important;
+  border-bottom: var(--header-cache-cleanner-border-bottom-width) var(--header-cache-cleanner-border-bottom-style) var(--header-cache-cleanner-border-bottom-color) ;
   border-left: var(--header-cache-cleanner-border-left-width) var(--header-cache-cleanner-border-left-style) var(--header-cache-cleanner-border-left-color);
 
   border-top-left-radius: var(--header-cache-cleanner-border-radius-top-left);
