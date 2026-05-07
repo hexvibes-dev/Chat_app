@@ -27,46 +27,106 @@ function updateOverlayElements(open) {
   }
 }
 
+function setMessagesBottomInstant(addPickerHeight) {
+  const layerMessages = document.querySelector('.layer-messages');
+  if (!layerMessages) return;
+  const keyboard = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
+  const baseBottom = 60;
+  const extra = addPickerHeight ? 400 : 0;
+  const newBottom = baseBottom + keyboard + extra;
+  
+  layerMessages.style.transition = 'none';
+  layerMessages.style.bottom = newBottom + 'px';
+  layerMessages.offsetHeight;
+}
+
+function restoreMessagesTransition() {
+  const layerMessages = document.querySelector('.layer-messages');
+  if (layerMessages) {
+    layerMessages.style.transition = '';
+  }
+}
+
+function forceScrollable() {
+  const messages = document.getElementById('messages');
+  if (messages) {
+    messages.style.overflowY = 'auto';
+    messages.style.touchAction = 'pan-y';
+    messages.style.webkitOverflowScrolling = 'touch';
+  }
+  document.body.style.overflow = '';
+  document.body.style.touchAction = 'pan-y pinch-zoom';
+  document.documentElement.style.overflow = '';
+  document.documentElement.style.touchAction = 'pan-y pinch-zoom';
+  document.documentElement.classList.remove('keyboard-open');
+  document.body.classList.remove('keyboard-open');
+}
+
+const pickerStyle = (() => {
+  const style = document.createElement('style');
+  style.textContent = `
+    #mobile-picker-container {
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+      will-change: transform;
+    }
+    #mobile-picker-container.open {
+      transform: translateY(0);
+    }
+  `;
+  document.head.appendChild(style);
+  return style;
+})();
+
 function openPicker() {
   if (isOpen || isClosing) return;
   container = document.getElementById('mobile-picker-container');
   if (!container) return;
   
-  const inputEl = document.getElementById('input');
-  if (inputEl && document.activeElement === inputEl) {
-    inputEl.blur();
-    setTimeout(() => {
-      container.classList.add('open');
-      isOpen = true;
-      updateOverlayElements(true);
-      if (!window.history.state || !window.history.state.pickerOpen) {
-        window.history.pushState({ pickerOpen: true }, '');
-      }
-    }, 50);
-    return;
-  }
-  
+  setMessagesBottomInstant(true);
+  restoreMessagesTransition();
   container.classList.add('open');
+  forceScrollable();
+  
   isOpen = true;
   updateOverlayElements(true);
   if (!window.history.state || !window.history.state.pickerOpen) {
     window.history.pushState({ pickerOpen: true }, '');
   }
+  
+  window.dispatchEvent(new CustomEvent('picker-opened'));
+  
+  setTimeout(() => {
+    const messages = document.getElementById('messages');
+    if (messages && messages.scrollHeight > messages.clientHeight) {
+      messages.scrollTop = messages.scrollHeight;
+    }
+    if (typeof window.updateIsAtBottom === 'function') window.updateIsAtBottom();
+    const scrollBtn = document.getElementById('scrollToBottomBtn');
+    if (scrollBtn && window.isAtBottom === false) scrollBtn.style.display = 'flex';
+  }, 100);
 }
 
 function closePicker() {
   if (!isOpen || isClosing) return;
   if (!container) return;
   isClosing = true;
+  
   container.classList.remove('open');
+  setMessagesBottomInstant(false);
+  restoreMessagesTransition();
+  forceScrollable();
   updateOverlayElements(false);
+  
+  window.dispatchEvent(new CustomEvent('picker-closed'));
+  
   setTimeout(() => {
     isOpen = false;
     isClosing = false;
     if (window.history.state && window.history.state.pickerOpen) {
       window.history.back();
     }
-  }, 250);
+  }, 350);
 }
 
 function togglePicker() {
@@ -75,7 +135,6 @@ function togglePicker() {
 }
 
 function onInputFocus() {
-  // No cerrar si estamos insertando un emoji/sticker
   if (isOpen && !ignoreFocusOnce && !isInserting) closePicker();
 }
 
@@ -101,10 +160,8 @@ export function initEmojiPickerButton() {
   
   container = document.getElementById('mobile-picker-container');
   if (container && !container.innerHTML.trim()) {
-    // Función que se ejecutará cuando el picker inserte un emoji/sticker
     const onInsertStart = () => {
       isInserting = true;
-      // Pequeño retraso para permitir que la inserción complete su foco
       setTimeout(() => {
         isInserting = false;
       }, 300);

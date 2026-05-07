@@ -4,6 +4,8 @@
   const input = document.getElementById('input');
   if (!btn || !messagesEl) return;
 
+  let ticking = false;
+
   function updateButtonVisibility() {
     const isAtBottom = messagesEl.scrollHeight - messagesEl.clientHeight - messagesEl.scrollTop <= 100;
     btn.style.display = !isAtBottom ? 'flex' : 'none';
@@ -11,19 +13,49 @@
   }
 
   function updateButtonPosition() {
-    const keyboardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
-    btn.style.bottom = `calc(60px + ${keyboardHeight}px + 10px)`;
+    const layerInput = document.getElementById('layerInput');
+    if (!layerInput) return;
+    const rect = layerInput.getBoundingClientRect();
+    const topPosition = rect.top - 10;
+    if (topPosition > 0) {
+      btn.style.bottom = 'auto';
+      btn.style.top = `${topPosition}px`;
+    } else {
+      btn.style.top = 'auto';
+      btn.style.bottom = '10px';
+    }
   }
 
-  messagesEl.addEventListener('scroll', updateButtonVisibility);
-  window.addEventListener('resize', () => {
+  function refresh() {
     updateButtonVisibility();
     updateButtonPosition();
-  });
-  window.addEventListener('keyboardchange', updateButtonPosition);
+    ticking = false;
+  }
 
-  new MutationObserver(updateButtonVisibility).observe(messagesEl, { childList: true, subtree: true });
-  setInterval(updateButtonVisibility, 500);
+  function requestRefresh() {
+    if (!ticking) {
+      requestAnimationFrame(refresh);
+      ticking = true;
+    }
+  }
+
+  // Escuchar eventos que pueden cambiar la posición del input
+  messagesEl.addEventListener('scroll', updateButtonVisibility);
+  window.addEventListener('resize', requestRefresh);
+  window.addEventListener('scroll', requestRefresh);
+  window.addEventListener('keyboardchange', requestRefresh);
+  window.addEventListener('update-floating-elements', requestRefresh);
+  
+  // Observar cambios en el DOM que puedan afectar la posición del input
+  const observer = new MutationObserver(requestRefresh);
+  observer.observe(document.body, { attributes: true, childList: true, subtree: true, attributeFilter: ['style', 'class'] });
+  
+  // Observar cambios de tamaño del layerInput
+  const layerInput = document.getElementById('layerInput');
+  if (layerInput) {
+    const resizeObserver = new ResizeObserver(requestRefresh);
+    resizeObserver.observe(layerInput);
+  }
 
   btn.addEventListener('mousedown', (e) => {
     e.preventDefault();  
@@ -38,6 +70,7 @@
     }
   });
 
-  updateButtonVisibility();
-  updateButtonPosition();
+  // Actualización inicial y periódica por si acaso
+  requestRefresh();
+  setInterval(requestRefresh, 500);
 })();

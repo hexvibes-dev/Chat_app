@@ -1,7 +1,9 @@
+// src/scripts/hamburgerMenu.js
 import { initThemeManager } from './themeManager.js';
 import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
 import interact from 'interactjs';
 import { showAvatarEditor } from './AvatarEditorModal.js';
+import { showNotification } from './notifications.js';
 
 let menuElement = null;
 let isMenuOpen = false;
@@ -13,15 +15,7 @@ let cacheCheckboxes = new Map();
 let currentStorageType = 'local';
 
 function showTransientNotification(text, duration = 2000) {
-  let notif = document.querySelector('.transient-notif');
-  if (!notif) {
-    notif = document.createElement('div');
-    notif.className = 'transient-notif';
-    document.body.appendChild(notif);
-  }
-  notif.textContent = text;
-  notif.classList.add('visible');
-  setTimeout(() => notif.classList.remove('visible'), duration);
+  showNotification(text, duration);
 }
 
 function showConfirmPopup(message) {

@@ -1,8 +1,10 @@
+// src/scripts/PaintModal.js
 import interact from 'interactjs';
 import { registerModal, associateOverlay, bringModalToFront, constrainAllModals, unregisterModal } from './modalStackManager.js';
 import { showGlobalColorPicker } from './editor/GlobalColorPicker.js';
 import { appendMessage } from './messages.js';
 import { getCategories, addCustomSticker, canAddStickerToCategory, refreshStickersInPicker } from './StickerManager.js';
+import { showNotification } from './notifications.js';
 
 let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
@@ -74,15 +76,7 @@ function getGradientColor(ctx, x, y, width, height) {
 }
 
 function showTransientNotification(text, duration = 2000) {
-  let notif = document.querySelector('.transient-notif');
-  if (!notif) {
-    notif = document.createElement('div');
-    notif.className = 'transient-notif';
-    document.body.appendChild(notif);
-  }
-  notif.textContent = text;
-  notif.classList.add('visible');
-  setTimeout(() => notif.classList.remove('visible'), duration);
+  showNotification(text, duration);
 }
 
 async function showConfirmModal(message) {

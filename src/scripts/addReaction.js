@@ -1,21 +1,14 @@
 // src/scripts/addReaction.js
 import { loadCustomEmojis } from './EmojiPicker/EmojiData.js';
 import { convertShortcodesToImages } from './emojiUtils.js';
+import { showNotification } from './notifications.js';
 
 let modal = null;
 let blurOverlay = null;
 let keyboardListener = null;
 
 function showTransientNotification(text, duration = 1000) {
-  let notifEl = document.querySelector('.transient-notif');
-  if (!notifEl) {
-    notifEl = document.createElement('div');
-    notifEl.className = 'transient-notif';
-    document.body.appendChild(notifEl);
-  }
-  notifEl.textContent = text;
-  notifEl.classList.add('visible');
-  setTimeout(() => notifEl.classList.remove('visible'), duration);
+  showNotification(text, duration);
 }
 
 function buildSubcategoryAccordion(categoryName, emojis, onSelect) {

@@ -1,7 +1,9 @@
+// src/scripts/input.js
 import { appendMessage } from './messages.js';
 import { getAndClearQuotedMessage, hideReplyPopup } from './answer.js';
 import { connectToBackend, sendMessageViaSocket, isSocketConnected, disconnectSocket } from './socket.js';
 import { convertShortcodesToImages, convertShortcodesToImagesInNode } from './emojiUtils.js';
+import { showNotification } from './notifications.js';
 
 export const input = document.getElementById('input');
 export const sendBtn = document.getElementById('sendBtn');
@@ -143,18 +145,7 @@ export function adjustTextareaHeight() {
 }
 
 function showTransientNotification(text, duration = 1000) {
-  let notifEl = document.querySelector('.transient-notif');
-  if (!notifEl) {
-    notifEl = document.createElement('div');
-    notifEl.className = 'transient-notif';
-    document.body.appendChild(notifEl);
-  }
-  notifEl.textContent = text;
-  notifEl.classList.add('visible');
-  if (window._notifT) clearTimeout(window._notifT);
-  window._notifT = setTimeout(() => {
-    notifEl.classList.remove('visible');
-  }, duration);
+  showNotification(text, duration);
 }
 
 export function sendMessageFromInput() {

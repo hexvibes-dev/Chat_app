@@ -1,22 +1,12 @@
 // src/scripts/queue.js
+import { showNotification } from './notifications.js';
+
 let socketInstance = null;
 const eventQueue = [];
 let isProcessing = false;
 
 function showQueueNotification(text, duration = 1500) {
-  let notifEl = document.querySelector('.transient-notif');
-  if (!notifEl) {
-    notifEl = document.createElement('div');
-    notifEl.className = 'transient-notif';
-    notifEl.style.pointerEvents = 'none';
-    document.body.appendChild(notifEl);
-  }
-  notifEl.textContent = text;
-  notifEl.classList.add('visible');
-  if (window._queueNotifTimeout) clearTimeout(window._queueNotifTimeout);
-  window._queueNotifTimeout = setTimeout(() => {
-    notifEl.classList.remove('visible');
-  }, duration);
+  showNotification(text, duration);
 }
 
 export function setSocket(socket) {

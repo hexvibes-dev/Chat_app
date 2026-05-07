@@ -18,6 +18,7 @@ import { loadCustomEmojis } from './emojiUtils.js';
 import { showQuickStickerUpload } from './StickerModal.js';
 import { isStickerSaved, getStickerCategoryByUrl, removeCustomSticker, refreshStickersInPicker } from './StickerManager.js';
 import { shouldReplaceReactionEmoji, reactionEmojiMap, initReactionEmojiAnimations } from './reactionEmojiReplacement.js';
+import { showNotification } from './notifications.js';
 
 const DEFAULT_EMOJIS = ['👍','❤️','😂','😮','😭','🔥'];
 const MAX_REACTIONS_PER_BUBBLE = 4;
@@ -84,17 +85,7 @@ function showConfirmPopup(message) {
 }
 
 function showTransientNotification(text, duration = NOTIF_DURATION) {
-  if (!notifEl) {
-    notifEl = document.createElement('div');
-    notifEl.className = 'transient-notif';
-    document.body.appendChild(notifEl);
-  }
-  notifEl.textContent = text;
-  notifEl.classList.add('visible');
-  if (notifTimeout) clearTimeout(notifTimeout);
-  notifTimeout = setTimeout(() => {
-    notifEl.classList.remove('visible');
-  }, duration);
+  showNotification(text, duration);
 }
 
 function applyLiftEffect(messageEl) {

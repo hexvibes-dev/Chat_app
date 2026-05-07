@@ -1,5 +1,6 @@
 // src/scripts/editModal.js
 import { emitSocketEvent, isSocketConnected } from './socketUtils.js';
+import { showNotification } from './notifications.js';
 
 let modal = null;
 let blurOverlay = null;
@@ -35,6 +36,10 @@ function normalizeReplacedEmojis(html) {
     }
   });
   return div.innerHTML;
+}
+
+function showTransientNotification(text, duration = 1000) {
+  showNotification(text, duration);
 }
 
 export function showEditModal(messageEl, onSave) {
@@ -198,22 +203,6 @@ function hideModal() {
     modal = null;
   }, 80);
   window.removeEventListener('pointerdown', onOutside);
-}
-
-let _notifEl = null;
-let _notifT = null;
-function showTransientNotification(text, duration = 1000) {
-  if (!_notifEl) {
-    _notifEl = document.createElement('div');
-    _notifEl.className = 'transient-notif';
-    document.body.appendChild(_notifEl);
-  }
-  _notifEl.textContent = text;
-  _notifEl.classList.add('visible');
-  if (_notifT) clearTimeout(_notifT);
-  _notifT = setTimeout(() => {
-    if (_notifEl) _notifEl.classList.remove('visible');
-  }, duration);
 }
 
 export function clearPendingEdit(msgId) {

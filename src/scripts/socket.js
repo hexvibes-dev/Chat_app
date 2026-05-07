@@ -1,9 +1,11 @@
+// src/scripts/socket.js
 import { getUsername } from './user.js';
 import { setSocket as setUtilsSocket, emitSocketEvent, isSocketConnected } from './socketUtils.js';
 import { setSocket as setQueueSocket } from './queue.js';
 import { addReactionRemotely, removeReactionRemotely, playReactionAnimation, syncLocalReactionsToServer } from './reactions.js';
 import { deleteMessageRemotely, editMessageRemotely, appendMessage, messages } from './messages.js';
 import { updateContactStatus } from './contactStatus.js';
+import { showNotification } from './notifications.js';
 
 let socket = null;
 let heartbeatInterval = null;
@@ -22,19 +24,7 @@ function updateConnectionIndicator(connected) {
 }
 
 function showTransientNotification(text, duration = 2000) {
-  let notifEl = document.querySelector('.transient-notif');
-  if (!notifEl) {
-    notifEl = document.createElement('div');
-    notifEl.className = 'transient-notif';
-    notifEl.style.pointerEvents = 'none';
-    document.body.appendChild(notifEl);
-  }
-  notifEl.textContent = text;
-  notifEl.classList.add('visible');
-  if (window._socketNotifTimeout) clearTimeout(window._socketNotifTimeout);
-  window._socketNotifTimeout = setTimeout(() => {
-    notifEl.classList.remove('visible');
-  }, duration);
+  showNotification(text, duration);
 }
 
 function loadSocketIO(baseUrl) {

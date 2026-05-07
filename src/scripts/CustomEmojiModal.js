@@ -1,3 +1,4 @@
+// src/scripts/CustomEmojiModal.js
 import interact from 'interactjs';
 import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
 import {
@@ -10,6 +11,7 @@ import {
   removeCustomEmoji,
   deleteCategory
 } from './CustomEmojiManager.js';
+import { showNotification } from './notifications.js';
 
 let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
@@ -35,15 +37,7 @@ let cropInitialDistance = 0;
 let cropIsPinching = false;
 
 function showTransientNotification(text, duration = 2000) {
-  let notif = document.querySelector('.transient-notif');
-  if (!notif) {
-    notif = document.createElement('div');
-    notif.className = 'transient-notif';
-    document.body.appendChild(notif);
-  }
-  notif.textContent = text;
-  notif.classList.add('visible');
-  setTimeout(() => notif.classList.remove('visible'), duration);
+  showNotification(text, duration);
 }
 
 function showConfirmPopup(message) {
@@ -394,7 +388,7 @@ function showCropModal(onSave) {
   cropModal.style.maxWidth = '500px';
   cropModal.innerHTML = `
     <div class="add-reaction-card" style="width: 100%; max-width: 500px;">
-      <h1 style="font-size: 20px; margin-bottom: 16px; color: var(--modal-text);">✂️ Recortar emoji (cuadrado)</h1>
+      <h1 style="font-size: 20px; margin-bottom: 16px; color: var(--modal-text);;">✂️ Recortar emoji (cuadrado)</h1>
       <div style="position: relative; width: 100%; aspect-ratio: 1; background: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 16px;">
         <canvas id="crop-canvas" style="width: 100%; height: 100%; display: block; cursor: grab;"></canvas>
         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid var(--modal-btn-primary); pointer-events: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);"></div>

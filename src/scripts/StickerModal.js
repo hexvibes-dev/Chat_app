@@ -1,3 +1,4 @@
+// src/scripts/StickerModal.js
 import interact from 'interactjs';
 import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
 import {
@@ -10,6 +11,7 @@ import {
   removeCustomSticker,
   deleteCategory
 } from './StickerManager.js';
+import { showNotification } from './notifications.js';
 
 let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
@@ -35,15 +37,7 @@ let cropInitialDistance = 0;
 let cropIsPinching = false;
 
 function showTransientNotification(text, duration = 2000) {
-  let notif = document.querySelector('.transient-notif');
-  if (!notif) {
-    notif = document.createElement('div');
-    notif.className = 'transient-notif';
-    document.body.appendChild(notif);
-  }
-  notif.textContent = text;
-  notif.classList.add('visible');
-  setTimeout(() => notif.classList.remove('visible'), duration);
+  showNotification(text, duration);
 }
 
 function showConfirmPopup(message) {

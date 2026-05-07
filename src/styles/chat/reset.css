@@ -13,6 +13,7 @@ html,
 body {
   height: 100%;
   overflow: hidden;
+  touch-action: pan-y pinch-zoom;
 }
 
 html.keyboard-open,
@@ -30,11 +31,43 @@ body.keyboard-open {
 }
 
 .Ctc-name {
-  font-size: 1rem;
-  font-weight: 600;
   color: var(--header-text);
-  margin: 0;
-  padding: 0;
+  font-family: var(--header-text-style);
+  font-size: var(--header-text-size);
+  font-weight: var(--header-text-weight);
+  line-height: var(--header-text-line-height);
+  letter-spacing: var(--header-text-letter-spacing);
+  word-spacing: var(--header-text-word-spacing);
+  text-transform: var(--header-text-text-transform);
+  text-shadow: var(--header-text-text-shadow);
+  opacity: var(--header-text-opacity);
+  text-align: left;
+  background: var(--header-text-background);
+  backdrop-filter: var(--header-text-backdrop-filter);
+  width: var(--header-text-width);
+  height: var(--header-text-height);
+  margin-top: var(--header-text-margin-top);
+  margin-right: var(--header-text-margin-right);
+  margin-bottom: var(--header-text-margin-bottom);
+  margin-left: var(--header-text-margin-left);
+  padding-top: var(--header-text-padding-top);
+  padding-right: var(--header-text-padding-right);
+  padding-bottom: var(--header-text-padding-bottom);
+  padding-left: var(--header-text-padding-left);
+  padding-block: var(--header-text-padding-block);
+  padding-block-start: var(--header-text-padding-block-start);
+  padding-block-end: var(--header-text-padding-block-end);
+  padding-inline: var(--header-text-padding-inline);
+  padding-inline-start: var(--header-text-padding-inline-start);
+  padding-inline-end: var(--header-text-padding-inline-end);
+  border-top: var(--header-text-border-top-width) var(--header-text-border-top-style) var(--header-text-border-top-color);
+  border-right: var(--header-text-border-right-width) var(--header-text-border-right-style) var(--header-text-border-right-color);
+  border-bottom: var(--header-text-border-bottom-width) var(--header-text-border-bottom-style) var(--header-text-border-bottom-color);
+  border-left: var(--header-text-border-left-width) var(--header-text-border-left-style) var(--header-text-border-left-color);
+  border-top-left-radius: var(--header-text-border-radius-top-left);
+  border-top-right-radius: var(--header-text-border-radius-top-right);
+  border-bottom-right-radius: var(--header-text-border-radius-bottom-right);
+  border-bottom-left-radius: var(--header-text-border-radius-bottom-left);
 }
 
 .contact-status {
@@ -72,10 +105,16 @@ body.keyboard-open {
   background: transparent;
   pointer-events: none;
   z-index: 25;
-  transition: height 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
+
 .layer-messages {
-  bottom: calc(60px + var(--keyboard));
+  position: fixed;
+  top: 70px; /* Ajusta según tu header */
+  bottom: calc(60px + var(--keyboard) + var(--picker-height, 0px));
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  touch-action: pan-y;
 }
 
 .messages {
@@ -85,7 +124,7 @@ body.keyboard-open {
   box-shadow: inset var(--message-container-shadow-left), inset var(--message-container-shadow-right);
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  touch-action: auto;
+  touch-action: pan-y;
   overflow-y: scroll;
 }
 
@@ -661,13 +700,16 @@ body.keyboard-open {
   overflow: hidden;
   background: var(--modal-bg);
   border-top: 1px solid var(--modal-input-border);
-  transition: height 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
   border-radius: 16px 16px 0 0;
+  pointer-events: auto;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
 }
 
 .mobile-picker-container.open {
   height: 400px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .mobile-picker-container .emoji-mobile-header {
@@ -773,6 +815,8 @@ body.keyboard-open {
   bottom: 0;
   right: 0;
   left: 0;
+  pointer-events: auto;
+  touch-action: pan-y;
   transform: translateY(calc(-1 * var(--keyboard)));
 }
 

@@ -1,7 +1,7 @@
 // src/scripts/themeManager.js
-
 import interact from 'interactjs';
 import { registerModal, unregisterModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
+import { showNotification } from './notifications.js';
 
 const STORAGE_THEME = 'chat_theme_prefs';
 const STORAGE_BG_MODE = 'chat_bg_mode';
@@ -694,6 +694,10 @@ function setupInteractForModal() {
   });
 }
 
+function showTransientNotification(text, duration = 1500) {
+  showNotification(text, duration);
+}
+
 function loadThemeContent() {
   const contentDiv = document.getElementById('theme-content');
   if (!contentDiv) return;
@@ -897,18 +901,6 @@ function loadThemeContent() {
       showTransientNotification('Cambios descartados');
     });
   }
-}
-
-function showTransientNotification(text) {
-  let notif = document.querySelector('.transient-notif');
-  if (!notif) {
-    notif = document.createElement('div');
-    notif.className = 'transient-notif';
-    document.body.appendChild(notif);
-  }
-  notif.textContent = text;
-  notif.classList.add('visible');
-  setTimeout(() => notif.classList.remove('visible'), 1500);
 }
 
 function hideModal() {
