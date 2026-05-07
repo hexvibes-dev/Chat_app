@@ -29,7 +29,7 @@ body.keyboard-open {
   line-height: 1.2;
 }
 
-.Ctc-name {
+.contact-name {
   font-size: 1rem;
   font-weight: 600;
   color: var(--header-text);
@@ -63,6 +63,33 @@ body.keyboard-open {
   border: 2px solid var(--modal-input-border);
 }
 
+.mobile-picker-container {
+  background: var(--modal-bg);
+  border-top: 1px solid var(--modal-input-border);
+  display: none;
+  height: 0;
+  transition: height 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.mobile-picker-container.open {
+  display: block;
+  height: 400px;
+}
+
+.layer-input {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: var(--input-layer-background);
+  backdrop-filter: var(--input-layer-blur);
+  will-change: auto;
+  transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
 
 .keyboard-overlay {
   position: fixed;
@@ -74,8 +101,15 @@ body.keyboard-open {
   z-index: 25;
   transition: height 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
+
 .layer-messages {
-  bottom: calc(60px + var(--keyboard));
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  touch-action: pan-y;
 }
 
 .messages {
@@ -649,27 +683,6 @@ body.keyboard-open {
   border-bottom-left-radius: var(--header-text-border-radius-bottom-left);
 }
 
-.layer-input-inner {
-  position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.mobile-picker-container {
-  height: 0;
-  overflow: hidden;
-  background: var(--modal-bg);
-  border-top: 1px solid var(--modal-input-border);
-  transition: height 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-  border-radius: 16px 16px 0 0;
-}
-
-.mobile-picker-container.open {
-  height: 400px;
-  overflow-y: auto;
-}
-
 .mobile-picker-container .emoji-mobile-header {
   flex-shrink: 0;
   height: 48px;
@@ -771,9 +784,11 @@ body.keyboard-open {
   color: var(--input-layer-color);
   position: fixed;
   bottom: 0;
-  right: 0;
   left: 0;
-  transform: translateY(calc(-1 * var(--keyboard)));
+  width: 100%;
+  z-index: 20;
+  touch-action: none;
+  will-change: transform;
 }
 
 .input-container {
@@ -848,8 +863,6 @@ body.keyboard-open {
   align-items: center;
   gap: 0.75rem;
   width: 100%;
-  position: relative;
-  z-index: 2;
 }
 
 #actionMenuBtn {

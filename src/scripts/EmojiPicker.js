@@ -1,3 +1,4 @@
+// EmojiPicker.js (modificado: eliminados estilos inline que forzaban altura)
 import { initEmojiPicker, destroyEmojiPicker } from './EmojiPicker/EmojiPickerCore.js';
 import { initStickersPicker, destroyStickersPicker, refreshStickersDisplay } from './StickersPicker.js';
 import { initGifsPicker, destroyGifsPicker } from './GifsPicker.js';
@@ -134,31 +135,26 @@ export async function initMobileEmojiPicker(container, onInsertStart) {
   if (!container) return;
   
   container.innerHTML = '';
-  container.style.display = 'flex';
-  container.style.flexDirection = 'column';
-  container.style.height = '400px';
-  container.style.width = '100%';
-  container.style.maxWidth = '100vw';
-  container.style.overflow = 'hidden';
-
+  container.className = 'mobile-picker-container';
+  container.style.removeProperty('height');
+  container.style.removeProperty('display');
+  container.style.removeProperty('flex-direction');
+  
   const header = document.createElement('div');
   header.className = 'emoji-mobile-header';
-  header.style.cssText = 'flex-shrink:0; height:48px; min-height:48px; max-height:48px; padding:0 12px; border-bottom:1px solid var(--modal-input-border); background: var(--modal-bg); display:flex; align-items:center;';
   header.innerHTML = '<div class="emoji-categories-placeholder"></div>';
   container.appendChild(header);
 
   const body = document.createElement('div');
   body.className = 'emoji-mobile-body';
-  body.style.cssText = 'flex:1; min-height:0; overflow-y: auto; padding:8px 0;';
   container.appendChild(body);
 
   const footer = document.createElement('div');
   footer.className = 'emoji-mobile-footer';
-  footer.style.cssText = 'flex-shrink:0; height:52px; min-height:52px; max-height:52px; display:flex; border-top:1px solid var(--modal-input-border); background: var(--modal-bg); padding:0 12px; gap:8px; align-items:center;';
   footer.innerHTML = `
-    <button class="mobile-tab-btn active" data-tab="emojis" style="flex:1; background:transparent; border:none; padding:8px; font-size:15px; cursor:pointer; color:var(--modal-text); border-radius:12px; height:36px; display:flex; align-items:center; justify-content:center;">😀 Emojis</button>
-    <button class="mobile-tab-btn" data-tab="stickers" style="flex:1; background:transparent; border:none; padding:8px; font-size:15px; cursor:pointer; color:var(--modal-text); border-radius:12px; height:36px; display:flex; align-items:center; justify-content:center;">🖼️ Stickers</button>
-    <button class="mobile-tab-btn" data-tab="gifs" style="flex:1; background:transparent; border:none; padding:8px; font-size:15px; cursor:pointer; color:var(--modal-text); border-radius:12px; height:36px; display:flex; align-items:center; justify-content:center;">🎥 GIFs</button>
+    <button class="mobile-tab-btn active" data-tab="emojis">😀 Emojis</button>
+    <button class="mobile-tab-btn" data-tab="stickers">🖼️ Stickers</button>
+    <button class="mobile-tab-btn" data-tab="gifs">🎥 GIFs</button>
   `;
   container.appendChild(footer);
 
