@@ -10,14 +10,14 @@
 .name-card {
   width: 320px;
   max-width: 90vw;
-  background: var(--modal-bg);
+  background: #1e1e2e;
   border-radius: 20px;
   padding: 24px 20px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   transform-origin: center;
   transition: transform 160ms ease, opacity 140ms ease;
-  color: var(--modal-text);
-  border: 1px solid var(--modal-input-border);
+  color: #e0e0e0;
+  border: 1px solid #3a3a4a;
   animation: modalIn 0.3s ease both;
 }
 
@@ -35,7 +35,7 @@
   margin: 0 0 20px 0;
   font-size: 20px;
   font-weight: 600;
-  color: var(--modal-header);
+  color: #ffffff;
   text-align: center;
 }
 
@@ -48,7 +48,7 @@
   margin-bottom: 6px;
   font-size: 13px;
   font-weight: 500;
-  color: var(--modal-text);
+  color: #e0e0e0;
 }
 
 .input-group input {
@@ -56,22 +56,21 @@
   padding: 12px 12px;
   font-size: 15px;
   border-radius: 12px;
-  border: 1px solid var(--modal-input-border);
-  background: var(--modal-input-bg);
-  color: var(--modal-text);
+  border: 1px solid #3a3a4a;
+  background: #2a2a3a;
+  color: #e0e0e0;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input-group input:focus {
-  border-color: var(--modal-btn-primary);
+  border-color: #14b8a6;
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2);
 }
 
 .username-hint {
   font-size: 11px;
-  color: var(--modal-text);
-  opacity: 0.7;
+  color: #a0a0b0;
   margin-top: 4px;
 }
 
@@ -99,8 +98,8 @@
 }
 
 .name-actions .btn.primary {
-  background: var(--modal-btn-primary);
-  color: var(--modal-btn-primary-text);
+  background: #14b8a6;
+  color: #ffffff;
 }
 
 .name-actions .btn.primary:disabled {
@@ -109,7 +108,6 @@
 }
 
 .name-actions .btn.primary:not(:disabled):hover {
-  background: var(--modal-btn-primary);
-  opacity: 0.8;
+  background: #0d9488;
   transform: scale(0.98);
 }
