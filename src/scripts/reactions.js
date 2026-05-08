@@ -383,22 +383,27 @@ async function handleOptionAction(action, messageEl) {
     case 'forward':
       showTransientNotification('Mensaje reenviado');
       break;
-    case 'addSticker':
-      showQuickStickerUpload();
+    case 'addSticker': {
+      const dragWrap = messageEl.querySelector('.msg-drag');
+      const stickerUrl = dragWrap ? dragWrap.dataset.stickerUrl : null;
+      const stickerImg = dragWrap ? dragWrap.querySelector('img') : null;
+      const stickerName = stickerImg ? stickerImg.alt || 'Sticker' : 'Sticker';
+      if (stickerUrl) {
+        import('./options.js').then(module => {
+          module.handleStickerOption('addSticker', stickerUrl, stickerName);
+        });
+        hidePopup();
+      }
       break;
+    }
     case 'deleteSticker': {
       const dragWrap = messageEl.querySelector('.msg-drag');
       const stickerUrl = dragWrap ? dragWrap.dataset.stickerUrl : null;
       if (stickerUrl) {
-        const confirmed = await showConfirmPopup('¿Eliminar este sticker de tus guardados?');
-        if (confirmed) {
-          const category = getStickerCategoryByUrl(stickerUrl);
-          if (category) {
-            removeCustomSticker(category, stickerUrl);
-            showTransientNotification('Sticker eliminado de tus guardados');
-            refreshStickersInPicker();
-          }
-        }
+        import('./options.js').then(module => {
+          module.handleDeleteSticker(stickerUrl);
+        });
+        hidePopup();
       }
       break;
     }

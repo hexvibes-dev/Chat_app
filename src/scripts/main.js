@@ -61,8 +61,8 @@ function inicializarApp() {
     });
   }
 
-  for (let i = 1; i <= 6; i++) appendMessage('Mensaje de ejemplo ' + i);
-  setTimeout(() => appendMessage('Hacer que cuando el input reciba foco se expanda horizontalmente sin empujar ni en sendBtn y el acruonbtn ,y absorbiendo el emojiPickerbtn,dandole opacidad y el fondo transparente,todo con transiciones suaves '), 2000);
+  for (let i = 1; i <= 1; i++) appendMessage('Mensaje de ejemplo ' + i);
+  setTimeout(() => appendMessage('Hola,este es un mensaje entrante'), 2000);
   setTimeout(updateIsAtBottom, 50);
 
   if (messagesEl) {

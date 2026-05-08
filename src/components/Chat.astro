@@ -30,15 +30,11 @@
   <div class="layer-input-inner">
     <div class="input-container">
       <div class="input-box">
-        <button id="actionMenuBtn" type="button">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
         <button id="emojiPickerBtn" type="button">😀</button>
         <div id="input" contenteditable="true" data-placeholder="Escribe un mensaje..." role="textbox" aria-multiline="true"></div>
+        <button id="actionMenuBtn" type="button">
+          📎
+        </button>
         <button id="sendBtn" type="button">
           <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -741,6 +737,32 @@
   <div class="resize-sound-settings resize-nw"></div>
   <div class="resize-sound-settings resize-se"></div>
   <div class="resize-sound-settings resize-sw"></div>
+</div>
+
+<!--Avatar modal-->
+<div id="avatar-editor-overlay" class="avatar-editor-overlay"></div>
+<div id="avatar-editor-movable-window" class="avatar-editor-movable-window overflow-hidden" style="display: none;">
+  <div id="avatar-editor-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">✏️ Editar avatar</span>
+    </div>
+    <button id="close-avatar-editor-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="avatar-editor-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div class="resize-avatar-modal resize-n"></div>
+  <div class="resize-avatar-modal resize-s"></div>
+  <div class="resize-avatar-modal resize-e"></div>
+  <div class="resize-avatar-modal resize-w"></div>
+  <div class="resize-avatar-modal resize-ne"></div>
+  <div class="resize-avatar-modal resize-nw"></div>
+  <div class="resize-avatar-modal resize-se"></div>
+  <div class="resize-avatar-modal resize-sw"></div>
 </div>
 
 <script>

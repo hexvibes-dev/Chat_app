@@ -9,7 +9,9 @@ import {
   canAddStickerToCategory,
   refreshStickersInPicker,
   removeCustomSticker,
-  deleteCategory
+  deleteCategory,
+  toggleCategoryDisabled,
+  isCategoryDisabled
 } from './StickerManager.js';
 import { showNotification } from './notifications.js';
 
@@ -183,7 +185,7 @@ function showCreateCategoryModal() {
 }
 
 function showCategorySelectorForUpload(croppedDataUrl) {
-  const categories = getCategories();
+  const categories = getCategories().filter(c => !c.isLocalCategory && !c.disabled);
   const overlay = document.createElement('div');
   overlay.className = 'modal-blur-overlay';
   overlay.style.zIndex = '20003';
@@ -658,6 +660,12 @@ function toggleCategory(categoryId) {
   const content = document.getElementById(`sticker-category-content-${categoryId}`);
   const arrow = document.getElementById(`sticker-category-arrow-${categoryId}`);
   if (!content || !arrow) return;
+  
+  const categoryName = content.getAttribute('data-category-name');
+  const isDisabled = categoryName && isCategoryDisabled(categoryName);
+  
+  if (isDisabled) return;
+  
   const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
   if (isExpanded) {
     content.style.maxHeight = '0px';
@@ -677,9 +685,13 @@ function restoreExpandedState() {
     const content = document.getElementById(`sticker-category-content-${categoryId}`);
     const arrow = document.getElementById(`sticker-category-arrow-${categoryId}`);
     if (content && arrow && content.style.maxHeight === '0px') {
-      content.style.maxHeight = content.scrollHeight + 'px';
-      content.style.paddingTop = '12px';
-      arrow.textContent = '▲';
+      const categoryName = content.getAttribute('data-category-name');
+      const isDisabled = categoryName && isCategoryDisabled(categoryName);
+      if (!isDisabled) {
+        content.style.maxHeight = content.scrollHeight + 'px';
+        content.style.paddingTop = '12px';
+        arrow.textContent = '▲';
+      }
     }
   });
 }
@@ -693,6 +705,15 @@ async function deleteCategoryHandler(categoryName) {
     renderModalContent();
     restoreExpandedState();
   }
+}
+
+async function toggleCategoryDisabledHandler(categoryName, isLocal) {
+  if (!isLocal) return;
+  const newState = toggleCategoryDisabled(categoryName);
+  showTransientNotification(`Categoría "${categoryName}" ${newState ? 'activada' : 'desactivada'}`, 2000);
+  refreshStickersInPicker();
+  renderModalContent();
+  restoreExpandedState();
 }
 
 async function deleteStickerHandler(categoryName, stickerId) {
@@ -876,20 +897,30 @@ function renderModalContent() {
   let html = `<div style="padding: 16px; overflow-y: auto; height: 100%;">`;
   categories.forEach((cat, idx) => {
     const categoryId = `sticker-cat-${idx}`;
+    const isDisabled = cat.disabled === true;
+    const disabledStyle = isDisabled ? 'opacity: 0.5; background: #1a1a2a;' : '';
+    
     html += `
-      <div class="custom-category-item" style="margin-bottom: 16px; border: 1px solid #3a3a4a; border-radius: 12px; overflow: hidden;">
-        <div class="category-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #2a2a3a; cursor: pointer; user-select: none;">
+      <div class="custom-category-item" style="margin-bottom: 16px; border: 1px solid #3a3a4a; border-radius: 12px; overflow: hidden; ${disabledStyle}">
+        <div class="category-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: ${isDisabled ? '#1a1a2a' : '#2a2a3a'}; cursor: ${isDisabled ? 'not-allowed' : 'pointer'}; user-select: none;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span id="sticker-category-arrow-${categoryId}" style="font-size: 14px; color: #e0e0e0;">${expandedCategories.has(categoryId) ? '▲' : '▼'}</span>
+            <span id="sticker-category-arrow-${categoryId}" style="font-size: 14px; color: #e0e0e0;">${isDisabled ? '🔒' : (expandedCategories.has(categoryId) ? '▲' : '▼')}</span>
             <strong style="color: #e0e0e0;">${escapeHtml(cat.name)}</strong>
             <span style="font-size: 12px; opacity: 0.7; color: #a0a0b0;">(${cat.stickers.length}/30)</span>
+            ${cat.isLocalCategory ? '<span style="font-size: 10px; background: #14b8a6; padding: 2px 6px; border-radius: 20px;">📖 Solo lectura</span>' : ''}
           </div>
           <div style="display: flex; gap: 8px;">
-            <button class="delete-category-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: #ef4444;">🗑️</button>
-            <button class="add-sticker-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: #14b8a6;">➕</button>
+            ${cat.isLocalCategory ? `
+              <button class="toggle-category-btn" data-category="${escapeHtml(cat.name)}" data-local="true" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: ${isDisabled ? '#14b8a6' : '#f87171'};" title="${isDisabled ? 'Activar categoría' : 'Desactivar categoría'}">
+                ${isDisabled ? '🔓' : '🔒'}
+              </button>
+            ` : `
+              <button class="delete-category-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: #ef4444;">🗑️</button>
+            `}
+            ${!cat.isLocalCategory ? `<button class="add-sticker-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: #14b8a6;">➕</button>` : ''}
           </div>
         </div>
-        <div id="sticker-category-content-${categoryId}" class="category-content" style="max-height: ${expandedCategories.has(categoryId) ? '1000px' : '0'}; overflow: hidden; transition: max-height 0.3s ease-out; padding-top: ${expandedCategories.has(categoryId) ? '12px' : '0'};">
+        <div id="sticker-category-content-${categoryId}" class="category-content" data-category-name="${escapeHtml(cat.name)}" style="max-height: ${(!isDisabled && expandedCategories.has(categoryId)) ? '1000px' : '0'}; overflow: hidden; transition: max-height 0.3s ease-out; padding-top: ${(!isDisabled && expandedCategories.has(categoryId)) ? '12px' : '0'};">
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 12px; padding: 16px;">
     `;
     for (const sticker of cat.stickers) {
@@ -898,7 +929,7 @@ function renderModalContent() {
         <div class="custom-sticker-item ${isAnimated ? 'animated-sticker' : ''}" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px; background: #2a2a3a; border-radius: 12px; position: relative;">
           <img src="${sticker.url}" alt="sticker" style="width: 64px; height: 64px; object-fit: contain; border-radius: 8px;" ${isAnimated ? 'class="sticker-animated"' : ''}>
           ${isAnimated ? '<span style="font-size: 10px; color: #14b8a6;">🎬 Animado</span>' : ''}
-          <button class="delete-sticker-btn" data-category="${escapeHtml(cat.name)}" data-sticker-id="${sticker.id}" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; color: white; font-size: 12px;">🗑️</button>
+          ${!cat.isLocalCategory ? `<button class="delete-sticker-btn" data-category="${escapeHtml(cat.name)}" data-sticker-id="${sticker.id}" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; color: white; font-size: 12px;">🗑️</button>` : ''}
         </div>
       `;
     }
@@ -911,22 +942,27 @@ function renderModalContent() {
   if (canCreateCategory()) {
     html += `
       <button id="create-new-sticker-category-btn" class="btn primary" style="width: 100%; margin-top: 16px; padding: 12px; border-radius: 12px; background: #14b8a6; color: white; border: none; cursor: pointer;">
-        + Crear nueva categoría (${getCategories().length}/4)
+        + Crear nueva categoría (${getCategories().filter(c => !c.isLocalCategory).length}/4)
       </button>
     `;
   }
   html += `</div>`;
   contentDiv.innerHTML = html;
+  
   document.querySelectorAll('.category-header').forEach(header => {
     const arrowSpan = header.querySelector('[id^="sticker-category-arrow-"]');
     if (arrowSpan) {
       const categoryId = arrowSpan.id.replace('sticker-category-arrow-', '');
-      header.addEventListener('click', (e) => {
-        if (e.target.closest('button')) return;
-        toggleCategory(categoryId);
-      });
+      const isDisabled = header.closest('.custom-category-item')?.style.opacity === '0.5';
+      if (!isDisabled) {
+        header.addEventListener('click', (e) => {
+          if (e.target.closest('button')) return;
+          toggleCategory(categoryId);
+        });
+      }
     }
   });
+  
   document.querySelectorAll('.delete-category-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -934,6 +970,16 @@ function renderModalContent() {
       deleteCategoryHandler(categoryName);
     });
   });
+  
+  document.querySelectorAll('.toggle-category-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const categoryName = btn.dataset.category;
+      const isLocal = btn.dataset.local === 'true';
+      toggleCategoryDisabledHandler(categoryName, isLocal);
+    });
+  });
+  
   document.querySelectorAll('.add-sticker-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -941,6 +987,7 @@ function renderModalContent() {
       addStickerHandler(categoryName);
     });
   });
+  
   document.querySelectorAll('.delete-sticker-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -949,6 +996,7 @@ function renderModalContent() {
       deleteStickerHandler(categoryName, stickerId);
     });
   });
+  
   const createBtn = document.getElementById('create-new-sticker-category-btn');
   if (createBtn) {
     createBtn.addEventListener('click', async () => {

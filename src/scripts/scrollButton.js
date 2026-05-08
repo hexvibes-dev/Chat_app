@@ -16,13 +16,13 @@
     const layerInput = document.getElementById('layerInput');
     if (!layerInput) return;
     const rect = layerInput.getBoundingClientRect();
-    const topPosition = rect.top - 10;
+    const topPosition = rect.top - 60;
     if (topPosition > 0) {
       btn.style.bottom = 'auto';
       btn.style.top = `${topPosition}px`;
     } else {
       btn.style.top = 'auto';
-      btn.style.bottom = '10px';
+      btn.style.bottom = '60px';
     }
   }
 
@@ -39,7 +39,6 @@
     }
   }
 
-  // Escuchar eventos que pueden cambiar la posición del input
   messagesEl.addEventListener('scroll', updateButtonVisibility);
   window.addEventListener('resize', requestRefresh);
   window.addEventListener('scroll', requestRefresh);

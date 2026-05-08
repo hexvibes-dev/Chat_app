@@ -2,7 +2,6 @@
 import { appendMessage } from './messages.js';
 import { getCategories, getAllStickers } from './StickerManager.js';
 
-// Función auxiliar para generar el HTML de un sticker (útil para sugerencias)
 export function getStickerHtml(sticker) {
   const isAnimated = sticker.animated || sticker.url?.match(/\.(gif|webp)(\?|$)/i);
   let animationAttrs = '';
@@ -125,7 +124,9 @@ export function initStickersPicker(container, onSelect) {
 
 export function refreshStickersDisplay() {
   if (!currentContainer) return;
-  const categories = getCategories();
+  const allCategories = getCategories();
+  // Filtrar las categorías que NO están desactivadas
+  const categories = allCategories.filter(cat => !cat.disabled);
   currentContainer.innerHTML = '';
 
   const scrollDiv = document.createElement('div');

@@ -1,15 +1,46 @@
-// src/scripts/StickerManager.js
-
 import { getLocalStickerCategories, getAllLocalStickers } from './CustomSticker.js';
 
 const STORAGE_KEY = 'custom_stickers_categories';
-const MAX_CATEGORIES = 4;          // solo para categorías del usuario
+const DISABLED_CATEGORIES_KEY = 'disabled_sticker_categories';
+const MAX_CATEGORIES = 4;
 const MAX_STICKERS_PER_CATEGORY = 30;
 
 let categories = [];
+let disabledCategories = [];
 
-// Cargar todas las categorías (locales + guardadas)
+export function loadDisabledCategories() {
+  const saved = localStorage.getItem(DISABLED_CATEGORIES_KEY);
+  if (saved) {
+    disabledCategories = JSON.parse(saved);
+  } else {
+    disabledCategories = [];
+  }
+  return disabledCategories;
+}
+
+function saveDisabledCategories() {
+  localStorage.setItem(DISABLED_CATEGORIES_KEY, JSON.stringify(disabledCategories));
+  window.dispatchEvent(new CustomEvent('stickers-updated'));
+}
+
+export function isCategoryDisabled(categoryName) {
+  return disabledCategories.includes(categoryName);
+}
+
+export function toggleCategoryDisabled(categoryName) {
+  if (disabledCategories.includes(categoryName)) {
+    disabledCategories = disabledCategories.filter(c => c !== categoryName);
+  } else {
+    disabledCategories.push(categoryName);
+  }
+  saveDisabledCategories();
+  loadCategories(); // Recargar categorías para actualizar la UI
+  return !disabledCategories.includes(categoryName);
+}
+
 export function loadCategories() {
+  loadDisabledCategories();
+  
   const saved = localStorage.getItem(STORAGE_KEY);
   let userCategories = [];
   if (saved) {
@@ -22,10 +53,8 @@ export function loadCategories() {
     saveUserCategories(userCategories);
   }
 
-  // Obtener categorías locales desde CustomSticker.js
   const localCats = getLocalStickerCategories();
   
-  // Convertir las categorías locales al formato interno, marcándolas como de solo lectura
   const readonlyLocalCats = localCats.map(cat => ({
     name: cat.name,
     stickers: cat.stickers.map(s => ({
@@ -41,11 +70,11 @@ export function loadCategories() {
     })),
     isLocalCategory: true,
     isReadOnly: true,
-    order: cat.order || 999
+    order: cat.order || 999,
+    disabled: isCategoryDisabled(cat.name)
   }));
 
-  // Combinar: primero las locales (por orden), luego las del usuario
-  categories = [...readonlyLocalCats, ...userCategories];
+  categories = [...userCategories, ...readonlyLocalCats];
   
   return categories;
 }
@@ -56,7 +85,6 @@ function saveUserCategories(userCats) {
 }
 
 function saveCategories() {
-  // Separar categorías del usuario (no locales) y guardarlas
   const userCats = categories.filter(c => !c.isLocalCategory);
   saveUserCategories(userCats);
 }
@@ -66,12 +94,10 @@ export function getCategories() {
   return categories;
 }
 
-// Solo las categorías donde el usuario puede añadir stickers (excluyendo locales)
 export function getAvailableCategoriesForNew() {
-  return getCategories().filter(c => !c.isLocalCategory).map(c => c.name);
+  return getCategories().filter(c => !c.isLocalCategory && !c.disabled).map(c => c.name);
 }
 
-// El usuario solo puede crear categorías si no supera el límite y si no es local
 export function canCreateCategory() {
   return getCategories().filter(c => !c.isLocalCategory).length < MAX_CATEGORIES;
 }
@@ -91,7 +117,7 @@ export function createCategory(categoryName) {
 
 export function canAddStickerToCategory(categoryName) {
   const category = getCategories().find(c => c.name === categoryName);
-  if (!category || category.isLocalCategory) return false;
+  if (!category || category.isLocalCategory || category.disabled) return false;
   return category.stickers.length < MAX_STICKERS_PER_CATEGORY;
 }
 
@@ -99,6 +125,7 @@ export function addCustomSticker(stickerData, categoryName) {
   const category = getCategories().find(c => c.name === categoryName);
   if (!category) throw new Error('Categoría no encontrada');
   if (category.isLocalCategory) throw new Error('No puedes añadir stickers a una categoría de solo lectura');
+  if (category.disabled) throw new Error('No puedes añadir stickers a una categoría desactivada');
   if (category.stickers.length >= MAX_STICKERS_PER_CATEGORY) {
     throw new Error(`Máximo ${MAX_STICKERS_PER_CATEGORY} stickers por categoría`);
   }
@@ -131,6 +158,7 @@ export function deleteCategory(categoryName) {
 export function getAllStickers() {
   const result = [];
   for (const category of getCategories()) {
+    if (category.disabled) continue;
     for (const sticker of category.stickers) {
       result.push({
         id: sticker.id,

@@ -109,7 +109,7 @@ body.keyboard-open {
 
 .layer-messages {
   position: fixed;
-  top: 70px; /* Ajusta según tu header */
+  top: 56px;
   bottom: calc(60px + var(--keyboard) + var(--picker-height, 0px));
   left: 0;
   right: 0;
@@ -129,7 +129,7 @@ body.keyboard-open {
 }
 
 .messages::-webkit-scrollbar {
-  width: 12px;
+  width: 4px;
 }
 
 .messages::-webkit-scrollbar-track {
@@ -173,7 +173,7 @@ body.keyboard-open {
   position: relative;
   user-select: none;
   display: flex;
-  padding: 0 8px;
+  padding: 0;
 }
 
 .message:not(.me) .msg-drag {
@@ -247,7 +247,6 @@ body.keyboard-open {
 
 .msg-drag {
   display: inline-block;
-  padding: 12px 12px 8px 12px;
   border-radius: 18px 18px 4px 18px;
   line-height: 1.4;
   word-break: break-word;
@@ -1049,6 +1048,8 @@ body.keyboard-open {
   align-items: center;
   transition: var(--send-button-transition);
   animation: var(--send-button-animation);
+  width: 60px;
+  height: 60px;
 }
 
 #sendBtn:active {

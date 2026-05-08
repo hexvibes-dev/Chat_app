@@ -22,10 +22,10 @@ export const spacer = document.getElementById('spacer');
 
 function updateLastMessageMargin() {
   const allMessages = document.querySelectorAll('.message');
-  allMessages.forEach(msg => msg.style.marginBottom = '10px');
+  allMessages.forEach(msg => msg.style.marginBottom = '');
   if (allMessages.length > 0) {
     const lastMsg = allMessages[allMessages.length - 1];
-    if (lastMsg) lastMsg.style.marginBottom = '20px';
+    if (lastMsg) lastMsg.style.marginBottom = '50px';
   }
 }
 

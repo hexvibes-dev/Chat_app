@@ -1,0 +1,224 @@
+#avatar-editor-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  transition: opacity 0.2s ease;
+  z-index: 10999;
+  display: none;
+  pointer-events: none;
+}
+
+#avatar-editor-overlay.active {
+  display: block;
+  pointer-events: none;
+}
+
+#avatar-editor-movable-window {
+  position: fixed;
+  transform-origin: top left;
+  touch-action: none;
+  will-change: transform, width, height;
+  width: 550px;
+  height: 650px;
+  min-width: 500px;
+  min-height: 550px;
+  max-width: 95vw;
+  max-height: 90vh;
+  display: none;
+  z-index: 11000;
+  background: #1e1e2e;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  border: 1px solid #3a3a4a;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: grab;
+}
+
+#avatar-editor-movable-window:active {
+  cursor: grabbing;
+}
+
+#avatar-editor-modal-header {
+  background: #2a2a3a;
+  border-bottom: 1px solid #3a3a4a;
+  cursor: grab;
+  padding: 12px 16px;
+  flex-shrink: 0;
+}
+
+#avatar-editor-modal-header:active {
+  cursor: grabbing;
+}
+
+.avatar-editor-header-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+#avatar-editor-inner-content {
+  flex: 1;
+  overflow-y: auto;
+  background: #1e1e2e;
+}
+
+.avatar-canvas-container {
+  display: flex;
+  justify-content: center;
+  background: #1e1e1e;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+#avatar-editor-canvas {
+  max-width: 100%;
+  max-height: 350px;
+  border-radius: 12px;
+  cursor: crosshair;
+  background: repeating-conic-gradient(#2a2a3a 0% 25%, #1e1e2e 0% 50%) 50% / 20px 20px;
+}
+
+.btn, .btn-cancel {
+  background: #2a2a3a;
+  border: 1px solid #3a3a4a;
+  border-radius: 40px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.btn:hover, .btn-cancel:hover {
+  background: #3a3a4a;
+  transform: scale(0.98);
+}
+
+.btn.primary {
+  background: #14b8a6;
+  border-color: #14b8a6;
+  color: white;
+}
+
+.btn.primary:hover {
+  background: #0d9488;
+}
+
+.btn-cancel:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.shape-btn {
+  background: #2a2a3a;
+  border: 2px solid #3a3a4a;
+  border-radius: 40px;
+  padding: 6px 14px;
+  cursor: pointer;
+  color: #e0e0e0;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.shape-btn.active {
+  background: #14b8a6;
+  border-color: #14b8a6;
+  color: white;
+}
+
+.shape-btn:hover {
+  transform: scale(1.05);
+  background: #3a3a4a;
+}
+
+label {
+  font-size: 12px;
+  color: #a0a0b0;
+  display: block;
+  margin-bottom: 4px;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 4px;
+  -webkit-appearance: none;
+  background: #3a3a4a;
+  border-radius: 2px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #14b8a6;
+  cursor: pointer;
+  border: none;
+}
+
+.resize-avatar-modal {
+  position: absolute;
+  background: transparent;
+  transition: background 0.1s;
+  z-index: 10;
+  touch-action: none;
+}
+
+.resize-avatar-modal:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.resize-avatar-modal.resize-n,
+.resize-avatar-modal.resize-s {
+  left: 10px;
+  right: 10px;
+  height: 12px;
+}
+
+.resize-avatar-modal.resize-n { top: 0; cursor: n-resize; }
+.resize-avatar-modal.resize-s { bottom: 0; cursor: s-resize; }
+
+.resize-avatar-modal.resize-e,
+.resize-avatar-modal.resize-w {
+  top: 10px;
+  bottom: 10px;
+  width: 12px;
+}
+
+.resize-avatar-modal.resize-e { right: 0; cursor: e-resize; }
+.resize-avatar-modal.resize-w { left: 0; cursor: w-resize; }
+
+.resize-avatar-modal.resize-ne,
+.resize-avatar-modal.resize-nw,
+.resize-avatar-modal.resize-se,
+.resize-avatar-modal.resize-sw {
+  width: 18px;
+  height: 18px;
+}
+
+.resize-avatar-modal.resize-ne { top: 0; right: 0; cursor: ne-resize; }
+.resize-avatar-modal.resize-nw { top: 0; left: 0; cursor: nw-resize; }
+.resize-avatar-modal.resize-se { bottom: 0; right: 0; cursor: se-resize; }
+.resize-avatar-modal.resize-sw { bottom: 0; left: 0; cursor: sw-resize; }
+
+@media (max-width: 768px) {
+  #avatar-editor-movable-window {
+    width: 95vw;
+    height: 80vh;
+    min-width: auto;
+    min-height: auto;
+  }
+  .btn, .btn-cancel, .shape-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  #avatar-editor-canvas {
+    max-height: 250px;
+  }
+}

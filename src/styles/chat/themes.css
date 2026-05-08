@@ -1,6 +1,7 @@
 @import './themes/default.css';
 @import './themes/dark.css';
 @import './themes/light.css';
+@import './themes/basic.css';
 @import './themes/cristal.css';
 @import './themes/forest.css';
 @import './themes/magenta.css';
@@ -26,5 +27,7 @@ body::after {
   z-index: -1;
   pointer-events: none;
 }
-
-
+root{
+  --white: #ffffff;
+  --black: #000000;
+}

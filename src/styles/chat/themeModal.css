@@ -156,7 +156,7 @@
 
 .theme-header div {
   width: 100%;
-  height: 20px;
+  height: 0;
   background: var(--theme-modal-2do-header-div-background);
   backdrop-filter: var(--theme-modal-2do-header-div-blur);
   opacity: var(--theme-modal-2do-header-div-opacity);
@@ -374,7 +374,7 @@
 }
 
 #theme-content::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
 }
 
 #theme-content::-webkit-scrollbar-track {
