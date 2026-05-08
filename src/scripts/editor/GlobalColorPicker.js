@@ -1,9 +1,10 @@
 // src/scripts/editor/GlobalColorPicker.js
 import interact from 'interactjs';
-import { registerModal, associateOverlay, bringModalToFront, constrainAllModals, unregisterModal } from '../modalStackManager.js';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../modalStackManager.js';
 import { showNotification } from '../notifications.js';
 
 let windowElement, headerElement, closeBtn, cancelBtn, overlay;
+let windowX = 0, windowY = 0;
 let isModalOpen = false;
 let currentColor = '#000000';
 let lastSampledColor = '#000000';
@@ -416,78 +417,141 @@ function saveRecentColor(hex) {
 function activateImageSampling() { showDraggablePicker(); }
 function deactivateImageSampling() { hideDraggablePicker(); }
 
+function addResizeHandlesToModal(element) {
+  const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
+  handles.forEach(dir => {
+    let handle = element.querySelector(`.resize-color-picker.resize-${dir}`);
+    if (!handle) {
+      handle = document.createElement('div');
+      handle.className = `resize-color-picker resize-${dir}`;
+      element.appendChild(handle);
+    }
+  });
+}
+
+function centerModal() {
+  if (!windowElement) return;
+  // Forzar reflow para obtener dimensiones correctas
+  windowElement.offsetHeight;
+  const rect = windowElement.getBoundingClientRect();
+  const modalWidth = rect.width;
+  const modalHeight = rect.height;
+  windowX = (window.innerWidth - modalWidth) / 2;
+  windowY = (window.innerHeight - modalHeight) / 2;
+  windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+  windowElement.setAttribute('data-x', windowX);
+  windowElement.setAttribute('data-y', windowY);
+}
+
+function isLessThan10PercentVisible(element) {
+  const rect = element.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const visibleWidth = Math.min(rect.right, viewportWidth) - Math.max(rect.left, 0);
+  const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+  if (visibleWidth <= 0 || visibleHeight <= 0) return true;
+  const visibleArea = visibleWidth * visibleHeight;
+  const totalArea = rect.width * rect.height;
+  return (visibleArea / totalArea) < 0.1;
+}
+
+function setupInteractForModal() {
+  if (!windowElement || !headerElement) return;
+
+  interact(windowElement).resizable({
+    edges: { top: true, left: true, bottom: true, right: true },
+    inertia: false,
+    modifiers: [
+      interact.modifiers.restrictSize({
+        min: { width: 200, height: 200 },
+        max: { width: window.innerWidth * 0.9, height: window.innerHeight * 0.9 }
+      })
+    ],
+    listeners: {
+      move(event) {
+        let width = event.rect.width;
+        let height = event.rect.height;
+        windowElement.style.width = `${width}px`;
+        windowElement.style.height = `${height}px`;
+        windowX += event.deltaRect.left;
+        windowY += event.deltaRect.top;
+        windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+        windowElement.setAttribute('data-x', windowX);
+        windowElement.setAttribute('data-y', windowY);
+        constrainAllModals();
+      }
+    }
+  });
+
+  interact(headerElement).draggable({
+    inertia: false,
+    manualStart: false,
+    allowFrom: headerElement,
+    preventDefault: 'always',
+    modifiers: [
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true
+      })
+    ],
+    listeners: {
+      start() { window.isDraggingModal = true; },
+      move(event) {
+        const keyboardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
+        if (keyboardHeight > 0) {
+          const inputElement = document.getElementById('layerInput');
+          if (inputElement) {
+            const inputRect = inputElement.getBoundingClientRect();
+            const modalRect = windowElement.getBoundingClientRect();
+            const inputTop = inputRect.top;
+            const modalBottom = modalRect.bottom;
+            if (modalBottom + event.dy > inputTop - 10) return;
+          }
+        }
+        windowX += event.dx;
+        windowY += event.dy;
+        windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
+        windowElement.setAttribute('data-x', windowX);
+        windowElement.setAttribute('data-y', windowY);
+        constrainAllModals();
+      },
+      end() {
+        window.isDraggingModal = false;
+        if (isLessThan10PercentVisible(windowElement)) {
+          hideModal();
+        }
+        constrainAllModals();
+      }
+    }
+  });
+}
+
 function showModal(callback) {
   if (isModalOpen) return;
   onColorSelected = callback;
+  
   if (!windowElement) {
     windowElement = document.getElementById('color-picker-movable-window');
     headerElement = document.getElementById('color-picker-modal-header');
     closeBtn = document.getElementById('close-color-picker-modal');
     cancelBtn = document.getElementById('color-picker-cancel');
     overlay = document.getElementById('color-picker-overlay');
+    
     if (!windowElement || !headerElement) return;
+    
     associateOverlay(windowElement, overlay);
-    windowElement.style.overflow = 'hidden';
-    windowElement.style.display = 'flex';
-    windowElement.style.flexDirection = 'column';
-    interact(windowElement).resizable({
-      edges: { top: true, left: true, bottom: true, right: true },
-      inertia: false,
-      modifiers: [interact.modifiers.restrictSize({ min: { width: 300, height: 220 }, max: { width: window.innerWidth * 0.95, height: window.innerHeight * 0.95 } })],
-      listeners: {
-        move(event) {
-          const dx = event.deltaRect.left;
-          const dy = event.deltaRect.top;
-          const width = event.rect.width;
-          const height = event.rect.height;
-          const prevX = parseFloat(windowElement.dataset.x || '0');
-          const prevY = parseFloat(windowElement.dataset.y || '0');
-          const nx = prevX + dx;
-          const ny = prevY + dy;
-          windowElement.style.width = `${width}px`;
-          windowElement.style.height = `${height}px`;
-          windowElement.dataset.x = String(nx);
-          windowElement.dataset.y = String(ny);
-          windowElement.style.transform = `translate3d(${nx}px, ${ny}px, 0)`;
-          constrainAllModals();
-        }
-      }
-    });
-    interact(headerElement).draggable({
-      inertia: false,
-      allowFrom: headerElement,
-      modifiers: [interact.modifiers.restrictRect({ restriction: document.documentElement, endOnly: true })],
-      listeners: {
-        start(event) {
-          const transformValue = windowElement.style.transform;
-          if (transformValue && transformValue !== 'none') {
-            const match = transformValue.match(/translate3d\(([^,]+),([^,]+),/);
-            if (match) {
-              windowElement.dataset.x = String(parseFloat(match[1]));
-              windowElement.dataset.y = String(parseFloat(match[2]));
-            }
-          }
-          headerElement.style.cursor = 'grabbing';
-        },
-        move(event) {
-          const prevX = parseFloat(windowElement.dataset.x || '0');
-          const prevY = parseFloat(windowElement.dataset.y || '0');
-          const nx = prevX + event.dx;
-          const ny = prevY + event.dy;
-          windowElement.dataset.x = String(nx);
-          windowElement.dataset.y = String(ny);
-          windowElement.style.transform = `translate3d(${nx}px, ${ny}px, 0)`;
-          constrainAllModals();
-        },
-        end() { headerElement.style.cursor = 'grab'; }
-      }
-    });
+    addResizeHandlesToModal(windowElement);
+    setupInteractForModal();
+    
     if (closeBtn) closeBtn.onclick = () => { deactivateImageSampling(); hideModal(); };
     if (cancelBtn) cancelBtn.onclick = () => { deactivateImageSampling(); hideModal(); };
     if (overlay) overlay.onclick = () => { deactivateImageSampling(); hideModal(); };
+    
     registerModal(windowElement, 'color-picker-modal');
   }
+  
   buildModalStructureIfNeeded();
+  
   const activeTab = document.querySelector('#tab-color.active, #tab-image.active, #tab-history.active');
   if (activeTab && activeTab.id === 'tab-image') {
     renderImagePicker();
@@ -499,19 +563,18 @@ function showModal(callback) {
     renderColorPicker();
     deactivateImageSampling();
   }
-  overlay && overlay.classList.add('active');
+  
+  overlay.classList.add('active');
   windowElement.style.display = 'flex';
-  const modalWidth = windowElement.offsetWidth;
-  const modalHeight = windowElement.offsetHeight;
-  const left = (window.innerWidth - modalWidth) / 2;
-  const top = (window.innerHeight - modalHeight) / 2;
-  windowElement.style.left = `${left}px`;
-  windowElement.style.top = `${top}px`;
-  windowElement.style.transform = 'none';
-  windowElement.dataset.x = String(left);
-  windowElement.dataset.y = String(top);
+  
+  // Esperar a que el DOM se actualice y el modal tenga dimensiones reales
+  requestAnimationFrame(() => {
+    centerModal();
+  });
+  
   isModalOpen = true;
   bringModalToFront('color-picker-modal');
+  
   const insertBtn = document.getElementById('color-picker-insert');
   if (insertBtn) {
     insertBtn.onclick = () => {

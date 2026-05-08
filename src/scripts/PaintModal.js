@@ -122,17 +122,23 @@ async function showConfirmModal(message) {
 function addResizeHandlesToModal(element) {
   const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
   handles.forEach(dir => {
-    const handle = document.createElement('div');
-    handle.className = `resize-paint resize-${dir}`;
-    element.appendChild(handle);
+    let handle = element.querySelector(`.resize-paint.resize-${dir}`);
+    if (!handle) {
+      handle = document.createElement('div');
+      handle.className = `resize-paint resize-${dir}`;
+      element.appendChild(handle);
+    }
   });
 }
 
 function centerModal() {
   if (!windowElement) return;
+  windowElement.offsetHeight;
   const rect = windowElement.getBoundingClientRect();
-  windowX = (window.innerWidth - rect.width) / 2;
-  windowY = (window.innerHeight - rect.height) / 2;
+  const modalWidth = rect.width;
+  const modalHeight = rect.height;
+  windowX = (window.innerWidth - modalWidth) / 2;
+  windowY = (window.innerHeight - modalHeight) / 2;
   windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
   windowElement.setAttribute('data-x', windowX);
   windowElement.setAttribute('data-y', windowY);
@@ -984,7 +990,6 @@ function renderGradientModal(modalId, data, isBg) {
   const saveNameInput = modal.querySelector('.gradient-custom input');
   const saveBtn = modal.querySelector('.gradient-save-btn');
   
-  // Actualizar lista de colores
   colorsContainer.innerHTML = '';
   data.colors.forEach((color, idx) => {
     const row = document.createElement('div');
@@ -1014,7 +1019,6 @@ function renderGradientModal(modalId, data, isBg) {
     colorsContainer.appendChild(row);
   });
   
-  // Botón añadir color
   const addBtn = modal.querySelector('.gradient-add-color');
   if (addBtn) {
     addBtn.onclick = () => {
@@ -1027,7 +1031,6 @@ function renderGradientModal(modalId, data, isBg) {
     };
   }
   
-  // Ángulo
   if (angleSlider) {
     angleSlider.value = data.angle;
     angleSlider.oninput = (e) => {
@@ -1038,13 +1041,11 @@ function renderGradientModal(modalId, data, isBg) {
     angleValueSpan.innerText = data.angle + '°';
   }
   
-  // Presets y custom (usando la misma lista de presets)
   const presets = isBg ? bgGradientData.savedPresets : paintGradientData.savedPresets;
   presetsContainer.innerHTML = '';
   savedList.innerHTML = '';
   
   presets.forEach(preset => {
-    // Presets (tab "Presets")
     const presetDiv = document.createElement('div');
     presetDiv.className = 'gradient-saved-item';
     presetDiv.innerHTML = `
@@ -1066,7 +1067,6 @@ function renderGradientModal(modalId, data, isBg) {
     };
     presetsContainer.appendChild(presetDiv);
     
-    // Custom (tab "Custom") – mostramos los mismos elementos pero con otro contenedor
     const customItem = document.createElement('div');
     customItem.className = 'gradient-saved-item';
     customItem.innerHTML = `
@@ -1089,7 +1089,6 @@ function renderGradientModal(modalId, data, isBg) {
     savedList.appendChild(customItem);
   });
   
-  // Guardar nuevo preset
   if (saveBtn) {
     saveBtn.onclick = () => {
       const name = saveNameInput.value.trim();
@@ -1099,7 +1098,6 @@ function renderGradientModal(modalId, data, isBg) {
       }
       const newPreset = { name, colors: [...data.colors], angle: data.angle };
       const arr = isBg ? bgGradientData.savedPresets : paintGradientData.savedPresets;
-      // Evitar duplicados por nombre
       if (!arr.some(p => p.name === name)) {
         arr.push(newPreset);
         saveGradientPresets(isBg ? 'bg' : 'paint', arr);
@@ -1111,7 +1109,6 @@ function renderGradientModal(modalId, data, isBg) {
     };
   }
   
-  // Tabs
   const tabs = modal.querySelectorAll('.gradient-tab');
   const presetsPanel = modal.querySelector('.gradient-presets');
   const customPanel = modal.querySelector('.gradient-custom');
@@ -1287,8 +1284,6 @@ function openPaintGradientModal() {
   paintGradientModal._overlay.classList.add('visible');
   bringModalToFront('gradient-paint');
 }
-
-// -------------------------------------------------------------
 
 function initTools() {
   const mainToolBtn = document.getElementById('paint-main-tool');
@@ -1534,14 +1529,14 @@ function showCategorySelector(dataUrl) {
   selectorModal.style.zIndex = '30001';
   selectorModal.style.width = '300px';
   let html = `
-    <div class="add-reaction-card" style="padding: 20px;">
-      <h1 style="font-size: 18px; margin-bottom: 16px; color: var(--modal-text);">📁 Guardar sticker en categoría</h1>
+    <div class="add-reaction-card" style="padding: 20px; background: #1e1e2e; border-radius: 20px;">
+      <h1 style="font-size: 18px; margin-bottom: 16px; color: #e0e0e0;">📁 Guardar sticker en categoría</h1>
       <div style="display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; margin-bottom: 16px;">
   `;
   categories.forEach(cat => {
     const canAdd = cat.stickers.length < 30;
     html += `
-      <button class="category-save-btn btn" data-category="${escapeHtml(cat.name)}" style="text-align: left; display: flex; justify-content: space-between; align-items: center;" ${!canAdd ? 'disabled style="opacity:0.5;"' : ''}>
+      <button class="category-save-btn btn" data-category="${escapeHtml(cat.name)}" style="text-align: left; display: flex; justify-content: space-between; align-items: center; background: #2a2a3a; border: none; border-radius: 12px; padding: 10px; margin: 4px 0; cursor: pointer; color: #e0e0e0;" ${!canAdd ? 'disabled style="opacity:0.5;"' : ''}>
         <span>📁 ${escapeHtml(cat.name)}</span>
         <span style="font-size: 12px;">(${cat.stickers.length}/30)</span>
       </button>

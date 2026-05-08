@@ -7,6 +7,7 @@ import { isStickerSaved, getStickerCategoryByUrl } from './StickerManager.js';
 import { showQuickStickerUpload } from './StickerModal.js';
 import { normalizeReplacedEmojisToText } from './emojiReplacement.js';
 import { showNotification, hideNotification } from './notifications.js';
+import { playPopupClose } from './soundManager.js';
 
 let currentQuotedMessage = null;
 let activePopup = null;
@@ -94,6 +95,7 @@ function showReplyPopup(messageElement, content, isSticker = false) {
   closeBtn.textContent = '✕';
   closeBtn.addEventListener('click', (ev) => {
     ev.stopPropagation();
+    playPopupClose();
     hideReplyPopup();
     clearQuotedMessage();
     if (wasInputFocused) {
@@ -125,6 +127,7 @@ function showReplyPopup(messageElement, content, isSticker = false) {
       ev.preventDefault();
       onActivate();
     } else if (ev.key === 'Escape') {
+      playPopupClose();
       hideReplyPopup();
       clearQuotedMessage();
     }

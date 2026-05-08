@@ -6,6 +6,7 @@ import { addReactionRemotely, removeReactionRemotely, playReactionAnimation, syn
 import { deleteMessageRemotely, editMessageRemotely, appendMessage, messages } from './messages.js';
 import { updateContactStatus } from './contactStatus.js';
 import { showNotification } from './notifications.js';
+import { playMessageReceive } from './soundManager.js';
 
 let socket = null;
 let heartbeatInterval = null;
@@ -129,6 +130,9 @@ export async function connectToBackend(url) {
     socket.on('new-message', (msg) => {
       console.log('📩 new-message recibido:', msg);
       const isMe = (username && msg.senderId === username);
+      if (!isMe) {
+        playMessageReceive();
+      }
       requestAnimationFrame(() => {
         appendMessage(msg.text, {
           me: isMe,

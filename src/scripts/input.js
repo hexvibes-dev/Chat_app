@@ -1,9 +1,10 @@
-// src/scripts/input.js
 import { appendMessage } from './messages.js';
 import { getAndClearQuotedMessage, hideReplyPopup } from './answer.js';
 import { connectToBackend, sendMessageViaSocket, isSocketConnected, disconnectSocket } from './socket.js';
 import { convertShortcodesToImages, convertShortcodesToImagesInNode } from './emojiUtils.js';
 import { showNotification } from './notifications.js';
+import { playMessageSend, playClick, playError, playKeyboard } from './soundManager.js';
+import { initEmojiSuggestions, refreshEmojiKeywords } from './EmojiSuggestions.js';
 
 export const input = document.getElementById('input');
 export const sendBtn = document.getElementById('sendBtn');
@@ -12,6 +13,8 @@ let editingMessageId = null;
 let lastCursorPosition = null;
 let isUserTyping = false;
 let preventFocus = false;
+let lastKeyboardSoundTime = 0;
+const KEYBOARD_SOUND_DEBOUNCE = 80;
 
 window._ignoreBlurForPicker = false;
 
@@ -21,6 +24,7 @@ if (input) {
   input.style.wordWrap = 'break-word';
   input.style.whiteSpace = 'pre-wrap';
   input.style.overflowWrap = 'break-word';
+  input.blur();
 }
 
 function saveCursorPosition() {
@@ -61,24 +65,25 @@ function getInputText() {
   return text.trim();
 }
 
-function setInputText(text) {
+function clearInputText() {
   if (!input) return;
   preventFocus = true;
   const wasEditable = input.contentEditable === 'true';
   if (!wasEditable) input.contentEditable = 'true';
   
-  input.innerText = text;
+  input.innerText = '';
   const range = document.createRange();
-  const sel = window.getSelection();
   range.selectNodeContents(input);
   range.collapse(false);
+  const sel = window.getSelection();
   sel.removeAllRanges();
   sel.addRange(range);
   input.dispatchEvent(new Event('input', { bubbles: true }));
   setTimeout(() => convertShortcodesToImagesInNode(input), 10);
   
-  if (!wasEditable) input.contentEditable = 'false';
-  if (document.activeElement === input) input.blur();
+  if (!wasEditable) {
+    input.contentEditable = 'false';
+  }
   preventFocus = false;
 }
 
@@ -129,7 +134,6 @@ export function insertAtCursor(html, shouldKeepFocus = false) {
   setTimeout(() => convertShortcodesToImagesInNode(input), 10);
 
   if (!wasEditable) input.contentEditable = 'false';
-  if (document.activeElement === input) input.blur();
   preventFocus = false;
   
   if (shouldKeepFocus) {
@@ -148,6 +152,14 @@ function showTransientNotification(text, duration = 1000) {
   showNotification(text, duration);
 }
 
+function playKeyboardSound() {
+  const now = Date.now();
+  if (now - lastKeyboardSoundTime >= KEYBOARD_SOUND_DEBOUNCE) {
+    lastKeyboardSoundTime = now;
+    playKeyboard();
+  }
+}
+
 export function sendMessageFromInput() {
   window._ignoreBlurForPicker = true;
   setTimeout(() => {
@@ -161,15 +173,19 @@ export function sendMessageFromInput() {
     const url = parts[1];
     if (!url) showTransientNotification('Debes especificar una URL');
     else connectToBackend(url);
-    setInputText('');
+    clearInputText();
     adjustTextareaHeight();
+    input.blur();
+    input.contentEditable = 'false';
     return;
   }
 
   if (text === '/disconnect') {
     disconnectSocket();
-    setInputText('');
+    clearInputText();
     adjustTextareaHeight();
+    input.blur();
+    input.contentEditable = 'false';
     return;
   }
 
@@ -183,28 +199,42 @@ export function sendMessageFromInput() {
       showTransientNotification('Mensaje editado');
     }
     editingMessageId = null;
-    setInputText('');
+    clearInputText();
     adjustTextareaHeight();
+    if (input.contentEditable !== 'true') {
+      input.contentEditable = 'true';
+      input.focus();
+    }
     return;
   }
 
   if (!text) return;
 
   const quoted = getAndClearQuotedMessage();
+  const wasActive = (input.contentEditable === 'true' && document.activeElement === input);
 
   if (isSocketConnected()) {
     sendMessageViaSocket(text, quoted);
-    setInputText('');
+    playMessageSend();
+    clearInputText();
     adjustTextareaHeight();
     if (typeof hideReplyPopup === 'function') hideReplyPopup();
-    return;
+  } else {
+    appendMessage(text, { me: true, replyTo: quoted || undefined });
+    playMessageSend();
+    clearInputText();
+    adjustTextareaHeight();
+    if (typeof hideReplyPopup === 'function') hideReplyPopup();
+    if (window.isAtBottom && typeof window.smoothScrollToBottom === 'function') window.smoothScrollToBottom();
   }
 
-  appendMessage(text, { me: true, replyTo: quoted || undefined });
-  setInputText('');
-  adjustTextareaHeight();
-  if (typeof hideReplyPopup === 'function') hideReplyPopup();
-  if (window.isAtBottom && typeof window.smoothScrollToBottom === 'function') window.smoothScrollToBottom();
+  if (wasActive) {
+    if (input.contentEditable !== 'true') input.contentEditable = 'true';
+    input.focus();
+  } else {
+    input.blur();
+    input.contentEditable = 'false';
+  }
 }
 
 if (sendBtn) {
@@ -213,12 +243,19 @@ if (sendBtn) {
   });
   sendBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    playClick();
     sendMessageFromInput();
   });
 }
 
 if (input) {
-  input.addEventListener('input', adjustTextareaHeight);
+  input.addEventListener('input', () => {
+    adjustTextareaHeight();
+    if (input.contentEditable === 'true') {
+      playKeyboardSound();
+    }
+  });
+  
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -232,46 +269,30 @@ if (input) {
     } else if (e.key === 'Escape') {
       if (editingMessageId) {
         editingMessageId = null;
-        setInputText('');
+        clearInputText();
         adjustTextareaHeight();
         showTransientNotification('Edición cancelada');
       } else {
         input.blur();
+        input.contentEditable = 'false';
       }
     }
   });
 
-  input.addEventListener('click', saveCursorPosition);
+  input.addEventListener('click', () => {
+    saveCursorPosition();
+    if (input.contentEditable !== 'true') {
+      input.contentEditable = 'true';
+      input.focus();
+    }
+  });
   input.addEventListener('keyup', saveCursorPosition);
   input.addEventListener('paste', (e) => {
     setTimeout(() => convertShortcodesToImagesInNode(input), 10);
   });
 
-  input.addEventListener('mousedown', () => {
-    if (input.contentEditable !== 'true') {
-      input.contentEditable = 'true';
-    }
-    isUserTyping = true;
-    preventFocus = false;
-  });
-
-  input.addEventListener('focus', () => {
-    if ((!isUserTyping || preventFocus) && input.contentEditable === 'false') {
-      input.blur();
-    }
-  });
-
-  input.addEventListener('mouseup', () => {
-    setTimeout(() => {
-      isUserTyping = false;
-    }, 100);
-  });
-
   input.addEventListener('blur', () => {
-    if (!editingMessageId && !isUserTyping) {
-      input.contentEditable = 'false';
-    }
-    isUserTyping = false;
+    input.contentEditable = 'false';
   });
 }
 
@@ -285,7 +306,19 @@ window.addEventListener('message-edit', (e) => {
   editingMessageId = id;
   const plainText = textEl.textContent.trim();
   input.contentEditable = 'true';
-  setInputText(plainText);
+  clearInputText(); 
+  if (input.contentEditable !== 'true') input.contentEditable = 'true';
+  input.innerText = plainText;
+  const range = document.createRange();
+  range.selectNodeContents(input);
+  range.collapse(false);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
   adjustTextareaHeight();
   input.focus();
 });
+
+setTimeout(() => {
+  initEmojiSuggestions();
+}, 100);

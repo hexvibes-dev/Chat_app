@@ -41,7 +41,6 @@ function createEmojiButton(emoji, onClick) {
   let insertEmoji = emoji;
   
   if (typeof emoji === 'string' && !emoji.startsWith(':')) {
-    // Aplica el tono de piel según el mapa manual
     displayEmoji = applySkinToneToText(emoji);
     insertEmoji = displayEmoji;
     btn.setAttribute('aria-label', `Emoji ${displayEmoji}`);

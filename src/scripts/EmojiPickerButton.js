@@ -1,4 +1,7 @@
+// src/scripts/EmojiPickerButton.js
 import { initMobileEmojiPicker } from './EmojiPicker.js';
+import { showDesktopEmojiPicker } from './EmojiPickerDesktop.js';
+import { playClick } from './soundManager.js';
 
 let isOpen = false;
 let container = null;
@@ -62,23 +65,7 @@ function forceScrollable() {
   document.body.classList.remove('keyboard-open');
 }
 
-const pickerStyle = (() => {
-  const style = document.createElement('style');
-  style.textContent = `
-    #mobile-picker-container {
-      transform: translateY(100%);
-      transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
-      will-change: transform;
-    }
-    #mobile-picker-container.open {
-      transform: translateY(0);
-    }
-  `;
-  document.head.appendChild(style);
-  return style;
-})();
-
-function openPicker() {
+function openMobilePicker() {
   if (isOpen || isClosing) return;
   container = document.getElementById('mobile-picker-container');
   if (!container) return;
@@ -107,7 +94,7 @@ function openPicker() {
   }, 100);
 }
 
-function closePicker() {
+function closeMobilePicker() {
   if (!isOpen || isClosing) return;
   if (!container) return;
   isClosing = true;
@@ -129,13 +116,13 @@ function closePicker() {
   }, 350);
 }
 
-function togglePicker() {
-  if (isOpen) closePicker();
-  else openPicker();
+function toggleMobilePicker() {
+  if (isOpen) closeMobilePicker();
+  else openMobilePicker();
 }
 
 function onInputFocus() {
-  if (isOpen && !ignoreFocusOnce && !isInserting) closePicker();
+  if (isOpen && !ignoreFocusOnce && !isInserting) closeMobilePicker();
 }
 
 function onInputBlur() {
@@ -145,17 +132,23 @@ function onInputBlur() {
 function onPopState(event) {
   if (isOpen) {
     event.preventDefault();
-    closePicker();
+    closeMobilePicker();
   }
 }
 
 export function initEmojiPickerButton() {
   const btn = document.getElementById('emojiPickerBtn');
   if (!btn) return;
+  
   btn.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isMobileLayout()) togglePicker();
+    playClick();
+    if (isMobileLayout()) {
+      toggleMobilePicker();
+    } else {
+      showDesktopEmojiPicker();
+    }
   });
   
   container = document.getElementById('mobile-picker-container');

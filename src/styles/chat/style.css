@@ -6,8 +6,10 @@
 @import url('./reactions.css');
 @import url('./modals.css');
 @import url('./emojiPicker.css');
+@import url('./emojiPickerDesktop.css');
 @import url('./customEmoji.css');
 @import url('./customSticker.css');
+@import url('./emojiSuggestions.css');
 @import url('./editorModal.css');
 @import url('./colorPicker.css');
 @import url('./cacheCleaner.css');
@@ -18,6 +20,7 @@
 @import url('./animations.css');
 @import url('./transient-notif.css');
 @import url('./name.css');
+@import url('./soundsSettingsModal.css');
 @import url('./hamburger.css');
 @import url('./themeModal.css');
 @import url('./actionMenu.css');

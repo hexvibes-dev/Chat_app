@@ -1,3 +1,4 @@
+// src/scripts/main.js
 import './messages.js';
 import './scroll.js';
 import './keyboard.js';
@@ -15,6 +16,8 @@ import { input } from './input.js';
 import { appendMessage } from './messages.js';
 import { enableAnswerGestures } from './answer.js';
 import { loadContactAvatar, loadContactName } from './contactStatus.js';
+import { startAutoReplies } from './automsj.js';
+import { initGlobalSounds } from './globalSounds.js';
 
 function inicializarApp() {
   if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
@@ -76,6 +79,10 @@ function inicializarApp() {
 
   loadContactAvatar();
   loadContactName();
+
+  startAutoReplies();
+  
+  initGlobalSounds();
 }
 
 export default inicializarApp;

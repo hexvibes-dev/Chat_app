@@ -4,6 +4,7 @@ import { registerModal, associateOverlay, bringModalToFront, constrainAllModals 
 import interact from 'interactjs';
 import { showAvatarEditor } from './AvatarEditorModal.js';
 import { showNotification } from './notifications.js';
+import { showSoundSettingsModal } from './SoundSettingsModal.js';
 
 let menuElement = null;
 let isMenuOpen = false;
@@ -248,40 +249,101 @@ function renderCacheItems(items, storageType) {
   if (!contentDiv) return;
   cacheCheckboxes.clear();
   if (items.length === 0) {
-    contentDiv.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--modal-text);">No hay datos en este almacenamiento.</div>';
+    contentDiv.innerHTML = '<div style="padding: 20px; text-align: center; color: #a0a0b0;">No hay datos en este almacenamiento.</div>';
     return;
   }
 
-  const selectAllId = `select-all-${storageType}`;
-  const listHtml = `
-    <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
-      <button id="${selectAllId}" class="select-all-section-btn" style="background: var(--modal-btn-primary); color: white; border: none; border-radius: 16px; padding: 4px 12px; cursor: pointer;">✅ Seleccionar todo</button>
-    </div>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; margin: 12px; padding: 4px;">
-      ${items.map((item, idx) => `
-        <div class="cache-item" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; background: var(--modal-input-bg); border-radius: 12px; border: 1px solid var(--modal-input-border);">
-          <input type="checkbox" id="cache-${storageType}-${idx}" data-key="${escapeHtml(item.key)}" data-full-value="${escapeHtml(item.fullValue || '')}" data-cache-name="${escapeHtml(item.cacheName || '')}" style="width: 18px; height: 18px; margin-top: 2px; cursor: pointer;">
-          <label for="cache-${storageType}-${idx}" style="flex: 1; cursor: pointer; min-width: 0;">
-            <div style="color: var(--modal-text); font-family: monospace; font-size: 12px; word-break: break-all;">${escapeHtml(item.key)}</div>
-            <div style="color: var(--modal-text-secondary); font-size: 11px; margin-top: 4px; word-break: break-all;">${escapeHtml(item.value)}</div>
+  const PAGE_SIZE = 50;
+  let currentPage = 0;
+  let filteredItems = [...items];
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderPage() {
+    const start = currentPage * PAGE_SIZE;
+    const end = start + PAGE_SIZE;
+    const pageItems = filteredItems.slice(start, end);
+    const totalPages = Math.ceil(filteredItems.length / PAGE_SIZE);
+
+    let html = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 12px;">
+        <div style="color: #a0a0b0; font-size: 12px;">${filteredItems.length} elementos totales</div>
+        <div style="display: flex; gap: 8px;">
+          <button id="cache-prev-page" class="page-btn" ${currentPage === 0 ? 'disabled' : ''}>◀ Anterior</button>
+          <span style="color: #a0a0b0; font-size: 12px;">Página ${currentPage + 1} de ${totalPages}</span>
+          <button id="cache-next-page" class="page-btn" ${currentPage >= totalPages - 1 ? 'disabled' : ''}>Siguiente ▶</button>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin: 12px; padding: 4px; max-height: 400px; overflow-y: auto;">
+    `;
+
+    pageItems.forEach((item, idx) => {
+      const globalIdx = start + idx;
+      html += `
+        <div class="cache-item" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; background: #2a2a3a; border-radius: 12px; border: 1px solid #3a3a4a;">
+          <input type="checkbox" id="cache-${storageType}-${globalIdx}" data-key="${escapeHtml(item.key)}" data-full-value="${escapeHtml(item.fullValue || '')}" data-cache-name="${escapeHtml(item.cacheName || '')}" style="width: 18px; height: 18px; margin-top: 2px; cursor: pointer;">
+          <label for="cache-${storageType}-${globalIdx}" style="flex: 1; cursor: pointer; min-width: 0;">
+            <div style="color: #e0e0e0; font-family: monospace; font-size: 12px; word-break: break-all;">${escapeHtml(item.key)}</div>
+            <div style="color: #a0a0b0; font-size: 11px; margin-top: 4px; word-break: break-all;">${escapeHtml(item.value)}</div>
           </label>
         </div>
-      `).join('')}
-    </div>
-  `;
-  contentDiv.innerHTML = listHtml;
+      `;
+    });
 
-  items.forEach((item, idx) => {
+    html += `</div>`;
+
+    contentDiv.innerHTML = html;
+
+    const prevBtn = document.getElementById('cache-prev-page');
+    const nextBtn = document.getElementById('cache-next-page');
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        if (currentPage > 0) {
+          currentPage--;
+          renderPage();
+          restoreCheckboxStates();
+        }
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        if (currentPage < totalPages - 1) {
+          currentPage++;
+          renderPage();
+          restoreCheckboxStates();
+        }
+      });
+    }
+  }
+
+  function restoreCheckboxStates() {
+    for (let [key, checkbox] of cacheCheckboxes.entries()) {
+      const cb = contentDiv.querySelector(`input[data-key="${escapeHtml(key)}"]`);
+      if (cb) {
+        cb.checked = checkbox.checked;
+      }
+    }
+  }
+
+  filteredItems.forEach((item, idx) => {
     const cb = contentDiv.querySelector(`#cache-${storageType}-${idx}`);
     if (cb) {
       cb.dataset.key = item.key;
       cb.dataset.fullValue = item.fullValue || '';
       cb.dataset.cacheName = item.cacheName || '';
-      cacheCheckboxes.set(item.key, cb);
+      if (!cacheCheckboxes.has(item.key)) {
+        cacheCheckboxes.set(item.key, cb);
+      }
     }
   });
 
-  const selectAllBtn = document.getElementById(selectAllId);
+  renderPage();
+
+  const selectAllBtn = document.getElementById(`select-all-${storageType}`);
   if (selectAllBtn) {
     selectAllBtn.addEventListener('click', () => {
       const checkboxes = contentDiv.querySelectorAll('input[type="checkbox"]');
@@ -438,7 +500,6 @@ function initCacheModal() {
   setupCacheInteract();
   if (cacheCloseBtn) cacheCloseBtn.onclick = () => hideCacheModal();
   registerModal(cacheWindowElement, 'cache-cleaner-modal');
-  const selectAllBtn = document.getElementById('select-all-cache-btn');
   const localBtn = document.getElementById('storage-local-btn');
   const sessionBtn = document.getElementById('storage-session-btn');
   const cacheBtn = document.getElementById('storage-cache-btn');
@@ -447,13 +508,6 @@ function initCacheModal() {
   const acceptBtn = document.getElementById('cache-accept-btn');
   if (cancelBtn) cancelBtn.addEventListener('click', () => hideCacheModal());
   if (acceptBtn) acceptBtn.addEventListener('click', () => deleteSelectedCacheItems());
-  if (selectAllBtn) {
-    selectAllBtn.addEventListener('click', () => {
-      const allChecked = Array.from(cacheCheckboxes.values()).every(cb => cb.checked);
-      selectAllCacheItems(!allChecked);
-      selectAllBtn.textContent = allChecked ? '⬜' : '✅';
-    });
-  }
   if (localBtn) {
     localBtn.addEventListener('click', () => {
       currentStorageType = 'local';
@@ -495,8 +549,6 @@ function showCacheModal() {
   centerCacheModal();
   isCacheModalOpen = true;
   bringModalToFront('cache-cleaner-modal');
-  const selectBtn = document.getElementById('select-all-cache-btn');
-  if (selectBtn) selectBtn.textContent = '⬜';
 }
 
 function hideCacheModal() {
@@ -518,6 +570,7 @@ function createMenuStructure() {
       <li><button id="themeOptionBtn">🎨 Cambiar tema</button></li>
       <li><button id="deleteChatBtn">🗑️ Eliminar chat</button></li>
       <li><button id="clearCacheBtn">🧹 Limpiar caché</button></li>
+      <li><button id="soundSettingsBtn">🔊 Sonidos del chat</button></li>
     </ul>
   `;
   container.appendChild(menu);
@@ -563,6 +616,14 @@ function attachEvents() {
     clearCacheBtn.addEventListener('click', () => {
       closeMenu();
       showCacheModal();
+    });
+  }
+
+  const soundSettingsBtn = document.getElementById('soundSettingsBtn');
+  if (soundSettingsBtn) {
+    soundSettingsBtn.addEventListener('click', () => {
+      closeMenu();
+      showSoundSettingsModal();
     });
   }
 

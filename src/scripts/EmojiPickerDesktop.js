@@ -1,22 +1,22 @@
-// src/scripts/ActionMenu.js
+// src/scripts/EmojiPickerDesktop.js
 import interact from 'interactjs';
 import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
-import { showCustomEmojiModal, showQuickEmojiUpload } from './CustomEmojiModal.js';
-import { showCustomStickerModal, showQuickStickerUpload } from './StickerModal.js';
+import { initEmojiPicker, destroyEmojiPicker } from './EmojiPicker/EmojiPickerCore.js';
 import { insertAtCursor } from './input.js';
-import { showPaintModal } from './PaintModal.js';
 
 let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
 let isModalOpen = false;
+let emojiPickerInstance = null;
+let currentContainer = null;
 
 function addResizeHandlesToModal(element) {
   const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
   handles.forEach(dir => {
-    let handle = element.querySelector(`.resize-action.resize-${dir}`);
+    let handle = element.querySelector(`.resize-emoji-picker-desktop.resize-${dir}`);
     if (!handle) {
       handle = document.createElement('div');
-      handle.className = `resize-action resize-${dir}`;
+      handle.className = `resize-emoji-picker-desktop resize-${dir}`;
       element.appendChild(handle);
     }
   });
@@ -55,7 +55,7 @@ function setupInteractForModal() {
     inertia: false,
     modifiers: [
       interact.modifiers.restrictSize({
-        min: { width: 200, height: 250 },
+        min: { width: 300, height: 400 },
         max: { width: window.innerWidth * 0.9, height: window.innerHeight * 0.9 }
       })
     ],
@@ -118,90 +118,60 @@ function setupInteractForModal() {
   });
 }
 
-function handleAction(action) {
-  switch (action) {
-    case 'sticker':
-      showQuickStickerUpload();
-      break;
-    case 'emoji':
-      showQuickEmojiUpload();
-      break;
-    case 'image':
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.accept = 'image/*';
-      fileInput.onchange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            const imgHtml = `<img src="${ev.target.result}" style="max-width:100%;max-height:150px;border-radius:8px;">`;
-            insertAtCursor(imgHtml, window.keyboardOpen);
-          };
-          reader.readAsDataURL(file);
-        }
-      };
-      fileInput.click();
-      break;
-    case 'manage_emoji':
-      showCustomEmojiModal();
-      break;
-    case 'manage_sticker':
-      showCustomStickerModal();
-      break;
-    case 'editor':
-      import('./editor/FloatingPreview.js').then(m => m.showFloatingPreview());
-      import('./editor/EditorModal.js').then(m => m.showEditorModal());
-      break;
-    case 'paint':
-      showPaintModal();
-      break;
+function renderPicker() {
+  const container = document.getElementById('emoji-picker-desktop-inner-content');
+  if (!container) return;
+  
+  if (emojiPickerInstance) {
+    destroyEmojiPicker();
+    emojiPickerInstance = null;
   }
+  
+  container.innerHTML = '';
+  currentContainer = document.createElement('div');
+  currentContainer.style.cssText = 'height:100%;width:100%;';
+  container.appendChild(currentContainer);
+  
+  emojiPickerInstance = initEmojiPicker(currentContainer, (emoji) => {
+    insertAtCursor(emoji, false);
+    hideModal();
+  });
 }
 
 function showModal() {
   if (isModalOpen) return;
   if (!windowElement) {
-    windowElement = document.getElementById('action-movable-window');
-    headerElement = document.getElementById('action-modal-header');
-    closeBtn = document.getElementById('close-action-modal');
-    overlay = document.getElementById('action-menu-overlay');
+    windowElement = document.getElementById('emoji-picker-desktop-movable-window');
+    headerElement = document.getElementById('emoji-picker-desktop-modal-header');
+    closeBtn = document.getElementById('close-emoji-picker-desktop-modal');
+    overlay = document.getElementById('emoji-picker-desktop-overlay');
     if (!windowElement || !headerElement) return;
     associateOverlay(windowElement, overlay);
     addResizeHandlesToModal(windowElement);
     setupInteractForModal();
-    if (closeBtn) {
-      closeBtn.onclick = () => hideModal();
-    }
-    windowElement.querySelectorAll('.action-option').forEach(opt => {
-      opt.addEventListener('click', (e) => {
-        const action = opt.dataset.action;
-        handleAction(action);
-        hideModal();
-      });
-    });
-    registerModal(windowElement, 'action-menu-modal');
+    if (closeBtn) closeBtn.onclick = () => hideModal();
+    registerModal(windowElement, 'emoji-picker-desktop-modal');
   }
+  renderPicker();
   overlay.classList.add('active');
   windowElement.style.display = 'flex';
   centerModal();
   isModalOpen = true;
-  bringModalToFront('action-menu-modal');
+  bringModalToFront('emoji-picker-desktop-modal');
 }
 
 function hideModal() {
   if (!isModalOpen) return;
+  if (emojiPickerInstance) {
+    destroyEmojiPicker();
+    emojiPickerInstance = null;
+  }
+  if (currentContainer) currentContainer.innerHTML = '';
   if (windowElement) windowElement.style.display = 'none';
   if (overlay) overlay.classList.remove('active');
   isModalOpen = false;
 }
 
-export function initActionMenu() {
-  const button = document.getElementById('actionMenuBtn');
-  if (!button) return;
-  button.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (isModalOpen) hideModal();
-    else showModal();
-  });
+export function showDesktopEmojiPicker() {
+  showModal();
 }

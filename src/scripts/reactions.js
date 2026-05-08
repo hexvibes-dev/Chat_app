@@ -19,6 +19,7 @@ import { showQuickStickerUpload } from './StickerModal.js';
 import { isStickerSaved, getStickerCategoryByUrl, removeCustomSticker, refreshStickersInPicker } from './StickerManager.js';
 import { shouldReplaceReactionEmoji, reactionEmojiMap, initReactionEmojiAnimations } from './reactionEmojiReplacement.js';
 import { showNotification } from './notifications.js';
+import { playClick, playReactionAdd, playReactionRemove, playError } from './soundManager.js';
 
 const DEFAULT_EMOJIS = ['👍','❤️','😂','😮','😭','🔥'];
 const MAX_REACTIONS_PER_BUBBLE = 4;
@@ -230,6 +231,7 @@ export function renderReactionsOnBubble(messageEl) {
 
       btn.addEventListener('click', (ev) => {
         ev.stopPropagation();
+        playClick();
         toggleReactionOnMessage(messageEl, r.emoji);
       });
 
@@ -248,14 +250,19 @@ export function toggleReactionOnMessage(messageEl, emoji) {
 
   if (wasAdded && reactions.length >= MAX_REACTIONS_PER_BUBBLE) {
     showTransientNotification('Máximo de reacciones alcanzado');
+    playError();
     return;
   }
 
   if (wasAdded) {
     reactions.push({ emoji, count: 1, you: true });
+    playReactionAdd();
   } else {
     reactions[idx].count = Math.max(0, reactions[idx].count - 1);
-    if (reactions[idx].count === 0) reactions.splice(idx, 1);
+    if (reactions[idx].count === 0) {
+      reactions.splice(idx, 1);
+    }
+    playReactionRemove();
   }
   setLocalReactions(msgId, reactions);
   messageEl.dataset.reactions = JSON.stringify(reactions);
@@ -299,6 +306,7 @@ function backupAndDeleteMessage(messageEl, isForAll = false) {
       confirmDiv.remove();
       if (!isSocketConnected()) {
         showTransientNotification('Sin conexión', 1000);
+        playError();
         return;
       }
       emitSocketEvent('message:delete', { msgId });
@@ -365,6 +373,7 @@ async function handleOptionAction(action, messageEl) {
         const msgId = messageEl.dataset.msgId;
         if (!isSocketConnected()) {
           showTransientNotification('Sin conexión', 1000);
+          playError();
           return;
         }
         emitSocketEvent('message:edit', { msgId, newText });
@@ -550,6 +559,7 @@ function showReactionsPopup(messageEl, anchorRect) {
       ev.stopPropagation();
       if (!longPressCompleted) {
         cancelLongPress();
+        playClick();
         toggleReactionOnMessage(messageEl, emoji);
       } else {
         cancelLongPress();
@@ -600,6 +610,7 @@ function showReactionsPopup(messageEl, anchorRect) {
     
     btn.addEventListener('click', (ev) => {
       ev.stopPropagation();
+      playClick();
       toggleReactionOnMessage(messageEl, emoji);
     });
     emojisRow.appendChild(btn);
@@ -610,6 +621,7 @@ function showReactionsPopup(messageEl, anchorRect) {
   addBtn.innerText = '➕';
   addBtn.addEventListener('click', (ev) => {
     ev.stopPropagation();
+    playClick();
     showAddReactionModal((newEmoji) => {
       if (!newEmoji) return;
       addCustomReaction(messageEl, newEmoji);

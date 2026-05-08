@@ -1,4 +1,6 @@
 // src/scripts/notifications.js
+import { playNotification } from './soundManager.js';
+
 let notificationElement = null;
 let notificationTimeout = null;
 let currentCallback = null;
@@ -66,6 +68,8 @@ export function showNotification(text, duration = 2000, onTimeout = null) {
   isVisible = true;
   updateNotificationPosition(true);
   
+  playNotification();
+  
   currentCallback = onTimeout;
   
   notificationTimeout = setTimeout(() => {
@@ -103,6 +107,8 @@ export function showPersistentNotification(text, buttons = []) {
   el.classList.add('visible');
   isVisible = true;
   updateNotificationPosition(true);
+  
+  playNotification();
   
   if (buttons.length) {
     el.querySelectorAll('.notif-btn').forEach(btn => {

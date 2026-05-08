@@ -5,50 +5,67 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
+  backdrop-filter: none;
   z-index: 10999;
   display: none;
   pointer-events: none;
 }
 .custom-sticker-overlay.active {
   display: block;
+  pointer-events: none;
 }
 .custom-sticker-movable-window {
   position: fixed;
   transform-origin: top left;
   touch-action: none;
   will-change: transform, width, height;
+  width: 500px;
+  height: 600px;
   min-width: 300px;
   min-height: 400px;
   max-width: 95vw;
   max-height: 90vh;
   display: none;
   z-index: 11000;
-  background: var(--modal-bg);
-  border-radius: 28px;
+  background: #1e1e2e;
+  border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--modal-input-border);
+  border: 1px solid #3a3a4a;
   flex-direction: column;
   overflow: hidden;
+  cursor: grab;
+}
+.custom-sticker-movable-window:active {
+  cursor: grabbing;
 }
 #custom-sticker-modal-header {
-  background: var(--theme-modal-header-background);
-  backdrop-filter: var(--theme-modal-header-blur);
-  border-bottom: 1px solid var(--modal-input-border);
+  background: #2a2a3a;
+  border-bottom: 1px solid #3a3a4a;
   cursor: grab;
+  padding: 12px 16px;
+  flex-shrink: 0;
 }
 #custom-sticker-modal-header:active {
   cursor: grabbing;
 }
+.modal-header-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+#custom-sticker-inner-content {
+  flex: 1;
+  overflow-y: auto;
+}
 .resize-custom-sticker {
   position: absolute;
-  background: rgba(255, 255, 255, 0.1);
+  background: transparent;
   transition: background 0.1s;
   z-index: 10;
   touch-action: none;
 }
 .resize-custom-sticker:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
 }
 .resize-custom-sticker.resize-n,
 .resize-custom-sticker.resize-s {
@@ -77,3 +94,62 @@
 .resize-custom-sticker.resize-nw { top: 0; left: 0; cursor: nw-resize; }
 .resize-custom-sticker.resize-se { bottom: 0; right: 0; cursor: se-resize; }
 .resize-custom-sticker.resize-sw { bottom: 0; left: 0; cursor: sw-resize; }
+
+@media (max-width: 768px) {
+  .custom-sticker-movable-window {
+    width: 95vw;
+    height: 80vh;
+    max-width: 95vw;
+    max-height: 80vh;
+  }
+  .modal-header-text {
+    font-size: 16px;
+  }
+}
+
+@keyframes stickerPop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animated-sticker img {
+  animation: stickerPop 0.3s ease-out;
+}
+
+.sticker-item img[data-animated="true"] {
+  animation: none;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes modalNotifFadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  85% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}

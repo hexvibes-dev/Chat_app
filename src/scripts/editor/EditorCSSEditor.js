@@ -20,7 +20,7 @@ const CSS_PROPERTIES = [
   'opacity','z-index','cursor','overflow','overflow-x','overflow-y','box-shadow','text-shadow',
   'transition','transition-duration','transition-timing-function','animation','animation-name','animation-duration',
   'transform','transform-origin','filter','visibility','outline','resize','object-fit',
-  'background-blend-mode','mix-blend-mode','isolation','object-position','object-fit',
+  'background-blend-mode','mix-blend-mode','isolation','object-position',
   'linear-gradient','radial-gradient','conic-gradient','repeating-linear-gradient','repeating-radial-gradient',
   'rgba','rgb','hsla','hsl','var','calc'
 ];
@@ -148,6 +148,7 @@ let rangoDesde=0;
 let rangoHasta=0;
 let timeoutAutocomplete=null;
 let _suppressAutoClose=false;
+let currentView=null;
 
 function crearPopup(){
   if(popupDiv) return;
@@ -155,7 +156,7 @@ function crearPopup(){
   popupDiv.className='cm-autocomplete-popup';
   popupDiv.style.position='fixed';
   popupDiv.style.display='none';
-  popupDiv.style.zIndex='10000';
+  popupDiv.style.zIndex='100000';
   popupDiv.style.background='#252526';
   popupDiv.style.border='1px solid #3e3e42';
   popupDiv.style.borderRadius='6px';
@@ -171,18 +172,43 @@ function crearPopup(){
   document.body.appendChild(popupDiv);
 }
 
-function posicionarPopupEnCoords(coords){
-  if(!popupDiv||!coords) return;
-  popupDiv.style.display='block';
-  const left=Math.max(8, coords.left);
-  let top=coords.bottom+6;
-  const popupRect=popupDiv.getBoundingClientRect();
-  if(top+popupRect.height>window.innerHeight-8){
-    top=coords.top-popupRect.height-6;
-    if(top<8) top=8;
+function getModalContainer() {
+  const editorModal = document.getElementById('editor-movable-window');
+  if (editorModal && editorModal.style.display === 'flex') {
+    return editorModal;
   }
-  const maxLeft=window.innerWidth-popupRect.width-8;
-  popupDiv.style.left=`${Math.min(left,maxLeft)}px`;
+  return null;
+}
+
+function posicionarPopupDesdeCoords(coords){
+  if(!popupDiv||!coords) return;
+  
+  const modalContainer = getModalContainer();
+  let left = coords.left;
+  let top = coords.bottom + 6;
+  
+  if (modalContainer) {
+    const modalRect = modalContainer.getBoundingClientRect();
+    left = coords.left;
+    top = coords.bottom + 6;
+    
+    if (top + popupDiv.offsetHeight > modalRect.bottom - 10) {
+      top = coords.top - popupDiv.offsetHeight - 6;
+    }
+    
+    left = Math.max(modalRect.left + 10, Math.min(left, modalRect.right - popupDiv.offsetWidth - 10));
+  } else {
+    const popupRect=popupDiv.getBoundingClientRect();
+    if(top+popupRect.height>window.innerHeight-8){
+      top=coords.top-popupRect.height-6;
+      if(top<8) top=8;
+    }
+    const maxLeft=window.innerWidth-popupRect.width-8;
+    left=Math.min(left,maxLeft);
+  }
+  
+  popupDiv.style.display='block';
+  popupDiv.style.left=`${left}px`;
   popupDiv.style.top=`${top}px`;
 }
 
@@ -197,6 +223,7 @@ function animateItemsIn(items){
 
 function mostrarPopup(view, desde, hasta, palabra, sugerencias){
   crearPopup();
+  currentView = view;
   sugerenciasActuales=sugerencias;
   indiceSeleccionado=0;
   rangoDesde=desde;
@@ -237,12 +264,19 @@ function mostrarPopup(view, desde, hasta, palabra, sugerencias){
     resaltarItemPopup();
     const coords=view.coordsAtPos(desde);
     if(coords){
-      posicionarPopupEnCoords(coords);
+      posicionarPopupDesdeCoords(coords);
     } else {
       const rect=view.dom.getBoundingClientRect();
+      const modalContainer = getModalContainer();
+      if (modalContainer) {
+        const modalRect = modalContainer.getBoundingClientRect();
+        popupDiv.style.left=`${modalRect.left + 10}px`;
+        popupDiv.style.top=`${modalRect.top + 40}px`;
+      } else {
+        popupDiv.style.left=`${rect.left+8}px`;
+        popupDiv.style.top=`${rect.top+8}px`;
+      }
       popupDiv.style.display='block';
-      popupDiv.style.left=`${rect.left+8}px`;
-      popupDiv.style.top=`${rect.top+8}px`;
     }
     animateItemsIn(itemsCreated);
   }
@@ -337,96 +371,6 @@ function ocultarPopup(){
   indiceSeleccionado=0;
 }
 
-function autoClosePairAtPos(view, from, to, open, close){
-  view.dispatch({
-    changes:{ from:from+1, to:from+1, insert: close },
-    selection:{ anchor: from+1 }
-  });
-}
-
-function autoClosePairInsertClose(view, pos, close){
-  view.dispatch({
-    changes:{ from: pos+1, to: pos+1, insert: close },
-    selection:{ anchor: pos+1 }
-  });
-}
-
-function handleAutoCloseForTransaction(view,tr,startState){
-  if(_suppressAutoClose) return;
-  try{
-    const isType = (typeof tr.isUserEvent==='function' && tr.isUserEvent('input.type'));
-    const isDeleteBackward = (typeof tr.isUserEvent==='function' && tr.isUserEvent('delete.backward'));
-    const isDeleteForward = (typeof tr.isUserEvent==='function' && tr.isUserEvent('delete.forward'));
-    if(!(isType || isDeleteBackward || isDeleteForward)) return;
-    tr.changes.iterChanges((fromA,toA,fromB,toB,inserted)=>{
-      const text=inserted.toString();
-      const removedLen = toA - fromA;
-      if(text && text.length===1){
-        const ch=text;
-        const pairs={ '{':'}','(':')','[':']','"':'"',"'" : "'", ':':';' };
-        if(!(ch in pairs)) return;
-        const close=pairs[ch];
-        const pos=fromB;
-        const nextChar=view.state.doc.sliceString(pos+1,pos+2);
-        _suppressAutoClose=true;
-        if(ch===':'){
-          const after=view.state.doc.sliceString(pos+1,pos+2);
-          if(after===';'){
-            view.dispatch({ selection:{ anchor: pos+1 } });
-          } else {
-            view.dispatch({ changes:{ from: pos+1, to: pos+1, insert: ';' }, selection:{ anchor: pos+1 } });
-          }
-        } else {
-          const after=view.state.doc.sliceString(pos+1,pos+2);
-          if(after===close){
-            view.dispatch({ selection:{ anchor: pos+1 } });
-          } else {
-            view.dispatch({ changes:{ from: pos+1, to: pos+1, insert: close }, selection:{ anchor: pos+1 } });
-          }
-        }
-        Promise.resolve().then(()=>{ _suppressAutoClose=false; });
-      } else if(!text && removedLen===1){
-        if(!startState && !tr.startState) return;
-        const sState = startState || tr.startState;
-        const removedCharOld = sState.doc.sliceString(fromA,toA);
-        const opensMap = { '{':'}','(':')','[':']','"':'"',"'" : "'", ':':';' };
-        if(removedCharOld && opensMap[removedCharOld]){
-          const expectedClose = opensMap[removedCharOld];
-          const nextChar = view.state.doc.sliceString(fromB, fromB+1);
-          if(nextChar===expectedClose){
-            _suppressAutoClose=true;
-            view.dispatch({ changes:{ from: fromB, to: fromB+1, insert: '' } });
-            Promise.resolve().then(()=>{ _suppressAutoClose=false; });
-          }
-        }
-      }
-    });
-  }catch(e){
-    _suppressAutoClose=false;
-  }
-}
-
-function scheduleAutocomplete(view,pos){
-  if(timeoutAutocomplete) clearTimeout(timeoutAutocomplete);
-  timeoutAutocomplete=setTimeout(()=>{
-    const line=view.state.doc.lineAt(pos);
-    const textBeforeCursor=line.text.slice(0,pos-line.from);
-    const match=textBeforeCursor.match(/([a-zA-Z#][\w-()#,.\s%]*)$/);
-    if(match&&match[1].length>=1){
-      const word=match[1].trim();
-      const desde=pos-word.length;
-      const sugerencias=obtenerSugerencias(word);
-      if(sugerencias.length>0){
-        mostrarPopup(view,desde,pos,word,sugerencias);
-      } else {
-        ocultarPopup();
-      }
-    } else {
-      ocultarPopup();
-    }
-  },100);
-}
-
 function ensureCursorCentered(view){
   try{
     const pos=view.state.selection.main.head;
@@ -450,10 +394,10 @@ function attachPopupScrollHandlers(view){
     const scrollEl=view.scrollDOM||view.dom;
     if(scrollEl && !scrollEl._cmPopupHandlerAttached){
       scrollEl.addEventListener('scroll',()=>{
-        if(popupVisible){
-          const pos=view.state.selection.main.head;
-          const coords=view.coordsAtPos(pos);
-          posicionarPopupEnCoords(coords);
+        if(popupVisible && currentView){
+          const pos=currentView.state.selection.main.head;
+          const coords=currentView.coordsAtPos(pos);
+          posicionarPopupDesdeCoords(coords);
         }
       },{ passive:true });
       scrollEl._cmPopupHandlerAttached=true;
@@ -461,10 +405,10 @@ function attachPopupScrollHandlers(view){
   }catch(e){}
   if(!window._cmPopupWindowHandlerAttached){
     window.addEventListener('scroll',()=>{
-      if(popupVisible && view){
-        const pos=view.state.selection.main.head;
-        const coords=view.coordsAtPos(pos);
-        posicionarPopupEnCoords(coords);
+      if(popupVisible && currentView){
+        const pos=currentView.state.selection.main.head;
+        const coords=currentView.coordsAtPos(pos);
+        posicionarPopupDesdeCoords(coords);
       }
     },{ passive:true });
     window._cmPopupWindowHandlerAttached=true;
@@ -622,7 +566,7 @@ export class EditorCSSEditor{
               scheduleAutocomplete(self.view,pos);
               if(popupVisible){
                 const coords=self.view.coordsAtPos(pos);
-                posicionarPopupEnCoords(coords);
+                posicionarPopupDesdeCoords(coords);
               }
               ensureCursorCentered(self.view);
             } else {
@@ -641,7 +585,7 @@ export class EditorCSSEditor{
       if(popupVisible && this.view){
         const pos=this.view.state.selection.main.head;
         const coords=this.view.coordsAtPos(pos);
-        posicionarPopupEnCoords(coords);
+        posicionarPopupDesdeCoords(coords);
       }
     });
     document.addEventListener('mousedown',(e)=>{
@@ -690,4 +634,80 @@ export class EditorCSSEditor{
     }
     if(timeoutAutocomplete) clearTimeout(timeoutAutocomplete);
   }
+}
+
+function handleAutoCloseForTransaction(view,tr,startState){
+  if(_suppressAutoClose) return;
+  try{
+    const isType = (typeof tr.isUserEvent==='function' && tr.isUserEvent('input.type'));
+    const isDeleteBackward = (typeof tr.isUserEvent==='function' && tr.isUserEvent('delete.backward'));
+    const isDeleteForward = (typeof tr.isUserEvent==='function' && tr.isUserEvent('delete.forward'));
+    if(!(isType || isDeleteBackward || isDeleteForward)) return;
+    tr.changes.iterChanges((fromA,toA,fromB,toB,inserted)=>{
+      const text=inserted.toString();
+      const removedLen = toA - fromA;
+      if(text && text.length===1){
+        const ch=text;
+        const pairs={ '{':'}','(':')','[':']','"':'"',"'" : "'", ':':';' };
+        if(!(ch in pairs)) return;
+        const close=pairs[ch];
+        const pos=fromB;
+        const nextChar=view.state.doc.sliceString(pos+1,pos+2);
+        _suppressAutoClose=true;
+        if(ch===':'){
+          const after=view.state.doc.sliceString(pos+1,pos+2);
+          if(after===';'){
+            view.dispatch({ selection:{ anchor: pos+1 } });
+          } else {
+            view.dispatch({ changes:{ from: pos+1, to: pos+1, insert: ';' }, selection:{ anchor: pos+1 } });
+          }
+        } else {
+          const after=view.state.doc.sliceString(pos+1,pos+2);
+          if(after===close){
+            view.dispatch({ selection:{ anchor: pos+1 } });
+          } else {
+            view.dispatch({ changes:{ from: pos+1, to: pos+1, insert: close }, selection:{ anchor: pos+1 } });
+          }
+        }
+        Promise.resolve().then(()=>{ _suppressAutoClose=false; });
+      } else if(!text && removedLen===1){
+        if(!startState && !tr.startState) return;
+        const sState = startState || tr.startState;
+        const removedCharOld = sState.doc.sliceString(fromA,toA);
+        const opensMap = { '{':'}','(':')','[':']','"':'"',"'" : "'", ':':';' };
+        if(removedCharOld && opensMap[removedCharOld]){
+          const expectedClose = opensMap[removedCharOld];
+          const nextChar = view.state.doc.sliceString(fromB, fromB+1);
+          if(nextChar===expectedClose){
+            _suppressAutoClose=true;
+            view.dispatch({ changes:{ from: fromB, to: fromB+1, insert: '' } });
+            Promise.resolve().then(()=>{ _suppressAutoClose=false; });
+          }
+        }
+      }
+    });
+  }catch(e){
+    _suppressAutoClose=false;
+  }
+}
+
+function scheduleAutocomplete(view,pos){
+  if(timeoutAutocomplete) clearTimeout(timeoutAutocomplete);
+  timeoutAutocomplete=setTimeout(()=>{
+    const line=view.state.doc.lineAt(pos);
+    const textBeforeCursor=line.text.slice(0,pos-line.from);
+    const match=textBeforeCursor.match(/([a-zA-Z#][\w-()#,.\s%]*)$/);
+    if(match&&match[1].length>=1){
+      const word=match[1].trim();
+      const desde=pos-word.length;
+      const sugerencias=obtenerSugerencias(word);
+      if(sugerencias.length>0){
+        mostrarPopup(view,desde,pos,word,sugerencias);
+      } else {
+        ocultarPopup();
+      }
+    } else {
+      ocultarPopup();
+    }
+  },100);
 }

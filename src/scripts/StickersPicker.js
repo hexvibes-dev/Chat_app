@@ -1,16 +1,23 @@
 // src/scripts/StickersPicker.js
-import { insertAtCursor } from './input.js';
 import { appendMessage } from './messages.js';
 import { getCategories, getAllStickers } from './StickerManager.js';
 
-function getStickerHtml(url, alt) {
-  return `<img src="${url}" alt="${alt}" class="sticker-message" style="max-width: 200px; max-height: 200px; border-radius: 12px; display: block;">`;
+// Función auxiliar para generar el HTML de un sticker (útil para sugerencias)
+export function getStickerHtml(sticker) {
+  const isAnimated = sticker.animated || sticker.url?.match(/\.(gif|webp)(\?|$)/i);
+  let animationAttrs = '';
+  if (isAnimated && sticker.animationType) {
+    animationAttrs = ` data-animated="${sticker.animationType === 'webp' ? 'gif' : sticker.animationType}" data-duration="${sticker.duration || 2000}" data-iterations="${sticker.iterations || 1}"`;
+  }
+  return `<img src="${sticker.url}" alt="${sticker.name || 'sticker'}" class="sticker-message" style="max-width:200px;max-height:200px;border-radius:12px;display:block;"${animationAttrs}>`;
 }
 
 function buildStickerPackAccordion(category, onSelectSticker) {
   const section = document.createElement('div');
   section.className = 'custom-category-item';
   section.style.marginBottom = '12px';
+
+  const readOnlyBadge = category.isLocalCategory ? '<span style="font-size:10px;background:#14b8a6;padding:2px 6px;border-radius:20px;margin-left:8px;">📖</span>' : '';
 
   const header = document.createElement('div');
   header.className = 'category-header';
@@ -19,6 +26,7 @@ function buildStickerPackAccordion(category, onSelectSticker) {
       <span class="category-arrow" style="font-size: 14px;">▼</span>
       <strong>${escapeHtml(category.name)}</strong>
       <span style="font-size: 12px; opacity: 0.7;">${category.stickers.length}</span>
+      ${readOnlyBadge}
     </div>
   `;
 
@@ -54,17 +62,27 @@ function buildStickerPackAccordion(category, onSelectSticker) {
     
     const img = document.createElement('img');
     img.src = sticker.url;
-    img.alt = 'sticker';
+    img.alt = sticker.name || 'sticker';
     img.style.cssText = `
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
       border-radius: 8px;
     `;
+    
+    if (sticker.animated) {
+      img.classList.add('sticker-animated');
+      if (sticker.animationType) {
+        img.setAttribute('data-animated', sticker.animationType === 'webp' ? 'gif' : sticker.animationType);
+        img.setAttribute('data-duration', sticker.duration || 2000);
+        img.setAttribute('data-iterations', sticker.iterations || 1);
+      }
+    }
+    
     btn.appendChild(img);
     
     btn.addEventListener('click', () => {
-      const stickerHtml = getStickerHtml(sticker.url, 'sticker');
+      const stickerHtml = getStickerHtml(sticker);
       onSelectSticker(stickerHtml);
     });
     

@@ -1,6 +1,6 @@
-//src/scripts/automjs.js
-
+// src/scripts/automsj.js
 import { appendMessage } from './messages.js';
+import { playMessageReceive } from './soundManager.js';
 
 const canned = [
   "Tizongolamaya",
@@ -236,6 +236,7 @@ function randomFrom(arr) {
 export function scheduleRandomReply(min = 500, max = 1400) {
   const delay = Math.floor(Math.random() * (max - min)) + min;
   setTimeout(() => {
+    playMessageReceive();
     appendMessage(randomFrom(canned), { me: false });
   }, delay);
 }
@@ -243,5 +244,5 @@ export function scheduleRandomReply(min = 500, max = 1400) {
 export function startAutoReplies() {
   setInterval(() => {
     scheduleRandomReply(200, 1200);
-  }, 45000);
+  }, 999999999);
 }

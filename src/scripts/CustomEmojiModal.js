@@ -1,4 +1,3 @@
-// src/scripts/CustomEmojiModal.js
 import interact from 'interactjs';
 import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
 import {
@@ -53,7 +52,7 @@ function showConfirmPopup(message) {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: var(--modal-bg);
+      background: #1e1e2e;
       border-radius: 20px;
       padding: 20px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -63,10 +62,10 @@ function showConfirmPopup(message) {
       gap: 16px;
       min-width: 250px;
       text-align: center;
-      border: 1px solid var(--modal-input-border);
+      border: 1px solid #3a3a4a;
     `;
     confirmPopup.innerHTML = `
-      <p style="margin: 0; font-size: 16px; color: var(--modal-text);">${message}</p>
+      <p style="margin: 0; font-size: 16px; color: #e0e0e0;">${message}</p>
       <div style="display: flex; justify-content: center; gap: 20px;">
         <button class="confirm-no" style="background: transparent; border: none; cursor: pointer; font-size: 28px; color: #ef4444;">✗</button>
         <button class="confirm-yes" style="background: transparent; border: none; cursor: pointer; font-size: 28px; color: #10b981;">✓</button>
@@ -98,9 +97,9 @@ function showCreateCategoryModal() {
     modalDiv.style.zIndex = '30002';
     modalDiv.style.width = '300px';
     modalDiv.innerHTML = `
-      <div class="add-reaction-card" style="padding: 20px;">
-        <h1 style="font-size: 18px; margin-bottom: 16px; color: var(--modal-text);">Nueva categoría</h1>
-        <input type="text" id="new-category-name" placeholder="Nombre (máx 20 caracteres)" maxlength="20" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--modal-input-border); background: var(--input-bg); color: var(--text-color); margin-bottom: 20px;">
+      <div class="add-reaction-card" style="padding: 20px; background: #1e1e2e; border-radius: 20px;">
+        <h1 style="font-size: 18px; margin-bottom: 16px; color: #e0e0e0;">Nueva categoría</h1>
+        <input type="text" id="new-category-name" placeholder="Nombre (máx 20 caracteres)" maxlength="20" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #3a3a4a; background: #2a2a3a; color: #e0e0e0; margin-bottom: 20px;">
         <div style="display: flex; justify-content: flex-end; gap: 12px;">
           <button id="cancel-category" class="btn-cancel">Cancelar</button>
           <button id="create-category" class="btn primary">Crear</button>
@@ -161,17 +160,17 @@ function showCategorySelectorForUpload(croppedDataUrl) {
   selectorModal.style.zIndex = '20004';
   selectorModal.style.width = '300px';
   let html = `
-    <div class="add-reaction-card" style="padding: 20px;">
-      <h1 style="font-size: 18px; margin-bottom: 16px; color: var(--modal-text);">📁 Guardar en categoría</h1>
+    <div class="add-reaction-card" style="padding: 20px; background: #1e1e2e; border-radius: 20px;">
+      <h1 style="font-size: 18px; margin-bottom: 16px; color: #e0e0e0;">📁 Guardar en categoría</h1>
       <div style="display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; margin-bottom: 16px;">
   `;
   if (categories.length === 0) {
-    html += `<p style="color: var(--modal-text); text-align: center;">No hay categorías. Crea una nueva.</p>`;
+    html += `<p style="color: #a0a0b0; text-align: center;">No hay categorías. Crea una nueva.</p>`;
   } else {
     categories.forEach(cat => {
       const canAdd = cat.emojis.length < 30;
       html += `
-        <button class="category-save-btn btn" data-category="${escapeHtml(cat.name)}" style="text-align: left; display: flex; justify-content: space-between; align-items: center;" ${!canAdd ? 'disabled style="opacity:0.5;"' : ''}>
+        <button class="category-save-btn btn" data-category="${escapeHtml(cat.name)}" style="text-align: left; display: flex; justify-content: space-between; align-items: center; background: #2a2a3a; border: none; border-radius: 12px; padding: 10px; margin: 4px 0; cursor: pointer; color: #e0e0e0;" ${!canAdd ? 'disabled style="opacity:0.5;"' : ''}>
           <span>📁 ${escapeHtml(cat.name)}</span>
           <span style="font-size: 12px;">(${cat.emojis.length}/30)</span>
         </button>
@@ -181,7 +180,7 @@ function showCategorySelectorForUpload(croppedDataUrl) {
   html += `
       </div>
       <div style="display: flex; gap: 8px;">
-        <button id="create-new-category-from-selector" class="btn" style="flex:1;">+ Nueva categoría</button>
+        <button id="create-new-category-from-selector" class="btn" style="flex:1; background: #3a3a4a; border: none; border-radius: 40px; padding: 10px; cursor: pointer; color: #e0e0e0;">+ Nueva categoría</button>
         <button id="cancel-selector" class="btn-cancel">Cancelar</button>
       </div>
     </div>
@@ -209,10 +208,13 @@ function showCategorySelectorForUpload(croppedDataUrl) {
       try {
         const shortcode = `custom_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
         const name = `emoji_${Date.now()}`;
+        const keywords = window._pendingEmojiKeywords || [];
+        delete window._pendingEmojiKeywords;
         await addCustomEmoji({
           name: name,
           shortcodes: [shortcode],
-          url: croppedDataUrl
+          url: croppedDataUrl,
+          keywords: keywords
         }, categoryName);
         showTransientNotification('✅ Emoji añadido correctamente', 2000);
         refreshCustomEmojisInPicker();
@@ -374,7 +376,7 @@ function initCropZoomPan() {
   });
 }
 
-function showCropModal(onSave) {
+function showCropModal(onSave, initialKeywords = []) {
   if (cropModal) return;
   cropOverlay = document.createElement('div');
   cropOverlay.className = 'modal-blur-overlay';
@@ -387,18 +389,22 @@ function showCropModal(onSave) {
   cropModal.style.width = '90vw';
   cropModal.style.maxWidth = '500px';
   cropModal.innerHTML = `
-    <div class="add-reaction-card" style="width: 100%; max-width: 500px;">
-      <h1 style="font-size: 20px; margin-bottom: 16px; color: var(--modal-text);;">✂️ Recortar emoji (cuadrado)</h1>
+    <div class="add-reaction-card" style="width: 100%; max-width: 500px; background: #1e1e2e; border-radius: 20px;">
+      <h1 style="font-size: 20px; margin-bottom: 16px; color: #e0e0e0;">✂️ Recortar emoji (cuadrado)</h1>
       <div style="position: relative; width: 100%; aspect-ratio: 1; background: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 16px;">
         <canvas id="crop-canvas" style="width: 100%; height: 100%; display: block; cursor: grab;"></canvas>
-        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid var(--modal-btn-primary); pointer-events: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);"></div>
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid #14b8a6; pointer-events: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);"></div>
+      </div>
+      <div style="margin-bottom: 12px;">
+        <label style="color: #e0e0e0;">Palabras clave (separadas por comas):</label>
+        <input type="text" id="emoji-keywords" placeholder="ej: risa, lol, jaja" value="${initialKeywords.join(', ')}" style="width:100%; padding:8px; border-radius:8px; background:#2a2a3a; color:#fff; border:1px solid #3a3a4a;">
       </div>
       <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
-        <button id="crop-zoom-out" class="btn" style="flex:1;">🔍 -</button>
-        <button id="crop-zoom-in" class="btn" style="flex:1;">🔍 +</button>
-        <button id="crop-rotate-left" class="btn" style="flex:1;">↺</button>
-        <button id="crop-rotate-right" class="btn" style="flex:1;">↻</button>
-        <button id="crop-reset" class="btn" style="flex:1;">⟳ Reset</button>
+        <button id="crop-zoom-out" class="btn" style="flex:1; background: #3a3a4a; border: none; border-radius: 40px; padding: 8px; cursor: pointer; color: #e0e0e0;">🔍 -</button>
+        <button id="crop-zoom-in" class="btn" style="flex:1; background: #3a3a4a; border: none; border-radius: 40px; padding: 8px; cursor: pointer; color: #e0e0e0;">🔍 +</button>
+        <button id="crop-rotate-left" class="btn" style="flex:1; background: #3a3a4a; border: none; border-radius: 40px; padding: 8px; cursor: pointer; color: #e0e0e0;">↺</button>
+        <button id="crop-rotate-right" class="btn" style="flex:1; background: #3a3a4a; border: none; border-radius: 40px; padding: 8px; cursor: pointer; color: #e0e0e0;">↻</button>
+        <button id="crop-reset" class="btn" style="flex:1; background: #3a3a4a; border: none; border-radius: 40px; padding: 8px; cursor: pointer; color: #e0e0e0;">⟳ Reset</button>
       </div>
       <div style="display: flex; justify-content: flex-end; gap: 12px;">
         <button id="crop-cancel" class="btn-cancel">Cancelar</button>
@@ -465,6 +471,10 @@ function showCropModal(onSave) {
     e.stopPropagation();
     if (cropCanvas.width === 0 || cropCanvas.height === 0) return;
     const croppedDataUrl = cropCanvas.toDataURL('image/png');
+    const keywordsInput = cropModal.querySelector('#emoji-keywords');
+    const keywordsStr = keywordsInput ? keywordsInput.value.trim() : '';
+    const keywords = keywordsStr ? keywordsStr.split(',').map(k => k.trim().toLowerCase()).filter(k => k) : [];
+    window._pendingEmojiKeywords = keywords;
     hideCropModal();
     if (onSave) onSave(croppedDataUrl);
   });
@@ -562,6 +572,8 @@ function addEmojiHandler(categoryName) {
     reader.onload = (ev) => {
       currentImageDataUrl = ev.target.result;
       showCropModal(async (croppedDataUrl) => {
+        const keywords = window._pendingEmojiKeywords || [];
+        delete window._pendingEmojiKeywords;
         if (!canAddEmojiToCategory(pendingCategoryForUpload)) {
           showTransientNotification(`La categoría "${pendingCategoryForUpload}" está llena.`, 2000);
           return;
@@ -572,7 +584,8 @@ function addEmojiHandler(categoryName) {
           await addCustomEmoji({
             name: name,
             shortcodes: [shortcode],
-            url: croppedDataUrl
+            url: croppedDataUrl,
+            keywords: keywords
           }, pendingCategoryForUpload);
           showTransientNotification('✅ Emoji añadido correctamente', 2000);
           refreshCustomEmojisInPicker();
@@ -592,17 +605,23 @@ function addEmojiHandler(categoryName) {
 function addResizeHandlesToModal(element) {
   const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
   handles.forEach(dir => {
-    const handle = document.createElement('div');
-    handle.className = `resize-custom-emoji resize-${dir}`;
-    element.appendChild(handle);
+    let handle = element.querySelector(`.resize-custom-emoji.resize-${dir}`);
+    if (!handle) {
+      handle = document.createElement('div');
+      handle.className = `resize-custom-emoji resize-${dir}`;
+      element.appendChild(handle);
+    }
   });
 }
 
 function centerModal() {
   if (!windowElement) return;
+  windowElement.offsetHeight;
   const rect = windowElement.getBoundingClientRect();
-  windowX = (window.innerWidth - rect.width) / 2;
-  windowY = (window.innerHeight - rect.height) / 2;
+  const modalWidth = rect.width;
+  const modalHeight = rect.height;
+  windowX = (window.innerWidth - modalWidth) / 2;
+  windowY = (window.innerHeight - modalHeight) / 2;
   windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
   windowElement.setAttribute('data-x', windowX);
   windowElement.setAttribute('data-y', windowY);
@@ -621,6 +640,8 @@ function isLessThan10PercentVisible(element) {
 }
 
 function setupInteractForModal() {
+  if (!windowElement || !headerElement) return;
+
   interact(windowElement).resizable({
     edges: { top: true, left: true, bottom: true, right: true },
     inertia: false,
@@ -645,6 +666,7 @@ function setupInteractForModal() {
       }
     }
   });
+
   interact(headerElement).draggable({
     inertia: false,
     manualStart: false,
@@ -692,20 +714,20 @@ function renderModalContent() {
   const contentDiv = document.getElementById('custom-emoji-inner-content');
   if (!contentDiv) return;
   const categories = getCategories();
-  let html = `<div style="padding: 16px; overflow-y: auto; height: 100%; color: var(--modal-text);">`;
+  let html = `<div style="padding: 16px; overflow-y: auto; height: 100%;">`;
   categories.forEach((cat, idx) => {
     const categoryId = `cat-${idx}`;
     html += `
-      <div class="custom-category-item" style="margin-bottom: 16px; border: 1px solid var(--modal-input-border); border-radius: 12px; overflow: hidden;">
-        <div class="category-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--modal-input-bg); cursor: pointer; user-select: none;">
+      <div class="custom-category-item" style="margin-bottom: 16px; border: 1px solid #3a3a4a; border-radius: 12px; overflow: hidden;">
+        <div class="category-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #2a2a3a; cursor: pointer; user-select: none;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span id="category-arrow-${categoryId}" style="font-size: 14px; color: var(--modal-text);">${expandedCategories.has(categoryId) ? '▲' : '▼'}</span>
-            <strong style="color: var(--modal-text);">${escapeHtml(cat.name)}</strong>
-            <span style="font-size: 12px; opacity: 0.7; color: var(--modal-text);">(${cat.emojis.length}/30)</span>
+            <span id="category-arrow-${categoryId}" style="font-size: 14px; color: #e0e0e0;">${expandedCategories.has(categoryId) ? '▲' : '▼'}</span>
+            <strong style="color: #e0e0e0;">${escapeHtml(cat.name)}</strong>
+            <span style="font-size: 12px; opacity: 0.7; color: #a0a0b0;">(${cat.emojis.length}/30)</span>
           </div>
           <div style="display: flex; gap: 8px;">
             <button class="delete-category-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: #ef4444;">🗑️</button>
-            <button class="add-emoji-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: var(--modal-btn-primary);">➕</button>
+            <button class="add-emoji-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: #14b8a6;">➕</button>
           </div>
         </div>
         <div id="category-content-${categoryId}" class="category-content" style="max-height: ${expandedCategories.has(categoryId) ? '1000px' : '0'}; overflow: hidden; transition: max-height 0.3s ease-out; padding-top: ${expandedCategories.has(categoryId) ? '12px' : '0'};">
@@ -713,9 +735,9 @@ function renderModalContent() {
     `;
     for (const emoji of cat.emojis) {
       html += `
-        <div class="custom-emoji-item" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px; background: var(--input-bg); border-radius: 12px; position: relative;">
+        <div class="custom-emoji-item" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px; background: #2a2a3a; border-radius: 12px; position: relative;">
           <img src="${emoji.url}" alt="${emoji.name}" style="width: 48px; height: 48px; object-fit: contain; border-radius: 8px;">
-          <span style="font-size: 10px; text-align: center; word-break: break-all; color: var(--text-color);">:${emoji.shortcodes[0]}:</span>
+          <span style="font-size: 10px; text-align: center; word-break: break-all; color: #a0a0b0;">:${emoji.shortcodes[0]}:</span>
           <button class="delete-emoji-btn" data-category="${escapeHtml(cat.name)}" data-shortcode="${emoji.shortcodes[0]}" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; color: white; font-size: 12px;">🗑️</button>
         </div>
       `;
@@ -728,7 +750,7 @@ function renderModalContent() {
   });
   if (canCreateCategory()) {
     html += `
-      <button id="create-new-category-btn" class="btn primary" style="width: 100%; margin-top: 16px; padding: 12px; border-radius: 12px; background: var(--modal-btn-primary); color: var(--modal-btn-primary-text); border: none; cursor: pointer;">
+      <button id="create-new-category-btn" class="btn primary" style="width: 100%; margin-top: 16px; padding: 12px; border-radius: 12px; background: #14b8a6; color: white; border: none; cursor: pointer;">
         + Crear nueva categoría (${getCategories().length}/4)
       </button>
     `;

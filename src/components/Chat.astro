@@ -190,6 +190,32 @@
   <div class="resize-action resize-sw"></div>
 </div>
 
+<!-- Emoji Picker Desktop Modal -->
+<div id="emoji-picker-desktop-overlay" class="emoji-picker-desktop-overlay"></div>
+<div id="emoji-picker-desktop-movable-window" class="emoji-picker-desktop-movable-window overflow-hidden" style="display: none; width: 400px; height: 500px;">
+  <div id="emoji-picker-desktop-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Emojis</span>
+    </div>
+    <button id="close-emoji-picker-desktop-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="emoji-picker-desktop-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div class="resize-emoji-picker-desktop resize-n"></div>
+  <div class="resize-emoji-picker-desktop resize-s"></div>
+  <div class="resize-emoji-picker-desktop resize-e"></div>
+  <div class="resize-emoji-picker-desktop resize-w"></div>
+  <div class="resize-emoji-picker-desktop resize-ne"></div>
+  <div class="resize-emoji-picker-desktop resize-nw"></div>
+  <div class="resize-emoji-picker-desktop resize-se"></div>
+  <div class="resize-emoji-picker-desktop resize-sw"></div>
+</div>
+
 <!-- Emoji Picker -->
 <div id="emoji-picker-overlay" class="emoji-picker-overlay"></div>
 <div id="emoji-picker-movable-window" class="emoji-picker-movable-window overflow-hidden" style="display: none; width: 400px; height: 500px;">
@@ -689,6 +715,32 @@
     </button>
   </div>
   <div id="search-inner-content" class="p-0 overflow-auto"></div>
+</div>
+
+<!-- Sound Settings Modal -->
+<div id="sound-settings-overlay" class="sound-settings-overlay"></div>
+<div id="sound-settings-movable-window" class="sound-settings-movable-window overflow-hidden" style="display: none; width: 450px; height: 550px;">
+  <div id="sound-settings-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">🔊 Sonidos del chat</span>
+    </div>
+    <button id="close-sound-settings-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="sound-settings-inner-content" class="p-4 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div class="resize-sound-settings resize-n"></div>
+  <div class="resize-sound-settings resize-s"></div>
+  <div class="resize-sound-settings resize-e"></div>
+  <div class="resize-sound-settings resize-w"></div>
+  <div class="resize-sound-settings resize-ne"></div>
+  <div class="resize-sound-settings resize-nw"></div>
+  <div class="resize-sound-settings resize-se"></div>
+  <div class="resize-sound-settings resize-sw"></div>
 </div>
 
 <script>

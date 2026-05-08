@@ -8,7 +8,7 @@ import { EditorCSSValidator } from './EditorCSSValidator.js';
 import { EditorCSSEditor } from './EditorCSSEditor.js';
 import { updateFloatingPreviewStyles, updateFloatingPreviewMessage, hideFloatingPreview } from './FloatingPreview.js';
 import { appendMessage } from '../messages.js';
-import { showGlobalColorPicker } from './GlobalColorPicker.js'; // <-- Cambio aquí
+import { showGlobalColorPicker } from './GlobalColorPicker.js';
 
 let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
@@ -31,9 +31,12 @@ function addResizeHandlesToModal(element) {
 
 function centerModal() {
   if (!windowElement) return;
+  windowElement.offsetHeight;
   const rect = windowElement.getBoundingClientRect();
-  windowX = (window.innerWidth - rect.width) / 2;
-  windowY = (window.innerHeight - rect.height) / 2;
+  const modalWidth = rect.width;
+  const modalHeight = rect.height;
+  windowX = (window.innerWidth - modalWidth) / 2;
+  windowY = (window.innerHeight - modalHeight) / 2;
   windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
   windowElement.setAttribute('data-x', windowX);
   windowElement.setAttribute('data-y', windowY);
@@ -53,9 +56,7 @@ function isLessThan10PercentVisible(element) {
 
 function setupInteractForModal() {
   if (!windowElement || !headerElement) return;
-  if (getComputedStyle(windowElement).position === 'static') {
-    windowElement.style.position = 'relative';
-  }
+
   interact(windowElement).resizable({
     edges: { top: true, left: true, bottom: true, right: true },
     inertia: false,
@@ -80,6 +81,7 @@ function setupInteractForModal() {
       }
     }
   });
+
   interact(headerElement).draggable({
     inertia: false,
     manualStart: false,
@@ -267,7 +269,7 @@ function renderTabContent() {
       break;
     case 'animation':
       const animations = EditorManager.getPredefinedAnimations();
-      contentDiv.innerHTML = `<div class="editor-animation-list"><p style="color: var(--modal-text); margin-bottom: 12px;">Selecciona una animación de ejemplo. Usa <code>anima { ... }</code> y <code>anima-text { ... }</code> en tu CSS.</p><div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px;">${animations.map(anim => `<button class="animation-item" data-animation="${anim.key}">${anim.name}</button>`).join('')}</div></div>`;
+      contentDiv.innerHTML = `<div class="editor-animation-list"><p style="color: #e0e0e0; margin-bottom: 12px;">Selecciona una animación de ejemplo. Usa <code>anima { ... }</code> y <code>anima-text { ... }</code> en tu CSS.</p><div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px;">${animations.map(anim => `<button class="animation-item" data-animation="${anim.key}">${anim.name}</button>`).join('')}</div></div>`;
       document.querySelectorAll('.animation-item').forEach(btn => {
         btn.addEventListener('click', () => {
           const currentCSSValue = EditorManager.getCurrentCSS();

@@ -1,5 +1,3 @@
-// src/scripts/CustomEmojiManager.js
-
 const STORAGE_KEY = 'custom_emoji_categories';
 const MAX_CATEGORIES = 4;
 const MAX_EMOJIS_PER_CATEGORY = 30;
@@ -23,6 +21,7 @@ export function loadCategories() {
 
 function saveCategories() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
+  window.dispatchEvent(new CustomEvent('custom-emojis-updated'));
 }
 
 export function getCategories() {
@@ -67,6 +66,7 @@ export function addCustomEmoji(emojiData, categoryName) {
   if (category.emojis.some(e => e.shortcodes[0] === emojiData.shortcodes[0])) {
     throw new Error('Ya existe un emoji con ese código');
   }
+  if (!emojiData.keywords) emojiData.keywords = [];
   category.emojis.push(emojiData);
   saveCategories();
   return categories;
@@ -95,7 +95,8 @@ export function getCustomEmojiArray() {
         name: emoji.name,
         shortcodes: emoji.shortcodes,
         url: emoji.url,
-        category: category.name
+        category: category.name,
+        keywords: emoji.keywords || []
       });
     }
   }
