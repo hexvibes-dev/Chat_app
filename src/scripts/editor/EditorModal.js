@@ -194,11 +194,70 @@ function renderToolbar() {
   const toolbar = document.createElement('div');
   toolbar.className = 'editor-toolbar';
   toolbar.innerHTML = `
-    <button id="editor-clear" class="toolbar-btn" title="Vaciar editor">🗑️</button>
-    <button id="editor-undo" class="toolbar-btn" title="Deshacer">↩️</button>
-    <button id="editor-redo" class="toolbar-btn" title="Rehacer">↪️</button>
-    <button id="editor-search" class="toolbar-btn" title="Buscar">🔍</button>
-    <button id="editor-color" class="toolbar-btn" title="Selector de color">🎨</button>
+    <button id="editor-clear" class="toolbar-btn" title="Vaciar editor">
+      <svg 
+        width="16" 
+        height="16" fill="currentColor" 
+        viewBox="0 0 16 16">
+        <path 
+          d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+        <path 
+          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+      </svg>
+    </button>
+    <button id="editor-undo" class="toolbar-btn" title="Deshacer">
+      <svg 
+        width="16" 
+        height="16" 
+        fill="currentColor"
+        viewBox="0 0 16 16">
+        <path 
+          fill-rule="evenodd" 
+          d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708z"/>
+      </svg></button>
+    <button id="editor-redo" class="toolbar-btn" title="Rehacer">
+      <svg 
+        width="16" 
+        height="16" 
+        fill="currentColor"
+        viewBox="0 0 16 16">
+        <path 
+          fill-rule="evenodd" 
+          d="M14.854 4.854a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 4H3.5A2.5 2.5 0 0 0 1 6.5v8a.5.5 0 0 0 1 0v-8A1.5 1.5 0 0 1 3.5 5h9.793l-3.147 3.146a.5.5 0 0 0 .708.708z"/>
+      </svg>
+    </button>
+    <button id="editor-search" class="toolbar-btn" title="Buscar">
+    <svg 
+      width="16" 
+      height="16" 
+      fill="currentColor" 
+      viewBox="0 0 16 16">
+      <path 
+        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+    </svg>
+</button>
+    <button id="editor-color" class="toolbar-btn" title="Selector de color">
+      <svg 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="1" 
+        stroke-linecap="round" 
+        stroke-linejoin="round">
+        <path 
+          stroke="none" 
+          d="M0 0h24v24H0z" 
+          fill="none" />
+        <path 
+          d="M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25" /><path d="M7.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+        <path 
+          d="M11.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+        <path 
+          d="M15.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+      </svg>
+    </button>
   `;
   const animationArea = windowElement.querySelector('.animation-preview-area');
   if (animationArea) {

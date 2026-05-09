@@ -1,4 +1,3 @@
-// src/scripts/editor/EmojiCategories.js
 
 import { EMOJI_CATEGORIES } from './EmojiData.js';
 

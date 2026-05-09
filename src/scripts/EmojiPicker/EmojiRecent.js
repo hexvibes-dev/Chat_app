@@ -1,4 +1,3 @@
-// src/scripts/editor/EmojiRecent.js
 
 import { getRecentEmojis, addRecentEmoji, RECENT_STORAGE_KEY } from './EmojiData.js';
 

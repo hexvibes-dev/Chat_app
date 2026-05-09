@@ -1,4 +1,4 @@
-// src/scripts/editor/EmojiPickerCore.js
+
 
 import { getCategoryEmojis, addRecentEmoji, getRecentEmojis, searchEmojis, getCustomEmojiData, loadCustomEmojis, refreshCustomEmojis, updateRecentCategory } from './EmojiData.js';
 import { polyfillEmojis } from './emojiPolyfill.js';

@@ -1,4 +1,3 @@
-// src/scripts/editor/EmojiSearch.js
 
 import { searchEmojis } from './EmojiData.js';
 

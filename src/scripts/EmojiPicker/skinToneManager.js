@@ -1,9 +1,6 @@
-// scripts/skinToneManager.js
 
 let currentTone = localStorage.getItem('manual_skin_tone') || 'default';
 
-// Mapa completo de emojis base a sus 5 variantes de tono de piel
-// Puedes ampliar esta lista manualmente con todos los que necesites
 const SKIN_TONE_MAP = {
   // Manos y dedos
   '👋': { light: '👋🏻', mediumLight: '👋🏼', medium: '👋🏽', mediumDark: '👋🏾', dark: '👋🏿' },

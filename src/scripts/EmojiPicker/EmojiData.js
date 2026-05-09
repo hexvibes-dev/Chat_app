@@ -1,4 +1,3 @@
-// src/scripts/editor/EmojiData.js
 
 import emojis from 'unicode-emoji-json';
 import { getCustomEmojiArray, getCategories as getUserCategories } from '../CustomEmojiManager.js';
