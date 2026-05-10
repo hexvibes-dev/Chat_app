@@ -2,6 +2,9 @@
   --basic-purple: #2A2A3A;
   --basic-purple-dark: #1E1E2E;
   --basic-purple-ultra-dark: #1C1C29;
+  --basic-purple-medium-dark: #1a1a2e;
+  --xd: blue;
+  --dx: red;
   --basic-purple-medium: #3C326F;
   --basic-blue-light: #4B6DA4;
   --basic-red: #F81128;
@@ -2260,303 +2263,579 @@ html[data-theme="basic"] {
 
 /* Action menu */
 html[data-theme="basic"] {
-  /* Action modal overlay */
+  /* Action menu overlay */
+  --action-menu-overlay-background: transparent;
+  --action-menu-overlay-blur:none;
+  --action-menu-overlay-opacity:1;
+
+  --action-menu-overlay-border-top-width:0;
+  --action-menu-overlay-border-top-style:none;
+  --action-menu-overlay-border-top-color:transparent;
+  --action-menu-overlay-border-right-width:0;
+  --action-menu-overlay-border-right-style:none;
+  --action-menu-overlay-border-right-color:transparent;
+  --action-menu-overlay-border-bottom-width:0;
+  --action-menu-overlay-border-bottom-style:none;
+  --action-menu-overlay-border-bottom-color:transparent;
+  --action-menu-overlay-border-left-width:0;
+  --action-menu-overlay-border-left-style:none;
+  --action-menu-overlay-border-left-color:transparent;
+
+  --action-menu-overlay-border-radius-top-left:0;
+  --action-menu-overlay-border-radius-top-right:0;
+  --action-menu-overlay-border-radius-bottom-right:0;
+  --action-menu-overlay-border-radius-bottom-left:0;
+
+  --action-menu-overlay-shadow-external:none;
+  --action-menu-overlay-shadow-internal:none;
+
+  --action-menu-overlay-outline-width:0;
+  --action-menu-overlay-outline-style:none;
+  --action-menu-overlay-outline-color:transparent;
+  --action-menu-overlay-outline-offset:0;
+
+  --action-menu-overlay-padding-top:0;
+  --action-menu-overlay-padding-right:0;
+  --action-menu-overlay-padding-bottom:0;
+  --action-menu-overlay-padding-left:0;
+
+  --action-menu-overlay-margin-top:0;
+  --action-menu-overlay-margin-right:0;
+  --action-menu-overlay-margin-bottom:0;
+  --action-menu-overlay-margin-left:0;
   
+  /* Header */
+  --action-menu-header-background: var(--basic-purple-dark);
+  --action-menu-header-blur:none;
+  --action-menu-header-opacity:1;
+
+  --action-menu-header-border-top-width:1px;
+  --action-menu-header-border-top-style:solid;
+  --action-menu-header-border-top-color:var(--basic-purple);
+  --action-menu-header-border-right-width:1px;
+  --action-menu-header-border-right-style:solid;
+  --action-menu-header-border-right-color:var(--basic-purple);
+  --action-menu-header-border-bottom-width:1px;
+  --action-menu-header-border-bottom-style:solid;
+  --action-menu-header-border-bottom-color:var(--basic-purple);
+  --action-menu-header-border-left-width:1px;
+  --action-menu-header-border-left-style:solid;
+  --action-menu-header-border-left-color:var(--basic-purple);
+
+  --action-menu-header-border-radius-top-left:0;
+  --action-menu-header-border-radius-top-right:0;
+  --action-menu-header-border-radius-bottom-right:0;
+  --action-menu-header-border-radius-bottom-left:0;
+
+  --action-menu-header-shadow-external:0 20px 40px rgba(0,0,0,0.4);
+  --action-menu-header-shadow-internal:none;
+
+  --action-menu-header-outline-width:0;
+  --action-menu-header-outline-style:none;
+  --action-menu-header-outline-color:transparent;
+  --action-menu-header-outline-offset:0;
+
+  --action-menu-header-padding-top:12px;
+  --action-menu-header-padding-right:16px;
+  --action-menu-header-padding-bottom:12px;
+  --action-menu-header-padding-left:16px;
+
+  --action-menu-header-margin-top:0;
+  --action-menu-header-margin-right:0;
+  --action-menu-header-margin-bottom:0;
+  --action-menu-header-margin-left:0;
+
+  --action-menu-header-color: var(--white);
+  --action-menu-header-font-size:16px;
+  --action-menu-header-font-family:system-ui;
+  --action-menu-header-font-weight:400;
+  --action-menu-header-line-height:1.4;
+  
+  /* Header text */
+  --action-menu-header-text-background:transparent;
+  --action-menu-header-text-blur:none;
+  --action-menu-header-text-opacity:1;
+
+  --action-menu-header-text-border-top-width:0;
+  --action-menu-header-text-border-top-style:none;
+  --action-menu-header-text-border-top-color:transparent;
+  --action-menu-header-text-border-right-width:0;
+  --action-menu-header-text-border-right-style:none;
+  --action-menu-header-text-border-right-color:transparent;
+  --action-menu-header-text-border-bottom-width:0;
+  --action-menu-header-text-border-bottom-style:none;
+  --action-menu-header-text-border-bottom-color:transparent;
+  --action-menu-header-text-border-left-width:0;
+  --action-menu-header-text-border-left-style:none;
+  --action-menu-header-text-border-left-color:transparent;
+
+  --action-menu-header-text-border-radius-top-left:0;
+  --action-menu-header-text-border-radius-top-right:0;
+  --action-menu-header-text-border-radius-bottom-right:0;
+  --action-menu-header-text-border-radius-bottom-left:0;
+
+  --action-menu-header-text-shadow-external:none;
+  --action-menu-header-text-shadow-internal:none;
+
+  --action-menu-header-text-outline-width:0;
+  --action-menu-header-text-outline-style:none;
+  --action-menu-header-text-outline-color:transparent;
+  --action-menu-header-text-outline-offset:0;
+
+  --action-menu-header-text-padding-top:0;
+  --action-menu-header-text-padding-right:0;
+  --action-menu-header-text-padding-bottom:0;
+  --action-menu-header-text-padding-left:0;
+
+  --action-menu-header-text-margin-top:0;
+  --action-menu-header-text-margin-right:0;
+  --action-menu-header-text-margin-bottom:0;
+  --action-menu-header-text-margin-left:0;
+
+  --action-menu-header-text-color: var(--white);
+  --action-menu-header-text-font-size:18px;
+  --action-menu-header-text-font-family:system-ui;
+  --action-menu-header-text-font-weight:600;
+  --action-menu-header-text-line-height:1.4;
+  --action-menu-header-text-letter-spacing:0;
+  --action-menu-header-text-word-spacing:0;
+  --action-menu-header-text-text-transform:uppercase;
+  --action-menu-header-text-text-shadow:none;
+  --action-menu-header-text-font-style:normal;
+  
+  /* body  */
+  --action-menu-body-background: linear-gradient(-378deg , var(--basic-purple-dark)  , var(--basic-purple) , var(--basic-purple-medium-dark));
+  --action-menu-body-blur:none;
+  --action-menu-body-opacity:1;
+
+  --action-menu-body-border-top-width:0;
+  --action-menu-body-border-top-style:none;
+  --action-menu-body-border-top-color:transparent;
+  --action-menu-body-border-right-width:0;
+  --action-menu-body-border-right-style:none;
+  --action-menu-body-border-right-color:transparent;
+  --action-menu-body-border-bottom-width:0;
+  --action-menu-body-border-bottom-style:none;
+  --action-menu-body-border-bottom-color:transparent;
+  --action-menu-body-border-left-width:0;
+  --action-menu-body-border-left-style:none;
+  --action-menu-body-border-left-color:transparent;
+
+  --action-menu-body-border-radius-top-left:0;
+  --action-menu-body-border-radius-top-right:0;
+  --action-menu-body-border-radius-bottom-right:0;
+  --action-menu-body-border-radius-bottom-left:0;
+
+  --action-menu-body-shadow-external:none;
+  --action-menu-body-shadow-internal:none;
+
+  --action-menu-body-outline-width:0;
+  --action-menu-body-outline-style:none;
+  --action-menu-body-outline-color:transparent;
+  --action-menu-body-outline-offset:0;
+
+  --action-menu-body-padding-top:16px;
+  --action-menu-body-padding-right:16px;
+  --action-menu-body-padding-bottom:16px;
+  --action-menu-body-padding-left:16px;
+
+  --action-menu-body-margin-top:0;
+  --action-menu-body-margin-right:0;
+  --action-menu-body-margin-bottom:0;
+  --action-menu-body-margin-left:0;
+
+  --action-menu-body-color: var(--white);
+  --action-menu-body-font-size:16px;
+  --action-menu-body-font-family:system-ui;
+  --action-menu-body-font-weight:400;
+  --action-menu-body-line-height:1.4;
+  
+  /* options */
+  --action-menu-options-background: var(--basic-purple);
+  --action-menu-options-blur:none;
+  --action-menu-options-opacity:1;
+
+  --action-menu-options-border-top-width:1px;
+  --action-menu-options-border-top-style:solid;
+  --action-menu-options-border-top-color: var(--basic-purple);
+  --action-menu-options-border-right-width:1px;
+  --action-menu-options-border-right-style:solid;
+  --action-menu-options-border-right-color:var(--basic-purple);
+  --action-menu-options-border-bottom-width:1px;
+  --action-menu-options-border-bottom-style:solid;
+  --action-menu-options-border-bottom-color:var(--basic-purple);
+  --action-menu-options-border-left-width:1px;
+  --action-menu-options-border-left-style:solid;
+  --action-menu-options-border-left-color:var(--basic-purple);
+
+  --action-menu-options-border-radius-top-left:0;
+  --action-menu-options-border-radius-top-right:0;
+  --action-menu-options-border-radius-bottom-right:0;
+  --action-menu-options-border-radius-bottom-left:0;
+
+  --action-menu-options-shadow-external:none;
+  --action-menu-options-shadow-internal:none;
+
+  --action-menu-options-outline-width:0;
+  --action-menu-options-outline-style:none;
+  --action-menu-options-outline-color:transparent;
+  --action-menu-options-outline-offset:0;
+
+  --action-menu-options-padding-top:16px;
+  --action-menu-options-padding-right:8px;
+  --action-menu-options-padding-bottom:16px;
+  --action-menu-options-padding-left:8px;
+
+  --action-menu-options-margin-top:0;
+  --action-menu-options-margin-right:0;
+  --action-menu-options-margin-bottom:0;
+  --action-menu-options-margin-left:0;
+
+  --action-menu-options-color: var(--white);
+  --action-menu-options-font-size:16px;
+  --action-menu-options-font-family:system-ui;
+  --action-menu-options-font-weight:400;
+  --action-menu-options-line-height:1.4;
+  
+  /* action menu svg icons */
+  --action-modal-svg-icons-width:40px;
+  --action-modal-svg-icons-height:40px;
+
+  --action-modal-svg-icons-background:transparent;
+  --action-modal-svg-icons-blur:none;
+  --action-modal-svg-icons-opacity:1;
+
+  --action-modal-svg-icons-border-top-width:0;
+  --action-modal-svg-icons-border-top-style:none;
+  --action-modal-svg-icons-border-top-color:transparent;
+  --action-modal-svg-icons-border-right-width:0;
+  --action-modal-svg-icons-border-right-style:none;
+  --action-modal-svg-icons-border-right-color:transparent;
+  --action-modal-svg-icons-border-bottom-width:0;
+  --action-modal-svg-icons-border-bottom-style:none;
+  --action-modal-svg-icons-border-bottom-color:transparent;
+  --action-modal-svg-icons-border-left-width:0;
+  --action-modal-svg-icons-border-left-style:none;
+  --action-modal-svg-icons-border-left-color:transparent;
+
+  --action-modal-svg-icons-border-radius-top-left:0;
+  --action-modal-svg-icons-border-radius-top-right:0;
+  --action-modal-svg-icons-border-radius-bottom-right:0;
+  --action-modal-svg-icons-border-radius-bottom-left:0;
+
+  --action-modal-svg-icons-shadow-external:none;
+  --action-modal-svg-icons-shadow-internal:none;
+
+  --action-modal-svg-icons-outline-width:0;
+  --action-modal-svg-icons-outline-style:none;
+  --action-modal-svg-icons-outline-color:transparent;
+  --action-modal-svg-icons-outline-offset:0;
+
+  --action-modal-svg-icons-padding-top:0;
+  --action-modal-svg-icons-padding-right:0;
+  --action-modal-svg-icons-padding-bottom:0;
+  --action-modal-svg-icons-padding-left:0;
+
+  --action-modal-svg-icons-margin-top:0;
+  --action-modal-svg-icons-margin-right:0;
+  --action-modal-svg-icons-margin-bottom:0;
+  --action-modal-svg-icons-margin-left:0;
+
+  --action-modal-svg-icons-stroke:currentColor;
+  --action-modal-svg-icons-fill:none;
+  --action-modal-svg-icons-color: var(--white);
+  
+  /* icon text */
+  --action-menu-span-background:transparent;
+  --action-menu-span-blur:none;
+  --action-menu-span-opacity:1;
+
+  --action-menu-span-padding-top:0;
+  --action-menu-span-padding-right:0;
+  --action-menu-span-padding-bottom:0;
+  --action-menu-span-padding-left:0;
+
+  --action-menu-span-color: var(--white);
+  --action-menu-span-font-size:12px;
+  --action-menu-span-font-family:system-ui;
+  --action-menu-span-font-weight:400;
+  --action-menu-span-line-height:1.4;
+  --action-menu-span-letter-spacing:0;
+  --action-menu-span-word-spacing:0;
+  --action-menu-span-text-transform: lowercase;
+  --action-menu-span-text-shadow:none;
+  --action-menu-span-font-style:normal;
+  
+  /* resize handles */
+  --action-menu-resize-handle-background:transparent;
+  --action-menu-resize-handle-blur:none;
+  --action-menu-resize-handle-opacity:1;
+
+  --action-menu-resize-handle-border-top-width:0;
+  --action-menu-resize-handle-border-top-style:none;
+  --action-menu-resize-handle-border-top-color:transparent;
+  --action-menu-resize-handle-border-right-width:0;
+  --action-menu-resize-handle-border-right-style:none;
+  --action-menu-resize-handle-border-right-color:transparent;
+  --action-menu-resize-handle-border-bottom-width:0;
+  --action-menu-resize-handle-border-bottom-style:none;
+  --action-menu-resize-handle-border-bottom-color:transparent;
+  --action-menu-resize-handle-border-left-width:0;
+  --action-menu-resize-handle-border-left-style:none;
+  --action-menu-resize-handle-border-left-color:transparent;
+
+  --action-menu-resize-handle-border-radius-top-left:0;
+  --action-menu-resize-handle-border-radius-top-right:0;
+  --action-menu-resize-handle-border-radius-bottom-right:0;
+  --action-menu-resize-handle-border-radius-bottom-left:0;
+
+  --action-menu-resize-handle-shadow-external:none;
+  --action-menu-resize-handle-shadow-internal:none;
+
+  --action-menu-resize-handle-outline-width:0;
+  --action-menu-resize-handle-outline-style:none;
+  --action-menu-resize-handle-outline-color:transparent;
+  --action-menu-resize-handle-outline-offset:0;
+
+  --action-menu-resize-handle-padding-top:0;
+  --action-menu-resize-handle-padding-right:0;
+  --action-menu-resize-handle-padding-bottom:0;
+  --action-menu-resize-handle-padding-left:0;
+
+  --action-menu-resize-handle-margin-top:0;
+  --action-menu-resize-handle-margin-right:0;
+  --action-menu-resize-handle-margin-bottom:0;
+  --action-menu-resize-handle-margin-left:0;
+
+  --action-menu-resize-handle-transition-property:background;
+  --action-menu-resize-handle-transition-duration:0.1s;
+  --action-menu-resize-handle-transition-timing-function:ease-in-out;
+  --action-menu-resize-handle-transition-delay:0s;
 }
-:root{
-  --xd: pink;
-  --confirm-popup-background: blue;
-}
-/* Pop up clear chat */
+
+/* Pop up clear chat && clear cache */
 html[data-theme="basic"] {
+  /* background */
+  --alert-clean-cache-and-chat-pop-up-background: var(--basic-purple-medium-dark);
+  --alert-clean-cache-and-chat-pop-up-blur:none;
+  --alert-clean-cache-and-chat-pop-up-opacity:1;
+
+  --alert-clean-cache-and-chat-pop-up-border-top-width:1px;
+  --alert-clean-cache-and-chat-pop-up-border-top-style:solid;
+  --alert-clean-cache-and-chat-pop-up-border-top-color:var(--planton-orange);
+  --alert-clean-cache-and-chat-pop-up-border-right-width:1px;
+  --alert-clean-cache-and-chat-pop-up-border-right-style:solid;
+  --alert-clean-cache-and-chat-pop-up-border-right-color:var(--planton-orange);
+  --alert-clean-cache-and-chat-pop-up-border-bottom-width:1px;
+  --alert-clean-cache-and-chat-pop-up-border-bottom-style:solid;
+  --alert-clean-cache-and-chat-pop-up-border-bottom-color:var(--planton-orange);
+  --alert-clean-cache-and-chat-pop-up-border-left-width:1px;
+  --alert-clean-cache-and-chat-pop-up-border-left-style:solid;
+  --alert-clean-cache-and-chat-pop-up-border-left-color:var(--planton-orange);
+
+  --alert-clean-cache-and-chat-pop-up-border-radius-top-left:20px;
+  --alert-clean-cache-and-chat-pop-up-border-radius-top-right:20px;
+  --alert-clean-cache-and-chat-pop-up-border-radius-bottom-right:20px;
+  --alert-clean-cache-and-chat-pop-up-border-radius-bottom-left:20px;
+
+  --alert-clean-cache-and-chat-pop-up-shadow-external:0 10px 40px rgba(0,0,0,0.5);
+  --alert-clean-cache-and-chat-pop-up-shadow-internal:none;
+
+  --alert-clean-cache-and-chat-pop-up-padding-top:24px;
+  --alert-clean-cache-and-chat-pop-up-padding-right:24px;
+  --alert-clean-cache-and-chat-pop-up-padding-bottom:24px;
+  --alert-clean-cache-and-chat-pop-up-padding-left:24px;
+
+  --alert-clean-cache-and-chat-pop-up-margin-top:0;
+  --alert-clean-cache-and-chat-pop-up-margin-right:0;
+  --alert-clean-cache-and-chat-pop-up-margin-bottom:0;
+  --alert-clean-cache-and-chat-pop-up-margin-left:0;
+
+  --alert-clean-cache-and-chat-pop-up-color: var(--white);
+  --alert-clean-cache-and-chat-pop-up-font-size:16px;
+  --alert-clean-cache-and-chat-pop-up-font-family:system-ui;
+  --alert-clean-cache-and-chat-pop-up-font-weight:400;
+  --alert-clean-cache-and-chat-pop-up-line-height:1.4;
+  --alert-clean-cache-and-chat-pop-up-letter-spacing:0;
+  --alert-clean-cache-and-chat-pop-up-word-spacing:0;
+  --alert-clean-cache-and-chat-pop-up-text-transform:none;
+  --alert-clean-cache-and-chat-pop-up-text-shadow:none;
+  --alert-clean-cache-and-chat-pop-up-font-style:normal;
+
+  --alert-clean-cache-and-chat-pop-up-animation:popupBounceIn 0.3s ease-out;
   
-  /*Pop Up clear chat backgrond*/
-  --confirm-popup-blur: none;
-  --confirm-popup-opacity: 1;
+  /*  Text  */
+  --text-alert-clean-cache-and-chat-pop-up-background:transparent;
+  --text-alert-clean-cache-and-chat-pop-up-blur:none;
+  --text-alert-clean-cache-and-chat-pop-up-opacity:1;
+
+  --text-alert-clean-cache-and-chat-pop-up-border-top-width:0;
+  --text-alert-clean-cache-and-chat-pop-up-border-top-style:none;
+  --text-alert-clean-cache-and-chat-pop-up-border-top-color:transparent;
+  --text-alert-clean-cache-and-chat-pop-up-border-right-width:0;
+  --text-alert-clean-cache-and-chat-pop-up-border-right-style:none;
+  --text-alert-clean-cache-and-chat-pop-up-border-right-color:transparent;
+  --text-alert-clean-cache-and-chat-pop-up-border-bottom-width:0;
+  --text-alert-clean-cache-and-chat-pop-up-border-bottom-style:none;
+  --text-alert-clean-cache-and-chat-pop-up-border-bottom-color:transparent;
+  --text-alert-clean-cache-and-chat-pop-up-border-left-width:0;
+  --text-alert-clean-cache-and-chat-pop-up-border-left-style:none;
+  --text-alert-clean-cache-and-chat-pop-up-border-left-color:transparent;
+
+  --text-alert-clean-cache-and-chat-pop-up-border-radius-top-left:0;
+  --text-alert-clean-cache-and-chat-pop-up-border-radius-top-right:0;
+  --text-alert-clean-cache-and-chat-pop-up-border-radius-bottom-right:0;
+  --text-alert-clean-cache-and-chat-pop-up-border-radius-bottom-left:0;
+
+  --text-alert-clean-cache-and-chat-pop-up-shadow-external:none;
+  --text-alert-clean-cache-and-chat-pop-up-shadow-internal:none;
+
+  --text-alert-clean-cache-and-chat-pop-up-padding-top:0;
+  --text-alert-clean-cache-and-chat-pop-up-padding-right:0;
+  --text-alert-clean-cache-and-chat-pop-up-padding-bottom:0;
+  --text-alert-clean-cache-and-chat-pop-up-padding-left:0;
+
+  --text-alert-clean-cache-and-chat-pop-up-margin-top:0;
+  --text-alert-clean-cache-and-chat-pop-up-margin-right:0;
+  --text-alert-clean-cache-and-chat-pop-up-margin-bottom:0;
+  --text-alert-clean-cache-and-chat-pop-up-margin-left:0;
+
+  --text-alert-clean-cache-and-chat-pop-up-color: var(--white);
+  --text-alert-clean-cache-and-chat-pop-up-font-size:16px;
+  --text-alert-clean-cache-and-chat-pop-up-font-family:system-ui;
+  --text-alert-clean-cache-and-chat-pop-up-font-weight:400;
+  --text-alert-clean-cache-and-chat-pop-up-line-height:1.5;
+  --text-alert-clean-cache-and-chat-pop-up-letter-spacing:0;
+  --text-alert-clean-cache-and-chat-pop-up-word-spacing:0;
+  --text-alert-clean-cache-and-chat-pop-up-text-transform:none;
+  --text-alert-clean-cache-and-chat-pop-up-text-shadow:none;
+  --text-alert-clean-cache-and-chat-pop-up-font-style:normal;
   
-  --confirm-popup-border-top-width: 0;
-  --confirm-popup-border-top-style: solid;
-  --confirm-popup-border-top-color: transparent;
+  /*  Buttons background  */
+  --alert-buttons-backgrond-background: transparent;
+  --alert-buttons-backgrond-blur:none;
+  --alert-buttons-backgrond-opacity:1;
+
+  --alert-buttons-backgrond-border-top-width:0;
+  --alert-buttons-backgrond-border-top-style:none;
+  --alert-buttons-backgrond-border-top-color:transparent;
+  --alert-buttons-backgrond-border-right-width:0;
+  --alert-buttons-backgrond-border-right-style:none;
+  --alert-buttons-backgrond-border-right-color:transparent;
+  --alert-buttons-backgrond-border-bottom-width:0;
+  --alert-buttons-backgrond-border-bottom-style:none;
+  --alert-buttons-backgrond-border-bottom-color:transparent;
+  --alert-buttons-backgrond-border-left-width:0;
+  --alert-buttons-backgrond-border-left-style:none;
+  --alert-buttons-backgrond-border-left-color:transparent;
+
+  --alert-buttons-backgrond-border-radius-top-left:0;
+  --alert-buttons-backgrond-border-radius-top-right:0;
+  --alert-buttons-backgrond-border-radius-bottom-right:0;
+  --alert-buttons-backgrond-border-radius-bottom-left:0;
+
+  --alert-buttons-backgrond-shadow-external:none;
+  --alert-buttons-backgrond-shadow-internal:none;
+
+  --alert-buttons-backgrond-padding-top:0;
+  --alert-buttons-backgrond-padding-right:0;
+  --alert-buttons-backgrond-padding-bottom:0;
+  --alert-buttons-backgrond-padding-left:0;
+
+  --alert-buttons-backgrond-margin-top:8px;
+  --alert-buttons-backgrond-margin-right:0;
+  --alert-buttons-backgrond-margin-bottom:0;
+  --alert-buttons-backgrond-margin-left:0;
   
-  --confirm-popup-border-right-width: 0;
-  --confirm-popup-border-right-style: solid;
-  --confirm-popup-border-right-color: transparent;
+  /* Cancel button */
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-background:rgba(239,68,68,0.2);
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-blur:none;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-opacity:1;
+
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-top-width:0;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-top-style:none;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-top-color:transparent;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-right-width:0;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-right-style:none;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-right-color:transparent;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-bottom-width:0;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-bottom-style:none;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-bottom-color:transparent;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-left-width:0;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-left-style:none;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-left-color:transparent;
+
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-radius-top-left:30px;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-radius-top-right:30px;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-radius-bottom-right:30px;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-radius-bottom-left:30px;
+
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-shadow-external:none;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-shadow-internal:none;
+
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-padding-top:10px;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-padding-right:24px;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-padding-bottom:10px;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-padding-left:24px;
+
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-color:#f87171;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-font-size:14px;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-font-family:system-ui;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-font-weight:400;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-line-height:1.4;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-letter-spacing:0;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-word-spacing:0;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-text-transform:none;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-text-shadow:none;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-font-style:normal;
+
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-transition:all 0.2s;
+  --alert-ckean-cache-and-chat-pop-up-cancel-buttom-width:auto;
   
-  --confirm-popup-border-bottom-width: 0;
-  --confirm-popup-border-bottom-style: solid;
-  --confirm-popup-border-bottom-color: transparent;
-  
-  --confirm-popup-border-left-width: 0;
-  --confirm-popup-border-left-style: solid;
-  --confirm-popup-border-left-color: transparent;
-  
-  --confirm-popup-border-radius-top-left: 20px;
-  --confirm-popup-border-radius-top-right: 20px;
-  --confirm-popup-border-radius-bottom-right: 20px;
-  --confirm-popup-border-radius-bottom-left: 20px;
-  
-  --confirm-popup-shadow-external: 0 10px 30px rgba(0, 0, 0, 0.5);
-  --confirm-popup-shadow-internal: none;
-  
-  --confirm-popup-padding-top: 20px;
-  --confirm-popup-padding-right: 20px;
-  --confirm-popup-padding-bottom: 20px;
-  --confirm-popup-padding-left: 20px;
-  
-  --confirm-popup-margin-top: 0;
-  
-  --confirm-popup-margin-right: 0;
-  --confirm-popup-margin-bottom: 0;
-  --confirm-popup-margin-left: 0;
-  
-  --confirm-popup-font-family: system-ui;
-  --confirm-popup-font-size: 16px;
-  --confirm-popup-font-weight: 400;
-  --confirm-popup-line-height: 1.4;
-  --confirm-popup-letter-spacing: 0;
-  --confirm-popup-word-spacing: 0;
-  --confirm-popup-text-transform: none;
-  --confirm-popup-text-shadow: none;
-  --confirm-popup-color: rgba(255, 255, 255, 0.4);
-  
-  /*Alert text clear pop up*/
-  --alert-text-pop-up-clear-chat-background: transparent;
-  --alert-text-pop-up-clear-chat-blur: none;
-  --alert-text-pop-up-clear-chat-opacity: 1;
-  
-  --alert-text-pop-up-clear-chat-border-top-width: 0;
-  --alert-text-pop-up-clear-chat-border-top-style: none;
-  --alert-text-pop-up-clear-chat-border-top-color: transparent;
-  --alert-text-pop-up-clear-chat-border-right-width: 0;
-  --alert-text-pop-up-clear-chat-border-right-style: none;
-  --alert-text-pop-up-clear-chat-border-right-color: transparent;
-  --alert-text-pop-up-clear-chat-border-bottom-width: 0;
-  --alert-text-pop-up-clear-chat-border-bottom-style: none;
-  --alert-text-pop-up-clear-chat-border-bottom-color: transparent;
-  --alert-text-pop-up-clear-chat-border-left-width: 0;
-  --alert-text-pop-up-clear-chat-border-left-style: none;
-  --alert-text-pop-up-clear-chat-border-left-color: transparent;
-  
-  --alert-text-pop-up-clear-chat-border-radius-top-left: 0;
-  --alert-text-pop-up-clear-chat-border-radius-top-right: 0;
-  --alert-text-pop-up-clear-chat-border-radius-bottom-right: 0;
-  --alert-text-pop-up-clear-chat-border-radius-bottom-left: 0;
-  
-  --alert-text-pop-up-clear-chat-shadow-external: none;
-  --alert-text-pop-up-clear-chat-shadow-internal: none;
-  
-  --alert-text-pop-up-clear-chat-padding-top: 0;
-  --alert-text-pop-up-clear-chat-padding-right: 0;
-  --alert-text-pop-up-clear-chat-padding-bottom: 0;
-  --alert-text-pop-up-clear-chat-padding-left: 0;
-  
-  --alert-text-pop-up-clear-chat-margin-top: 0;
-  --alert-text-pop-up-clear-chat-margin-right: 0;
-  --alert-text-pop-up-clear-chat-margin-bottom: 0;
-  --alert-text-pop-up-clear-chat-margin-left: 0;
-  
-  --alert-text-pop-up-clear-chat-color: var(--basic-purple-medium);
-  --alert-text-pop-up-clear-chat-font-size: 16px;
-  --alert-text-pop-up-clear-chat-font-family: system-ui;
-  --alert-text-pop-up-clear-chat-font-weight: 400;
-  --alert-text-pop-up-clear-chat-line-height: 1.4;
-  --alert-text-pop-up-clear-chat-letter-spacing: 0;
-  --alert-text-pop-up-clear-chat-word-spacing: 0;
-  --alert-text-pop-up-clear-chat-text-transform: uppercase;
-  --alert-text-pop-up-clear-chat-text-shadow: none;
-  --alert-text-pop-up-clear-chat-font-style: normal;
-  
-  /*texr clear pop up*/
-  --text-pop-up-clear-chat-background: transparent;
-  --text-pop-up-clear-chat-blur: none;
-  --text-pop-up-clear-chat-opacity: 1;
-  
-  --text-pop-up-clear-chat-border-top-width: 0;
-  --text-pop-up-clear-chat-border-top-style: none;
-  --text-pop-up-clear-chat-border-top-color: transparent;
-  --text-pop-up-clear-chat-border-right-width: 0;
-  --text-pop-up-clear-chat-border-right-style: none;
-  --text-pop-up-clear-chat-border-right-color: transparent;
-  --text-pop-up-clear-chat-border-bottom-width: 0;
-  --text-pop-up-clear-chat-border-bottom-style: none;
-  --text-pop-up-clear-chat-border-bottom-color: transparent;
-  --text-pop-up-clear-chat-border-left-width: 0;
-  --text-pop-up-clear-chat-border-left-style: none;
-  --text-pop-up-clear-chat-border-left-color: transparent;
-  
-  --text-pop-up-clear-chat-border-radius-top-left: 0;
-  --text-pop-up-clear-chat-border-radius-top-right: 0;
-  --text-pop-up-clear-chat-border-radius-bottom-right: 0;
-  --text-pop-up-clear-chat-border-radius-bottom-left: 0;
-  
-  --text-pop-up-clear-chat-shadow-external: none;
-  --text-pop-up-clear-chat-shadow-internal: none;
-  
-  --text-pop-up-clear-chat-padding-top: 0;
-  --text-pop-up-clear-chat-padding-right: 0;
-  --text-pop-up-clear-chat-padding-bottom: 0;
-  --text-pop-up-clear-chat-padding-left: 0;
-  
-  --text-pop-up-clear-chat-margin-top: 0;
-  --text-pop-up-clear-chat-margin-right: 0;
-  --text-pop-up-clear-chat-margin-bottom: 0;
-  --text-pop-up-clear-chat-margin-left: 0;
-  
-  --text-pop-up-clear-chat-color: var(--white);
-  --text-pop-up-clear-chat-font-size: 16px;
-  --text-pop-up-clear-chat-font-family: system-ui;
-  --text-pop-up-clear-chat-font-weight: 400;
-  --text-pop-up-clear-chat-line-height: 1.4;
-  --text-pop-up-clear-chat-letter-spacing: 0;
-  --text-pop-up-clear-chat-word-spacing: 0;
-  --text-pop-up-clear-chat-text-transform: lowercase;
-  --text-pop-up-clear-chat-text-shadow: none;
-  --text-pop-up-clear-chat-font-style: normal;
-  
-  
-  /* clear chat btn container */
-  --clear-chat-btn-container-background: transparent;
-  --clear-chat-btn-container-blur: none;
-  --clear-chat-btn-container-opacity: 1;
-  
-  --clear-chat-btn-container-border-top-width: 0;
-  --clear-chat-btn-container-border-top-style: none;
-  --clear-chat-btn-container-border-top-color: transparent;
-  --clear-chat-btn-container-border-right-width: 0;
-  --clear-chat-btn-container-border-right-style: none;
-  --clear-chat-btn-container-border-right-color: transparent;
-  --clear-chat-btn-container-border-bottom-width: 0;
-  --clear-chat-btn-container-border-bottom-style: none;
-  --clear-chat-btn-container-border-bottom-color: transparent;
-  --clear-chat-btn-container-border-left-width: 0;
-  --clear-chat-btn-container-border-left-style: none;
-  --clear-chat-btn-container-border-left-color: transparent;
-  
-  --clear-chat-btn-container-border-radius-top-left: 0;
-  --clear-chat-btn-container-border-radius-top-right: 0;
-  --clear-chat-btn-container-border-radius-bottom-right: 0;
-  --clear-chat-btn-container-border-radius-bottom-left: 0;
-  
-  --clear-chat-btn-container-shadow-external: none;
-  --clear-chat-btn-container-shadow-internal: none;
-  
-  --clear-chat-btn-container-padding-top: 0;
-  --clear-chat-btn-container-padding-right: 0;
-  --clear-chat-btn-container-padding-bottom: 0;
-  --clear-chat-btn-container-padding-left: 0;
-  
-  --clear-chat-btn-container-margin-top: 0;
-  --clear-chat-btn-container-margin-right: 0;
-  --clear-chat-btn-container-margin-bottom: 0;
-  --clear-chat-btn-container-margin-left: 0;
-  
-  --clear-chat-btn-container-color: var(--white);
-  --clear-chat-btn-container-font-size: 16px;
-  --clear-chat-btn-container-font-family: system-ui;
-  --clear-chat-btn-container-font-weight: 400;
-  --clear-chat-btn-container-line-height: 1.4;
-  --clear-chat-btn-container-letter-spacing: 0;
-  --clear-chat-btn-container-word-spacing: 0;
-  --clear-chat-btn-container-text-transform: none;
-  --clear-chat-btn-container-text-shadow: none;
-  
-  /* Button clear confirm not */
-  --btn-clear-chat-not-background: transparent;
-  --btn-clear-chat-not-blur: none;
-  --btn-clear-chat-not-opacity: 1;
-  
-  --btn-clear-chat-not-border-top-width: 0;
-  --btn-clear-chat-not-border-top-style: none;
-  --btn-clear-chat-not-border-top-color: transparent;
-  --btn-clear-chat-not-border-right-width: 0;
-  --btn-clear-chat-not-border-right-style: none;
-  --btn-clear-chat-not-border-right-color: transparent;
-  --btn-clear-chat-not-border-bottom-width: 0;
-  --btn-clear-chat-not-border-bottom-style: none;
-  --btn-clear-chat-not-border-bottom-color: transparent;
-  --btn-clear-chat-not-border-left-width: 0;
-  --btn-clear-chat-not-border-left-style: none;
-  --btn-clear-chat-not-border-left-color: transparent;
-  
-  --btn-clear-chat-not-border-radius-top-left: 0;
-  --btn-clear-chat-not-border-radius-top-right: 0;
-  --btn-clear-chat-not-border-radius-bottom-right: 0;
-  --btn-clear-chat-not-border-radius-bottom-left: 0;
-  
-  --btn-clear-chat-not-shadow-external: none;
-  --btn-clear-chat-not-shadow-internal: none;
-  
-  --btn-clear-chat-not-padding-top: 0;
-  --btn-clear-chat-not-padding-right: 0;
-  --btn-clear-chat-not-padding-bottom: 0;
-  --btn-clear-chat-not-padding-left: 0;
-  
-  --btn-clear-chat-not-margin-top: 0;
-  --btn-clear-chat-not-margin-right: 0;
-  --btn-clear-chat-not-margin-bottom: 0;
-  --btn-clear-chat-not-margin-left: 0;
-  
-  --btn-clear-chat-not-color: red;
-  --btn-clear-chat-not-font-size: 28px;
-  --btn-clear-chat-not-font-family: system-ui;
-  --btn-clear-chat-not-font-weight: 400;
-  --btn-clear-chat-not-line-height: 1.4;
-  --btn-clear-chat-not-letter-spacing: 0;
-  --btn-clear-chat-not-word-spacing: 0;
-  --btn-clear-chat-not-text-transform: none;
-  --btn-clear-chat-not-text-shadow: none;
-  --btn-clear-chat-not-font-style: normal;
-  
-  --btn-clear-chat-not-width: 50px;
-  
-  /* btn clear chat confirm yes */
-  --btn-clear-chat-yes-background: transparent;
-  --btn-clear-chat-yes-blur: none;
-  --btn-clear-chat-yes-opacity: 1;
-  
-  --btn-clear-chat-yes-border-top-width: 0;
-  --btn-clear-chat-yes-border-top-style: none;
-  --btn-clear-chat-yes-border-top-color: transparent;
-  --btn-clear-chat-yes-border-right-width: 0;
-  --btn-clear-chat-yes-border-right-style: none;
-  --btn-clear-chat-yes-border-right-color: transparent;
-  --btn-clear-chat-yes-border-bottom-width: 0;
-  --btn-clear-chat-yes-border-bottom-style: none;
-  --btn-clear-chat-yes-border-bottom-color: transparent;
-  --btn-clear-chat-yes-border-left-width: 0;
-  --btn-clear-chat-yes-border-left-style: none;
-  --btn-clear-chat-yes-border-left-color: transparent;
-  
-  --btn-clear-chat-yes-border-radius-top-left: 0;
-  --btn-clear-chat-yes-border-radius-top-right: 0;
-  --btn-clear-chat-yes-border-radius-bottom-right: 0;
-  --btn-clear-chat-yes-border-radius-bottom-left: 0;
-  
-  --btn-clear-chat-yes-shadow-external: none;
-  --btn-clear-chat-yes-shadow-internal: none;
-  
-  --btn-clear-chat-yes-padding-top: 0;
-  --btn-clear-chat-yes-padding-right: 0;
-  --btn-clear-chat-yes-padding-bottom: 0;
-  --btn-clear-chat-yes-padding-left: 0;
-  
-  --btn-clear-chat-yes-margin-top: 0;
-  --btn-clear-chat-yes-margin-right: 0;
-  --btn-clear-chat-yes-margin-bottom: 0;
-  --btn-clear-chat-yes-margin-left: 0;
-  
-  --btn-clear-chat-yes-color: lime;
-  --btn-clear-chat-yes-font-size: 28px;
-  --btn-clear-chat-yes-font-family: system-ui;
-  --btn-clear-chat-yes-font-weight: 400;
-  --btn-clear-chat-yes-line-height: 1.4;
-  --btn-clear-chat-yes-letter-spacing: 0;
-  --btn-clear-chat-yes-word-spacing: 0;
-  --btn-clear-chat-yes-text-transform: none;
-  --btn-clear-chat-yes-text-shadow: none;
-  --btn-clear-chat-yes-font-style: normal;
-  
-  --btn-clear-chat-yes-width: 50px;
+  /* Confirm Button */
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-background:rgba(20,184,166,0.2);
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-blur:none;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-opacity:1;
+
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-top-width:0;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-top-style:none;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-top-color:transparent;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-right-width:0;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-right-style:none;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-right-color:transparent;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-bottom-width:0;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-bottom-style:none;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-bottom-color:transparent;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-left-width:0;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-left-style:none;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-left-color:transparent;
+
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-radius-top-left:30px;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-radius-top-right:30px;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-radius-bottom-right:30px;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-radius-bottom-left:30px;
+
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-shadow-external:none;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-shadow-internal:none;
+
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-padding-top:10px;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-padding-right:24px;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-padding-bottom:10px;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-padding-left:24px;
+
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-color:#14b8a6;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-font-size:14px;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-font-family:system-ui;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-font-weight:400;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-line-height:1.4;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-letter-spacing:0;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-word-spacing:0;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-text-transform:none;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-text-shadow:none;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-font-style:normal;
+
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-transition:all 0.2s;
+  --alert-ckean-cache-and-chat-pop-up-confirm-buttom-width:auto;
 }
 
 /* cache cleaner */
@@ -2654,28 +2933,28 @@ html[data-theme="basic"] {
   --header-cache-cleanner-text-transform: none;
   --header-cache-cleanner-text-shadow: none;
   
-  /* Cache cleanner background */
+  /* Cache cleanner container */
   --cache-cleanner-bg-background: var(--basic-purple-dark);
   --cache-cleanner-bg-blur: none;
   --cache-cleanner-bg-opacity: 1;
   
-  --cache-cleanner-bg-border-top-width: 1px;
+  --cache-cleanner-bg-border-top-width: 0;
   --cache-cleanner-bg-border-top-style: solid;
-  --cache-cleanner-bg-border-top-color: var(--modal-input-border);
-  --cache-cleanner-bg-border-right-width: 1px;
+  --cache-cleanner-bg-border-top-color: transparent;
+  --cache-cleanner-bg-border-right-width: 0;
   --cache-cleanner-bg-border-right-style: solid;
   --cache-cleanner-bg-border-right-color: transparent;
-  --cache-cleanner-bg-border-bottom-width: 1px;
+  --cache-cleanner-bg-border-bottom-width: 0;
   --cache-cleanner-bg-border-bottom-style: solid;
   --cache-cleanner-bg-border-bottom-color: transparent;
   --cache-cleanner-bg-border-left-width: 1px;
   --cache-cleanner-bg-border-left-style: solid;
   --cache-cleanner-bg-border-left-color: transparent;
   
-  --cache-cleanner-bg-border-radius-top-left: 28px;
-  --cache-cleanner-bg-border-radius-top-right: 28px;
-  --cache-cleanner-bg-border-radius-bottom-right: 28px;
-  --cache-cleanner-bg-border-radius-bottom-left: 28px;
+  --cache-cleanner-bg-border-radius-top-left: 0;
+  --cache-cleanner-bg-border-radius-top-right: 0;
+  --cache-cleanner-bg-border-radius-bottom-right: 0;
+  --cache-cleanner-bg-border-radius-bottom-left: 0;
   
   --cache-cleanner-bg-shadow-external: 0 20px 40px rgba(0, 0, 0, 0.4);
   --cache-cleanner-bg-shadow-internal: none;
@@ -2700,12 +2979,792 @@ html[data-theme="basic"] {
   --cache-cleanner-bg-text-transform: none;
   --cache-cleanner-bg-text-shadow: none;
   
-  /**/
+  /* Cache cleanner storage tabs bg / container */
+  --cache-cleanner-storage-tabs-bg-background: var(--basic-purple);
+  --cache-cleanner-storage-tabs-bg-blur:none;
+  --cache-cleanner-storage-tabs-bg-opacity:1;
+
+  --cache-cleanner-storage-tabs-bg-border-top-width:0;
+  --cache-cleanner-storage-tabs-bg-border-top-style:none;
+  --cache-cleanner-storage-tabs-bg-border-top-color:transparent;
+  --cache-cleanner-storage-tabs-bg-border-right-width:0;
+  --cache-cleanner-storage-tabs-bg-border-right-style:none;
+  --cache-cleanner-storage-tabs-bg-border-right-color:transparent;
+  --cache-cleanner-storage-tabs-bg-border-bottom-width:0;
+  --cache-cleanner-storage-tabs-bg-border-bottom-style:none;
+  --cache-cleanner-storage-tabs-bg-border-bottom-color:transparent;
+  --cache-cleanner-storage-tabs-bg-border-left-width:0;
+  --cache-cleanner-storage-tabs-bg-border-left-style:none;
+  --cache-cleanner-storage-tabs-bg-border-left-color:transparent;
+
+  --cache-cleanner-storage-tabs-bg-border-radius-top-left:0;
+  --cache-cleanner-storage-tabs-bg-border-radius-top-right:0;
+  --cache-cleanner-storage-tabs-bg-border-radius-bottom-right:0;
+  --cache-cleanner-storage-tabs-bg-border-radius-bottom-left:0;
+
+  --cache-cleanner-storage-tabs-bg-shadow-external:none;
+  --cache-cleanner-storage-tabs-bg-shadow-internal:none;
+
+  --cache-cleanner-storage-tabs-bg-outline-width:0;
+  --cache-cleanner-storage-tabs-bg-outline-style:none;
+  --cache-cleanner-storage-tabs-bg-outline-color:transparent;
+  --cache-cleanner-storage-tabs-bg-outline-offset:0;
+
+  --cache-cleanner-storage-tabs-bg-margin-left:15px;
+  --cache-cleanner-storage-tabs-bg-margin-right:15px;
+  
+  
+  /* Cache cleanner storage tabs */
+  --cache-cleanner-storage-tabs-background: var(--basic-purple);
+  --cache-cleanner-storage-tabs-blur:none;
+  --cache-cleanner-storage-tabs-opacity:1;
+
+  --cache-cleanner-storage-tabs-border-top-width:0;
+  --cache-cleanner-storage-tabs-border-top-style:none;
+  --cache-cleanner-storage-tabs-border-top-color:transparent;
+  --cache-cleanner-storage-tabs-border-right-width:0;
+  --cache-cleanner-storage-tabs-border-right-style:none;
+  --cache-cleanner-storage-tabs-border-right-color:transparent;
+  --cache-cleanner-storage-tabs-border-bottom-width:0;
+  --cache-cleanner-storage-tabs-border-bottom-style:none;
+  --cache-cleanner-storage-tabs-border-bottom-color:transparent;
+  --cache-cleanner-storage-tabs-border-left-width:0;
+  --cache-cleanner-storage-tabs-border-left-style:none;
+  --cache-cleanner-storage-tabs-border-left-color:transparent;
+
+  --cache-cleanner-storage-tabs-border-radius-top-left:0;
+  --cache-cleanner-storage-tabs-border-radius-top-right:0;
+  --cache-cleanner-storage-tabs-border-radius-bottom-right:0;
+  --cache-cleanner-storage-tabs-border-radius-bottom-left:0;
+
+  --cache-cleanner-storage-tabs-shadow-external:none;
+  --cache-cleanner-storage-tabs-shadow-internal:none;
+
+  --cache-cleanner-storage-tabs-outline-width:1px;
+  --cache-cleanner-storage-tabs-outline-style: solid;
+  --cache-cleanner-storage-tabs-outline-color: var(--basic-purple-medium);
+  --cache-cleanner-storage-tabs-outline-offset:1px;
+
+  --cache-cleanner-storage-tabs-padding-top:6px;
+  --cache-cleanner-storage-tabs-padding-right:12px;
+  --cache-cleanner-storage-tabs-padding-bottom:6px;
+  --cache-cleanner-storage-tabs-padding-left:12px;
+
+  --cache-cleanner-storage-tabs-margin-top:0;
+  --cache-cleanner-storage-tabs-margin-right:0;
+  --cache-cleanner-storage-tabs-margin-bottom:0;
+  --cache-cleanner-storage-tabs-margin-left:0;
+
+  --cache-cleanner-storage-tabs-color: var(--white);
+  --cache-cleanner-storage-tabs-font-size:16px;
+  --cache-cleanner-storage-tabs-font-family:system-ui;
+  --cache-cleanner-storage-tabs-font-weight:400;
+  --cache-cleanner-storage-tabs-line-height:1.4;
+
+  --cache-cleanner-storage-tabs-transition-property:all;
+  --cache-cleanner-storage-tabs-transition-duration:0.3s;
+  --cache-cleanner-storage-tabs-transition-timing-function:ease-in-out;
+  --cache-cleanner-storage-tabs-transition-delay:0s;
+  --cache-cleanner-storage-tabs-letter-spacing:0;
+  --cache-cleanner-storage-tabs-word-spacing:0;
+  --cache-cleanner-storage-tabs-text-transform: lowercase;
+  --cache-cleanner-storage-tabs-text-shadow:none;
+  --cache-cleanner-storage-tabs-font-style:normal;
+  
+  /* Cache cleanner storage status active */
+  --cache-cleanner-storage-tabs-active-background: var(--basic-purple-dark);
+  --cache-cleanner-storage-tabs-active-blur:none;
+  --cache-cleanner-storage-tabs-active-opacity:1;
+
+  --cache-cleanner-storage-tabs-active-border-top-width:0;
+  --cache-cleanner-storage-tabs-active-border-top-style:none;
+  --cache-cleanner-storage-tabs-active-border-top-color:transparent;
+  --cache-cleanner-storage-tabs-active-border-right-width:0;
+  --cache-cleanner-storage-tabs-active-border-right-style:none;
+  --cache-cleanner-storage-tabs-active-border-right-color:transparent;
+  --cache-cleanner-storage-tabs-active-border-bottom-width:0;
+  --cache-cleanner-storage-tabs-active-border-bottom-style:none;
+  --cache-cleanner-storage-tabs-active-border-bottom-color:transparent;
+  --cache-cleanner-storage-tabs-active-border-left-width:0;
+  --cache-cleanner-storage-tabs-active-border-left-style:none;
+  --cache-cleanner-storage-tabs-active-border-left-color:transparent;
+
+  --cache-cleanner-storage-tabs-active-border-radius-top-left:0;
+  --cache-cleanner-storage-tabs-active-border-radius-top-right:0;
+  --cache-cleanner-storage-tabs-active-border-radius-bottom-right:0;
+  --cache-cleanner-storage-tabs-active-border-radius-bottom-left:0;
+
+  --cache-cleanner-storage-tabs-active-shadow-external:none;
+  --cache-cleanner-storage-tabs-active-shadow-internal:none;
+
+  --cache-cleanner-storage-tabs-active-outline-width:0;
+  --cache-cleanner-storage-tabs-active-outline-style:none;
+  --cache-cleanner-storage-tabs-active-outline-color:transparent;
+  --cache-cleanner-storage-tabs-active-outline-offset:0;
+
+  --cache-cleanner-storage-tabs-active-padding-top:6px;
+  --cache-cleanner-storage-tabs-active-padding-right:12px;
+  --cache-cleanner-storage-tabs-active-padding-bottom:6px;
+  --cache-cleanner-storage-tabs-active-padding-left:12px;
+
+  --cache-cleanner-storage-tabs-active-margin-top:0;
+  --cache-cleanner-storage-tabs-active-margin-right:0;
+  --cache-cleanner-storage-tabs-active-margin-bottom:0;
+  --cache-cleanner-storage-tabs-active-margin-left:0;
+
+  --cache-cleanner-storage-tabs-active-color:var(--modal-btn-primary-text);
+  --cache-cleanner-storage-tabs-active-font-size:16px;
+  --cache-cleanner-storage-tabs-active-font-family:system-ui;
+  --cache-cleanner-storage-tabs-active-font-weight:400;
+  --cache-cleanner-storage-tabs-active-line-height:1.4;
+
+  --cache-cleanner-storage-tabs-active-transition-property:all;
+  --cache-cleanner-storage-tabs-active-transition-duration:0.2s;
+  --cache-cleanner-storage-tabs-active-transition-timing-function:ease-in-out;
+  --cache-cleanner-storage-tabs-active-transition-delay:0s;
+  --cache-cleanner-storage-tabs-active-letter-spacing:0;
+  --cache-cleanner-storage-tabs-active-word-spacing:0;
+  --cache-cleanner-storage-tabs-active-text-transform: lowercase;
+  --cache-cleanner-storage-tabs-active-text-shadow:none;
+  --cache-cleanner-storage-tabs-active-font-style:normal;
+  
+  /* cache cleanner storage tabs danger */
+  --cache-cleanner-storage-tabs-danger-background: var(--basic-red);
+  --cache-cleanner-storage-tabs-danger-blur:none;
+  --cache-cleanner-storage-tabs-danger-opacity:1;
+
+  --cache-cleanner-storage-tabs-danger-border-top-width:0;
+  --cache-cleanner-storage-tabs-danger-border-top-style:none;
+  --cache-cleanner-storage-tabs-danger-border-top-color:transparent;
+  --cache-cleanner-storage-tabs-danger-border-right-width:0;
+  --cache-cleanner-storage-tabs-danger-border-right-style:none;
+  --cache-cleanner-storage-tabs-danger-border-right-color:transparent;
+  --cache-cleanner-storage-tabs-danger-border-bottom-width:0;
+  --cache-cleanner-storage-tabs-danger-border-bottom-style:none;
+  --cache-cleanner-storage-tabs-danger-border-bottom-color:transparent;
+  --cache-cleanner-storage-tabs-danger-border-left-width:0;
+  --cache-cleanner-storage-tabs-danger-border-left-style:none;
+  --cache-cleanner-storage-tabs-danger-border-left-color:transparent;
+
+  --cache-cleanner-storage-tabs-danger-border-radius-top-left:0;
+  --cache-cleanner-storage-tabs-danger-border-radius-top-right:0;
+  --cache-cleanner-storage-tabs-danger-border-radius-bottom-right:0;
+  --cache-cleanner-storage-tabs-danger-border-radius-bottom-left:0;
+
+  --cache-cleanner-storage-tabs-danger-shadow-external:none;
+  --cache-cleanner-storage-tabs-danger-shadow-internal:none;
+
+  --cache-cleanner-storage-tabs-danger-outline-width:0;
+  --cache-cleanner-storage-tabs-danger-outline-style:none;
+  --cache-cleanner-storage-tabs-danger-outline-color:transparent;
+  --cache-cleanner-storage-tabs-danger-outline-offset:0;
+
+  --cache-cleanner-storage-tabs-danger-padding-top:6px;
+  --cache-cleanner-storage-tabs-danger-padding-right:12px;
+  --cache-cleanner-storage-tabs-danger-padding-bottom:6px;
+  --cache-cleanner-storage-tabs-danger-padding-left:12px;
+
+  --cache-cleanner-storage-tabs-danger-margin-top:0;
+  --cache-cleanner-storage-tabs-danger-margin-right:0;
+  --cache-cleanner-storage-tabs-danger-margin-bottom:0;
+  --cache-cleanner-storage-tabs-danger-margin-left:0;
+
+  --cache-cleanner-storage-tabs-danger-color: var(--white);
+  --cache-cleanner-storage-tabs-danger-font-size:16px;
+  --cache-cleanner-storage-tabs-danger-font-family:system-ui;
+  --cache-cleanner-storage-tabs-danger-font-weight:400;
+  --cache-cleanner-storage-tabs-danger-line-height:1.4;
+  --cache-cleanner-storage-tabs-danger-letter-spacing:0;
+  --cache-cleanner-storage-tabs-danger-word-spacing:0;
+  --cache-cleanner-storage-tabs-danger-text-transform:uppercase;
+  --cache-cleanner-storage-tabs-danger-text-shadow:none;
+  --cache-cleanner-storage-tabs-danger-font-style:normal;
+
+  --cache-cleanner-storage-tabs-danger-transition-property:all;
+  --cache-cleanner-storage-tabs-danger-transition-duration:0.2s;
+  --cache-cleanner-storage-tabs-danger-transition-timing-function:ease-in-out;
+  --cache-cleanner-storage-tabs-danger-transition-delay:0s;
+  
+  /* Caxhe cleaner total items */
+  --cache-storage-items-total-background:transparent;
+  --cache-storage-items-total-blur:none;
+  --cache-storage-items-total-opacity:0.7;
+
+  --cache-storage-items-total-border-top-width:0;
+  --cache-storage-items-total-border-top-style:none;
+  --cache-storage-items-total-border-top-color:transparent;
+  --cache-storage-items-total-border-right-width:0;
+  --cache-storage-items-total-border-right-style:none;
+  --cache-storage-items-total-border-right-color:transparent;
+  --cache-storage-items-total-border-bottom-width:0;
+  --cache-storage-items-total-border-bottom-style:none;
+  --cache-storage-items-total-border-bottom-color:transparent;
+  --cache-storage-items-total-border-left-width:0;
+  --cache-storage-items-total-border-left-style:none;
+  --cache-storage-items-total-border-left-color:transparent;
+
+  --cache-storage-items-total-border-radius-top-left:0;
+  --cache-storage-items-total-border-radius-top-right:0;
+  --cache-storage-items-total-border-radius-bottom-right:0;
+  --cache-storage-items-total-border-radius-bottom-left:0;
+
+  --cache-storage-items-total-shadow-external:none;
+  --cache-storage-items-total-shadow-internal:none;
+
+  --cache-storage-items-total-outline-width:0;
+  --cache-storage-items-total-outline-style:none;
+  --cache-storage-items-total-outline-color:transparent;
+  --cache-storage-items-total-outline-offset:0;
+
+  --cache-storage-items-total-padding-top:0;
+  --cache-storage-items-total-padding-right:0;
+  --cache-storage-items-total-padding-bottom:0;
+  --cache-storage-items-total-padding-left:0;
+
+  --cache-storage-items-total-margin-top:0;
+  --cache-storage-items-total-margin-right:0;
+  --cache-storage-items-total-margin-bottom:0;
+  --cache-storage-items-total-margin-left:0;
+
+  --cache-storage-items-total-color: var(--white);
+  --cache-storage-items-total-font-size:12px;
+  --cache-storage-items-total-font-family:system-ui;
+  --cache-storage-items-total-font-weight:400;
+  --cache-storage-items-total-line-height:1.4;
+  --cache-storage-items-total-letter-spacing:0;
+  --cache-storage-items-total-word-spacing:0;
+  --cache-storage-items-total-text-transform: lowercase;
+  --cache-storage-items-total-text-shadow:none;
+  --cache-storage-items-total-font-style:normal;
+  
+  /* Total items container */
+  --cache-total-items-container-background: var(--basic-purple-dark);
+  --cache-total-items-container-blur:none;
+  --cache-total-items-container-opacity:1;
+
+  --cache-total-items-container-border-top-width:0;
+  --cache-total-items-container-border-top-style:none;
+  --cache-total-items-container-border-top-color:transparent;
+  --cache-total-items-container-border-right-width:0;
+  --cache-total-items-container-border-right-style:none;
+  --cache-total-items-container-border-right-color:transparent;
+  --cache-total-items-container-border-bottom-width:0;
+  --cache-total-items-container-border-bottom-style:none;
+  --cache-total-items-container-border-bottom-color:transparent;
+  --cache-total-items-container-border-left-width:0;
+  --cache-total-items-container-border-left-style:none;
+  --cache-total-items-container-border-left-color:transparent;
+
+  --cache-total-items-container-border-radius-top-left:0;
+  --cache-total-items-container-border-radius-top-right:0;
+  --cache-total-items-container-border-radius-bottom-right:0;
+  --cache-total-items-container-border-radius-bottom-left:0;
+
+  --cache-total-items-container-shadow-external:none;
+  --cache-total-items-container-shadow-internal:none;
+
+  --cache-total-items-container-outline-width:0;
+  --cache-total-items-container-outline-style:none;
+  --cache-total-items-container-outline-color:transparent;
+  --cache-total-items-container-outline-offset:0;
+  
+  /* cache cleanner container botton nex prev cobtadoe */
+  --cache-cleanner-paginacion-btn-gap:8px;
+
+  --cache-cleanner-paginacion-btn-background: var(--basic-purple-dark);
+  --cache-cleanner-paginacion-btn-blur:none;
+  --cache-cleanner-paginacion-btn-opacity:1;
+
+  --cache-cleanner-paginacion-btn-border-top-width:0;
+  --cache-cleanner-paginacion-btn-border-top-style:none;
+  --cache-cleanner-paginacion-btn-border-top-color:transparent;
+  --cache-cleanner-paginacion-btn-border-right-width:0;
+  --cache-cleanner-paginacion-btn-border-right-style:none;
+  --cache-cleanner-paginacion-btn-border-right-color:transparent;
+  --cache-cleanner-paginacion-btn-border-bottom-width:0;
+  --cache-cleanner-paginacion-btn-border-bottom-style:none;
+  --cache-cleanner-paginacion-btn-border-bottom-color:transparent;
+  --cache-cleanner-paginacion-btn-border-left-width:0;
+  --cache-cleanner-paginacion-btn-border-left-style:none;
+  --cache-cleanner-paginacion-btn-border-left-color:transparent;
+
+  --cache-cleanner-paginacion-btn-border-radius-top-left:0;
+  --cache-cleanner-paginacion-btn-border-radius-top-right:0;
+  --cache-cleanner-paginacion-btn-border-radius-bottom-right:0;
+  --cache-cleanner-paginacion-btn-border-radius-bottom-left:0;
+
+  --cache-cleanner-paginacion-btn-shadow-external:none;
+  --cache-cleanner-paginacion-btn-shadow-internal:none;
+
+  --cache-cleanner-paginacion-btn-outline-width:0;
+  --cache-cleanner-paginacion-btn-outline-style:none;
+  --cache-cleanner-paginacion-btn-outline-color:transparent;
+  --cache-cleanner-paginacion-btn-outline-offset:0;
+  
+  /* Cache page indicator */
+  --cache-cleanner-cache-page-indicator-background:transparent;
+  --cache-cleanner-cache-page-indicator-blur:none;
+  --cache-cleanner-cache-page-indicator-opacity:0.7;
+
+  --cache-cleanner-cache-page-indicator-border-top-width:0;
+  --cache-cleanner-cache-page-indicator-border-top-style:none;
+  --cache-cleanner-cache-page-indicator-border-top-color:transparent;
+  --cache-cleanner-cache-page-indicator-border-right-width:0;
+  --cache-cleanner-cache-page-indicator-border-right-style:none;
+  --cache-cleanner-cache-page-indicator-border-right-color:transparent;
+  --cache-cleanner-cache-page-indicator-border-bottom-width:0;
+  --cache-cleanner-cache-page-indicator-border-bottom-style:none;
+  --cache-cleanner-cache-page-indicator-border-bottom-color:transparent;
+  --cache-cleanner-cache-page-indicator-border-left-width:0;
+  --cache-cleanner-cache-page-indicator-border-left-style:none;
+  --cache-cleanner-cache-page-indicator-border-left-color:transparent;
+
+  --cache-cleanner-cache-page-indicator-border-radius-top-left:0;
+  --cache-cleanner-cache-page-indicator-border-radius-top-right:0;
+  --cache-cleanner-cache-page-indicator-border-radius-bottom-right:0;
+  --cache-cleanner-cache-page-indicator-border-radius-bottom-left:0;
+
+  --cache-cleanner-cache-page-indicator-shadow-external:none;
+  --cache-cleanner-cache-page-indicator-shadow-internal:none;
+
+  --cache-cleanner-cache-page-indicator-outline-width:0;
+  --cache-cleanner-cache-page-indicator-outline-style:none;
+  --cache-cleanner-cache-page-indicator-outline-color:transparent;
+  --cache-cleanner-cache-page-indicator-outline-offset:0;
+
+  --cache-cleanner-cache-page-indicator-color: var(--white);
+  --cache-cleanner-cache-page-indicator-font-size:12px;
+  --cache-cleanner-cache-page-indicator-font-family:system-ui;
+  --cache-cleanner-cache-page-indicator-font-weight:400;
+  --cache-cleanner-cache-page-indicator-line-height:1.4;
+  --cache-cleanner-cache-page-indicator-letter-spacing:0;
+  --cache-cleanner-cache-page-indicator-word-spacing:0;
+  --cache-cleanner-cache-page-indicator-text-transform:lowercase;
+  --cache-cleanner-cache-page-indicator-text-shadow:none;
+  --cache-cleanner-cache-page-indicator-font-style:normal;
+  
+  /* Cache prev btn */
+  --cache-cleanner-cache-prev-btn-background:rgba(255,255,255,0.1);
+  --cache-cleanner-cache-prev-btn-blur:none;
+  --cache-cleanner-cache-prev-btn-opacity:0.8;
+
+  --cache-cleanner-cache-prev-btn-border-top-width:0;
+  --cache-cleanner-cache-prev-btn-border-top-style:none;
+  --cache-cleanner-cache-prev-btn-border-top-color:transparent;
+  --cache-cleanner-cache-prev-btn-border-right-width:0;
+  --cache-cleanner-cache-prev-btn-border-right-style:none;
+  --cache-cleanner-cache-prev-btn-border-right-color:transparent;
+  --cache-cleanner-cache-prev-btn-border-bottom-width:0;
+  --cache-cleanner-cache-prev-btn-border-bottom-style:none;
+  --cache-cleanner-cache-prev-btn-border-bottom-color:transparent;
+  --cache-cleanner-cache-prev-btn-border-left-width:0;
+  --cache-cleanner-cache-prev-btn-border-left-style:none;
+  --cache-cleanner-cache-prev-btn-border-left-color:transparent;
+
+  --cache-cleanner-cache-prev-btn-border-radius-top-left:8px;
+  --cache-cleanner-cache-prev-btn-border-radius-top-right:8px;
+  --cache-cleanner-cache-prev-btn-border-radius-bottom-right:8px;
+  --cache-cleanner-cache-prev-btn-border-radius-bottom-left:8px;
+
+  --cache-cleanner-cache-prev-btn-shadow-external:none;
+  --cache-cleanner-cache-prev-btn-shadow-internal:none;
+
+  --cache-cleanner-cache-prev-btn-outline-width:0;
+  --cache-cleanner-cache-prev-btn-outline-style:none;
+  --cache-cleanner-cache-prev-btn-outline-color:transparent;
+  --cache-cleanner-cache-prev-btn-outline-offset:0;
+
+  --cache-cleanner-cache-prev-btn-padding-top:6px;
+  --cache-cleanner-cache-prev-btn-padding-right:12px;
+  --cache-cleanner-cache-prev-btn-padding-bottom:6px;
+  --cache-cleanner-cache-prev-btn-padding-left:12px;
+
+  --cache-cleanner-cache-prev-btn-color: var(--white);
+  --cache-cleanner-cache-prev-btn-font-size:14px;
+  --cache-cleanner-cache-prev-btn-font-family:system-ui;
+  --cache-cleanner-cache-prev-btn-font-weight:400;
+  --cache-cleanner-cache-prev-btn-line-height:1.4;
+  --cache-cleanner-cache-prev-btn-letter-spacing:0;
+  --cache-cleanner-cache-prev-btn-word-spacing:0;
+  --cache-cleanner-cache-prev-btn-text-transform:lowercase;
+  --cache-cleanner-cache-prev-btn-text-shadow:none;
+  --cache-cleanner-cache-prev-btn-font-style:normal;
+  --cache-cleanner-cache-prev-btn-cursor:pointer;
+  
+  /* Cache next btn */
+  --cache-cleanner-cache-next-btn-background:rgba(255,255,255,0.1);
+  --cache-cleanner-cache-next-btn-blur:none;
+  --cache-cleanner-cache-next-btn-opacity:0.8;
+
+  --cache-cleanner-cache-next-btn-border-top-width:0;
+  --cache-cleanner-cache-next-btn-border-top-style:none;
+  --cache-cleanner-cache-next-btn-border-top-color:transparent;
+  --cache-cleanner-cache-next-btn-border-right-width:0;
+  --cache-cleanner-cache-next-btn-border-right-style:none;
+  --cache-cleanner-cache-next-btn-border-right-color:transparent;
+  --cache-cleanner-cache-next-btn-border-bottom-width:0;
+  --cache-cleanner-cache-next-btn-border-bottom-style:none;
+  --cache-cleanner-cache-next-btn-border-bottom-color:transparent;
+  --cache-cleanner-cache-next-btn-border-left-width:0;
+  --cache-cleanner-cache-next-btn-border-left-style:none;
+  --cache-cleanner-cache-next-btn-border-left-color:transparent;
+
+  --cache-cleanner-cache-next-btn-border-radius-top-left:8px;
+  --cache-cleanner-cache-next-btn-border-radius-top-right:8px;
+  --cache-cleanner-cache-next-btn-border-radius-bottom-right:8px;
+  --cache-cleanner-cache-next-btn-border-radius-bottom-left:8px;
+
+  --cache-cleanner-cache-next-btn-shadow-external:none;
+  --cache-cleanner-cache-next-btn-shadow-internal:none;
+
+  --cache-cleanner-cache-next-btn-outline-width:0;
+  --cache-cleanner-cache-next-btn-outline-style:none;
+  --cache-cleanner-cache-next-btn-outline-color:transparent;
+  --cache-cleanner-cache-next-btn-outline-offset:0;
+
+  --cache-cleanner-cache-next-btn-padding-top:6px;
+  --cache-cleanner-cache-next-btn-padding-right:12px;
+  --cache-cleanner-cache-next-btn-padding-bottom:6px;
+  --cache-cleanner-cache-next-btn-padding-left:12px;
+
+  --cache-cleanner-cache-next-btn-color: var(--white);
+  --cache-cleanner-cache-next-btn-font-size:14px;
+  --cache-cleanner-cache-next-btn-font-family:system-ui;
+  --cache-cleanner-cache-next-btn-font-weight:400;
+  --cache-cleanner-cache-next-btn-line-height:1.4;
+  --cache-cleanner-cache-next-btn-letter-spacing:0;
+  --cache-cleanner-cache-next-btn-word-spacing:0;
+  --cache-cleanner-cache-next-btn-text-transform:lowercase;
+  --cache-cleanner-cache-next-btn-text-shadow:none;
+  --cache-cleanner-cache-next-btn-font-style:normal;
+  --cache-cleanner-cache-next-btn-cursor:pointer;
+  
+  /* Cache cleannee btn container */
+  --cache-xleaner-btn-cont-select-justify-content:space-between;
+  --cache-xleaner-btn-cont-select-align-items:center;
+  --cache-xleaner-btn-cont-select-flex-wrap:wrap;
+  --cache-xleaner-btn-cont-select-gap:8px;
+  --cache-xleaner-btn-cont-select-flex-shrink:0;
+
+  --cache-xleaner-btn-cont-select-background: var(--basic-purple-dark);
+  --cache-xleaner-btn-cont-select-blur:none;
+  --cache-xleaner-btn-cont-select-opacity:1;
+
+  --cache-xleaner-btn-cont-select-border-top-width:0;
+  --cache-xleaner-btn-cont-select-border-top-style:solid;
+  --cache-xleaner-btn-cont-select-border-top-color:transparent;
+  --cache-xleaner-btn-cont-select-border-right-width:0;
+  --cache-xleaner-btn-cont-select-border-right-style:none;
+  --cache-xleaner-btn-cont-select-border-right-color:transparent;
+  --cache-xleaner-btn-cont-select-border-bottom-width:0;
+  --cache-xleaner-btn-cont-select-border-bottom-style:solid;
+  --cache-xleaner-btn-cont-select-border-bottom-color:transparent;
+  --cache-xleaner-btn-cont-select-border-left-width:0;
+  --cache-xleaner-btn-cont-select-border-left-style:none;
+  --cache-xleaner-btn-cont-select-border-left-color:transparent;
+
+  --cache-xleaner-btn-cont-select-border-radius-top-left:0;
+  --cache-xleaner-btn-cont-select-border-radius-top-right:0;
+  --cache-xleaner-btn-cont-select-border-radius-bottom-right:0;
+  --cache-xleaner-btn-cont-select-border-radius-bottom-left:0;
+
+  --cache-xleaner-btn-cont-select-shadow-external:none;
+  --cache-xleaner-btn-cont-select-shadow-internal:none;
+
+  --cache-xleaner-btn-cont-select-outline-width:0;
+  --cache-xleaner-btn-cont-select-outline-style:none;
+  --cache-xleaner-btn-cont-select-outline-color:transparent;
+  --cache-xleaner-btn-cont-select-outline-offset:0;
+
+  --cache-xleaner-btn-cont-select-padding-top:8px;
+  --cache-xleaner-btn-cont-select-padding-right:16px;
+  --cache-xleaner-btn-cont-select-padding-bottom:8px;
+  --cache-xleaner-btn-cont-select-padding-left:16px;
+
+  --cache-xleaner-btn-cont-select-margin-top:0;
+  --cache-xleaner-btn-cont-select-margin-right:0;
+  --cache-xleaner-btn-cont-select-margin-bottom:0;
+  --cache-xleaner-btn-cont-select-margin-left:0;
+  
+  /* Cache cleanner btn selectwd all */
+  --cache-select-all-btn-background: var(--basic-blue-light);
+  --cache-select-all-btn-blur:none;
+  --cache-select-all-btn-opacity:1;
+
+  --cache-select-all-btn-border-top-width:0;
+  --cache-select-all-btn-border-top-style:none;
+  --cache-select-all-btn-border-top-color:transparent;
+  --cache-select-all-btn-border-right-width:0;
+  --cache-select-all-btn-border-right-style:none;
+  --cache-select-all-btn-border-right-color:transparent;
+  --cache-select-all-btn-border-bottom-width:0;
+  --cache-select-all-btn-border-bottom-style:none;
+  --cache-select-all-btn-border-bottom-color:transparent;
+  --cache-select-all-btn-border-left-width:0;
+  --cache-select-all-btn-border-left-style:none;
+  --cache-select-all-btn-border-left-color:transparent;
+
+  --cache-select-all-btn-border-radius-top-left:8px;
+  --cache-select-all-btn-border-radius-top-right:8px;
+  --cache-select-all-btn-border-radius-bottom-right:8px;
+  --cache-select-all-btn-border-radius-bottom-left:8px;
+
+  --cache-select-all-btn-shadow-external:none;
+  --cache-select-all-btn-shadow-internal:none;
+
+  --cache-select-all-btn-outline-width:0;
+  --cache-select-all-btn-outline-style:none;
+  --cache-select-all-btn-outline-color:transparent;
+  --cache-select-all-btn-outline-offset:0;
+
+  --cache-select-all-btn-padding-top:6px;
+  --cache-select-all-btn-padding-right:14px;
+  --cache-select-all-btn-padding-bottom:6px;
+  --cache-select-all-btn-padding-left:14px;
+
+  --cache-select-all-btn-margin-top:0;
+  --cache-select-all-btn-margin-right:0;
+  --cache-select-all-btn-margin-bottom:0;
+  --cache-select-all-btn-margin-left:0;
+
+  --cache-select-all-btn-color: var(--white);
+  --cache-select-all-btn-font-size:12px;
+  --cache-select-all-btn-font-family: monospace;
+  --cache-select-all-btn-font-weight:900;
+  --cache-select-all-btn-line-height:1.1;
+  --cache-select-all-btn-letter-spacing:0;
+  --cache-select-all-btn-word-spacing:0;
+  --cache-select-all-btn-text-transform:none;
+  --cache-select-all-btn-text-shadow:none;
+  --cache-select-all-btn-font-style:normal;
+
+  --cache-select-all-btn-cursor:pointer;
+  
+  /* Cache cleanner count */
+  --cache-selection-count-background:transparent;
+  --cache-selection-count-blur:none;
+  --cache-selection-count-opacity:0.7;
+
+  --cache-selection-count-border-top-width:0;
+  --cache-selection-count-border-top-style:none;
+  --cache-selection-count-border-top-color:transparent;
+  --cache-selection-count-border-right-width:0;
+  --cache-selection-count-border-right-style:none;
+  --cache-selection-count-border-right-color:transparent;
+  --cache-selection-count-border-bottom-width:0;
+  --cache-selection-count-border-bottom-style:none;
+  --cache-selection-count-border-bottom-color:transparent;
+  --cache-selection-count-border-left-width:0;
+  --cache-selection-count-border-left-style:none;
+  --cache-selection-count-border-left-color:transparent;
+
+  --cache-selection-count-border-radius-top-left:0;
+  --cache-selection-count-border-radius-top-right:0;
+  --cache-selection-count-border-radius-bottom-right:0;
+  --cache-selection-count-border-radius-bottom-left:0;
+
+  --cache-selection-count-shadow-external:none;
+  --cache-selection-count-shadow-internal:none;
+
+  --cache-selection-count-outline-width:0;
+  --cache-selection-count-outline-style:none;
+  --cache-selection-count-outline-color:transparent;
+  --cache-selection-count-outline-offset:0;
+
+  --cache-selection-count-margin-top:0;
+  --cache-selection-count-margin-right:0;
+  --cache-selection-count-margin-bottom:0;
+  --cache-selection-count-margin-left:0;
+
+  --cache-selection-count-padding-top:0;
+  --cache-selection-count-padding-right:0;
+  --cache-selection-count-padding-bottom:0;
+  --cache-selection-count-padding-left:0;
+
+  --cache-selection-count-color: var(--white);
+  --cache-selection-count-font-size:12px;
+  --cache-selection-count-font-family:system-ui;
+  --cache-selection-count-font-weight:400;
+  --cache-selection-count-line-height:1.4;
+  --cache-selection-count-letter-spacing:0;
+  --cache-selection-count-word-spacing:0;
+  --cache-selection-count-text-transform: lowercase;
+  --cache-selection-count-text-shadow:none;
+  --cache-selection-count-font-style:normal;
+  
+  /* Cache spinner */
+  --cache-spinner-background: var(--basic-purple-dark);
+  --cache-spinner-blur:none;
+  --cache-spinner-opacity:1;
+
+  --cache-spinner-border-top-width:0;
+  --cache-spinner-border-top-style:none;
+  --cache-spinner-border-top-color:transparent;
+  --cache-spinner-border-right-width:0;
+  --cache-spinner-border-right-style:none;
+  --cache-spinner-border-right-color:transparent;
+  --cache-spinner-border-bottom-width:0;
+  --cache-spinner-border-bottom-style:none;
+  --cache-spinner-border-bottom-color:transparent;
+  --cache-spinner-border-left-width:0;
+  --cache-spinner-border-left-style:none;
+  --cache-spinner-border-left-color:transparent;
+
+  --cache-spinner-border-radius-top-left:0;
+  --cache-spinner-border-radius-top-right:0;
+  --cache-spinner-border-radius-bottom-right:0;
+  --cache-spinner-border-radius-bottom-left:0;
+
+  --cache-spinner-shadow-external:none;
+  --cache-spinner-shadow-internal:none;
+
+  --cache-spinner-outline-width:0;
+  --cache-spinner-outline-style:none;
+  --cache-spinner-outline-color:transparent;
+  --cache-spinner-outline-offset:0;
+
+  --cache-spinner-margin-top:0;
+  --cache-spinner-margin-right:0;
+  --cache-spinner-margin-bottom:0;
+  --cache-spinner-margin-left:0;
+
+  --cache-spinner-padding-top:0;
+  --cache-spinner-padding-right:0;
+  --cache-spinner-padding-bottom:0;
+  --cache-spinner-padding-left:0;
+  
+  --spinner-width:40px;
+  --spinner-height:40px;
+
+  --spinner-border-top-width:3px;
+  --spinner-border-top-color:#14b8a6;
+  --spinner-border-right-width:3px;
+  --spinner-border-right-color:var(--basic-purple);
+  --spinner-border-bottom-width:3px;
+  --spinner-border-bottom-color:var(--basic-purple);
+  --spinner-border-left-width:3px;
+  --spinner-border-left-color:var(--basic-purple);
+
+  --spinner-border-radius:50%;
+
+  --spinner-shadow-external:none;
+  --spinner-shadow-internal:none;
+
+  --spinner-background:transparent;
+  --spinner-blur:none;
+  --spinner-opacity:1;
+
+  --spinner-outline-width:0;
+  --spinner-outline-style:none;
+  --spinner-outline-color:transparent;
+  --spinner-outline-offset:0;
+  
+  --spinner-text-margin-top:12px;
+
+  --spinner-text-background:transparent;
+  --spinner-text-blur:none;
+  --spinner-text-opacity:1;
+
+  --spinner-text-border-top-width:0;
+  --spinner-text-border-top-style:none;
+  --spinner-text-border-top-color:transparent;
+  --spinner-text-border-right-width:0;
+  --spinner-text-border-right-style:none;
+  --spinner-text-border-right-color:transparent;
+  --spinner-text-border-bottom-width:0;
+  --spinner-text-border-bottom-style:none;
+  --spinner-text-border-bottom-color:transparent;
+  --spinner-text-border-left-width:0;
+  --spinner-text-border-left-style:none;
+  --spinner-text-border-left-color:transparent;
+
+  --spinner-text-border-radius:0;
+
+  --spinner-text-shadow-external:none;
+  --spinner-text-shadow-internal:none;
+
+  --spinner-text-outline-width:0;
+  --spinner-text-outline-style:none;
+  --spinner-text-outline-color:transparent;
+  --spinner-text-outline-offset:0;
+
+  --spinner-text-color: var(--white);
+  --spinner-text-font-size:14px;
+  --spinner-text-font-family:system-ui;
+  --spinner-text-font-weight:400;
+  --spinner-text-line-height:1.4;
+  --spinner-text-letter-spacing:0;
+  --spinner-text-word-spacing:0;
+  --spinner-text-text-transform:none;
+  --spinner-text-text-shadow:none;
+  --spinner-text-font-style:normal;
+  
+  /* Cache xleanner items cache container */
+  --cache-cleanner-cache-list-container-gap:12px;
+
+  --cache-cleanner-cache-list-container-background: linear-gradient(-230deg,  var(--basic-purple)  , var(--basic-purple-dark) , var(--basic-purple-ultra-dark));
+  --cache-cleanner-cache-list-container-blur:none;
+  --cache-cleanner-cache-list-container-opacity:1;
+
+  --cache-cleanner-cache-list-container-border-top-width:0;
+  --cache-cleanner-cache-list-container-border-top-style:none;
+  --cache-cleanner-cache-list-container-border-top-color:transparent;
+  --cache-cleanner-cache-list-container-border-right-width:0;
+  --cache-cleanner-cache-list-container-border-right-style:none;
+  --cache-cleanner-cache-list-container-border-right-color:transparent;
+  --cache-cleanner-cache-list-container-border-bottom-width:0;
+  --cache-cleanner-cache-list-container-border-bottom-style:none;
+  --cache-cleanner-cache-list-container-border-bottom-color:transparent;
+  --cache-cleanner-cache-list-container-border-left-width:0;
+  --cache-cleanner-cache-list-container-border-left-style:none;
+  --cache-cleanner-cache-list-container-border-left-color:transparent;
+
+  --cache-cleanner-cache-list-container-border-radius-top-left:0;
+  --cache-cleanner-cache-list-container-border-radius-top-right:0;
+  --cache-cleanner-cache-list-container-border-radius-bottom-right:0;
+  --cache-cleanner-cache-list-container-border-radius-bottom-left:0;
+
+  --cache-cleanner-cache-list-container-shadow-external:none;
+  --cache-cleanner-cache-list-container-shadow-internal:none;
+
+  --cache-cleanner-cache-list-container-outline-width:0;
+  --cache-cleanner-cache-list-container-outline-style:none;
+  --cache-cleanner-cache-list-container-outline-color:transparent;
+  --cache-cleanner-cache-list-container-outline-offset:0;
+
+  --cache-cleanner-cache-list-container-margin-top:0;
+  --cache-cleanner-cache-list-container-margin-right:0;
+  --cache-cleanner-cache-list-container-margin-bottom:0;
+  --cache-cleanner-cache-list-container-margin-left:0;
+
+  --cache-cleanner-cache-list-container-padding-top:0;
+  --cache-cleanner-cache-list-container-padding-right:0;
+  --cache-cleanner-cache-list-container-padding-bottom:0;
+  --cache-cleanner-cache-list-container-padding-left:0;
 }
 
 
 
 /* estados */
+html[data-theme="basic"] .storage-tab:active,
+html[data-theme="basic"] .storage-tab.active:active{
+  transform: scale(0.80);
+}
+
+html[data-theme="basic"] .storage-tab:hover,
+html[data-theme="basic"] .storage-tab.active:hover{
+  transform: scale(1.1);
+  background: var(--basic-purple-ultra-dark);
+}
+
+
+html[data-theme="basic"] .resize-action:hover{
+  --action-menu-resize-handle-background: var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .action-option:hover{
+  --action-menu-options-background: #14b8a6 ;
+}
 
 html[data-theme="basic"] .hamburger-menu li button:hover {
   --hamburger-item-bg: var(--basic-purple);
@@ -2725,7 +3784,7 @@ html[data-theme="basic"] .theme-btn:active {
 }
 
 html[data-theme="basic"] .theme-btn.active:active {
-  --theme-option-select-background: red;
+  --theme-option-select-background: var(--basic-red);
   transform: scale(0.98);
 }
 

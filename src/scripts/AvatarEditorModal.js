@@ -46,8 +46,10 @@ function addResizeHandlesToModal(element) {
 function centerModal() {
   if (!windowElement) return;
   const rect = windowElement.getBoundingClientRect();
-  windowX = (window.innerWidth - rect.width) / 2;
-  windowY = (window.innerHeight - rect.height) / 2;
+  const modalWidth = rect.width;
+  const modalHeight = rect.height;
+  windowX = (window.innerWidth - modalWidth) / 2;
+  windowY = (window.innerHeight - modalHeight) / 2;
   windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
   windowElement.setAttribute('data-x', windowX);
   windowElement.setAttribute('data-y', windowY);
@@ -73,7 +75,7 @@ function setupInteractForModal() {
     inertia: false,
     modifiers: [
       interact.modifiers.restrictSize({
-        min: { width: 550, height: 650 },
+        min: { width: 500, height: 550 },
         max: { width: window.innerWidth * 0.9, height: window.innerHeight * 0.9 }
       })
     ],

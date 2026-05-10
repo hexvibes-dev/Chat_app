@@ -5,18 +5,47 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: none;
   z-index: 10999;
   display: none;
   pointer-events: none;
+
+  background: var(--action-menu-overlay-background);
+  backdrop-filter: var(--action-menu-overlay-blur);
+  opacity: var(--action-menu-overlay-opacity);
+
+  border-top: var(--action-menu-overlay-border-top-width) var(--action-menu-overlay-border-top-style) var(--action-menu-overlay-border-top-color);
+  border-right: var(--action-menu-overlay-border-right-width) var(--action-menu-overlay-border-right-style) var(--action-menu-overlay-border-right-color);
+  border-bottom: var(--action-menu-overlay-border-bottom-width) var(--action-menu-overlay-border-bottom-style) var(--action-menu-overlay-border-bottom-color);
+  border-left: var(--action-menu-overlay-border-left-width) var(--action-menu-overlay-border-left-style) var(--action-menu-overlay-border-left-color);
+
+  border-top-left-radius: var(--action-menu-overlay-border-radius-top-left);
+  border-top-right-radius: var(--action-menu-overlay-border-radius-top-right);
+  border-bottom-right-radius: var(--action-menu-overlay-border-radius-bottom-right);
+  border-bottom-left-radius: var(--action-menu-overlay-border-radius-bottom-left);
+
+  box-shadow: var(--action-menu-overlay-shadow-external), inset var(--action-menu-overlay-shadow-internal);
+
+  outline: var(--action-menu-overlay-outline-width) var(--action-menu-overlay-outline-style) var(--action-menu-overlay-outline-color);
+  outline-offset: var(--action-menu-overlay-outline-offset);
+
+  padding-top: var(--action-menu-overlay-padding-top);
+  padding-right: var(--action-menu-overlay-padding-right);
+  padding-bottom: var(--action-menu-overlay-padding-bottom);
+  padding-left: var(--action-menu-overlay-padding-left);
+
+  margin-top: var(--action-menu-overlay-margin-top);
+  margin-right: var(--action-menu-overlay-margin-right);
+  margin-bottom: var(--action-menu-overlay-margin-bottom);
+  margin-left: var(--action-menu-overlay-margin-left);
 }
+
 #action-menu-overlay.active {
   display: block;
   pointer-events: none;
 }
 
 #action-movable-window {
+  flex-shrink: 0;
   position: fixed;
   transform-origin: top left;
   touch-action: none;
@@ -29,39 +58,130 @@
   max-height: 90vh;
   display: none;
   z-index: 11000;
-  background: #1e1e2e;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  border: 1px solid #3a3a4a;
   flex-direction: column;
   overflow: hidden;
   cursor: grab;
+
+  background: var(--action-menu-header-background);
+  backdrop-filter: var(--action-menu-header-blur);
+  opacity: var(--action-menu-header-opacity);
+
+  border-top: var(--action-menu-header-border-top-width) var(--action-menu-header-border-top-style) var(--action-menu-header-border-top-color);
+  border-right: var(--action-menu-header-border-right-width) var(--action-menu-header-border-right-style) var(--action-menu-header-border-right-color);
+  border-bottom: var(--action-menu-header-border-bottom-width) var(--action-menu-header-border-bottom-style) var(--action-menu-header-border-bottom-color);
+  border-left: var(--action-menu-header-border-left-width) var(--action-menu-header-border-left-style) var(--action-menu-header-border-left-color);
+
+  border-top-left-radius: var(--action-menu-header-border-radius-top-left);
+  border-top-right-radius: var(--action-menu-header-border-radius-top-right);
+  border-bottom-right-radius: var(--action-menu-header-border-radius-bottom-right);
+  border-bottom-left-radius: var(--action-menu-header-border-radius-bottom-left);
+
+  box-shadow: var(--action-menu-header-shadow-external), inset var(--action-menu-header-shadow-internal);
+
+  outline: var(--action-menu-header-outline-width) var(--action-menu-header-outline-style) var(--action-menu-header-outline-color);
+  outline-offset: var(--action-menu-header-outline-offset);
+
+  padding-top: var(--action-menu-header-padding-top);
+  padding-right: var(--action-menu-header-padding-right);
+  padding-bottom: var(--action-menu-header-padding-bottom);
+  padding-left: var(--action-menu-header-padding-left);
+
+  margin-top: var(--action-menu-header-margin-top);
+  margin-right: var(--action-menu-header-margin-right);
+  margin-bottom: var(--action-menu-header-margin-bottom);
+  margin-left: var(--action-menu-header-margin-left);
+
+  font-family: var(--action-menu-header-font-family);
+  font-size: var(--action-menu-header-font-size);
+  font-weight: var(--action-menu-header-font-weight);
+  line-height: var(--action-menu-header-line-height);
+  color: var(--action-menu-header-color);
 }
+
 #action-movable-window:active {
   cursor: grabbing;
 }
 
-#action-modal-header {
-  background: #2a2a3a;
-  border-bottom: 1px solid #3a3a4a;
-  cursor: grab;
-  padding: 12px 16px;
-  flex-shrink: 0;
-}
-#action-modal-header:active {
-  cursor: grabbing;
-}
-
 .modal-header-text {
-  font-size: 18px;
-  font-weight: 600;
-  color: #e0e0e0;
+  background: var(--action-menu-header-text-background);
+  backdrop-filter: var(--action-menu-header-text-blur);
+  opacity: var(--action-menu-header-text-opacity);
+
+  border-top: var(--action-menu-header-text-border-top-width) var(--action-menu-header-text-border-top-style) var(--action-menu-header-text-border-top-color);
+  border-right: var(--action-menu-header-text-border-right-width) var(--action-menu-header-text-border-right-style) var(--action-menu-header-text-border-right-color);
+  border-bottom: var(--action-menu-header-text-border-bottom-width) var(--action-menu-header-text-border-bottom-style) var(--action-menu-header-text-border-bottom-color);
+  border-left: var(--action-menu-header-text-border-left-width) var(--action-menu-header-text-border-left-style) var(--action-menu-header-text-border-left-color);
+
+  border-top-left-radius: var(--action-menu-header-text-border-radius-top-left);
+  border-top-right-radius: var(--action-menu-header-text-border-radius-top-right);
+  border-bottom-right-radius: var(--action-menu-header-text-border-radius-bottom-right);
+  border-bottom-left-radius: var(--action-menu-header-text-border-radius-bottom-left);
+
+  box-shadow: var(--action-menu-header-text-shadow-external), inset var(--action-menu-header-text-shadow-internal);
+
+  outline: var(--action-menu-header-text-outline-width) var(--action-menu-header-text-outline-style) var(--action-menu-header-text-outline-color);
+  outline-offset: var(--action-menu-header-text-outline-offset);
+
+  padding-top: var(--action-menu-header-text-padding-top);
+  padding-right: var(--action-menu-header-text-padding-right);
+  padding-bottom: var(--action-menu-header-text-padding-bottom);
+  padding-left: var(--action-menu-header-text-padding-left);
+
+  margin-top: var(--action-menu-header-text-margin-top);
+  margin-right: var(--action-menu-header-text-margin-right);
+  margin-bottom: var(--action-menu-header-text-margin-bottom);
+  margin-left: var(--action-menu-header-text-margin-left);
+
+  font-family: var(--action-menu-header-text-font-family);
+  font-size: var(--action-menu-header-text-font-size);
+  font-weight: var(--action-menu-header-text-font-weight);
+  line-height: var(--action-menu-header-text-line-height);
+  letter-spacing: var(--action-menu-header-text-letter-spacing);
+  word-spacing: var(--action-menu-header-text-word-spacing);
+  text-transform: var(--action-menu-header-text-text-transform);
+  text-shadow: var(--action-menu-header-text-text-shadow);
+  font-style: var(--action-menu-header-text-font-style);
+  color: var(--action-menu-header-text-color);
 }
 
 #action-menu-content {
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
+
+  background: var(--action-menu-body-background);
+  backdrop-filter: var(--action-menu-body-blur);
+  opacity: var(--action-menu-body-opacity);
+
+  border-top: var(--action-menu-body-border-top-width) var(--action-menu-body-border-top-style) var(--action-menu-body-border-top-color);
+  border-right: var(--action-menu-body-border-right-width) var(--action-menu-body-border-right-style) var(--action-menu-body-border-right-color);
+  border-bottom: var(--action-menu-body-border-bottom-width) var(--action-menu-body-border-bottom-style) var(--action-menu-body-border-bottom-color);
+  border-left: var(--action-menu-body-border-left-width) var(--action-menu-body-border-left-style) var(--action-menu-body-border-left-color);
+
+  border-top-left-radius: var(--action-menu-body-border-radius-top-left);
+  border-top-right-radius: var(--action-menu-body-border-radius-top-right);
+  border-bottom-right-radius: var(--action-menu-body-border-radius-bottom-right);
+  border-bottom-left-radius: var(--action-menu-body-border-radius-bottom-left);
+
+  box-shadow: var(--action-menu-body-shadow-external), inset var(--action-menu-body-shadow-internal);
+
+  outline: var(--action-menu-body-outline-width) var(--action-menu-body-outline-style) var(--action-menu-body-outline-color);
+  outline-offset: var(--action-menu-body-outline-offset);
+
+  padding-top: var(--action-menu-body-padding-top);
+  padding-right: var(--action-menu-body-padding-right);
+  padding-bottom: var(--action-menu-body-padding-bottom);
+  padding-left: var(--action-menu-body-padding-left);
+
+  margin-top: var(--action-menu-body-margin-top);
+  margin-right: var(--action-menu-body-margin-right);
+  margin-bottom: var(--action-menu-body-margin-bottom);
+  margin-left: var(--action-menu-body-margin-left);
+
+  font-family: var(--action-menu-body-font-family);
+  font-size: var(--action-menu-body-font-size);
+  font-weight: var(--action-menu-body-font-weight);
+  line-height: var(--action-menu-body-line-height);
+  color: var(--action-menu-body-color);
 }
 
 .action-menu-options {
@@ -71,40 +191,159 @@
 }
 
 .action-option {
-  background: #2a2a3a;
-  border: 1px solid #3a3a4a;
-  border-radius: 16px;
-  padding: 16px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   cursor: pointer;
   transition: transform 0.1s, background 0.1s;
-  color: #e0e0e0;
+
+  background: var(--action-menu-options-background);
+  backdrop-filter: var(--action-menu-options-blur);
+  opacity: var(--action-menu-options-opacity);
+
+  border-top: var(--action-menu-options-border-top-width) var(--action-menu-options-border-top-style) var(--action-menu-options-border-top-color);
+  border-right: var(--action-menu-options-border-right-width) var(--action-menu-options-border-right-style) var(--action-menu-options-border-right-color);
+  border-bottom: var(--action-menu-options-border-bottom-width) var(--action-menu-options-border-bottom-style) var(--action-menu-options-border-bottom-color);
+  border-left: var(--action-menu-options-border-left-width) var(--action-menu-options-border-left-style) var(--action-menu-options-border-left-color);
+
+  border-top-left-radius: var(--action-menu-options-border-radius-top-left);
+  border-top-right-radius: var(--action-menu-options-border-radius-top-right);
+  border-bottom-right-radius: var(--action-menu-options-border-radius-bottom-right);
+  border-bottom-left-radius: var(--action-menu-options-border-radius-bottom-left);
+
+  box-shadow: var(--action-menu-options-shadow-external), inset var(--action-menu-options-shadow-internal);
+
+  outline: var(--action-menu-options-outline-width) var(--action-menu-options-outline-style) var(--action-menu-options-outline-color);
+  outline-offset: var(--action-menu-options-outline-offset);
+
+  padding-top: var(--action-menu-options-padding-top);
+  padding-right: var(--action-menu-options-padding-right);
+  padding-bottom: var(--action-menu-options-padding-bottom);
+  padding-left: var(--action-menu-options-padding-left);
+
+  margin-top: var(--action-menu-options-margin-top);
+  margin-right: var(--action-menu-options-margin-right);
+  margin-bottom: var(--action-menu-options-margin-bottom);
+  margin-left: var(--action-menu-options-margin-left);
+
+  font-family: var(--action-menu-options-font-family);
+  font-size: var(--action-menu-options-font-size);
+  font-weight: var(--action-menu-options-font-weight);
+  line-height: var(--action-menu-options-line-height);
+  color: var(--action-menu-options-color);
 }
+
 .action-option:hover {
-  background: #14b8a6;
+  background: var(--action-menu-options-background, red);
   transform: translateY(-2px);
   color: white;
 }
+
 .action-option svg {
-  width: 40px;
-  height: 40px;
-  stroke: currentColor;
-  fill: none;
+  width: var(--action-modal-svg-icons-width);
+  height: var(--action-modal-svg-icons-height);
+
+  background: var(--action-modal-svg-icons-background);
+  backdrop-filter: var(--action-modal-svg-icons-blur);
+  opacity: var(--action-modal-svg-icons-opacity);
+
+  border-top: var(--action-modal-svg-icons-border-top-width) var(--action-modal-svg-icons-border-top-style) var(--action-modal-svg-icons-border-top-color);
+  border-right: var(--action-modal-svg-icons-border-right-width) var(--action-modal-svg-icons-border-right-style) var(--action-modal-svg-icons-border-right-color);
+  border-bottom: var(--action-modal-svg-icons-border-bottom-width) var(--action-modal-svg-icons-border-bottom-style) var(--action-modal-svg-icons-border-bottom-color);
+  border-left: var(--action-modal-svg-icons-border-left-width) var(--action-modal-svg-icons-border-left-style) var(--action-modal-svg-icons-border-left-color);
+
+  border-top-left-radius: var(--action-modal-svg-icons-border-radius-top-left);
+  border-top-right-radius: var(--action-modal-svg-icons-border-radius-top-right);
+  border-bottom-right-radius: var(--action-modal-svg-icons-border-radius-bottom-right);
+  border-bottom-left-radius: var(--action-modal-svg-icons-border-radius-bottom-left);
+
+  box-shadow: var(--action-modal-svg-icons-shadow-external), inset var(--action-modal-svg-icons-shadow-internal);
+
+  outline: var(--action-modal-svg-icons-outline-width) var(--action-modal-svg-icons-outline-style) var(--action-modal-svg-icons-outline-color);
+  outline-offset: var(--action-modal-svg-icons-outline-offset);
+
+  padding-top: var(--action-modal-svg-icons-padding-top);
+  padding-right: var(--action-modal-svg-icons-padding-right);
+  padding-bottom: var(--action-modal-svg-icons-padding-bottom);
+  padding-left: var(--action-modal-svg-icons-padding-left);
+
+  margin-top: var(--action-modal-svg-icons-margin-top);
+  margin-right: var(--action-modal-svg-icons-margin-right);
+  margin-bottom: var(--action-modal-svg-icons-margin-bottom);
+  margin-left: var(--action-modal-svg-icons-margin-left);
+
+  stroke: var(--action-modal-svg-icons-stroke);
+  fill: var(--action-modal-svg-icons-fill);
+  color: var(--action-modal-svg-icons-color);
+}
+
+.action-option span {
+  background: var(--action-menu-span-background);
+  backdrop-filter: var(--action-menu-span-blur);
+  opacity: var(--action-menu-span-opacity);
+
+  padding-top: var(--action-menu-span-padding-top);
+  padding-right: var(--action-menu-span-padding-right);
+  padding-bottom: var(--action-menu-span-padding-bottom);
+  padding-left: var(--action-menu-span-padding-left);
+
+  font-family: var(--action-menu-span-font-family);
+  font-size: var(--action-menu-span-font-size);
+  font-weight: var(--action-menu-span-font-weight);
+  line-height: var(--action-menu-span-line-height);
+  letter-spacing: var(--action-menu-span-letter-spacing);
+  word-spacing: var(--action-menu-span-word-spacing);
+  text-transform: var(--action-menu-span-text-transform);
+  text-shadow: var(--action-menu-span-text-shadow);
+  font-style: var(--action-menu-span-font-style);
+  color: var(--action-menu-span-color);
 }
 
 .resize-action {
   position: absolute;
-  background: transparent;
-  transition: background 0.1s;
   z-index: 10;
   touch-action: none;
+
+  background: var(--action-menu-resize-handle-background);
+  backdrop-filter: var(--action-menu-resize-handle-blur);
+  opacity: var(--action-menu-resize-handle-opacity);
+
+  border-top: var(--action-menu-resize-handle-border-top-width) var(--action-menu-resize-handle-border-top-style) var(--action-menu-resize-handle-border-top-color);
+  border-right: var(--action-menu-resize-handle-border-right-width) var(--action-menu-resize-handle-border-right-style) var(--action-menu-resize-handle-border-right-color);
+  border-bottom: var(--action-menu-resize-handle-border-bottom-width) var(--action-menu-resize-handle-border-bottom-style) var(--action-menu-resize-handle-border-bottom-color);
+  border-left: var(--action-menu-resize-handle-border-left-width) var(--action-menu-resize-handle-border-left-style) var(--action-menu-resize-handle-border-left-color);
+
+  border-top-left-radius: var(--action-menu-resize-handle-border-radius-top-left);
+  border-top-right-radius: var(--action-menu-resize-handle-border-radius-top-right);
+  border-bottom-right-radius: var(--action-menu-resize-handle-border-radius-bottom-right);
+  border-bottom-left-radius: var(--action-menu-resize-handle-border-radius-bottom-left);
+
+  box-shadow: var(--action-menu-resize-handle-shadow-external), inset var(--action-menu-resize-handle-shadow-internal);
+
+  outline: var(--action-menu-resize-handle-outline-width) var(--action-menu-resize-handle-outline-style) var(--action-menu-resize-handle-outline-color);
+  outline-offset: var(--action-menu-resize-handle-outline-offset);
+
+  padding-top: var(--action-menu-resize-handle-padding-top);
+  padding-right: var(--action-menu-resize-handle-padding-right);
+  padding-bottom: var(--action-menu-resize-handle-padding-bottom);
+  padding-left: var(--action-menu-resize-handle-padding-left);
+
+  margin-top: var(--action-menu-resize-handle-margin-top);
+  margin-right: var(--action-menu-resize-handle-margin-right);
+  margin-bottom: var(--action-menu-resize-handle-margin-bottom);
+  margin-left: var(--action-menu-resize-handle-margin-left);
+
+  transition-property: var(--action-menu-resize-handle-transition-property);
+  transition-duration: var(--action-menu-resize-handle-transition-duration);
+  transition-timing-function: var(--action-menu-resize-handle-transition-timing-function);
+  transition-delay: var(--action-menu-resize-handle-transition-delay);
 }
+
 .resize-action:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--action-menu-resize-handle-background ,rgba(255, 255, 255, 0.1));
 }
+
 .resize-action.resize-n,
 .resize-action.resize-s {
   left: 10px;
@@ -133,24 +372,3 @@
 .resize-action.resize-se { bottom: 0; right: 0; cursor: se-resize; }
 .resize-action.resize-sw { bottom: 0; left: 0; cursor: sw-resize; }
 
-@media (max-width: 768px) {
-  #action-movable-window {
-    width: 95vw;
-    height: 80vh;
-    max-width: 95vw;
-    max-height: 80vh;
-  }
-  .modal-header-text {
-    font-size: 16px;
-  }
-  .action-option {
-    padding: 12px 4px;
-  }
-  .action-option svg {
-    width: 32px;
-    height: 32px;
-  }
-  .action-option span {
-    font-size: 12px;
-  }
-}

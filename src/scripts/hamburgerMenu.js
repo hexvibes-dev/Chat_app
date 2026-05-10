@@ -26,7 +26,7 @@ function showTransientNotification(text, duration = 2000) {
 function showLoading(show) {
   let overlay = document.getElementById('cache-loading-overlay');
   const container = document.getElementById('cache-cleaner-inner-content');
-  
+
   if (show) {
     if (!overlay && container) {
       overlay = document.createElement('div');
@@ -137,7 +137,7 @@ function updatePaginationControls() {
   const nextBtn = document.getElementById('cache-next-btn');
   const pageIndicator = document.getElementById('cache-page-indicator');
   const totalItemsSpan = document.getElementById('cache-total-items');
-  
+
   if (prevBtn) {
     prevBtn.disabled = currentPage === 0;
     const newPrevBtn = prevBtn.cloneNode(true);
@@ -299,7 +299,7 @@ function showCustomPopup(message, type = 'warning') {
     overlay.className = 'modal-blur-overlay custom-popup-overlay';
     overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:50000;';
     document.body.appendChild(overlay);
-    
+
     const popup = document.createElement('div');
     popup.className = `custom-popup ${type}`;
     popup.style.cssText = `
@@ -307,10 +307,6 @@ function showCustomPopup(message, type = 'warning') {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: ${type === 'danger' ? 'var(--confirm-popup-background)' : 'var(--xd)'};
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
       z-index: 50001;
       display: flex;
       flex-direction: column;
@@ -318,19 +314,57 @@ function showCustomPopup(message, type = 'warning') {
       min-width: 300px;
       max-width: 90vw;
       text-align: center;
-      border: 1px solid ${type === 'danger' ? '#ef4444' : '#f59e0b'};
-      animation: popupBounceIn 0.3s ease-out;
+
+       background: var(--alert-clean-cache-and-chat-pop-up-background);
+        backdrop-filter: var(--alert-clean-cache-and-chat-pop-up-blur);
+        opacity: var(--alert-clean-cache-and-chat-pop-up-opacity);
+
+        border-top: var(--alert-clean-cache-and-chat-pop-up-border-top-width) var(--alert-clean-cache-and-chat-pop-up-border-top-style) var(--alert-clean-cache-and-chat-pop-up-border-top-color);
+      border-right: var(--alert-clean-cache-and-chat-pop-up-border-right-width) var(--alert-clean-cache-and-chat-pop-up-border-right-style) var(--alert-clean-cache-and-chat-pop-up-border-right-color);
+      border-bottom: var(--alert-clean-cache-and-chat-pop-up-border-bottom-width) var(--alert-clean-cache-and-chat-pop-up-border-bottom-style) var(--alert-clean-cache-and-chat-pop-up-border-bottom-color);
+      border-left: var(--alert-clean-cache-and-chat-pop-up-border-left-width) var(--alert-clean-cache-and-chat-pop-up-border-left-style) var(--alert-clean-cache-and-chat-pop-up-border-left-color);
+
+      border-top-left-radius: var(--alert-clean-cache-and-chat-pop-up-border-radius-top-left);
+      border-top-right-radius: var(--alert-clean-cache-and-chat-pop-up-border-radius-top-right);
+      border-bottom-right-radius: var(--alert-clean-cache-and-chat-pop-up-border-radius-bottom-right);
+      border-bottom-left-radius: var(--alert-clean-cache-and-chat-pop-up-border-radius-bottom-left);
+
+      box-shadow: var(--alert-clean-cache-and-chat-pop-up-shadow-external), inset var(--alert-clean-cache-and-chat-pop-up-shadow-internal);
+
+      padding-top: var(--alert-clean-cache-and-chat-pop-up-padding-top);
+      padding-right: var(--alert-clean-cache-and-chat-pop-up-padding-right);
+      padding-bottom: var(--alert-clean-cache-and-chat-pop-up-padding-bottom);
+    padding-left: var(--alert-clean-cache-and-chat-pop-up-padding-left);
+
+  margin-top: var(--alert-clean-cache-and-chat-pop-up-margin-top);
+  margin-right: var(--alert-clean-cache-and-chat-pop-up-margin-right);
+  margin-bottom: var(--alert-clean-cache-and-chat-pop-up-margin-bottom);
+  margin-left: var(--alert-clean-cache-and-chat-pop-up-margin-left);
+
+  font-family: var(--alert-clean-cache-and-chat-pop-up-font-family);
+  font-size: var(--alert-clean-cache-and-chat-pop-up-font-size);
+  font-weight: var(--alert-clean-cache-and-chat-pop-up-font-weight);
+  line-height: var(--alert-clean-cache-and-chat-pop-up-line-height);
+  letter-spacing: var(--alert-clean-cache-and-chat-pop-up-letter-spacing);
+  word-spacing: var(--alert-clean-cache-and-chat-pop-up-word-spacing);
+  text-transform: var(--alert-clean-cache-and-chat-pop-up-text-transform);
+  text-shadow: var(--alert-clean-cache-and-chat-pop-up-text-shadow);
+  font-style: var(--alert-clean-cache-and-chat-pop-up-font-style);
+  color: var(--alert-clean-cache-and-chat-pop-up-color);
+
+  animation: var(--alert-clean-cache-and-chat-pop-up-animation);
     `;
     popup.innerHTML = `
       <div style="font-size: 48px;">${type === 'danger' ? '⚠️' : '❓'}</div>
-      <p style="margin: 0; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; line-height: 1.5;">${escapeHtml(message)}</p>
-      <div style="display: flex; justify-content: center; gap: 20px; margin-top: 8px;">
-        <button class="popup-btn-no" style="background: rgba(239,68,68,0.2); border: none; padding: 10px 24px; border-radius: 30px; cursor: pointer; font-size: 14px; color: #f87171; transition: all 0.2s;">Cancelar</button>
-        <button class="popup-btn-yes" style="background: rgba(20,184,166,0.2); border: none; padding: 10px 24px; border-radius: 30px; cursor: pointer; font-size: 14px; color: #14b8a6; transition: all 0.2s;">Confirmar</button>
-      </div>
+      <p style="margin-top: var(--text-alert-clean-cache-and-chat-pop-up-margin-top); margin-right: var(--text-alert-clean-cache-and-chat-pop-up-margin-right); margin-bottom: var(--text-alert-clean-cache-and-chat-pop-up-margin-bottom); margin-left: var(--text-alert-clean-cache-and-chat-pop-up-margin-left); font-size: var(--text-alert-clean-cache-and-chat-pop-up-font-size); font-family: var(--text-alert-clean-cache-and-chat-pop-up-font-family); font-weight: var(--text-alert-clean-cache-and-chat-pop-up-font-weight); line-height: var(--text-alert-clean-cache-and-chat-pop-up-line-height); letter-spacing: var(--text-alert-clean-cache-and-chat-pop-up-letter-spacing); word-spacing: var(--text-alert-clean-cache-and-chat-pop-up-word-spacing); text-transform: var(--text-alert-clean-cache-and-chat-pop-up-text-transform); text-shadow: var(--text-alert-clean-cache-and-chat-pop-up-text-shadow); font-style: var(--text-alert-clean-cache-and-chat-pop-up-font-style); color: var(--text-alert-clean-cache-and-chat-pop-up-color); white-space: pre-wrap; background: var(--text-alert-clean-cache-and-chat-pop-up-background); backdrop-filter: var(--text-alert-clean-cache-and-chat-pop-up-blur); opacity: var(--text-alert-clean-cache-and-chat-pop-up-opacity); border-top: var(--text-alert-clean-cache-and-chat-pop-up-border-top-width) var(--text-alert-clean-cache-and-chat-pop-up-border-top-style) var(--text-alert-clean-cache-and-chat-pop-up-border-top-color); border-right: var(--text-alert-clean-cache-and-chat-pop-up-border-right-width) var(--text-alert-clean-cache-and-chat-pop-up-border-right-style) var(--text-alert-clean-cache-and-chat-pop-up-border-right-color); border-bottom: var(--text-alert-clean-cache-and-chat-pop-up-border-bottom-width) var(--text-alert-clean-cache-and-chat-pop-up-border-bottom-style) var(--text-alert-clean-cache-and-chat-pop-up-border-bottom-color); border-left: var(--text-alert-clean-cache-and-chat-pop-up-border-left-width) var(--text-alert-clean-cache-and-chat-pop-up-border-left-style) var(--text-alert-clean-cache-and-chat-pop-up-border-left-color); border-top-left-radius: var(--text-alert-clean-cache-and-chat-pop-up-border-radius-top-left); border-top-right-radius: var(--text-alert-clean-cache-and-chat-pop-up-border-radius-top-right); border-bottom-right-radius: var(--text-alert-clean-cache-and-chat-pop-up-border-radius-bottom-right); border-bottom-left-radius: var(--text-alert-clean-cache-and-chat-pop-up-border-radius-bottom-left); box-shadow: var(--text-alert-clean-cache-and-chat-pop-up-shadow-external), inset var(--text-alert-clean-cache-and-chat-pop-up-shadow-internal); padding-top: var(--text-alert-clean-cache-and-chat-pop-up-padding-top); padding-right: var(--text-alert-clean-cache-and-chat-pop-up-padding-right); padding-bottom: var(--text-alert-clean-cache-and-chat-pop-up-padding-bottom); padding-left: var(--text-alert-clean-cache-and-chat-pop-up-padding-left);">${escapeHtml(message)}</p>
+      <div style="background: var(--alert-buttons-backgrond-background); backdrop-filter: var(--alert-buttons-backgrond-blur); opacity: var(--alert-buttons-backgrond-opacity); border-top: var(--alert-buttons-backgrond-border-top-width) var(--alert-buttons-backgrond-border-top-style) var(--alert-buttons-backgrond-border-top-color); border-right: var(--alert-buttons-backgrond-border-right-width) var(--alert-buttons-backgrond-border-right-style) var(--alert-buttons-backgrond-border-right-color); border-bottom: var(--alert-buttons-backgrond-border-bottom-width) var(--alert-buttons-backgrond-border-bottom-style) var(--alert-buttons-backgrond-border-bottom-color); border-left: var(--alert-buttons-backgrond-border-left-width) var(--alert-buttons-backgrond-border-left-style) var(--alert-buttons-backgrond-border-left-color); border-top-left-radius: var(--alert-buttons-backgrond-border-radius-top-left); border-top-right-radius: var(--alert-buttons-backgrond-border-radius-top-right); border-bottom-right-radius: var(--alert-buttons-backgrond-border-radius-bottom-right); border-bottom-left-radius: var(--alert-buttons-backgrond-border-radius-bottom-left); box-shadow: var(--alert-buttons-backgrond-shadow-external), inset var(--alert-buttons-backgrond-shadow-internal); padding-top: var(--alert-buttons-backgrond-padding-top); padding-right: var(--alert-buttons-backgrond-padding-right); padding-bottom: var(--alert-buttons-backgrond-padding-bottom); padding-left: var(--alert-buttons-backgrond-padding-left); margin-top: var(--alert-buttons-backgrond-margin-top); margin-right: var(--alert-buttons-backgrond-margin-right); margin-bottom: var(--alert-buttons-backgrond-margin-bottom); margin-left: var(--alert-buttons-backgrond-margin-left); display: flex; justify-content: center; gap: 20px;">
+        
+        <button class="popup-btn-no" style="background: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-background); backdrop-filter: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-blur); opacity: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-opacity); border-top: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-top-width) var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-top-style) var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-top-color); border-right: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-right-width) var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-right-style) var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-right-color); border-bottom: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-bottom-width) var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-bottom-style) var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-bottom-color); border-left: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-left-width) var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-left-style) var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-left-color); border-top-left-radius: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-radius-top-left); border-top-right-radius: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-radius-top-right); border-bottom-right-radius: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-radius-bottom-right); border-bottom-left-radius: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-border-radius-bottom-left); box-shadow: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-shadow-external), inset var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-shadow-internal); padding-top: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-padding-top); padding-right: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-padding-right); padding-bottom: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-padding-bottom); padding-left: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-padding-left); font-family: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-font-family); font-size: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-font-size); font-weight: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-font-weight); line-height: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-line-height); letter-spacing: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-letter-spacing); word-spacing: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-word-spacing); text-transform: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-text-transform); text-shadow: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-text-shadow); font-style: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-font-style); color: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-color); transition: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-transition); cursor: pointer; width: var(--alert-ckean-cache-and-chat-pop-up-cancel-buttom-width);">Cancelar</button>
+        
+        <button class="popup-btn-yes" style="background: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-background); backdrop-filter: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-blur); opacity: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-opacity); border-top: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-top-width) var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-top-style) var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-top-color); border-right: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-right-width) var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-right-style) var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-right-color); border-bottom: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-bottom-width) var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-bottom-style) var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-bottom-color); border-left: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-left-width) var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-left-style) var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-left-color); border-top-left-radius: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-radius-top-left); border-top-right-radius: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-radius-top-right); border-bottom-right-radius: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-radius-bottom-right); border-bottom-left-radius: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-border-radius-bottom-left); box-shadow: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-shadow-external), inset var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-shadow-internal); padding-top: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-padding-top); padding-right: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-padding-right); padding-bottom: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-padding-bottom); padding-left: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-padding-left); font-family: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-font-family); font-size: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-font-size); font-weight: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-font-weight); line-height: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-line-height); letter-spacing: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-letter-spacing); word-spacing: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-word-spacing); text-transform: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-text-transform); text-shadow: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-text-shadow); font-style: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-font-style); color: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-color); transition: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-transition); cursor: pointer; width: var(--alert-ckean-cache-and-chat-pop-up-confirm-buttom-width);">Confirmar</button>
     `;
     document.body.appendChild(popup);
-    
+
     const cleanup = () => {
       popup.style.animation = 'popupBounceOut 0.2s ease-in';
       setTimeout(() => {
@@ -338,10 +372,10 @@ function showCustomPopup(message, type = 'warning') {
         overlay.remove();
       }, 200);
     };
-    
+
     popup.querySelector('.popup-btn-no').onclick = () => { cleanup(); resolve(false); };
     popup.querySelector('.popup-btn-yes').onclick = () => { cleanup(); resolve(true); };
-    
+
     if (!document.querySelector('#popup-keyframes')) {
       const style = document.createElement('style');
       style.id = 'popup-keyframes';
@@ -396,11 +430,11 @@ function isLessThan10PercentVisible(element) {
 
 function setupCacheInteract() {
   if (!cacheWindowElement || !cacheHeaderElement) return;
-  
+
   if (getComputedStyle(cacheWindowElement).position === 'static') {
     cacheWindowElement.style.position = 'fixed';
   }
-  
+
   interact(cacheWindowElement).resizable({
     edges: { top: true, left: true, bottom: true, right: true },
     inertia: false,
@@ -425,7 +459,7 @@ function setupCacheInteract() {
       }
     }
   });
-  
+
   interact(cacheHeaderElement).draggable({
     inertia: false,
     manualStart: false,
@@ -438,8 +472,8 @@ function setupCacheInteract() {
       })
     ],
     listeners: {
-      start() { 
-        window.isDraggingModal = true; 
+      start() {
+        window.isDraggingModal = true;
       },
       move(event) {
         cacheWindowX += event.dx;
@@ -461,53 +495,56 @@ function setupCacheInteract() {
 function rebuildCacheModalStructure() {
   const container = document.getElementById('cache-cleaner-inner-content');
   if (!container) return;
-  
+
   const existingGrid = container.querySelector('.cache-grid');
   if (existingGrid) return;
-  
+
   const movableWindow = cacheWindowElement;
   if (!movableWindow) return;
-  
+
   const oldTabsDiv = movableWindow.querySelector('div[style*="display: flex; gap:8px; padding:12px"]');
   if (oldTabsDiv) oldTabsDiv.remove();
-  
+
   const oldPaginationDiv = movableWindow.querySelector('#cache-total-items')?.closest('div[style*="justify-content: space-between"]');
   if (oldPaginationDiv && oldPaginationDiv !== movableWindow.querySelector('#cache-cleaner-inner-content')?.previousSibling) {
     oldPaginationDiv.remove();
   }
-  
+
   const oldSelectDiv = movableWindow.querySelector('#cache-select-all-btn')?.closest('div[style*="justify-content: space-between"]');
   if (oldSelectDiv && oldSelectDiv !== movableWindow.querySelector('#cache-cleaner-inner-content')?.previousSibling) {
     oldSelectDiv.remove();
   }
-  
+
   const newTabsDiv = document.createElement('div');
-  newTabsDiv.style.cssText = 'display: flex; gap:8px; padding:12px; border-bottom: 1px solid var(--modal-input-border, #313244); flex-wrap:wrap; flex-shrink:0;';
+  newTabsDiv.classList.add('tabs-container');
   newTabsDiv.innerHTML = `
-    <button id="storage-local-btn" class="storage-tab active" data-storage="local">📦 localStorage</button>
-    <button id="storage-session-btn" class="storage-tab" data-storage="session">🔄 sessionStorage</button>
-    <button id="storage-cache-btn" class="storage-tab" data-storage="cache">💾 Cache Storage</button>
-    <button id="delete-all-storage-btn" class="storage-tab danger" style="background:#7f1a1a; color:white;">⚠️ BORRAR TODO</button>
+    <button id="storage-local-btn" class="storage-tab active" data-storage="local">localStorage</button>
+    <button id="storage-session-btn" class="storage-tab" data-storage="session">sessionStorage</button>
+    <button id="storage-cache-btn" class="storage-tab" data-storage="cache">cache storage</button>
+    <button id="delete-all-storage-btn" class="storage-tab danger">BORRAR TODO</button>
   `;
-  
+
   const paginationDiv = document.createElement('div');
-  paginationDiv.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 8px; flex-shrink:0;';
   paginationDiv.innerHTML = `
-    <span id="cache-total-items" style="color:#a0a0b0; font-size:12px;">0 elementos totales</span>
-    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
-      <button id="cache-prev-btn" class="cache-page-nav-btn" style="padding:6px 12px; border:none; border-radius:8px; background:rgba(255,255,255,0.1); color:#e0e0e0; cursor:pointer;">◀ Anterior</button>
-      <span id="cache-page-indicator" style="color:#e0e0e0; font-size:12px;">Página 1 de 1</span>
-      <button id="cache-next-btn" class="cache-page-nav-btn" style="padding:6px 12px; border:none; border-radius:8px; background:rgba(255,255,255,0.1); color:#e0e0e0; cursor:pointer;">Siguiente ▶</button>
+    <div class="total-items-container">
+    <span id="cache-total-items">0 elementos totales</span>
+    </div>
+    <div id="cache-nezt-prev-container">
+      <button id="cache-prev-btn" class="cache-page-nav-btn" >◀ Anterior</button>
+      
+      <span id="cache-page-indicator">Página 1 de 1</span>
+      
+      <button id="cache-next-btn" class="cache-page-nav-btn" >Siguiente ▶</button>
     </div>
   `;
-  
+
   const selectDiv = document.createElement('div');
-  selectDiv.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 8px; flex-shrink:0;';
+  selectDiv.classList.add('cache-xleaner-btn-cont-select');
   selectDiv.innerHTML = `
-    <button id="cache-select-all-btn" class="cache-select-all-btn" style="padding:6px 14px; border:none; border-radius:8px; background:rgba(20,184,166,0.2); color:#14b8a6; cursor:pointer;">✅ Seleccionar todo</button>
-    <span id="cache-selection-count" style="color:#a0a0b0; font-size:12px;">0 seleccionados/0</span>
+    <button id="cache-select-all-btn" class="cache-select-all-btn">✅ Seleccionar todo</button>
+    <span id="cache-selection-count">0 seleccionados/0</span>
   `;
-  
+
   const oldFooter = movableWindow.querySelector('div[style*="display:flex; justify-content:flex-end; gap:12px; padding:16px"]');
   if (oldFooter) {
     oldFooter.style.cssText = 'display: flex; justify-content: center; gap: 20px; padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.1); flex-shrink:0;';
@@ -520,15 +557,15 @@ function rebuildCacheModalStructure() {
       acceptBtn.style.cssText = 'padding: 8px 24px; border: none; border-radius: 20px; cursor: pointer; background: rgba(20,184,166,0.2); color: #14b8a6;';
     }
   }
-  
+
   const innerContent = movableWindow.querySelector('#cache-cleaner-inner-content');
   if (innerContent) {
     innerContent.style.cssText = 'flex: 1; overflow-y: auto; padding: 16px; min-height: 0;';
   }
-  
+
   const firstDiv = movableWindow.children[0];
   const headerDiv = movableWindow.querySelector('#cache-cleaner-modal-header');
-  
+
   if (headerDiv && headerDiv.nextSibling) {
     movableWindow.insertBefore(newTabsDiv, headerDiv.nextSibling);
     movableWindow.insertBefore(paginationDiv, newTabsDiv.nextSibling);
@@ -538,7 +575,7 @@ function rebuildCacheModalStructure() {
     movableWindow.appendChild(paginationDiv);
     movableWindow.appendChild(selectDiv);
   }
-  
+
   movableWindow.style.flexDirection = 'column';
 }
 
@@ -547,29 +584,30 @@ function initCacheModal() {
   cacheHeaderElement = document.getElementById('cache-cleaner-modal-header');
   cacheCloseBtn = document.getElementById('close-cache-cleaner-modal');
   cacheOverlay = document.getElementById('cache-cleaner-overlay');
-  
+
   if (!cacheWindowElement || !cacheHeaderElement) return;
-  
+
   cacheWindowElement.style.display = 'none';
-  
+
   if (cacheOverlay) {
     cacheOverlay.style.display = 'none';
     associateOverlay(cacheWindowElement, cacheOverlay);
   }
-  
+
   rebuildCacheModalStructure();
   setupCacheInteract();
-  
+
   if (cacheCloseBtn) {
     cacheCloseBtn.onclick = () => hideCacheModal();
   }
-  
-  if (cacheOverlay) {
-    cacheOverlay.onclick = () => hideCacheModal();
-  }
-  
   registerModal(cacheWindowElement, 'cache-cleaner-modal');
-  
+  cacheWindowElement.addEventListener('mousedown', () => {
+    bringModalToFront('cache-cleaner-modal');
+  });
+  cacheWindowElement.addEventListener('touchstart', () => {
+    bringModalToFront('cache-cleaner-modal');
+  });
+
   const localBtn = document.getElementById('storage-local-btn');
   const sessionBtn = document.getElementById('storage-session-btn');
   const cacheBtn = document.getElementById('storage-cache-btn');
@@ -577,7 +615,7 @@ function initCacheModal() {
   const cancelBtn = document.getElementById('cache-cancel-btn');
   const acceptBtn = document.getElementById('cache-accept-btn');
   const selectAllBtn = document.getElementById('cache-select-all-btn');
-  
+
   if (cancelBtn) cancelBtn.addEventListener('click', () => hideCacheModal());
   if (acceptBtn) acceptBtn.addEventListener('click', deleteSelectedCacheItems);
   if (selectAllBtn) selectAllBtn.addEventListener('click', handleSelectAll);
@@ -585,7 +623,7 @@ function initCacheModal() {
   if (localBtn) localBtn.addEventListener('click', () => updateStorageTabs('local'));
   if (sessionBtn) sessionBtn.addEventListener('click', () => updateStorageTabs('session'));
   if (cacheBtn) cacheBtn.addEventListener('click', () => updateStorageTabs('cache'));
-  
+
   window.addEventListener('resize', () => {
     if (isCacheModalOpen && cacheWindowElement) {
       const rect = cacheWindowElement.getBoundingClientRect();
@@ -602,7 +640,7 @@ function showCacheModal() {
   if (isCacheModalOpen) return;
   if (!cacheWindowElement) initCacheModal();
   if (!cacheWindowElement) return;
-  
+
   if (cacheOverlay) {
     cacheOverlay.style.display = 'block';
     cacheOverlay.classList.add('active');
@@ -610,11 +648,8 @@ function showCacheModal() {
   cacheWindowElement.style.display = 'flex';
   centerCacheModal();
   isCacheModalOpen = true;
-  
-  if (typeof bringModalToFront === 'function') {
-    bringModalToFront('cache-cleaner-modal');
-  }
-  
+  bringModalToFront('cache-cleaner-modal');
+
   refreshCacheDisplay();
 }
 
