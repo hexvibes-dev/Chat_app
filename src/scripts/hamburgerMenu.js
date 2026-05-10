@@ -440,7 +440,7 @@ function setupCacheInteract() {
     inertia: false,
     modifiers: [
       interact.modifiers.restrictSize({
-        min: { width: 280, height: 400 },
+        min: { width: 100, height: 150 },
         max: { width: window.innerWidth * 0.95, height: window.innerHeight * 0.9 }
       })
     ],

@@ -70,12 +70,16 @@ function isLessThan10PercentVisible(element) {
 function setupInteractForModal() {
   if (!windowElement || !headerElement) return;
 
+  if (getComputedStyle(windowElement).position !== 'fixed') {
+    windowElement.style.position = 'fixed';
+  }
+
   interact(windowElement).resizable({
     edges: { top: true, left: true, bottom: true, right: true },
     inertia: false,
     modifiers: [
       interact.modifiers.restrictSize({
-        min: { width: 500, height: 550 },
+        min: { width: 100, height: 150 },
         max: { width: window.innerWidth * 0.9, height: window.innerHeight * 0.9 }
       })
     ],
@@ -348,10 +352,13 @@ function resetAll() {
     canvas.height = originalImage.height;
     applyFiltersAndDraw();
   }
-  document.querySelectorAll('.shape-btn').forEach(btn => {
-    btn.classList.remove('active');
-    if (btn.dataset.shape === 'circle') btn.classList.add('active');
-  });
+  const shapeBtns = document.querySelectorAll('.shape-btn');
+  if (shapeBtns.length) {
+    shapeBtns.forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.shape === 'circle') btn.classList.add('active');
+    });
+  }
 }
 
 function moveImage(dx, dy) {
@@ -367,59 +374,36 @@ function loadImage(file) {
   
   const reader = new FileReader();
   reader.onload = (ev) => {
-    currentImageDataUrl = ev.target.result;
+    const imageDataUrl = ev.target.result;
+    currentImageDataUrl = imageDataUrl;
     
-    if (isAnimatedImage && preserveAnimation) {
-      const img = document.createElement('img');
-      img.src = ev.target.result;
-      img.onload = () => {
-        originalImage = img;
-        const maxSize = 512;
-        let width = img.width;
-        let height = img.height;
-        if (width > maxSize || height > maxSize) {
-          if (width > height) {
-            height = (height * maxSize) / width;
-            width = maxSize;
-          } else {
-            width = (width * maxSize) / height;
-            height = maxSize;
-          }
+    const img = new Image();
+    img.onload = () => {
+      originalImage = img;
+      const maxSize = 512;
+      let width = img.width;
+      let height = img.height;
+      if (width > maxSize || height > maxSize) {
+        if (width > height) {
+          height = (height * maxSize) / width;
+          width = maxSize;
+        } else {
+          width = (width * maxSize) / height;
+          height = maxSize;
         }
-        canvas.width = width;
-        canvas.height = height;
-        resetAll();
-        showTransientNotification('Imagen animada cargada. Los efectos visuales (zoom, rotación, filtros) NO se aplicarán si conservas la animación.', 4000);
-        updateAnimationButtons();
-        updateAnimatedPreview();
-      };
-    } else {
-      const img = new Image();
-      img.onload = () => {
-        originalImage = img;
-        const maxSize = 512;
-        let width = img.width;
-        let height = img.height;
-        if (width > maxSize || height > maxSize) {
-          if (width > height) {
-            height = (height * maxSize) / width;
-            width = maxSize;
-          } else {
-            width = (width * maxSize) / height;
-            height = maxSize;
-          }
-        }
-        canvas.width = width;
-        canvas.height = height;
-        resetAll();
-        if (isAnimatedImage && !preserveAnimation) {
-          showTransientNotification('Animación eliminada, se guardará como imagen estática', 2000);
-        }
-        updateAnimationButtons();
-        updateAnimatedPreview();
-      };
-      img.src = ev.target.result;
-    }
+      }
+      canvas.width = width;
+      canvas.height = height;
+      resetAll();
+      if (isAnimatedImage && preserveAnimation) {
+        showTransientNotification('Imagen animada cargada. Los efectos visuales NO se aplicarán si conservas la animación.', 4000);
+      } else if (isAnimatedImage && !preserveAnimation) {
+        showTransientNotification('Animación eliminada, se guardará como imagen estática', 2000);
+      }
+      updateAnimationButtons();
+      updateAnimatedPreview();
+    };
+    img.src = imageDataUrl;
   };
   reader.readAsDataURL(file);
 }
@@ -472,13 +456,13 @@ function setPreserveAnimation(value) {
   preserveAnimation = value;
   if (originalImage && currentImageDataUrl) {
     if (isAnimatedImage && preserveAnimation) {
-      const img = document.createElement('img');
-      img.src = currentImageDataUrl;
+      const img = new Image();
       img.onload = () => {
         originalImage = img;
         resetAll();
         showTransientNotification('Animación preservada. Los efectos NO se aplican a la animación.', 3000);
       };
+      img.src = currentImageDataUrl;
     } else if (isAnimatedImage && !preserveAnimation) {
       const tempCanvas = document.createElement('canvas');
       const tempCtx = tempCanvas.getContext('2d');
@@ -687,15 +671,18 @@ function renderModal() {
     });
   }
   
-  document.querySelectorAll('.shape-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      cropShape = btn.dataset.shape;
-      applyFiltersAndDraw();
-      showTransientNotification(`Forma cambiada a ${btn.textContent}`, 1500);
+  const shapeBtns = document.querySelectorAll('.shape-btn');
+  if (shapeBtns.length) {
+    shapeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        shapeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        cropShape = btn.dataset.shape;
+        applyFiltersAndDraw();
+        showTransientNotification(`Forma cambiada a ${btn.textContent}`, 1500);
+      });
     });
-  });
+  }
   
   if (canvas) {
     canvas.addEventListener('mousedown', startDrawShape);
