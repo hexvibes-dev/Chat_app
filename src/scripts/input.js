@@ -1,3 +1,4 @@
+// input.js
 import { appendMessage } from './messages.js';
 import { getAndClearQuotedMessage, hideReplyPopup } from './answer.js';
 import { connectToBackend, sendMessageViaSocket, isSocketConnected, disconnectSocket } from './socket.js';
@@ -56,6 +57,13 @@ function getInputText() {
     const shortcode = img.getAttribute('data-shortcode');
     const textNode = document.createTextNode(shortcode);
     img.parentNode.replaceChild(textNode, img);
+  });
+  clone.querySelectorAll('[data-shortcode]').forEach(el => {
+    const shortcode = el.getAttribute('data-shortcode');
+    if (shortcode) {
+      const textNode = document.createTextNode(shortcode);
+      el.parentNode.replaceChild(textNode, el);
+    }
   });
   clone.querySelectorAll('.sticker-message').forEach(img => {
     const imgClone = img.cloneNode(true);
@@ -125,9 +133,15 @@ export function insertAtCursor(html, shouldKeepFocus = false) {
   range.deleteContents();
   const fragment = range.createContextualFragment(processedHtml);
   range.insertNode(fragment);
-  range.collapse(false);
-  sel.removeAllRanges();
-  sel.addRange(range);
+  
+  if (fragment.lastChild) {
+    range.setStartAfter(fragment.lastChild);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  } else {
+    range.collapse(false);
+  }
 
   input.dispatchEvent(new Event('input', { bubbles: true }));
   saveCursorPosition();
@@ -162,9 +176,13 @@ function playKeyboardSound() {
 
 export function sendMessageFromInput() {
   window._ignoreBlurForPicker = true;
+  
+  if (window.__setIgnoreClose) window.__setIgnoreClose(true);
+  
   setTimeout(() => {
     window._ignoreBlurForPicker = false;
-  }, 300);
+    if (window.__setIgnoreClose) window.__setIgnoreClose(false);
+  }, 500);
 
   let text = getInputText();
 
@@ -292,7 +310,9 @@ if (input) {
   });
 
   input.addEventListener('blur', () => {
-    input.contentEditable = 'false';
+    if (!window._ignoreBlurForPicker) {
+      input.contentEditable = 'false';
+    }
   });
 }
 

@@ -307,7 +307,7 @@ function showCustomPopup(message, type = 'warning') {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: ${type === 'danger' ? '#1a1a2e' : '#1e1e2e'};
+      background: ${type === 'danger' ? 'var(--confirm-popup-background)' : 'var(--xd)'};
       border-radius: 20px;
       padding: 24px;
       box-shadow: 0 10px 40px rgba(0,0,0,0.5);

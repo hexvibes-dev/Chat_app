@@ -1,3 +1,4 @@
+// CustomEmojiModal.js
 import interact from 'interactjs';
 import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
 import {
@@ -8,7 +9,9 @@ import {
   canAddEmojiToCategory,
   refreshCustomEmojisInPicker,
   removeCustomEmoji,
-  deleteCategory
+  deleteCategory,
+  toggleStaticCategoryDisabled,
+  isStaticCategoryDisabled
 } from './CustomEmojiManager.js';
 import { showNotification } from './notifications.js';
 
@@ -543,6 +546,14 @@ async function deleteCategoryHandler(categoryName) {
   }
 }
 
+async function toggleStaticCategoryHandler(categoryName) {
+  const newState = toggleStaticCategoryDisabled(categoryName);
+  showTransientNotification(`Categoría "${categoryName}" ${newState ? 'activada' : 'desactivada'}`, 2000);
+  refreshCustomEmojisInPicker();
+  renderModalContent();
+  restoreExpandedState();
+}
+
 async function deleteEmojiHandler(categoryName, shortcode) {
   const confirmed = await showConfirmPopup('¿Eliminar este emoji?');
   if (confirmed) {
@@ -608,7 +619,7 @@ function addResizeHandlesToModal(element) {
     let handle = element.querySelector(`.resize-custom-emoji.resize-${dir}`);
     if (!handle) {
       handle = document.createElement('div');
-      handle.className = `resize-custom-emoji resize-${dir}`;
+      handle.className = `resize-custom-emoji.resize-${dir}`;
       element.appendChild(handle);
     }
   });
@@ -717,28 +728,49 @@ function renderModalContent() {
   let html = `<div style="padding: 16px; overflow-y: auto; height: 100%;">`;
   categories.forEach((cat, idx) => {
     const categoryId = `cat-${idx}`;
+    const isDisabled = cat.disabled === true;
+    const isStatic = cat.isStaticCategory === true;
+    const disabledStyle = isDisabled ? 'opacity: 0.5; background: #1a1a2a;' : '';
+    
+    let iconHtml = '';
+    if (cat.icon) {
+      if (cat.icon.startsWith('<svg')) {
+        iconHtml = `<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:8px;">${cat.icon}</span>`;
+      } else {
+        iconHtml = `<span style="margin-right:8px;">${cat.icon}</span>`;
+      }
+    }
+    
     html += `
-      <div class="custom-category-item" style="margin-bottom: 16px; border: 1px solid #3a3a4a; border-radius: 12px; overflow: hidden;">
-        <div class="category-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #2a2a3a; cursor: pointer; user-select: none;">
+      <div class="custom-category-item" style="margin-bottom: 16px; border: 1px solid #3a3a4a; border-radius: 12px; overflow: hidden; ${disabledStyle}">
+        <div class="category-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: ${isDisabled ? '#1a1a2a' : '#2a2a3a'}; cursor: ${(isStatic && isDisabled) ? 'not-allowed' : 'pointer'}; user-select: none;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span id="category-arrow-${categoryId}" style="font-size: 14px; color: #e0e0e0;">${expandedCategories.has(categoryId) ? '▲' : '▼'}</span>
+            <span id="category-arrow-${categoryId}" style="font-size: 14px; color: #e0e0e0;">${isDisabled ? '🔒' : (expandedCategories.has(categoryId) ? '▲' : '▼')}</span>
+            ${iconHtml}
             <strong style="color: #e0e0e0;">${escapeHtml(cat.name)}</strong>
-            <span style="font-size: 12px; opacity: 0.7; color: #a0a0b0;">(${cat.emojis.length}/30)</span>
+            <span style="font-size: 12px; opacity: 0.7; color: #a0a0b0;">(${cat.emojis?.length || 0}/30)</span>
+            ${isStatic ? '<span style="font-size: 10px; background: #14b8a6; padding: 2px 6px; border-radius: 20px;">📖 Solo lectura</span>' : ''}
           </div>
           <div style="display: flex; gap: 8px;">
-            <button class="delete-category-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: #ef4444;">🗑️</button>
-            <button class="add-emoji-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: #14b8a6;">➕</button>
+            ${isStatic ? `
+              <button class="toggle-static-category-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: ${isDisabled ? '#14b8a6' : '#f87171'};" title="${isDisabled ? 'Activar categoría' : 'Desactivar categoría'}">
+                ${isDisabled ? '🔓' : '🔒'}
+              </button>
+            ` : `
+              <button class="delete-category-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: #ef4444;">🗑️</button>
+            `}
+            ${!isStatic ? `<button class="add-emoji-btn" data-category="${escapeHtml(cat.name)}" style="background: transparent; border: none; cursor: pointer; font-size: 20px; color: #14b8a6;">➕</button>` : ''}
           </div>
         </div>
-        <div id="category-content-${categoryId}" class="category-content" style="max-height: ${expandedCategories.has(categoryId) ? '1000px' : '0'}; overflow: hidden; transition: max-height 0.3s ease-out; padding-top: ${expandedCategories.has(categoryId) ? '12px' : '0'};">
+        <div id="category-content-${categoryId}" class="category-content" style="max-height: ${(!isDisabled && expandedCategories.has(categoryId)) ? '1000px' : '0'}; overflow: hidden; transition: max-height 0.3s ease-out; padding-top: ${(!isDisabled && expandedCategories.has(categoryId)) ? '12px' : '0'};">
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 12px; padding: 16px;">
     `;
-    for (const emoji of cat.emojis) {
+    for (const emoji of (cat.emojis || [])) {
       html += `
         <div class="custom-emoji-item" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px; background: #2a2a3a; border-radius: 12px; position: relative;">
-          <img src="${emoji.url}" alt="${emoji.name}" style="width: 48px; height: 48px; object-fit: contain; border-radius: 8px;">
+          ${emoji.svg ? `<div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;">${emoji.svg}</div>` : `<img src="${emoji.url}" alt="${emoji.name}" style="width: 48px; height: 48px; object-fit: contain; border-radius: 8px;">`}
           <span style="font-size: 10px; text-align: center; word-break: break-all; color: #a0a0b0;">:${emoji.shortcodes[0]}:</span>
-          <button class="delete-emoji-btn" data-category="${escapeHtml(cat.name)}" data-shortcode="${emoji.shortcodes[0]}" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; color: white; font-size: 12px;">🗑️</button>
+          ${!isStatic ? `<button class="delete-emoji-btn" data-category="${escapeHtml(cat.name)}" data-shortcode="${emoji.shortcodes[0]}" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; color: white; font-size: 12px;">🗑️</button>` : ''}
         </div>
       `;
     }
@@ -751,22 +783,27 @@ function renderModalContent() {
   if (canCreateCategory()) {
     html += `
       <button id="create-new-category-btn" class="btn primary" style="width: 100%; margin-top: 16px; padding: 12px; border-radius: 12px; background: #14b8a6; color: white; border: none; cursor: pointer;">
-        + Crear nueva categoría (${getCategories().length}/4)
+        + Crear nueva categoría (${getCategories().filter(c => !c.isStaticCategory).length}/4)
       </button>
     `;
   }
   html += `</div>`;
   contentDiv.innerHTML = html;
+  
   document.querySelectorAll('.category-header').forEach(header => {
     const arrowSpan = header.querySelector('[id^="category-arrow-"]');
     if (arrowSpan) {
       const categoryId = arrowSpan.id.replace('category-arrow-', '');
-      header.addEventListener('click', (e) => {
-        if (e.target.closest('button')) return;
-        toggleCategory(categoryId);
-      });
+      const isDisabled = header.closest('.custom-category-item')?.style.opacity === '0.5';
+      if (!isDisabled) {
+        header.addEventListener('click', (e) => {
+          if (e.target.closest('button')) return;
+          toggleCategory(categoryId);
+        });
+      }
     }
   });
+  
   document.querySelectorAll('.delete-category-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -774,6 +811,15 @@ function renderModalContent() {
       deleteCategoryHandler(categoryName);
     });
   });
+  
+  document.querySelectorAll('.toggle-static-category-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const categoryName = btn.dataset.category;
+      toggleStaticCategoryHandler(categoryName);
+    });
+  });
+  
   document.querySelectorAll('.add-emoji-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -781,6 +827,7 @@ function renderModalContent() {
       addEmojiHandler(categoryName);
     });
   });
+  
   document.querySelectorAll('.delete-emoji-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -789,6 +836,7 @@ function renderModalContent() {
       deleteEmojiHandler(categoryName, shortcode);
     });
   });
+  
   const createBtn = document.getElementById('create-new-category-btn');
   if (createBtn) {
     createBtn.addEventListener('click', async () => {

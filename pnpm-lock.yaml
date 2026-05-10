@@ -62,9 +62,15 @@ importers:
       emoji-picker-element:
         specifier: ^1.29.1
         version: 1.29.1
+      gif2vid:
+        specifier: ^0.0.5
+        version: 0.0.5
       interactjs:
         specifier: ^1.10.27
         version: 1.10.27
+      libgif:
+        specifier: ^0.0.3
+        version: 0.0.3
       socket.io-client:
         specifier: ^4.8.3
         version: 4.8.3
@@ -1062,11 +1068,18 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
+  gif2vid@0.0.5:
+    resolution: {integrity: sha512-Kb4k6+stNm5gDGRTFZK4d/wqv6e8ZuZvaNB00ID6gamAMFuB9hmbssDb6cujDrqeGSl5eQNnqQIq4FJ2Drb9Aw==}
+    hasBin: true
+
   github-slugger@2.0.0:
     resolution: {integrity: sha512-IaOQ9puYtjrkq7Y0Ygl9KDZnrf/aiUJYUpVf89y8kyaxbRG7Y1SrX/jaumrv81vc61+kiMempujsM3Yw7w5qcw==}
 
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
+
+  h264-mp4-encoder@1.0.12:
+    resolution: {integrity: sha512-xih3J+Go0o1RqGjhOt6TwXLWWGqLONRPyS8yoMu/RoS/S8WyEv4HuHp1KBsDDl8srZQ3gw9f95JYkCSjCuZbHQ==}
 
   h3@1.15.8:
     resolution: {integrity: sha512-iOH6Vl8mGd9nNfu9C0IZ+GuOAfJHcyf3VriQxWaSWIB76Fg4BnFuk4cxBxjmQSSxJS664+pgjP6e7VBnUzFfcg==}
@@ -1147,6 +1160,9 @@ packages:
 
   jsonfile@5.0.0:
     resolution: {integrity: sha512-NQRZ5CRo74MhMMC3/3r5g2k4fjodJ/wh8MxjFbCViWKFjxrnudWSY5vomh+23ZaXzAS7J3fBZIR2dV6WbmfM0w==}
+
+  libgif@0.0.3:
+    resolution: {integrity: sha512-4lJhyr5AQvHIs+Btdqvx0UgUAuZNJhcG6vZS0yYNrYm4B1k9Lo4NxezWR5AQ7EJrXkxmktrx1ZplWJVwRBz/ew==}
 
   lightningcss-android-arm64@1.32.0:
     resolution: {integrity: sha512-YK7/ClTt4kAK0vo6w3X+Pnm0D2cf2vPHbhOXdoNti1Ga0al1P4TBZhwjATvjNwLEBCnKvjJc2jQgHXH0NEwlAg==}
@@ -1410,6 +1426,9 @@ packages:
 
   ohash@2.0.11:
     resolution: {integrity: sha512-RdR9FQrFwNBNXAr4GixM8YaRZRJ5PUWbKYbE5eOsrwAjJW0q2REGcf79oYPsLyskQCZG1PLN+S/K1V00joZAoQ==}
+
+  omggif@1.0.10:
+    resolution: {integrity: sha512-LMJTtvgc/nugXj0Vcrrs68Mn2D1r0zf630VNtqtpI1FEO7e+O9FP4gqs9AcnBaSEeoHIPm28u6qgPR0oyEpGSw==}
 
   oniguruma-parser@0.12.1:
     resolution: {integrity: sha512-8Unqkvk1RYc6yq2WBYRj4hdnsAxVze8i7iPfQr8e4uSP3tRv0rpZcbGUDvxfQQcdwHt/e9PrMvGCsa8OqG9X3w==}
@@ -2765,9 +2784,16 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
+  gif2vid@0.0.5:
+    dependencies:
+      h264-mp4-encoder: 1.0.12
+      omggif: 1.0.10
+
   github-slugger@2.0.0: {}
 
   graceful-fs@4.2.11: {}
+
+  h264-mp4-encoder@1.0.12: {}
 
   h3@1.15.8:
     dependencies:
@@ -2907,6 +2933,8 @@ snapshots:
       universalify: 0.1.2
     optionalDependencies:
       graceful-fs: 4.2.11
+
+  libgif@0.0.3: {}
 
   lightningcss-android-arm64@1.32.0:
     optional: true
@@ -3321,6 +3349,8 @@ snapshots:
       ufo: 1.6.3
 
   ohash@2.0.11: {}
+
+  omggif@1.0.10: {}
 
   oniguruma-parser@0.12.1: {}
 

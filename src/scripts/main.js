@@ -1,4 +1,3 @@
-// src/scripts/main.js
 import './messages.js';
 import './scroll.js';
 import './keyboard.js';
@@ -9,24 +8,38 @@ import './scrollButton.js';
 import './reactions.js';
 import { initUserRegistration } from './user.js';
 import { initHamburgerMenu } from './hamburgerMenu.js';
-import { loadCustomEmojis } from './EmojiPicker/EmojiData.js';
+import { loadCustomEmojis, refreshCustomEmojis, getCustomEmojiData } from './EmojiPicker/EmojiData.js';
 import { updateIsAtBottom } from './scroll.js';
 import { updateKeyboard } from './keyboard.js';
-import { input } from './input.js';
+import { input, insertAtCursor } from './input.js';
 import { appendMessage } from './messages.js';
 import { enableAnswerGestures } from './answer.js';
 import { loadContactAvatar, loadContactName } from './contactStatus.js';
 import { startAutoReplies } from './automsj.js';
 import { initGlobalSounds } from './globalSounds.js';
+import { getCategories, getCustomEmojiArray, toggleStaticCategoryDisabled, isStaticCategoryDisabled } from './CustomEmojiManager.js';
+import { initEmojiPicker } from './EmojiPicker/EmojiPickerCore.js';
+import { getStaticEmojiCategories } from './StaticEmojiCategories.js';
 
 function inicializarApp() {
   if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
-  if (typeof window.smoothScrollToBottom !== 'function') window.smoothScrollToBottom = () => {};
-  if (typeof window.ensureLastMessageAboveInput !== 'function') window.ensureLastMessageAboveInput = () => {};
+  if (typeof window.smoothScrollToBottom === 'undefined') window.smoothScrollToBottom = () => {};
+  if (typeof window.ensureLastMessageAboveInput === 'undefined') window.ensureLastMessageAboveInput = () => {};
+  
   loadCustomEmojis();
+  
+  const mobileContainer = document.getElementById('mobile-picker-container');
+  if (mobileContainer) {
+    const picker = initEmojiPicker(mobileContainer, (emoji) => {
+      insertAtCursor(emoji, false);
+    });
+    window.emojiPicker = picker;
+  }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initUserRegistration);
+    document.addEventListener('DOMContentLoaded', () => {
+      initUserRegistration();
+    });
   } else {
     initUserRegistration();
   }
@@ -62,7 +75,7 @@ function inicializarApp() {
   }
 
   for (let i = 1; i <= 1; i++) appendMessage('Mensaje de ejemplo ' + i);
-  setTimeout(() => appendMessage('Hola,este es un mensaje entrante'), 2000);
+  setTimeout(() => appendMessage('Hola, este es un mensaje entrante'), 2000);
   setTimeout(updateIsAtBottom, 50);
 
   if (messagesEl) {
@@ -72,7 +85,9 @@ function inicializarApp() {
   enableAnswerGestures();
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHamburgerMenu);
+    document.addEventListener('DOMContentLoaded', () => {
+      initHamburgerMenu();
+    });
   } else {
     initHamburgerMenu();
   }
@@ -83,6 +98,33 @@ function inicializarApp() {
   startAutoReplies();
   
   initGlobalSounds();
+  
+  window.togglePepe = () => {
+    toggleStaticCategoryDisabled('Pepe');
+    if (window.emojiPicker && window.emojiPicker.refresh) {
+      setTimeout(() => {
+        window.emojiPicker.refresh();
+      }, 100);
+    }
+  };
+  
+  window.toggleLogos = () => {
+    toggleStaticCategoryDisabled('Logos Estáticos');
+    if (window.emojiPicker && window.emojiPicker.refresh) {
+      setTimeout(() => {
+        window.emojiPicker.refresh();
+      }, 100);
+    }
+  };
+  
+  window.refreshPicker = () => {
+    refreshCustomEmojis();
+    if (window.emojiPicker && window.emojiPicker.refresh) {
+      window.emojiPicker.refresh();
+    }
+  };
 }
+
+window.inicializarApp = inicializarApp;
 
 export default inicializarApp;

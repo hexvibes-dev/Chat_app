@@ -294,24 +294,7 @@
   box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
 }
 
-/* Twemoji imágenes */
-.twemoji-emoji {
-  width: 1.2em !important;
-  height: 1.2em !important;
-  vertical-align: middle !important;
-  display: inline-block !important;
-  object-fit: contain !important;
-}
 
-.category-btn .twemoji-emoji {
-  width: 22px !important;
-  height: 22px !important;
-}
-
-.emoji-item .twemoji-emoji {
-  width: 32px !important;
-  height: 32px !important;
-}
 
 /* Stickers */
 .stickers-grid {

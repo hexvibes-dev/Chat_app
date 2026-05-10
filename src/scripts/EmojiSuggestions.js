@@ -1,11 +1,16 @@
+// EmojiSuggestions.js
 import { getCustomEmojiArray } from './CustomEmojiManager.js';
-import { customEmojiCollection, isAnimatedEmoji, getAnimationType } from './CustomEmojiPicker.js';
+import { customEmojiCollection } from './CustomEmojiPicker.js';
 import { getNativeEmojiExtraKeywords } from './NativeEmojiKeywords.js';
-import { getAllLocalStickers, getLocalStickerCategories } from './CustomSticker.js';
+import { getAllLocalStickers } from './CustomSticker.js';
 import { getStickerHtml } from './StickersPicker.js';
 import { appendMessage } from './messages.js';
 import { insertAtCursor } from './input.js';
 import emojis from 'unicode-emoji-json';
+import { getStaticEmojiCategories } from './StaticEmojiCategories.js';
+import { isStaticCategoryDisabled } from './CustomEmojiManager.js';
+
+// ... resto del código igual
 
 let suggestionContainer = null;
 let currentSuggestions = [];
@@ -58,6 +63,7 @@ function refreshCustomKeywords() {
     name: e.name,
     shortcodes: e.shortcodes,
     url: e.url,
+    svg: e.svg,
     category: e.category,
     keywords: e.keywords || [],
     animated: e.animated || false,
@@ -70,6 +76,7 @@ function refreshCustomKeywords() {
     name: e.name,
     shortcodes: e.shortcodes,
     url: e.url,
+    svg: e.svg,
     category: e.category,
     keywords: e.keywords || [],
     animated: e.animated || false,
@@ -105,6 +112,44 @@ function refreshCustomKeywords() {
     }
   }
   
+  const staticCategories = getStaticEmojiCategories();
+  for (const cat of staticCategories) {
+    if (isStaticCategoryDisabled(cat.name)) continue;
+    for (const emoji of cat.emojis) {
+      const shortcode = emoji.shortcodes[0];
+      const keywords = emoji.keywords || [];
+      for (const kw of keywords) {
+        const lowerKw = kw.toLowerCase();
+        if (!customEmojiKeywords.has(lowerKw)) customEmojiKeywords.set(lowerKw, []);
+        const existing = customEmojiKeywords.get(lowerKw);
+        if (!existing.some(e => e.shortcode === shortcode)) {
+          existing.push({
+            shortcode,
+            url: emoji.url,
+            svg: emoji.svg,
+            name: emoji.name,
+            type: 'custom',
+            animated: emoji.animated,
+            animationType: emoji.animationType,
+            duration: emoji.duration,
+            iterations: emoji.iterations
+          });
+        }
+      }
+      customEmojiKeywords.set(shortcode, [{
+        shortcode,
+        url: emoji.url,
+        svg: emoji.svg,
+        name: emoji.name,
+        type: 'custom',
+        animated: emoji.animated,
+        animationType: emoji.animationType,
+        duration: emoji.duration,
+        iterations: emoji.iterations
+      }]);
+    }
+  }
+  
   for (const custom of staticEmojis) {
     const shortcode = custom.shortcodes[0];
     const keywords = custom.keywords || [];
@@ -116,6 +161,7 @@ function refreshCustomKeywords() {
         existing.push({
           shortcode,
           url: custom.url,
+          svg: custom.svg,
           name: custom.name,
           type: 'custom',
           animated: custom.animated,
@@ -128,6 +174,7 @@ function refreshCustomKeywords() {
     customEmojiKeywords.set(shortcode, [{
       shortcode,
       url: custom.url,
+      svg: custom.svg,
       name: custom.name,
       type: 'custom',
       animated: custom.animated,
@@ -148,6 +195,7 @@ function refreshCustomKeywords() {
         existing.push({
           shortcode,
           url: custom.url,
+          svg: custom.svg,
           name: custom.name,
           type: 'custom',
           animated: custom.animated,
@@ -160,6 +208,7 @@ function refreshCustomKeywords() {
     customEmojiKeywords.set(shortcode, [{
       shortcode,
       url: custom.url,
+      svg: custom.svg,
       name: custom.name,
       type: 'custom',
       animated: custom.animated,
@@ -265,13 +314,22 @@ function deleteCurrentWord() {
   
   if (node.nodeType === Node.TEXT_NODE) {
     const textBefore = node.textContent.slice(0, offset);
-    const lastWordMatch = textBefore.match(/(\S+)$/);
-    if (lastWordMatch) {
-      const start = offset - lastWordMatch[0].length;
+    const match = textBefore.match(/(\S+)$/);
+    if (match) {
+      const start = offset - match[0].length;
       range.setStart(node, start);
       range.setEnd(node, offset);
       range.deleteContents();
       return true;
+    } else {
+      const spaceMatch = textBefore.match(/\s+$/);
+      if (spaceMatch) {
+        const start = offset - spaceMatch[0].length;
+        range.setStart(node, start);
+        range.setEnd(node, offset);
+        range.deleteContents();
+        return true;
+      }
     }
   }
   return false;
@@ -281,14 +339,11 @@ function insertStickerAndSend(sticker) {
   if (isInserting) return;
   isInserting = true;
   
-  // Eliminar la palabra que se estaba escribiendo
   deleteCurrentWord();
   
-  // Generar el HTML del sticker y enviarlo como mensaje
   const stickerHtml = getStickerHtml(sticker);
   appendMessage(stickerHtml, { me: true });
   
-  // Pequeño retraso para evitar múltiples envíos
   setTimeout(() => {
     isInserting = false;
   }, 200);
@@ -335,13 +390,24 @@ function renderSuggestions(suggestions) {
         hideSuggestions();
       });
     } else {
-      const img = document.createElement('img');
-      img.src = item.url;
-      img.alt = item.shortcode;
-      img.style.width = '32px';
-      img.style.height = '32px';
-      img.style.objectFit = 'contain';
-      btn.appendChild(img);
+      if (item.svg) {
+        const wrapper = document.createElement('div');
+        wrapper.style.width = '32px';
+        wrapper.style.height = '32px';
+        wrapper.style.display = 'flex';
+        wrapper.style.alignItems = 'center';
+        wrapper.style.justifyContent = 'center';
+        wrapper.innerHTML = item.svg;
+        btn.appendChild(wrapper);
+      } else if (item.url) {
+        const img = document.createElement('img');
+        img.src = item.url;
+        img.alt = item.shortcode;
+        img.style.width = '32px';
+        img.style.height = '32px';
+        img.style.objectFit = 'contain';
+        btn.appendChild(img);
+      }
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();

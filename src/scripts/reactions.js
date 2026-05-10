@@ -1,4 +1,4 @@
-// src/scripts/reactions.js
+import { SuperGif } from 'libgif';
 import { showOptionsMenu, hideOptionsMenu } from './options.js';
 import { computeLayout } from './position.js';
 import { showAddReactionModal } from './addReaction.js';
@@ -23,6 +23,7 @@ import { playClick, playReactionAdd, playReactionRemove, playError } from './sou
 
 const DEFAULT_EMOJIS = ['👍','❤️','😂','😮','😭','🔥'];
 const MAX_REACTIONS_PER_BUBBLE = 4;
+const MAX_CUSTOM_REACTIONS = 8;
 const NOTIF_DURATION = 1000;
 
 const messagesEl = document.getElementById('messages');
@@ -31,6 +32,101 @@ let activeMenu = null;
 let activeThoughtBubbles = [];
 let notifEl = null;
 let notifTimeout = null;
+let popupTimeout = null;
+let gifObserver = null;
+const customEmojiCache = new Map();
+
+function initGifObserver() {
+  if (gifObserver) return;
+  gifObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        if (img.dataset.src && img.src !== img.dataset.src) {
+          img.src = img.dataset.src;
+        }
+        gifObserver.unobserve(img);
+      }
+    });
+  }, { threshold: 0.1 });
+}
+
+function getCustomEmojiHtml(shortcode) {
+  if (!window._customEmojiData) return null;
+  const cleanShortcode = shortcode.replace(/^:/, '').replace(/:$/, '');
+  const found = window._customEmojiData.find(e => e.shortcodes && e.shortcodes.includes(cleanShortcode));
+  if (!found) return null;
+
+  if (found.svg) {
+    const wrapper = document.createElement('span');
+    wrapper.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;width:1.2em;height:1.2em;vertical-align:middle;';
+    let svgHtml = found.svg;
+    if (svgHtml.includes('<svg')) {
+      svgHtml = svgHtml.replace(/<svg/, '<svg style="width:100%;height:100%;display:block"');
+    }
+    wrapper.innerHTML = svgHtml;
+    const svg = wrapper.querySelector('svg');
+    if (svg) {
+      svg.setAttribute('width', '1.2em');
+      svg.setAttribute('height', '1.2em');
+      svg.style.width = '1.2em';
+      svg.style.height = '1.2em';
+    }
+    return wrapper;
+  }
+
+  if (!found.url) return null;
+
+  if (found.animated && found.url.match(/\.(gif)(\?|$)/i)) {
+    const container = document.createElement('div');
+    container.style.cssText = 'width:1.2em;height:1.2em;display:inline-flex;align-items:center;justify-content:center;overflow:hidden;position:relative;';
+    
+    const finalIterations = found.iterations !== undefined ? found.iterations : 1;
+    const finalDuration = found.duration !== undefined ? found.duration : null;
+    
+    const img = document.createElement('img');
+    img.src = found.url + '?t=' + Date.now();
+    img.style.cssText = 'width:100%;height:100%;object-fit:contain;position:absolute;top:0;left:0;z-index:1;';
+    container.appendChild(img);
+    
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'width:100%;height:100%;object-fit:contain;position:absolute;top:0;left:0;z-index:2;opacity:0;';
+    container.appendChild(canvas);
+    
+    img.onload = () => {
+      const gif = new SuperGif({
+        gif: img,
+        auto_play: true,
+        draw_while_loading: true,
+        loop_mode: finalIterations !== 1,
+        on_end: () => {
+          if (finalIterations === 1) {
+            canvas.style.opacity = '0.5';
+          }
+        }
+      });
+      
+      gif.load(() => {
+        const gifCanvas = gif.get_canvas();
+        const ctx = canvas.getContext('2d');
+        canvas.width = gifCanvas.width;
+        canvas.height = gifCanvas.height;
+        ctx.drawImage(gifCanvas, 0, 0);
+        canvas.style.opacity = '1';
+        img.style.opacity = '0';
+        gif.play();
+      });
+    };
+    
+    return container;
+  }
+
+  const img = document.createElement('img');
+  img.alt = found.name;
+  img.style.cssText = 'width:1.2em;height:1.2em;vertical-align:middle;object-fit:contain;border-radius:4px;';
+  img.src = found.url;
+  return img;
+}
 
 function showConfirmPopup(message) {
   return new Promise((resolve) => {
@@ -131,13 +227,6 @@ function addCustomReaction(messageEl, emoji) {
   }
 }
 
-function getCustomEmojiUrl(shortcode) {
-  if (!window._customEmojiData) return null;
-  const cleanShortcode = shortcode.replace(/^:/, '').replace(/:$/, '');
-  const found = window._customEmojiData.find(e => e.shortcodes.includes(cleanShortcode));
-  return found ? found.url : null;
-}
-
 function escapeAttr(str) {
   return str.replace(/[&<>]/g, function(m) {
     if (m === '&') return '&amp;';
@@ -192,15 +281,9 @@ export function renderReactionsOnBubble(messageEl) {
                        (r.emoji && r.emoji.startsWith(':') && r.emoji.endsWith(':'));
 
       if (isCustom) {
-        const url = getCustomEmojiUrl(r.emoji);
-        if (url) {
-          const img = document.createElement('img');
-          img.src = url;
-          img.alt = r.emoji;
-          img.style.width = '1.2em';
-          img.style.height = '1.2em';
-          img.style.verticalAlign = 'middle';
-          btn.appendChild(img);
+        const customHtml = getCustomEmojiHtml(r.emoji);
+        if (customHtml) {
+          btn.appendChild(customHtml);
         } else {
           btn.innerText = r.emoji;
         }
@@ -209,8 +292,8 @@ export function renderReactionsOnBubble(messageEl) {
         const img = document.createElement('img');
         img.src = config.url;
         img.alt = r.emoji;
-        img.style.width = '32px';
-        img.style.height = '32px';
+        img.style.width = '1.2em';
+        img.style.height = '1.2em';
         img.style.objectFit = 'contain';
         img.style.display = 'inline-block';
         img.className = 'reaction-replaced-emoji';
@@ -465,261 +548,292 @@ function removeThoughtBubbles() {
 }
 
 function showReactionsPopup(messageEl, anchorRect) {
-  hidePopup();
+  if (popupTimeout) {
+    clearTimeout(popupTimeout);
+  }
+  
+  popupTimeout = setTimeout(() => {
+    hidePopup();
 
-  loadCustomEmojis();
+    loadCustomEmojis();
 
-  const popup = document.createElement('div');
-  popup.className = 'reactions-popup enter';
+    const popup = document.createElement('div');
+    popup.className = 'reactions-popup enter';
 
-  const scrollContainer = document.createElement('div');
-  scrollContainer.className = 'reactions-scroll-container';
-  const emojisRow = document.createElement('div');
-  emojisRow.className = 'reactions-row';
+    const scrollContainer = document.createElement('div');
+    scrollContainer.className = 'reactions-scroll-container';
+    const emojisRow = document.createElement('div');
+    emojisRow.className = 'reactions-row';
 
-  const LONG_PRESS_DURATION = 1000;
-  const TARGET_SCALE = 3.5;
+    const LONG_PRESS_DURATION = 1000;
+    const TARGET_SCALE = 3.5;
 
-  DEFAULT_EMOJIS.forEach(emoji => {
-    const btn = document.createElement('button');
-    btn.className = 'react-emoji';
-    btn.innerText = emoji;
+    DEFAULT_EMOJIS.forEach(emoji => {
+      const btn = document.createElement('button');
+      btn.className = 'react-emoji';
+      btn.innerText = emoji;
 
-    let pressTimer = null;
-    let longPressCompleted = false;
-    let floatingClone = null;
-    let scaleInterval = null;
+      let pressTimer = null;
+      let longPressCompleted = false;
+      let floatingClone = null;
+      let scaleInterval = null;
 
-    function createFloatingClone() {
-      floatingClone = btn.cloneNode(true);
-      floatingClone.classList.add('floating-emoji-clone');
-      const rect = btn.getBoundingClientRect();
-      const computedStyle = window.getComputedStyle(btn);
-      floatingClone.style.position = 'fixed';
-      floatingClone.style.left = rect.left + 'px';
-      floatingClone.style.top = rect.top + 'px';
-      floatingClone.style.width = rect.width + 'px';
-      floatingClone.style.height = rect.height + 'px';
-      floatingClone.style.fontSize = computedStyle.fontSize;
-      floatingClone.style.margin = '0';
-      floatingClone.style.zIndex = '100000';
-      floatingClone.style.transition = 'none';
-      floatingClone.style.pointerEvents = 'none';
-      document.body.appendChild(floatingClone);
+      function createFloatingClone() {
+        floatingClone = btn.cloneNode(true);
+        floatingClone.classList.add('floating-emoji-clone');
+        const rect = btn.getBoundingClientRect();
+        const computedStyle = window.getComputedStyle(btn);
+        floatingClone.style.position = 'fixed';
+        floatingClone.style.left = rect.left + 'px';
+        floatingClone.style.top = rect.top + 'px';
+        floatingClone.style.width = rect.width + 'px';
+        floatingClone.style.height = rect.height + 'px';
+        floatingClone.style.fontSize = computedStyle.fontSize;
+        floatingClone.style.margin = '0';
+        floatingClone.style.zIndex = '100000';
+        floatingClone.style.transition = 'none';
+        floatingClone.style.pointerEvents = 'none';
+        document.body.appendChild(floatingClone);
 
-      let elapsed = 0;
-      const stepTime = 20;
-      scaleInterval = setInterval(() => {
-        elapsed += stepTime;
-        const progress = Math.min(elapsed / LONG_PRESS_DURATION, 1);
-        const scale = 1 + (TARGET_SCALE - 1) * progress;
-        const newWidth = rect.width * scale;
-        const newHeight = rect.height * scale;
-        floatingClone.style.transform = `scale(${scale})`;
-        floatingClone.style.transformOrigin = 'center center';
-        floatingClone.style.left = (rect.left + rect.width/2 - newWidth/2) + 'px';
-        floatingClone.style.top = (rect.top + rect.height/2 - newHeight/2) + 'px';
-        floatingClone.style.width = newWidth + 'px';
-        floatingClone.style.height = newHeight + 'px';
-        floatingClone.style.fontSize = parseFloat(computedStyle.fontSize) * scale + 'px';
-        if (progress >= 1) clearInterval(scaleInterval);
-      }, stepTime);
-    }
-
-    function cancelLongPress() {
-      if (pressTimer) clearTimeout(pressTimer);
-      if (scaleInterval) clearInterval(scaleInterval);
-      if (floatingClone) floatingClone.remove();
-      floatingClone = null;
-      scaleInterval = null;
-      longPressCompleted = false;
-    }
-
-    function completeLongPress() {
-      cancelLongPress();
-      longPressCompleted = true;
-      switch (emoji) {
-        case '❤️': heartRainAnimation(messageEl); break;
-        case '🔥': fireAnimation(messageEl); break;
-        case '😂': dancingEmojiAnimation(emoji, messageEl); break;
-        case '😮': astonishedAnimation(messageEl); break;
-        case '😭': cryAnimation(messageEl); break;
-        case '👍': thumbsUpAnimation(messageEl); break;
+        let elapsed = 0;
+        const stepTime = 20;
+        scaleInterval = setInterval(() => {
+          elapsed += stepTime;
+          const progress = Math.min(elapsed / LONG_PRESS_DURATION, 1);
+          const scale = 1 + (TARGET_SCALE - 1) * progress;
+          const newWidth = rect.width * scale;
+          const newHeight = rect.height * scale;
+          floatingClone.style.transform = `scale(${scale})`;
+          floatingClone.style.transformOrigin = 'center center';
+          floatingClone.style.left = (rect.left + rect.width/2 - newWidth/2) + 'px';
+          floatingClone.style.top = (rect.top + rect.height/2 - newHeight/2) + 'px';
+          floatingClone.style.width = newWidth + 'px';
+          floatingClone.style.height = newHeight + 'px';
+          floatingClone.style.fontSize = parseFloat(computedStyle.fontSize) * scale + 'px';
+          if (progress >= 1) clearInterval(scaleInterval);
+        }, stepTime);
       }
-      toggleReactionOnMessage(messageEl, emoji);
-      if (navigator.vibrate) navigator.vibrate(100);
-      if (isSocketConnected()) {
-        emitSocketEvent('reaction:animation', { msgId: messageEl.dataset.msgId, emoji });
-      }
-    }
 
-    btn.addEventListener('pointerdown', (ev) => {
-      ev.stopPropagation();
-      cancelLongPress();
-      createFloatingClone();
-      pressTimer = setTimeout(completeLongPress, LONG_PRESS_DURATION);
+      function cancelLongPress() {
+        if (pressTimer) clearTimeout(pressTimer);
+        if (scaleInterval) clearInterval(scaleInterval);
+        if (floatingClone) floatingClone.remove();
+        floatingClone = null;
+        scaleInterval = null;
+        longPressCompleted = false;
+      }
+
+      function completeLongPress() {
+        cancelLongPress();
+        longPressCompleted = true;
+        switch (emoji) {
+          case '❤️': heartRainAnimation(messageEl); break;
+          case '🔥': fireAnimation(messageEl); break;
+          case '😂': dancingEmojiAnimation(emoji, messageEl); break;
+          case '😮': astonishedAnimation(messageEl); break;
+          case '😭': cryAnimation(messageEl); break;
+          case '👍': thumbsUpAnimation(messageEl); break;
+        }
+        toggleReactionOnMessage(messageEl, emoji);
+        if (navigator.vibrate) navigator.vibrate(100);
+        if (isSocketConnected()) {
+          emitSocketEvent('reaction:animation', { msgId: messageEl.dataset.msgId, emoji });
+        }
+      }
+
+      btn.addEventListener('pointerdown', (ev) => {
+        ev.stopPropagation();
+        cancelLongPress();
+        createFloatingClone();
+        pressTimer = setTimeout(completeLongPress, LONG_PRESS_DURATION);
+      });
+
+      btn.addEventListener('pointerup', (ev) => {
+        ev.stopPropagation();
+        if (!longPressCompleted) {
+          cancelLongPress();
+          playClick();
+          toggleReactionOnMessage(messageEl, emoji);
+        } else {
+          cancelLongPress();
+        }
+      });
+
+      btn.addEventListener('pointercancel', (ev) => {
+        ev.stopPropagation();
+        cancelLongPress();
+      });
+
+      emojisRow.appendChild(btn);
     });
 
-    btn.addEventListener('pointerup', (ev) => {
-      ev.stopPropagation();
-      if (!longPressCompleted) {
-        cancelLongPress();
+    const customReactions = getCustomReactions(messageEl);
+    
+    customReactions.slice(0, MAX_CUSTOM_REACTIONS).forEach(emoji => {
+      const btn = document.createElement('button');
+      btn.className = 'react-emoji';
+      
+      let normalizedShortcode = emoji;
+      if (!normalizedShortcode.startsWith(':')) normalizedShortcode = ':' + normalizedShortcode;
+      if (!normalizedShortcode.endsWith(':')) normalizedShortcode = normalizedShortcode + ':';
+      
+      const customHtml = getCustomEmojiHtml(normalizedShortcode);
+      if (customHtml) {
+        btn.appendChild(customHtml);
+      } else {
+        btn.innerText = emoji;
+        if (!btn.innerText.trim()) btn.innerText = '?';
+      }
+      
+      btn.style.cssText = `
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        min-height: 32px;
+        padding: 0;
+        margin: 0;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        border-radius: 12px;
+      `;
+      
+      btn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
         playClick();
         toggleReactionOnMessage(messageEl, emoji);
-      } else {
-        cancelLongPress();
-      }
+      });
+      emojisRow.appendChild(btn);
     });
 
-    btn.addEventListener('pointercancel', (ev) => {
-      ev.stopPropagation();
-      cancelLongPress();
-    });
-
-    emojisRow.appendChild(btn);
-  });
-
-  const customReactions = getCustomReactions(messageEl);
-  
-  customReactions.forEach(emoji => {
-    const btn = document.createElement('button');
-    btn.className = 'react-emoji';
-    
-    let normalizedShortcode = emoji;
-    if (!normalizedShortcode.startsWith(':')) normalizedShortcode = ':' + normalizedShortcode;
-    if (!normalizedShortcode.endsWith(':')) normalizedShortcode = normalizedShortcode + ':';
-    
-    const url = getCustomEmojiUrl(normalizedShortcode);
-    
-    if (url) {
-      const img = document.createElement('img');
-      img.src = url;
-      img.alt = emoji;
-      img.style.cssText = `
-        width: 1.5em !important;
-        height: 1.5em !important;
-        min-width: 24px !important;
-        min-height: 24px !important;
-        max-width: 1.5em !important;
-        max-height: 1.5em !important;
-        vertical-align: middle !important;
-        display: inline-block !important;
-        border-radius: 4px !important;
-        object-fit: contain !important;
-      `;
-      btn.appendChild(img);
-    } else {
-      btn.innerText = emoji;
-      if (!btn.innerText.trim()) btn.innerText = '?';
+    if (customReactions.length > MAX_CUSTOM_REACTIONS) {
+      const moreBtn = document.createElement('button');
+      moreBtn.className = 'react-emoji';
+      moreBtn.textContent = `+${customReactions.length - MAX_CUSTOM_REACTIONS}`;
+      moreBtn.style.fontSize = '14px';
+      moreBtn.style.fontWeight = 'bold';
+      moreBtn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        playClick();
+        showAddReactionModal((newEmoji) => {
+          if (!newEmoji) return;
+          addCustomReaction(messageEl, newEmoji);
+          toggleReactionOnMessage(messageEl, newEmoji);
+          hidePopup();
+          setTimeout(() => {
+            const dragWrap = messageEl.querySelector('.msg-drag');
+            if (dragWrap) showReactionsPopup(messageEl, dragWrap.getBoundingClientRect());
+          }, 100);
+        });
+      });
+      emojisRow.appendChild(moreBtn);
     }
-    
-    btn.addEventListener('click', (ev) => {
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'react-add';
+    addBtn.innerText = '➕';
+    addBtn.addEventListener('click', (ev) => {
       ev.stopPropagation();
       playClick();
-      toggleReactionOnMessage(messageEl, emoji);
+      showAddReactionModal((newEmoji) => {
+        if (!newEmoji) return;
+        addCustomReaction(messageEl, newEmoji);
+        toggleReactionOnMessage(messageEl, newEmoji);
+        hidePopup();
+        setTimeout(() => {
+          const dragWrap = messageEl.querySelector('.msg-drag');
+          if (dragWrap) showReactionsPopup(messageEl, dragWrap.getBoundingClientRect());
+        }, 100);
+      });
     });
-    emojisRow.appendChild(btn);
-  });
+    emojisRow.appendChild(addBtn);
 
-  const addBtn = document.createElement('button');
-  addBtn.className = 'react-add';
-  addBtn.innerText = '➕';
-  addBtn.addEventListener('click', (ev) => {
-    ev.stopPropagation();
-    playClick();
-    showAddReactionModal((newEmoji) => {
-      if (!newEmoji) return;
-      addCustomReaction(messageEl, newEmoji);
-      toggleReactionOnMessage(messageEl, newEmoji);
-      hidePopup();
-      setTimeout(() => {
-        const dragWrap = messageEl.querySelector('.msg-drag');
-        if (dragWrap) showReactionsPopup(messageEl, dragWrap.getBoundingClientRect());
-      }, 100);
+    scrollContainer.appendChild(emojisRow);
+    popup.appendChild(scrollContainer);
+    document.body.appendChild(popup);
+
+    popup.classList.remove('enter');
+    const popupRect = popup.getBoundingClientRect();
+    popup.classList.add('enter');
+
+    const isMe = messageEl.classList.contains('me');
+
+    const tempMenu = document.createElement('div');
+    tempMenu.className = 'options-menu';
+    tempMenu.style.visibility = 'hidden';
+    tempMenu.style.position = 'fixed';
+    tempMenu.style.top = '-9999px';
+    const tempList = document.createElement('div');
+    tempList.className = 'options-list';
+    const addTempItem = (label) => {
+      const btn = document.createElement('button');
+      btn.className = 'options-item';
+      btn.innerText = label;
+      tempList.appendChild(btn);
+    };
+    addTempItem('Copiar');
+    addTempItem('Reenviar');
+    addTempItem('Eliminar');
+    if (isMe) {
+      addTempItem('Eliminar para todos');
+      addTempItem('Editar');
+    }
+    tempMenu.appendChild(tempList);
+    document.body.appendChild(tempMenu);
+    const menuRect = tempMenu.getBoundingClientRect();
+    tempMenu.remove();
+
+    const viewportW = window.innerWidth;
+    const viewportH = window.innerHeight;
+
+    const { popup: popupPos, menu: menuPos, layout } = computeLayout({
+      popupRect,
+      menuRect,
+      viewportW,
+      viewportH
     });
-  });
-  emojisRow.appendChild(addBtn);
 
-  scrollContainer.appendChild(emojisRow);
-  popup.appendChild(scrollContainer);
-  document.body.appendChild(popup);
+    popup.style.left = popupPos.left + 'px';
+    popup.style.top = popupPos.top + 'px';
+    popup.classList.remove('enter');
 
-  popup.classList.remove('enter');
-  const popupRect = popup.getBoundingClientRect();
-  popup.classList.add('enter');
+    popup.style.transition = 'none';
+    popup.style.transform = 'scale(0)';
+    popup.style.opacity = '0';
 
-  const isMe = messageEl.classList.contains('me');
+    popup.offsetHeight;
 
-  const tempMenu = document.createElement('div');
-  tempMenu.className = 'options-menu';
-  tempMenu.style.visibility = 'hidden';
-  tempMenu.style.position = 'fixed';
-  tempMenu.style.top = '-9999px';
-  const tempList = document.createElement('div');
-  tempList.className = 'options-list';
-  const addTempItem = (label) => {
-    const btn = document.createElement('button');
-    btn.className = 'options-item';
-    btn.innerText = label;
-    tempList.appendChild(btn);
-  };
-  addTempItem('Copiar');
-  addTempItem('Reenviar');
-  addTempItem('Eliminar');
-  if (isMe) {
-    addTempItem('Eliminar para todos');
-    addTempItem('Editar');
-  }
-  tempMenu.appendChild(tempList);
-  document.body.appendChild(tempMenu);
-  const menuRect = tempMenu.getBoundingClientRect();
-  tempMenu.remove();
+    requestAnimationFrame(() => {
+      popup.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity 0.15s ease';
+      popup.style.transform = 'scale(1.3)';
+      popup.style.opacity = '1';
+      
+      requestAnimationFrame(() => {
+        popup.style.transition = 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
+        popup.style.transform = 'scale(1)';
+      });
+    });
 
-  const viewportW = window.innerWidth;
-  const viewportH = window.innerHeight;
+    setTimeout(() => {
+      popup.style.transition = '';
+    }, 400);
 
-  const { popup: popupPos, menu: menuPos, layout } = computeLayout({
-    popupRect,
-    menuRect,
-    viewportW,
-    viewportH
-  });
+    createThoughtBubbles(messageEl, popup);
 
-  popup.style.left = popupPos.left + 'px';
-  popup.style.top = popupPos.top + 'px';
-  popup.classList.remove('enter');
+    showOptionsMenu(messageEl, menuPos, isMe, (action) => {
+      handleOptionAction(action, messageEl);
+    });
 
-  popup.style.transition = 'none';
-  popup.style.transform = 'scale(0)';
-  popup.style.opacity = '0';
+    applyLiftEffect(messageEl);
+    activePopup = popup;
 
-  popup.offsetHeight;
-
-  popup.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity 0.15s ease';
-  popup.style.transform = 'scale(1.3)';
-  popup.style.opacity = '1';
-
-  setTimeout(() => {
-    popup.style.transition = 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
-    popup.style.transform = 'scale(1)';
-  }, 200);
-
-  setTimeout(() => {
-    popup.style.transition = '';
-  }, 400);
-
-  createThoughtBubbles(messageEl, popup);
-
-  showOptionsMenu(messageEl, menuPos, isMe, (action) => {
-    handleOptionAction(action, messageEl);
-  });
-
-  applyLiftEffect(messageEl);
-  activePopup = popup;
-
-  setTimeout(() => {
-    window.addEventListener('pointerdown', onOutside);
-  }, 0);
+    setTimeout(() => {
+      window.addEventListener('pointerdown', onOutside);
+    }, 0);
+  }, 50);
 }
 
 function onOutside(e) {

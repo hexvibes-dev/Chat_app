@@ -47,8 +47,7 @@ export function loadCategories() {
     userCategories = JSON.parse(saved);
   } else {
     userCategories = [
-      { name: 'Favoritos', stickers: [] },
-      { name: 'Animados', stickers: [] }
+      { name: 'Favoritos', stickers: [] }
     ];
     saveUserCategories(userCategories);
   }
