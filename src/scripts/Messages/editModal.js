@@ -1,6 +1,6 @@
 // src/scripts/editModal.js
-import { emitSocketEvent, isSocketConnected } from './socketUtils.js';
-import { showNotification } from './notifications.js';
+import { emitSocketEvent, isSocketConnected } from '../socketUtils.js';
+import { showNotification } from '../notifications.js';
 
 let modal = null;
 let blurOverlay = null;

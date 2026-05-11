@@ -1,13 +1,13 @@
 // src/scripts/answer.js
 import { appendMessage } from './messages.js';
 import { getUsername } from './user.js';
-import { getCustomEmojiByShortcode } from './CustomEmojiPicker.js';
-import { convertShortcodesToImages } from './emojiUtils.js';
-import { isStickerSaved, getStickerCategoryByUrl } from './StickerManager.js';
-import { showQuickStickerUpload } from './StickerModal.js';
-import { normalizeReplacedEmojisToText } from './emojiReplacement.js';
-import { showNotification, hideNotification } from './notifications.js';
-import { playPopupClose } from './soundManager.js';
+import { getCustomEmojiByShortcode } from '../CustomEmojiPicker.js';
+import { convertShortcodesToImages } from '../emojiUtils.js';
+import { isStickerSaved, getStickerCategoryByUrl } from '../StickerManager.js';
+import { showQuickStickerUpload } from '../StickerModal.js';
+import { normalizeReplacedEmojisToText } from '../emojiReplacement.js';
+import { showNotification, hideNotification } from '../notifications.js';
+import { playPopupClose } from '../soundManager.js';
 
 let currentQuotedMessage = null;
 let activePopup = null;

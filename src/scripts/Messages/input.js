@@ -1,11 +1,11 @@
 // input.js
 import { appendMessage } from './messages.js';
 import { getAndClearQuotedMessage, hideReplyPopup } from './answer.js';
-import { connectToBackend, sendMessageViaSocket, isSocketConnected, disconnectSocket } from './socket.js';
-import { convertShortcodesToImages, convertShortcodesToImagesInNode } from './emojiUtils.js';
-import { showNotification } from './notifications.js';
-import { playMessageSend, playClick, playError, playKeyboard } from './soundManager.js';
-import { initEmojiSuggestions, refreshEmojiKeywords } from './EmojiSuggestions.js';
+import { connectToBackend, sendMessageViaSocket, isSocketConnected, disconnectSocket } from '../socket.js';
+import { convertShortcodesToImages, convertShortcodesToImagesInNode } from '../emojiUtils.js';
+import { showNotification } from '../notifications.js';
+import { playMessageSend, playClick, playError, playKeyboard } from '../soundManager.js';
+import { initEmojiSuggestions, refreshEmojiKeywords } from '../EmojiSuggestions.js';
 
 export const input = document.getElementById('input');
 export const sendBtn = document.getElementById('sendBtn');

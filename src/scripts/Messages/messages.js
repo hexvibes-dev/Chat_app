@@ -7,10 +7,10 @@ import {
   applyHeartAnimation,
   getSpecialEmojiType,
   applySpecialEmojiAnimation
-} from './emojiMessage.js';
+} from '../emojiMessage.js';
 import { clearPendingEdit, editMessageRemotely as editMessageRemotelyFn } from './editModal.js';
-import { convertShortcodesToImages } from './emojiUtils.js';
-import { replaceEmojisInHtml, normalizeReplacedEmojisToText, initReplacedEmojiAnimations, shouldReplaceEmoji } from './emojiReplacement.js';
+import { convertShortcodesToImages } from '../emojiUtils.js';
+import { replaceEmojisInHtml, normalizeReplacedEmojisToText, initReplacedEmojiAnimations, shouldReplaceEmoji } from '../emojiReplacement.js';
 
 if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
 if (typeof window.smoothScrollToBottom !== 'function') window.smoothScrollToBottom = () => {};
