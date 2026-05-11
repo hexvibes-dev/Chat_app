@@ -1,4 +1,3 @@
-// src/scripts/modalStackManager.js
 
 let modalStack = [];
 let baseZIndex = 11000;

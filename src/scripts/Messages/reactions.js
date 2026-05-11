@@ -11,15 +11,15 @@ import {
   cryAnimation,
   thumbsUpAnimation
 } from './reactionAnimations.js';
-import { getUsername } from '../user.js';
-import { emitSocketEvent, isSocketConnected } from '../socketUtils.js';
-import { enqueueEvent } from '../queue.js';
-import { loadCustomEmojis } from '../emojiUtils.js';
-import { showQuickStickerUpload } from '../StickerModal.js';
-import { isStickerSaved, getStickerCategoryByUrl, removeCustomSticker, refreshStickersInPicker } from '../StickerManager.js';
+import { getUsername } from '../Server/user.js';
+import { emitSocketEvent, isSocketConnected } from '../Server/socketUtils.js';
+import { enqueueEvent } from '../Server/queue.js';
+import { loadCustomEmojis } from '../Emojis/emojiUtils.js';
+import { showQuickStickerUpload } from '../Stickers/StickerModal.js';
+import { isStickerSaved, getStickerCategoryByUrl, removeCustomSticker, refreshStickersInPicker } from '../Stickers/StickerManager.js';
 import { shouldReplaceReactionEmoji, reactionEmojiMap, initReactionEmojiAnimations } from './reactionEmojiReplacement.js';
-import { showNotification } from '../notifications.js';
-import { playClick, playReactionAdd, playReactionRemove, playError } from '../soundManager.js';
+import { showNotification } from '../Utils/notifications.js';
+import { playClick, playReactionAdd, playReactionRemove, playError } from '../Sounds/soundManager.js';
 
 const DEFAULT_EMOJIS = ['👍','❤️','😂','😮','😭','🔥'];
 const MAX_REACTIONS_PER_BUBBLE = 4;

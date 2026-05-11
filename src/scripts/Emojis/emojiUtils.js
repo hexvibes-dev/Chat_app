@@ -1,5 +1,5 @@
 import { getCustomEmojiByShortcode } from './CustomEmojiPicker.js';
-import { loadCustomEmojis as loadEmojiData } from './EmojiPicker/EmojiData.js';
+import { loadCustomEmojis as loadEmojiData } from './EmojiData.js';
 import { getStaticEmojiCategories } from './StaticEmojiCategories.js';
 import { isStaticCategoryDisabled } from './CustomEmojiManager.js';
 

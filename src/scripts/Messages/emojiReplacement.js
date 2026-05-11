@@ -1,4 +1,3 @@
-// src/scripts/emojiReplacement.js
 export const emojiReplacementMap = {
   '🫠': {
     url: '/emojis/512.webp',

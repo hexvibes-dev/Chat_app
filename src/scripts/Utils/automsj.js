@@ -1,6 +1,5 @@
-// src/scripts/automsj.js
-import { appendMessage } from './messages.js';
-import { playMessageReceive } from './soundManager.js';
+import { appendMessage } from '../Messages/messages.js';
+import { playMessageReceive } from '../Sounds/soundManager.js';
 
 const canned = [
   "Tizongolamaya",

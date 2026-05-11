@@ -1,5 +1,5 @@
 import { getStaticEmojiCategories } from './StaticEmojiCategories.js';
-import debug from './DebugLogger.js';
+import debug from '../Utils/DebugLogger.js';
 
 const STORAGE_KEY = 'custom_emoji_categories';
 const DISABLED_STATIC_KEY = 'disabled_static_emoji_categories';

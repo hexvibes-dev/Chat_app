@@ -1,8 +1,8 @@
 import emojis from 'unicode-emoji-json';
-import { getCustomEmojiArray, getCategories as getUserCategories } from '../CustomEmojiManager.js';
-import { getStaticEmojiCategories } from '../StaticEmojiCategories.js';
-import { isStaticCategoryDisabled } from '../CustomEmojiManager.js';
-import debug from '../DebugLogger.js';
+import { getCustomEmojiArray, getCategories as getUserCategories } from './CustomEmojiManager.js';
+import { getStaticEmojiCategories } from './StaticEmojiCategories.js';
+import { isStaticCategoryDisabled } from './CustomEmojiManager.js';
+import debug from '../Utils/DebugLogger.js';
 
 const GROUP_TO_CATEGORY = {
   'Smileys & Emotion': 'smileys',

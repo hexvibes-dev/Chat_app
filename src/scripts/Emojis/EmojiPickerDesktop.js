@@ -1,8 +1,7 @@
-// src/scripts/EmojiPickerDesktop.js
 import interact from 'interactjs';
-import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
-import { initEmojiPicker, destroyEmojiPicker } from './EmojiPicker/EmojiPickerCore.js';
-import { insertAtCursor } from './input.js';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
+import { initEmojiPicker, destroyEmojiPicker } from './EmojiPickerCore.js';
+import { insertAtCursor } from '../Messages/input.js';
 
 let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;

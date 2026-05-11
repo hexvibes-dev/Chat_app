@@ -1,4 +1,3 @@
-// src/scripts/reactionEmojiReplacement.js
 export const reactionEmojiMap = {
   '🥺': {
     url: '/emojis/reaction-512-18.webp',

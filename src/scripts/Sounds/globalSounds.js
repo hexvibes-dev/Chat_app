@@ -1,4 +1,3 @@
-// src/scripts/globalSounds.js
 import { playClick, playButtonHover } from './soundManager.js';
 
 let isInitialized = false;

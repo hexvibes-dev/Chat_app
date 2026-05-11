@@ -1,5 +1,3 @@
-// src/scripts/NativeEmojiKeywords.js
-
 export const NATIVE_EMOJI_EXTRA_KEYWORDS = {
   '😂': ['risa', 'jaja', 'lol', 'muerte', 'cagarse', 'meo'],
   '❤️': ['amor', 'corazon', 'like', 'tequiero', 'amar'],

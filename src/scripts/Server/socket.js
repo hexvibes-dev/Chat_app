@@ -1,12 +1,11 @@
-// src/scripts/socket.js
 import { getUsername } from './user.js';
 import { setSocket as setUtilsSocket, emitSocketEvent, isSocketConnected } from './socketUtils.js';
 import { setSocket as setQueueSocket } from './queue.js';
-import { addReactionRemotely, removeReactionRemotely, playReactionAnimation, syncLocalReactionsToServer } from './reactions.js';
-import { deleteMessageRemotely, editMessageRemotely, appendMessage, messages } from './messages.js';
-import { updateContactStatus } from './contactStatus.js';
-import { showNotification } from './notifications.js';
-import { playMessageReceive } from './soundManager.js';
+import { addReactionRemotely, removeReactionRemotely, playReactionAnimation, syncLocalReactionsToServer } from '../Messages/reactions.js';
+import { deleteMessageRemotely, editMessageRemotely, appendMessage, messages } from '../Messages/messages.js';
+import { updateContactStatus } from '../Messages/contactStatus.js';
+import { showNotification } from '../Utils/notifications.js';
+import { playMessageReceive } from '../Sounds/soundManager.js';
 
 let socket = null;
 let heartbeatInterval = null;
@@ -109,7 +108,7 @@ export async function connectToBackend(url) {
         });
         if (msg.reactions && newMsg) {
           newMsg.dataset.reactions = JSON.stringify(msg.reactions);
-          import('./reactions.js').then(module => {
+          import('../Messages/reactions.js').then(module => {
             module.renderReactionsOnBubble(newMsg);
           });
         }

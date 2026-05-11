@@ -1,5 +1,5 @@
-import { isStickerSaved, getStickerCategoryByUrl, getAllStickers, getCategories, canCreateCategory, createCategory, addCustomSticker, removeCustomSticker, refreshStickersInPicker, isCategoryDisabled } from '../StickerManager.js';
-import { showNotification } from '../notifications.js';
+import { isStickerSaved, getStickerCategoryByUrl, getAllStickers, getCategories, canCreateCategory, createCategory, addCustomSticker, removeCustomSticker, refreshStickersInPicker, isCategoryDisabled } from '../Stickers/StickerManager.js';
+import { showNotification } from '../Utils/notifications.js';
 
 let currentMenu = null;
 let confirmPopup = null;

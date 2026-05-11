@@ -1,5 +1,5 @@
 import interact from 'interactjs';
-import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../modalStackManager.js';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
 import { EditorView, Decoration } from '@codemirror/view';
 import { StateField, StateEffect } from '@codemirror/state';
 

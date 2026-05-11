@@ -1,8 +1,7 @@
-// EmojiPickerButton.js
 import { initMobileEmojiPicker } from './EmojiPicker.js';
 import { showDesktopEmojiPicker } from './EmojiPickerDesktop.js';
-import { playClick } from './soundManager.js';
-import debug from './DebugLogger.js';
+import { playClick } from  '../Sounds/soundManager.js';
+import debug from '../Utils/DebugLogger.js';
 
 let isOpen = false;
 let container = null;

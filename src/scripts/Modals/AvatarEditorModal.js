@@ -1,8 +1,7 @@
-// src/scripts/AvatarEditorModal.js
 import interact from 'interactjs';
-import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
-import { setContactAvatar } from './contactStatus.js';
-import { showNotification } from './notifications.js';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
+import { setContactAvatar } from '../Messages/contactStatus.js';
+import { showNotification } from '../Utils/notifications.js';
 
 let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;

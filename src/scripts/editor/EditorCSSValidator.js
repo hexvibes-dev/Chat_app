@@ -1,4 +1,3 @@
-// src/scripts/editor/EditorCSSValidator.js
 export const EditorCSSValidator = {
   validate(cssText) {
     const errors = [];

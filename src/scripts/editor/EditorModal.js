@@ -1,13 +1,12 @@
-// src/scripts/editor/EditorModal.js
 import interact from 'interactjs';
 import { EditorView } from '@codemirror/view';
 import { undo, redo } from '@codemirror/commands';
-import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../modalStackManager.js';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
 import { EditorManager } from './EditorManager.js';
 import { EditorCSSValidator } from './EditorCSSValidator.js';
 import { EditorCSSEditor } from './EditorCSSEditor.js';
 import { updateFloatingPreviewStyles, updateFloatingPreviewMessage, hideFloatingPreview } from './FloatingPreview.js';
-import { appendMessage } from '../messages.js';
+import { appendMessage } from '../Messages/messages.js';
 import { showGlobalColorPicker } from './GlobalColorPicker.js';
 
 let windowElement, headerElement, closeBtn, overlay;

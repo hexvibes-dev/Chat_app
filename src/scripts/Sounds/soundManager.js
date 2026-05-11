@@ -1,4 +1,3 @@
-// src/scripts/soundManager.js
 const SOUNDS = {
   click: { url: '/sounds/click.mp3', volume: 0.3, preload: true },
   messageSend: { url: '/sounds/message-send.mp3', volume: 1, preload: true },

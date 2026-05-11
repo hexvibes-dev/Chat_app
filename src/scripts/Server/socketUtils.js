@@ -1,6 +1,5 @@
-// src/scripts/socketUtils.js
 import { enqueueEvent } from './queue.js';
-import { showNotification } from './notifications.js';
+import { showNotification } from '../Utils/notifications.js';
 
 let socket = null;
 

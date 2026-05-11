@@ -1,4 +1,3 @@
-// src/scripts/user.js
 let username = localStorage.getItem('chat_username');
 let displayName = localStorage.getItem('chat_displayName');
 

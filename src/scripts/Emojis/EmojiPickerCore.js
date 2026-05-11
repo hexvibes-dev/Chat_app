@@ -1,8 +1,8 @@
 import { getCategoryEmojis, addRecentEmoji, getRecentEmojis, searchEmojis, getCustomEmojiData, loadCustomEmojis, refreshCustomEmojis, updateRecentCategory } from './EmojiData.js';
 import { polyfillEmojis } from './emojiPolyfill.js';
 import { applySkinToneToText, getSkinTone, setSkinTone } from './skinToneManager.js';
-import { isStaticCategoryDisabled } from '../CustomEmojiManager.js';
-import debug from '../DebugLogger.js';
+import { isStaticCategoryDisabled } from './CustomEmojiManager.js';
+import debug from '../Utils/DebugLogger.js';
 
 let activeCategory = 'recent';
 let searchQuery = '';

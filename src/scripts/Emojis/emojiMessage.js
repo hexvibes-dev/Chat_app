@@ -1,4 +1,3 @@
-// src/scripts/emojiMessage.js
 const EMOJI_REGEX = /^(\p{Emoji}(\p{Emoji_Modifier}?|\uFE0F\u20E3?)?(\u200D\p{Emoji}(\p{Emoji_Modifier}?|\uFE0F\u20E3?)?)*)(\s+(\p{Emoji}(\p{Emoji_Modifier}?|\uFE0F\u20E3?)?(\u200D\p{Emoji}(\p{Emoji_Modifier}?|\uFE0F\u20E3?)?)*))*$/u;
 const SIMPLE_EMOJI_REGEX = /^(\p{Extended_Pictographic}|\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)(\s+(\p{Extended_Pictographic}|\p{Emoji_Presentation}|\p{Emoji}\uFE0F?))*$/u;
 

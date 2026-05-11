@@ -1,4 +1,3 @@
-// src/scripts/editor/FloatingPreview.js
 import { EditorManager } from './EditorManager.js';
 
 let previewElement = null;

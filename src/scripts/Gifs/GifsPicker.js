@@ -1,4 +1,3 @@
-// src/scripts/GifsPicker.js
 const GIPHY_API_KEY = 'TU_API_KEY_AQUI'; 
 const GIPHY_ENDPOINT = 'https://api.giphy.com/v1/gifs/search';
 

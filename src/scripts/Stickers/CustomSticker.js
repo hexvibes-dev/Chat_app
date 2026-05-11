@@ -1,11 +1,8 @@
-// src/scripts/CustomSticker.js
-
-// Categorías locales de solo lectura (aparecerán en el picker de stickers)
 export const localStickerCategories = [
   {
     name: 'Stickers Locales',
-    icon: '📦',           // opcional, se puede usar en el futuro
-    order: 1,             // opcional, orden de aparición (menor primero)
+    icon: '📦',
+    order: 1,   
     stickers: [
       {
         id: 'local_sticker_1',
@@ -88,13 +85,9 @@ export const localStickerCategories = [
     ]
   }
 ];
-
-// Función para obtener todas las categorías locales
 export function getLocalStickerCategories() {
   return localStickerCategories.sort((a, b) => (a.order || 999) - (b.order || 999));
 }
-
-// Función para obtener todos los stickers locales (aplanados)
 export function getAllLocalStickers() {
   const all = [];
   for (const cat of localStickerCategories) {
@@ -109,7 +102,6 @@ export function getAllLocalStickers() {
   return all;
 }
 
-// Buscar un sticker por su id
 export function getLocalStickerById(id) {
   for (const cat of localStickerCategories) {
     const found = cat.stickers.find(s => s.id === id);
@@ -118,7 +110,6 @@ export function getLocalStickerById(id) {
   return null;
 }
 
-// Buscar stickers por palabra clave (para sugerencias)
 export function searchLocalStickers(query) {
   if (!query || query.length < 2) return [];
   const lower = query.toLowerCase();

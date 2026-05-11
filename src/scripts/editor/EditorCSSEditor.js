@@ -1,4 +1,3 @@
-// src/scripts/editor/EditorCSSEditor.js
 import { EditorState } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';

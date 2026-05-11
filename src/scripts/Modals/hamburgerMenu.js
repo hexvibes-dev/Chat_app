@@ -1,9 +1,9 @@
 import { initThemeManager } from './themeManager.js';
-import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
 import interact from 'interactjs';
 import { showAvatarEditor } from './AvatarEditorModal.js';
-import { showNotification } from './notifications.js';
-import { showSoundSettingsModal } from './SoundSettingsModal.js';
+import { showNotification } from '../Utils/notifications.js';
+import { showSoundSettingsModal } from '../Sounds/SoundSettingsModal.js';
 
 let menuElement = null;
 let isMenuOpen = false;

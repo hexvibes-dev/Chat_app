@@ -1,4 +1,3 @@
-// src/scripts/position.js
 export function computeLayout({ anchorRect, popupRect, menuRect, viewportW, viewportH, isLastVisibleMessage = false }) {
   const popupLeft = (viewportW - popupRect.width) / 2;
   const popupTop = (viewportH - popupRect.height - menuRect.height - 16) / 2;

@@ -1,10 +1,9 @@
-// src/scripts/ActionMenu.js
 import interact from 'interactjs';
-import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
-import { showCustomEmojiModal, showQuickEmojiUpload } from './CustomEmojiModal.js';
-import { showCustomStickerModal, showQuickStickerUpload } from './StickerModal.js';
-import { insertAtCursor } from './input.js';
-import { showPaintModal } from './PaintModal.js';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
+import { showCustomEmojiModal, showQuickEmojiUpload } from '../Emojis/CustomEmojiModal.js';
+import { showCustomStickerModal, showQuickStickerUpload } from '../Stickers/StickerModal.js';
+import { insertAtCursor } from '../Messages/input.js';
+import { showPaintModal } from '../Paint/PaintModal.js';
 
 let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
@@ -150,8 +149,8 @@ function handleAction(action) {
       showCustomStickerModal();
       break;
     case 'editor':
-      import('./editor/FloatingPreview.js').then(m => m.showFloatingPreview());
-      import('./editor/EditorModal.js').then(m => m.showEditorModal());
+      import('../editor/FloatingPreview.js').then(m => m.showFloatingPreview());
+      import('../editor/EditorModal.js').then(m => m.showEditorModal());
       break;
     case 'paint':
       showPaintModal();

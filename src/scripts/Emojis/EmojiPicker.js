@@ -1,9 +1,8 @@
-// EmojiPicker.js (modificado: eliminados estilos inline que forzaban altura)
-import { initEmojiPicker, destroyEmojiPicker } from './EmojiPicker/EmojiPickerCore.js';
-import { initStickersPicker, destroyStickersPicker, refreshStickersDisplay } from './StickersPicker.js';
-import { initGifsPicker, destroyGifsPicker } from './GifsPicker.js';
-import { insertAtCursor } from './input.js';
-import { appendMessage } from './messages.js';
+import { initEmojiPicker, destroyEmojiPicker } from './EmojiPickerCore.js';
+import { initStickersPicker, destroyStickersPicker, refreshStickersDisplay } from '../Stickers/StickersPicker.js';
+import { initGifsPicker, destroyGifsPicker } from '../Gifs/GifsPicker.js';
+import { insertAtCursor } from '../Messages/input.js';
+import { appendMessage } from '../Messages/messages.js';
 
 let currentTab = 'emojis';
 let stickersContainer = null;

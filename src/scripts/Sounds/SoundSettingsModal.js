@@ -1,6 +1,5 @@
-// src/scripts/SoundSettingsModal.js
 import interact from 'interactjs';
-import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
 import { 
   setGlobalVolume, getGlobalVolume, 
   enableSounds, disableSounds, isSoundEnabled,

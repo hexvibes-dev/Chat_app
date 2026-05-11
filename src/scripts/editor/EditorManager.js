@@ -1,4 +1,3 @@
-// src/scripts/editor/EditorManager.js
 const STORAGE_CSS_KEY = 'editor_current_css';
 const STORAGE_MSG_KEY = 'editor_current_message';
 const STORAGE_SAVED_STYLES = 'editor_saved_styles';

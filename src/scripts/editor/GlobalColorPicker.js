@@ -1,7 +1,6 @@
-// src/scripts/editor/GlobalColorPicker.js
 import interact from 'interactjs';
-import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../modalStackManager.js';
-import { showNotification } from '../notifications.js';
+import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
+import { showNotification } from '../Utils/notifications.js';
 
 let windowElement, headerElement, closeBtn, cancelBtn, overlay;
 let windowX = 0, windowY = 0;

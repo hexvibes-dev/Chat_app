@@ -1,5 +1,4 @@
-// src/scripts/StickersPicker.js
-import { appendMessage } from './messages.js';
+import { appendMessage } from '../Messages/messages.js';
 import { getCategories, getAllStickers } from './StickerManager.js';
 
 export function getStickerHtml(sticker) {

@@ -1,5 +1,4 @@
-// src/scripts/notifications.js
-import { playNotification } from './soundManager.js';
+import { playNotification } from '../Sounds/soundManager.js';
 
 let notificationElement = null;
 let notificationTimeout = null;

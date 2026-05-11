@@ -1,5 +1,3 @@
-// src/scripts/reactionAnimations.js
-
 export function heartRainAnimation(messageEl) {
   const rect = messageEl.getBoundingClientRect();
   const heartColors = ['❤️', '🧡', '💛', '💚', '💙', '💜', '💗', '💕', '💘', '💓'];

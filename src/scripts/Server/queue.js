@@ -1,5 +1,4 @@
-// src/scripts/queue.js
-import { showNotification } from './notifications.js';
+import { showNotification } from '../Utils/notifications.js';
 
 let socketInstance = null;
 const eventQueue = [];

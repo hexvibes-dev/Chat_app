@@ -1,16 +1,13 @@
-// EmojiSuggestions.js
-import { getCustomEmojiArray } from './CustomEmojiManager.js';
-import { customEmojiCollection } from './CustomEmojiPicker.js';
+import { getCustomEmojiArray } from '../Emojis/CustomEmojiManager.js';
+import { customEmojiCollection } from '../Emojis/CustomEmojiPicker.js';
 import { getNativeEmojiExtraKeywords } from './NativeEmojiKeywords.js';
-import { getAllLocalStickers } from './CustomSticker.js';
-import { getStickerHtml } from './StickersPicker.js';
+import { getAllLocalStickers } from '../Stickers/CustomSticker.js';
+import { getStickerHtml } from '../Stickers/StickersPicker.js';
 import { appendMessage } from './messages.js';
 import { insertAtCursor } from './input.js';
 import emojis from 'unicode-emoji-json';
-import { getStaticEmojiCategories } from './StaticEmojiCategories.js';
-import { isStaticCategoryDisabled } from './CustomEmojiManager.js';
-
-// ... resto del código igual
+import { getStaticEmojiCategories } from '../Emojis/StaticEmojiCategories.js';
+import { isStaticCategoryDisabled } from '../Emojis/CustomEmojiManager.js';
 
 let suggestionContainer = null;
 let currentSuggestions = [];

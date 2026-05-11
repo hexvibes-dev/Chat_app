@@ -1,7 +1,6 @@
-// src/scripts/themeManager.js
 import interact from 'interactjs';
-import { registerModal, unregisterModal, associateOverlay, bringModalToFront, constrainAllModals } from './modalStackManager.js';
-import { showNotification } from './notifications.js';
+import { registerModal, unregisterModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
+import { showNotification } from '../Utils/notifications.js';
 
 const STORAGE_THEME = 'chat_theme_prefs';
 const STORAGE_BG_MODE = 'chat_bg_mode';

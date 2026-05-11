@@ -1,7 +1,7 @@
-import { loadCustomEmojis, getCustomEmojiByShortcodeFromData } from '../EmojiPicker/EmojiData.js';
-import { convertShortcodesToImages } from '../emojiUtils.js';
-import { showNotification } from '../notifications.js';
-import { isStaticCategoryDisabled } from '../CustomEmojiManager.js';
+import { loadCustomEmojis, getCustomEmojiByShortcodeFromData } from '../Emojis/EmojiData.js';
+import { convertShortcodesToImages } from '../Emojis/emojiUtils.js';
+import { showNotification } from '../Utils/notifications.js';
+import { isStaticCategoryDisabled } from '../Emojis/CustomEmojiManager.js';
 
 let modal = null;
 let blurOverlay = null;

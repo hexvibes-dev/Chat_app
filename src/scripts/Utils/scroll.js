@@ -1,5 +1,3 @@
-// src/scripts/scroll.js
-
 export const SCROLL_THRESHOLD = 100;
 
 window.isAtBottom = true;
