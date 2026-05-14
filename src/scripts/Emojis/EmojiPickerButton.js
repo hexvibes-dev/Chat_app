@@ -1,7 +1,6 @@
 import { initMobileEmojiPicker } from './EmojiPicker.js';
 import { showDesktopEmojiPicker } from './EmojiPickerDesktop.js';
 import { playClick } from  '../Sounds/soundManager.js';
-import debug from '../Utils/DebugLogger.js';
 
 let isOpen = false;
 let container = null;
@@ -55,11 +54,9 @@ function forceScrollable() {
 }
 
 function openMobilePicker() {
-  debug.log('openMobilePicker llamado');
   if (isOpen || isClosing) return;
   container = document.getElementById('mobile-picker-container');
   if (!container) {
-    debug.logError('No se encontró #mobile-picker-container');
     return;
   }
   
@@ -75,7 +72,6 @@ function openMobilePicker() {
   }
   
   window.dispatchEvent(new CustomEvent('picker-opened'));
-  debug.logSuccess('Picker abierto');
   
   if (window.emojiPicker && window.emojiPicker.refreshRecent) {
     window.emojiPicker.refreshRecent();
@@ -93,9 +89,7 @@ function openMobilePicker() {
 }
 
 function closeMobilePicker() {
-  debug.log('closeMobilePicker llamado');
   if (ignoreClose) {
-    debug.log('Ignorando cierre porque ignoreClose=true');
     return;
   }
   if (!isOpen || isClosing) return;
@@ -109,7 +103,6 @@ function closeMobilePicker() {
   updateOverlayElements(false);
   
   window.dispatchEvent(new CustomEvent('picker-closed'));
-  debug.logSuccess('Picker cerrado');
   
   setTimeout(() => {
     isOpen = false;
@@ -121,13 +114,11 @@ function closeMobilePicker() {
 }
 
 function toggleMobilePicker() {
-  debug.log('toggleMobilePicker');
   if (isOpen) closeMobilePicker();
   else openMobilePicker();
 }
 
 function onPopState(event) {
-  debug.log('onPopState');
   if (isOpen) {
     event.preventDefault();
     closeMobilePicker();
@@ -135,15 +126,12 @@ function onPopState(event) {
 }
 
 export function initEmojiPickerButton() {
-  debug.log('initEmojiPickerButton');
   const btn = document.getElementById('emojiPickerBtn');
   if (!btn) {
-    debug.logError('Botón emojiPickerBtn no encontrado');
     return;
   }
   
   btn.addEventListener('click', (e) => {
-    debug.log('Click en botón emojiPickerBtn');
     e.preventDefault();
     e.stopPropagation();
     playClick();
@@ -156,10 +144,7 @@ export function initEmojiPickerButton() {
   
   container = document.getElementById('mobile-picker-container');
   if (container && !container.innerHTML.trim()) {
-    debug.log('Inicializando mobile picker');
-    const onInsertStart = () => {
-      debug.log('onInsertStart');
-    };
+    const onInsertStart = () => {};
     initMobileEmojiPicker(container, onInsertStart);
   }
   
@@ -168,7 +153,6 @@ export function initEmojiPickerButton() {
   document.addEventListener('click', (e) => {
     if (ignoreClose) return;
     if (isOpen && container && !container.contains(e.target) && !btn.contains(e.target)) {
-      debug.log('Click fuera del picker, cerrando');
       closeMobilePicker();
     }
   });
@@ -179,7 +163,6 @@ export function initEmojiPickerButton() {
     if (val) {
       ignoreCloseTimeout = setTimeout(() => {
         ignoreClose = false;
-        debug.log('ignoreClose restablecido a false');
       }, 500);
     }
   };

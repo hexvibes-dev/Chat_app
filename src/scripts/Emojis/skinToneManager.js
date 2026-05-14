@@ -167,7 +167,7 @@ function applySkinToneToElement(element) {
   });
 }
 
-// Aplica a todo el documento
 export function applySkinToneToDocument() {
   applySkinToneToElement(document.body);
 }
+

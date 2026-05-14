@@ -163,53 +163,56 @@ export async function initMobileEmojiPicker(container, onInsertStart) {
   let mobileEmojiPicker = null;
 
   function setActiveTab(tabId) {
-    currentMobileTab = tabId;
-    footer.querySelectorAll('.mobile-tab-btn').forEach(btn => {
-      if (btn.dataset.tab === tabId) btn.classList.add('active');
-      else btn.classList.remove('active');
-    });
-    body.innerHTML = '';
-    if (tabId === 'emojis') {
-      const emojiContainer = document.createElement('div');
-      emojiContainer.style.height = '100%';
-      body.appendChild(emojiContainer);
-      if (mobileEmojiPicker) {
-        destroyEmojiPicker();
-        mobileEmojiPicker = null;
-      }
-      mobileEmojiPicker = initEmojiPicker(emojiContainer, (emoji) => {
-        if (onInsertStart) onInsertStart();
-        insertAtCursor(emoji, false);
-      });
-    } else if (tabId === 'stickers') {
-      if (stickerPickerInstance) {
-        stickerPickerInstance = null;
-      }
-      const stickerContainer = document.createElement('div');
-      stickerContainer.style.height = '100%';
-      body.appendChild(stickerContainer);
-      initStickersPicker(stickerContainer, (stickerHtml) => {
-        if (onInsertStart) onInsertStart();
-        appendMessage(stickerHtml, { me: true });
-        if (window.isAtBottom && typeof window.smoothScrollToBottom === 'function') {
-          window.smoothScrollToBottom();
-        }
-      });
-      stickerPickerInstance = stickerContainer;
-    } else if (tabId === 'gifs') {
-      if (gifsPickerInstance) {
-        gifsPickerInstance = null;
-      }
-      const gifContainer = document.createElement('div');
-      gifContainer.style.height = '100%';
-      body.appendChild(gifContainer);
-      initGifsPicker(gifContainer, (text) => {
-        if (onInsertStart) onInsertStart();
-        insertAtCursor(text, false);
-      });
-      gifsPickerInstance = gifContainer;
+  currentMobileTab = tabId;
+  footer.querySelectorAll('.mobile-tab-btn').forEach(btn => {
+    if (btn.dataset.tab === tabId) btn.classList.add('active');
+    else btn.classList.remove('active');
+  });
+  body.innerHTML = '';
+  if (tabId === 'emojis') {
+    const emojiContainer = document.createElement('div');
+    emojiContainer.style.height = '100%';
+    emojiContainer.style.width = '100%';
+    body.appendChild(emojiContainer);
+    if (mobileEmojiPicker) {
+      destroyEmojiPicker();
+      mobileEmojiPicker = null;
     }
+    mobileEmojiPicker = initEmojiPicker(emojiContainer, (emoji) => {
+      if (onInsertStart) onInsertStart();
+      insertAtCursor(emoji, false);
+    });
+  } else if (tabId === 'stickers') {
+    if (stickerPickerInstance) {
+      stickerPickerInstance = null;
+    }
+    const stickerContainer = document.createElement('div');
+    stickerContainer.style.height = '100%';
+    stickerContainer.style.overflow = 'auto';
+    body.appendChild(stickerContainer);
+    initStickersPicker(stickerContainer, (stickerHtml) => {
+      if (onInsertStart) onInsertStart();
+      appendMessage(stickerHtml, { me: true });
+      if (window.isAtBottom && typeof window.smoothScrollToBottom === 'function') {
+        window.smoothScrollToBottom();
+      }
+    });
+    stickerPickerInstance = stickerContainer;
+  } else if (tabId === 'gifs') {
+    if (gifsPickerInstance) {
+      gifsPickerInstance = null;
+    }
+    const gifContainer = document.createElement('div');
+    gifContainer.style.height = '100%';
+    gifContainer.style.overflow = 'auto';
+    body.appendChild(gifContainer);
+    initGifsPicker(gifContainer, (text) => {
+      if (onInsertStart) onInsertStart();
+      insertAtCursor(text, false);
+    });
+    gifsPickerInstance = gifContainer;
   }
+}
 
   footer.querySelectorAll('.mobile-tab-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -232,3 +235,4 @@ export async function initMobileEmojiPicker(container, onInsertStart) {
     }
   }, 100);
 }
+

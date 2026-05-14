@@ -2,7 +2,6 @@ import emojis from 'unicode-emoji-json';
 import { getCustomEmojiArray, getCategories as getUserCategories } from './CustomEmojiManager.js';
 import { getStaticEmojiCategories } from './StaticEmojiCategories.js';
 import { isStaticCategoryDisabled } from './CustomEmojiManager.js';
-import debug from '../Utils/DebugLogger.js';
 
 const GROUP_TO_CATEGORY = {
   'Smileys & Emotion': 'smileys',
@@ -32,7 +31,6 @@ export const EMOJI_CATEGORIES = {
 
 let unicodeEmojisLoaded = false;
 if (!unicodeEmojisLoaded) {
-  debug.log(`Cargando emojis Unicode...`);
   for (const [emoji, data] of Object.entries(emojis)) {
     const groupName = data.group;
     const categoryKey = GROUP_TO_CATEGORY[groupName];
@@ -43,7 +41,6 @@ if (!unicodeEmojisLoaded) {
     }
   }
   unicodeEmojisLoaded = true;
-  debug.log(`Unicode emojis cargados`);
 }
 
 let cachedMergedData = null;
@@ -76,20 +73,15 @@ function getStaticEmojisList() {
 
 function getDynamicCustomEmojis() {
   const result = getCustomEmojiArray();
-  debug.log(`[getDynamicCustomEmojis] ${result.length} emojis dinámicos`);
   return result;
 }
 
 export function loadCustomEmojis(force = false) {
-  debug.log(`[loadCustomEmojis] INICIO (force: ${force})`);
-  
   if (force || !cachedMergedData) {
-    debug.log(`Generando nuevos datos...`);
     const dynamicData = getDynamicCustomEmojis();
     const staticData = getStaticEmojisList();
     cachedMergedData = [...dynamicData, ...staticData];
     window._customEmojiData = cachedMergedData;
-    debug.log(`window._customEmojiData actualizado con ${cachedMergedData.length} emojis (${dynamicData.length} dinámicos + ${staticData.length} estáticos)`);
     
     const allCategories = getUserCategories();
     const staticCategories = getStaticEmojiCategories();
@@ -102,12 +94,10 @@ export function loadCustomEmojis(force = false) {
         emojis: cat.emojis.map(e => `:${e.shortcodes[0]}:`),
         isStatic: false
       });
-      debug.log(`Añadida categoría usuario: ${cat.name} (${cat.emojis.length} emojis)`);
     }
     
     for (const staticCat of staticCategories) {
       if (isStaticCategoryDisabled(staticCat.name)) {
-        debug.log(`Saltando categoría estática desactivada: ${staticCat.name}`);
         continue;
       }
       const emojiShortcodes = staticCat.emojis.map(e => `:${e.shortcodes[0]}:`);
@@ -119,22 +109,15 @@ export function loadCustomEmojis(force = false) {
         categoryData: staticCat,
         icon: staticCat.icon
       });
-      debug.log(`Añadida categoría estática: ${staticCat.name} (${emojiShortcodes.length} emojis: ${emojiShortcodes.join(', ')})`);
     }
-    
-    debug.log(`Subcategorías finales: ${subcategories.map(s => s.name + ' [' + s.emojis.length + ']').join(', ')}`);
     
     EMOJI_CATEGORIES.custom.subcategories = subcategories;
     window._customEmojiSubcategories = subcategories;
-    debug.log(`EMOJI_CATEGORIES.custom.subcategories actualizado`);
-  } else {
-    debug.log(`Usando datos cacheados (${cachedMergedData.length} emojis)`);
   }
   return window._customEmojiData;
 }
 
 export function refreshCustomEmojis() {
-  debug.log(`[refreshCustomEmojis] Llamado`);
   cachedMergedData = null;
   cachedStaticData = null;
   return loadCustomEmojis(true);
@@ -142,14 +125,12 @@ export function refreshCustomEmojis() {
 
 export function getCustomEmojiData() {
   const data = window._customEmojiData || [];
-  debug.log(`[getCustomEmojiData] Retornando ${data.length} emojis`);
   return data;
 }
 
 export function getCustomEmojiByShortcodeFromData(shortcode) {
   const data = getCustomEmojiData();
   const found = data.find(e => e.shortcodes && e.shortcodes.includes(shortcode));
-  debug.log(`[getCustomEmojiByShortcodeFromData] "${shortcode}" -> ${found ? 'encontrado (' + found.name + ')' : 'NO encontrado'}`);
   return found;
 }
 
@@ -224,3 +205,4 @@ export function getCategoryEmojis(categoryKey) {
   }
   return EMOJI_CATEGORIES[categoryKey]?.emojis || [];
 }
+

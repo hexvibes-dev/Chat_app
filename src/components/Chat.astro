@@ -225,58 +225,6 @@
   <div class="resize-emoji-picker-desktop resize-sw"></div>
 </div>
 
-<!-- Emoji Picker -->
-<div id="emoji-picker-overlay" class="emoji-picker-overlay"></div>
-<div id="emoji-picker-movable-window" class="emoji-picker-movable-window overflow-hidden" style="display: none; width: 400px; height: 500px;">
-  <div id="emoji-picker-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
-    <div></div>
-    <div class="grid place-content-center w-full h-full">
-      <span class="modal-header-text">Emojis</span>
-    </div>
-    <button id="close-emoji-picker-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
-      </svg>
-    </button>
-  </div>
-  <div id="emoji-picker-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
-  <div class="resize-emoji-picker resize-n"></div>
-  <div class="resize-emoji-picker resize-s"></div>
-  <div class="resize-emoji-picker resize-e"></div>
-  <div class="resize-emoji-picker resize-w"></div>
-  <div class="resize-emoji-picker resize-ne"></div>
-  <div class="resize-emoji-picker resize-nw"></div>
-  <div class="resize-emoji-picker resize-se"></div>
-  <div class="resize-emoji-picker resize-sw"></div>
-</div>
-
-<!-- Custom Emoji Modal -->
-<div id="custom-emoji-overlay" class="custom-emoji-overlay"></div>
-<div id="custom-emoji-movable-window" class="custom-emoji-movable-window overflow-hidden" style="display: none; width: 500px; height: 600px;">
-  <div id="custom-emoji-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
-    <div></div>
-    <div class="grid place-content-center w-full h-full">
-      <span class="modal-header-text">📁 Gestionar emojis personalizados</span>
-    </div>
-    <button id="close-custom-emoji-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
-      </svg>
-    </button>
-  </div>
-  <div id="custom-emoji-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
-  <div class="resize-custom-emoji resize-n"></div>
-  <div class="resize-custom-emoji resize-s"></div>
-  <div class="resize-custom-emoji resize-e"></div>
-  <div class="resize-custom-emoji resize-w"></div>
-  <div class="resize-custom-emoji resize-ne"></div>
-  <div class="resize-custom-emoji resize-nw"></div>
-  <div class="resize-custom-emoji resize-se"></div>
-  <div class="resize-custom-emoji resize-sw"></div>
-</div>
-
 <!-- Custom Sticker Modal -->
 <div id="custom-sticker-overlay" class="custom-sticker-overlay"></div>
 <div id="custom-sticker-movable-window" class="custom-sticker-movable-window overflow-hidden" style="display: none; width: 500px; height: 600px;">
@@ -345,9 +293,9 @@
   <div id="cache-cleaner-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
     <div></div>
     <div class="grid place-content-center w-full h-full">
-      <span class="modal-header-text">Limpiar almacenamiento</span>
+      <span class="Cache-modal-header-text">Limpiar almacenamiento</span>
     </div>
-    <button id="close-cache-cleaner-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+    <button id="close-cache-cleaner-modal" class="leading-none">
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
@@ -362,8 +310,8 @@
   </div>
   <div id="cache-cleaner-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
   <div style="display:flex; justify-content:flex-end; gap:12px; padding:16px; border-top:1px solid var(--modal-input-border);">
-    <button id="cache-cancel-btn" class="btn-cancel">Cancelar</button>
-    <button id="cache-accept-btn" class="btn primary">Eliminar seleccionados</button>
+    <button id="cache-cancel-btn">Cancelar</button>
+    <button id="cache-accept-btn">Eliminar seleccionados</button>
   </div>
   <div class="resize-cache-cleaner resize-n"></div>
   <div class="resize-cache-cleaner resize-s"></div>
@@ -768,7 +716,7 @@
   <div id="avatar-editor-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
     <div></div>
     <div class="grid place-content-center w-full h-full">
-      <span class="modal-header-text">✏️ Editar avatar</span>
+      <span class="avatar-editor-header-text">Editar foto de perfil</span>
     </div>
     <button id="close-avatar-editor-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">

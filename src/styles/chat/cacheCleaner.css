@@ -148,6 +148,55 @@
   cursor: grabbing;
 }
 
+.Cache-modal-header-text {
+  background: var(--cache-cleannner-header-text-background);
+  backdrop-filter: var(--cache-cleannner-header-text-blur);
+  opacity: var(--cache-cleannner-header-text-opacity);
+
+  font-family: var(--cache-cleannner-header-text-font-family);
+  font-size: var(--cache-cleannner-header-text-font-size);
+  font-weight: var(--cache-cleannner-header-text-font-weight);
+  line-height: var(--cache-cleannner-header-text-line-height);
+  color: var(--cache-cleannner-header-text-color);
+  letter-spacing: var(--cache-cleannner-header-text-letter-spacing);
+  word-spacing: var(--cache-cleannner-header-text-word-spacing);
+  text-transform: var(--cache-cleannner-header-text-text-transform);
+  text-shadow: var(--cache-cleannner-header-text-text-shadow);
+  font-style: var(--cache-cleannner-header-text-font-style);
+
+  text-align: center;
+}
+
+#close-cache-cleaner-modal {
+  justify-self: end;
+
+  background: var(--cache-cleanner-cross-background);
+  backdrop-filter: var(--cache-cleanner-cross-blur);
+  opacity: var(--cache-cleanner-cross-opacity);
+
+  border-top: var(--cache-cleanner-cross-border-top-width) var(--cache-cleanner-cross-border-top-style) var(--cache-cleanner-cross-border-top-color);
+  border-right: var(--cache-cleanner-cross-border-right-width) var(--cache-cleanner-cross-border-right-style) var(--cache-cleanner-cross-border-right-color);
+  border-bottom: var(--cache-cleanner-cross-border-bottom-width) var(--cache-cleanner-cross-border-bottom-style) var(--cache-cleanner-cross-border-bottom-color);
+  border-left: var(--cache-cleanner-cross-border-left-width) var(--cache-cleanner-cross-border-left-style) var(--cache-cleanner-cross-border-left-color);
+
+  border-top-left-radius: var(--cache-cleanner-cross-border-radius-top-left);
+  border-top-right-radius: var(--cache-cleanner-cross-border-radius-top-right);
+  border-bottom-right-radius: var(--cache-cleanner-cross-border-radius-bottom-right);
+  border-bottom-left-radius: var(--cache-cleanner-cross-border-radius-bottom-left);
+
+  box-shadow: var(--cache-cleanner-cross-shadow-external), inset var(--cache-cleanner-cross-shadow-internal);
+
+  outline: var(--cache-cleanner-cross-outline-width) var(--cache-cleanner-cross-outline-style) var(--cache-cleanner-cross-outline-color);
+  outline-offset: var(--cache-cleanner-cross-outline-offset);
+
+  font-family: var(--cache-cleanner-cross-font-family);
+  font-size: var(--cache-cleanner-cross-font-size);
+  font-weight: var(--cache-cleanner-cross-font-weight);
+  line-height: var(--cache-cleanner-cross-line-height);
+  color: var(--cache-cleanner-cross-color);
+  text-shadow: var(--cache-cleanner-cross-text-shadow);
+}
+
 .tabs-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -398,6 +447,8 @@
   justify-content: center;
   align-items: center;
   gap: var(--cache-cleanner-paginacion-btn-gap);
+  width: 100%;
+  height: 50px;
 
   background: var(--cache-cleanner-paginacion-btn-background);
   backdrop-filter: var(--cache-cleanner-paginacion-btn-blur);
@@ -420,6 +471,7 @@
 }
 
 #cache-prev-btn {
+  user-select: none;
   padding-top: var(--cache-cleanner-cache-prev-btn-padding-top);
   padding-right: var(--cache-cleanner-cache-prev-btn-padding-right);
   padding-bottom: var(--cache-cleanner-cache-prev-btn-padding-bottom);
@@ -491,6 +543,7 @@
 }
 
 #cache-next-btn.cache-page-nav-btn {
+  user-select: none;
   padding-top: var(--cache-cleanner-cache-next-btn-padding-top);
   padding-right: var(--cache-cleanner-cache-next-btn-padding-right);
   padding-bottom: var(--cache-cleanner-cache-next-btn-padding-bottom);
@@ -796,17 +849,39 @@
 .cache-grid-item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 12px;
-  background: #2a2a3a;
-  border-radius: 12px;
-  border: 1px solid #3a3a4a;
-  transition: all 0.2s;
-}
+  user-select: none;
+  gap: var(--cache-cleanner-items-gap);
 
-.cache-grid-item:hover {
-  background: #323242;
-  border-color: #4a4a5a;
+  background: var(--cache-cleanner-items-background);
+  backdrop-filter: var(--cache-cleanner-items-blur);
+  opacity: var(--cache-cleanner-items-opacity);
+
+  border-top: var(--cache-cleanner-items-border-top-width) var(--cache-cleanner-items-border-top-style) var(--cache-cleanner-items-border-top-color);
+  border-right: var(--cache-cleanner-items-border-right-width) var(--cache-cleanner-items-border-right-style) var(--cache-cleanner-items-border-right-color);
+  border-bottom: var(--cache-cleanner-items-border-bottom-width) var(--cache-cleanner-items-border-bottom-style) var(--cache-cleanner-items-border-bottom-color);
+  border-left: var(--cache-cleanner-items-border-left-width) var(--cache-cleanner-items-border-left-style) var(--cache-cleanner-items-border-left-color);
+
+  border-top-left-radius: var(--cache-cleanner-items-border-radius-top-left);
+  border-top-right-radius: var(--cache-cleanner-items-border-radius-top-right);
+  border-bottom-right-radius: var(--cache-cleanner-items-border-radius-bottom-right);
+  border-bottom-left-radius: var(--cache-cleanner-items-border-radius-bottom-left);
+
+  box-shadow: var(--cache-cleanner-items-shadow-external), inset var(--cache-cleanner-items-shadow-internal);
+
+  outline: var(--cache-cleanner-items-outline-width) var(--cache-cleanner-items-outline-style) var(--cache-cleanner-items-outline-color);
+  outline-offset: var(--cache-cleanner-items-outline-offset);
+
+  padding-top: var(--cache-cleanner-items-padding-top);
+  padding-right: var(--cache-cleanner-items-padding-right);
+  padding-bottom: var(--cache-cleanner-items-padding-bottom);
+  padding-left: var(--cache-cleanner-items-padding-left);
+
+  transition: var(--cache-cleanner-items-transition);
+
+  animation-name: var(--cache-cleanner-items-animation-name);
+  animation-duration: var(--cache-cleanner-items-animation-duration);
+  animation-timing-function: var(--cache-cleanner-items-animation-timing-function);
+  animation-iteration-count: var(--cache-cleanner-items-animation-iteration-count);
 }
 
 .cache-grid-item input[type="checkbox"] {
@@ -817,63 +892,323 @@
   flex-shrink: 0;
 }
 
+.cache-empty-state {
+  background: var(--cache-cleanner-empty-state-background);
+  backdrop-filter: var(--cache-cleanner-empty-state-blur);
+  opacity: var(--cache-cleanner-empty-state-opacity);
+
+  border-top: var(--cache-cleanner-empty-state-border-top-width) var(--cache-cleanner-empty-state-border-top-style) var(--cache-cleanner-empty-state-border-top-color);
+  border-right: var(--cache-cleanner-empty-state-border-right-width) var(--cache-cleanner-empty-state-border-right-style) var(--cache-cleanner-empty-state-border-right-color);
+  border-bottom: var(--cache-cleanner-empty-state-border-bottom-width) var(--cache-cleanner-empty-state-border-bottom-style) var(--cache-cleanner-empty-state-border-bottom-color);
+  border-left: var(--cache-cleanner-empty-state-border-left-width) var(--cache-cleanner-empty-state-border-left-style) var(--cache-cleanner-empty-state-border-left-color);
+
+  border-top-left-radius: var(--cache-cleanner-empty-state-border-radius-top-left);
+  border-top-right-radius: var(--cache-cleanner-empty-state-border-radius-top-right);
+  border-bottom-right-radius: var(--cache-cleanner-empty-state-border-radius-bottom-right);
+  border-bottom-left-radius: var(--cache-cleanner-empty-state-border-radius-bottom-left);
+
+  box-shadow: var(--cache-cleanner-empty-state-shadow-external), inset var(--cache-cleanner-empty-state-shadow-internal);
+
+  outline: var(--cache-cleanner-empty-state-outline-width) var(--cache-cleanner-empty-state-outline-style) var(--cache-cleanner-empty-state-outline-color);
+  outline-offset: var(--cache-cleanner-empty-state-outline-offset);
+
+  margin-top: var(--cache-cleanner-empty-state-margin-top);
+  margin-right: var(--cache-cleanner-empty-state-margin-right);
+  margin-bottom: var(--cache-cleanner-empty-state-margin-bottom);
+  margin-left: var(--cache-cleanner-empty-state-margin-left);
+
+  padding-top: var(--cache-cleanner-empty-state-padding-top);
+  padding-right: var(--cache-cleanner-empty-state-padding-right);
+  padding-bottom: var(--cache-cleanner-empty-state-padding-bottom);
+  padding-left: var(--cache-cleanner-empty-state-padding-left);
+
+  font-family: var(--cache-cleanner-empty-state-font-family);
+  font-size: var(--cache-cleanner-empty-state-font-size);
+  font-weight: var(--cache-cleanner-empty-state-font-weight);
+  line-height: var(--cache-cleanner-empty-state-line-height);
+  color: var(--cache-cleanner-empty-state-color);
+  letter-spacing: var(--cache-cleanner-empty-state-letter-spacing);
+  word-spacing: var(--cache-cleanner-empty-state-word-spacing);
+  text-transform: var(--cache-cleanner-empty-state-text-transform);
+  text-shadow: var(--cache-cleanner-empty-state-text-shadow);
+  font-style: var(--cache-cleanner-empty-state-font-style);
+}
+
 .cache-grid-item label {
   flex: 1;
   cursor: pointer;
   min-width: 0;
+
+  background: var(--cache-cleanner-itemns-key-text-container-background);
+  backdrop-filter: var(--cache-cleanner-itemns-key-text-container-blur);
+  opacity: var(--cache-cleanner-itemns-key-text-container-opacity);
+
+  border-top: var(--cache-cleanner-itemns-key-text-container-border-top-width) var(--cache-cleanner-itemns-key-text-container-border-top-style) var(--cache-cleanner-itemns-key-text-container-border-top-color);
+  border-right: var(--cache-cleanner-itemns-key-text-container-border-right-width) var(--cache-cleanner-itemns-key-text-container-border-right-style) var(--cache-cleanner-itemns-key-text-container-border-right-color);
+  border-bottom: var(--cache-cleanner-itemns-key-text-container-border-bottom-width) var(--cache-cleanner-itemns-key-text-container-border-bottom-style) var(--cache-cleanner-itemns-key-text-container-border-bottom-color);
+  border-left: var(--cache-cleanner-itemns-key-text-container-border-left-width) var(--cache-cleanner-itemns-key-text-container-border-left-style) var(--cache-cleanner-itemns-key-text-container-border-left-color);
+
+  border-top-left-radius: var(--cache-cleanner-itemns-key-text-container-border-radius-top-left);
+  border-top-right-radius: var(--cache-cleanner-itemns-key-text-container-border-radius-top-right);
+  border-bottom-right-radius: var(--cache-cleanner-itemns-key-text-container-border-radius-bottom-right);
+  border-bottom-left-radius: var(--cache-cleanner-itemns-key-text-container-border-radius-bottom-left);
+
+  box-shadow: var(--cache-cleanner-itemns-key-text-container-shadow-external), inset var(--cache-cleanner-itemns-key-text-container-shadow-internal);
+
+  outline: var(--cache-cleanner-itemns-key-text-container-outline-width) var(--cache-cleanner-itemns-key-text-container-outline-style) var(--cache-cleanner-itemns-key-text-container-outline-color);
+  outline-offset: var(--cache-cleanner-itemns-key-text-container-outline-offset);
+
+  padding-top: var(--cache-cleanner-itemns-key-text-container-padding-top);
+  padding-right: var(--cache-cleanner-itemns-key-text-container-padding-right);
+  padding-bottom: var(--cache-cleanner-itemns-key-text-container-padding-bottom);
+  padding-left: var(--cache-cleanner-itemns-key-text-container-padding-left);
 }
 
 .cache-item-key {
-  color: #e0e0e0;
-  font-family: monospace;
-  font-size: 11px;
-  word-break: break-all;
-  margin-bottom: 4px;
+  background: var(--cache-cleanner-item-name-background);
+  backdrop-filter: var(--cache-cleanner-item-name-blur);
+  opacity: var(--cache-cleanner-item-name-opacity);
+
+  border-top: var(--cache-cleanner-item-name-border-top-width) var(--cache-cleanner-item-name-border-top-style) var(--cache-cleanner-item-name-border-top-color);
+  border-right: var(--cache-cleanner-item-name-border-right-width) var(--cache-cleanner-item-name-border-right-style) var(--cache-cleanner-item-name-border-right-color);
+  border-bottom: var(--cache-cleanner-item-name-border-bottom-width) var(--cache-cleanner-item-name-border-bottom-style) var(--cache-cleanner-item-name-border-bottom-color);
+  border-left: var(--cache-cleanner-item-name-border-left-width) var(--cache-cleanner-item-name-border-left-style) var(--cache-cleanner-item-name-border-left-color);
+
+  border-top-left-radius: var(--cache-cleanner-item-name-border-radius-top-left);
+  border-top-right-radius: var(--cache-cleanner-item-name-border-radius-top-right);
+  border-bottom-right-radius: var(--cache-cleanner-item-name-border-radius-bottom-right);
+  border-bottom-left-radius: var(--cache-cleanner-item-name-border-radius-bottom-left);
+
+  box-shadow: var(--cache-cleanner-item-name-shadow-external), inset var(--cache-cleanner-item-name-shadow-internal);
+
+  outline: var(--cache-cleanner-item-name-outline-width) var(--cache-cleanner-item-name-outline-style) var(--cache-cleanner-item-name-outline-color);
+  outline-offset: var(--cache-cleanner-item-name-outline-offset);
+
+  margin-top: var(--cache-cleanner-item-name-margin-top);
+  margin-right: var(--cache-cleanner-item-name-margin-right);
+  margin-bottom: var(--cache-cleanner-item-name-margin-bottom);
+  margin-left: var(--cache-cleanner-item-name-margin-left);
+
+  padding-top: var(--cache-cleanner-item-name-padding-top);
+  padding-right: var(--cache-cleanner-item-name-padding-right);
+  padding-bottom: var(--cache-cleanner-item-name-padding-bottom);
+  padding-left: var(--cache-cleanner-item-name-padding-left);
+
+  font-family: var(--cache-cleanner-item-name-font-family);
+  font-size: var(--cache-cleanner-item-name-font-size);
+  font-weight: var(--cache-cleanner-item-name-font-weight);
+  line-height: var(--cache-cleanner-item-name-line-height);
+  color: var(--cache-cleanner-item-name-color);
+  letter-spacing: var(--cache-cleanner-item-name-letter-spacing);
+  word-spacing: var(--cache-cleanner-item-name-word-spacing);
+  text-transform: var(--cache-cleanner-item-name-text-transform);
+  text-shadow: var(--cache-cleanner-item-name-text-shadow);
+  font-style: var(--cache-cleanner-item-name-font-style);
+
+  word-break: var(--cache-cleanner-item-name-word-break);
 }
 
 .cache-item-value {
-  color: #a0a0b0;
-  font-size: 10px;
-  word-break: break-all;
+  background: var(--cache-cleanner-item-value-background);
+  backdrop-filter: var(--cache-cleanner-item-value-blur);
+  opacity: var(--cache-cleanner-item-value-opacity);
+
+  border-top: var(--cache-cleanner-item-value-border-top-width) var(--cache-cleanner-item-value-border-top-style) var(--cache-cleanner-item-value-border-top-color);
+  border-right: var(--cache-cleanner-item-value-border-right-width) var(--cache-cleanner-item-value-border-right-style) var(--cache-cleanner-item-value-border-right-color);
+  border-bottom: var(--cache-cleanner-item-value-border-bottom-width) var(--cache-cleanner-item-value-border-bottom-style) var(--cache-cleanner-item-value-border-bottom-color);
+  border-left: var(--cache-cleanner-item-value-border-left-width) var(--cache-cleanner-item-value-border-left-style) var(--cache-cleanner-item-value-border-left-color);
+
+  border-top-left-radius: var(--cache-cleanner-item-value-border-radius-top-left);
+  border-top-right-radius: var(--cache-cleanner-item-value-border-radius-top-right);
+  border-bottom-right-radius: var(--cache-cleanner-item-value-border-radius-bottom-right);
+  border-bottom-left-radius: var(--cache-cleanner-item-value-border-radius-bottom-left);
+
+  box-shadow: var(--cache-cleanner-item-value-shadow-external), inset var(--cache-cleanner-item-value-shadow-internal);
+
+  outline: var(--cache-cleanner-item-value-outline-width) var(--cache-cleanner-item-value-outline-style) var(--cache-cleanner-item-value-outline-color);
+  outline-offset: var(--cache-cleanner-item-value-outline-offset);
+
+  margin-top: var(--cache-cleanner-item-value-margin-top);
+  margin-right: var(--cache-cleanner-item-value-margin-right);
+  margin-bottom: var(--cache-cleanner-item-value-margin-bottom);
+  margin-left: var(--cache-cleanner-item-value-margin-left);
+
+  padding-top: var(--cache-cleanner-item-value-padding-top);
+  padding-right: var(--cache-cleanner-item-value-padding-right);
+  padding-bottom: var(--cache-cleanner-item-value-padding-bottom);
+  padding-left: var(--cache-cleanner-item-value-padding-left);
+
+  font-family: var(--cache-cleanner-item-value-font-family);
+  font-size: var(--cache-cleanner-item-value-font-size);
+  font-weight: var(--cache-cleanner-item-value-font-weight);
+  line-height: var(--cache-cleanner-item-value-line-height);
+  color: var(--cache-cleanner-item-value-color);
+  letter-spacing: var(--cache-cleanner-item-value-letter-spacing);
+  word-spacing: var(--cache-cleanner-item-value-word-spacing);
+  text-transform: var(--cache-cleanner-item-value-text-transform);
+  text-shadow: var(--cache-cleanner-item-value-text-shadow);
+  font-style: var(--cache-cleanner-item-value-font-style);
+
+  word-break: var(--cache-cleanner-item-value-word-break);
 }
 
-.btn-cancel, .btn.primary {
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: none;
+#cache-cancel-btn {
   cursor: pointer;
-  font-weight: 500;
-  background: var(--modal-input-bg);
-  color: var(--modal-text);
+  user-select: none;
+  transition-property:var(--cache-cleanner-button-cancel-transition-property);
+  transition-duration:var(--cache-cleanner-button-cancel-transition-duration);
+  transition-timing-function:var(--cache-cleanner-button-cancel-transition-timing-function);
+  transition-delay:var(--cache-cleanner-button-cancel-transition-delay);
+  background: var(--cache-cleanner-button-cancel-background);
+  backdrop-filter: var(--cache-cleanner-button-cancel-blur);
+  opacity: var(--cache-cleanner-button-cancel-opacity);
+
+  border-top: var(--cache-cleanner-button-cancel-border-top-width) var(--cache-cleanner-button-cancel-border-top-style) var(--cache-cleanner-button-cancel-border-top-color);
+  border-right: var(--cache-cleanner-button-cancel-border-right-width) var(--cache-cleanner-button-cancel-border-right-style) var(--cache-cleanner-button-cancel-border-right-color);
+  border-bottom: var(--cache-cleanner-button-cancel-border-bottom-width) var(--cache-cleanner-button-cancel-border-bottom-style) var(--cache-cleanner-button-cancel-border-bottom-color);
+  border-left: var(--cache-cleanner-button-cancel-border-left-width) var(--cache-cleanner-button-cancel-border-left-style) var(--cache-cleanner-button-cancel-border-left-color);
+
+  border-top-left-radius: var(--cache-cleanner-button-cancel-border-radius-top-left);
+  border-top-right-radius: var(--cache-cleanner-button-cancel-border-radius-top-right);
+  border-bottom-right-radius: var(--cache-cleanner-button-cancel-border-radius-bottom-right);
+  border-bottom-left-radius: var(--cache-cleanner-button-cancel-border-radius-bottom-left);
+
+  box-shadow: var(--cache-cleanner-button-cancel-shadow-external), inset var(--cache-cleanner-button-cancel-shadow-internal);
+
+  outline: var(--cache-cleanner-button-cancel-outline-width) var(--cache-cleanner-button-cancel-outline-style) var(--cache-cleanner-button-cancel-outline-color);
+  outline-offset: var(--cache-cleanner-button-cancel-outline-offset);
+
+  padding-top: var(--cache-cleanner-button-cancel-padding-top);
+  padding-right: var(--cache-cleanner-button-cancel-padding-right);
+  padding-bottom: var(--cache-cleanner-button-cancel-padding-bottom);
+  padding-left: var(--cache-cleanner-button-cancel-padding-left);
+
+  font-family: var(--cache-cleanner-button-cancel-font-family);
+  font-size: var(--cache-cleanner-button-cancel-font-size);
+  font-weight: var(--cache-cleanner-button-cancel-font-weight);
+  line-height: var(--cache-cleanner-button-cancel-line-height);
+  color: var(--cache-cleanner-button-cancel-color);
+  letter-spacing: var(--cache-cleanner-button-cancel-letter-spacing);
+  word-spacing: var(--cache-cleanner-button-cancel-word-spacing);
+  text-transform: var(--cache-cleanner-button-cancel-text-transform);
+  text-shadow: var(--cache-cleanner-button-cancel-text-shadow);
+  font-style: var(--cache-cleanner-button-cancel-font-style);
 }
-.btn.primary {
-  background: var(--modal-btn-primary);
-  color: var(--modal-btn-primary-text);
+
+#cache-accept-btn {
+  cursor:pointer;
+
+  background:var(--cache-cleanner-acept-delete-background);
+  backdrop-filter:var(--cache-cleanner-acept-delete-blur);
+  opacity:var(--cache-cleanner-acept-delete-opacity);
+
+  border-top:var(--cache-cleanner-acept-delete-border-top-width) var(--cache-cleanner-acept-delete-border-top-style) var(--cache-cleanner-acept-delete-border-top-color);
+  border-right:var(--cache-cleanner-acept-delete-border-right-width) var(--cache-cleanner-acept-delete-border-right-style) var(--cache-cleanner-acept-delete-border-right-color);
+  border-bottom:var(--cache-cleanner-acept-delete-border-bottom-width) var(--cache-cleanner-acept-delete-border-bottom-style) var(--cache-cleanner-acept-delete-border-bottom-color);
+  border-left:var(--cache-cleanner-acept-delete-border-left-width) var(--cache-cleanner-acept-delete-border-left-style) var(--cache-cleanner-acept-delete-border-left-color);
+
+  border-top-left-radius:var(--cache-cleanner-acept-delete-border-radius-top-left);
+  border-top-right-radius:var(--cache-cleanner-acept-delete-border-radius-top-right);
+  border-bottom-right-radius:var(--cache-cleanner-acept-delete-border-radius-bottom-right);
+  border-bottom-left-radius:var(--cache-cleanner-acept-delete-border-radius-bottom-left);
+
+  box-shadow:var(--cache-cleanner-acept-delete-shadow-external), inset var(--cache-cleanner-acept-delete-shadow-internal);
+
+  outline:var(--cache-cleanner-acept-delete-outline-width) var(--cache-cleanner-acept-delete-outline-style) var(--cache-cleanner-acept-delete-outline-color);
+  outline-offset:var(--cache-cleanner-acept-delete-outline-offset);
+
+  transition-property:var(--cache-cleanner-acept-delete-transition-property);
+  transition-duration:var(--cache-cleanner-acept-delete-transition-duration);
+  transition-timing-function:var(--cache-cleanner-acept-delete-transition-timing-function);
+  transition-delay:var(--cache-cleanner-acept-delete-transition-delay);
+
+  padding-top:var(--cache-cleanner-acept-delete-padding-top);
+  padding-right:var(--cache-cleanner-acept-delete-padding-right);
+  padding-bottom:var(--cache-cleanner-acept-delete-padding-bottom);
+  padding-left:var(--cache-cleanner-acept-delete-padding-left);
+
+  font-family:var(--cache-cleanner-acept-delete-font-family);
+  font-size:var(--cache-cleanner-acept-delete-font-size);
+  font-weight:var(--cache-cleanner-acept-delete-font-weight);
+  line-height:var(--cache-cleanner-acept-delete-line-height);
+  color:var(--cache-cleanner-acept-delete-color);
+  letter-spacing:var(--cache-cleanner-acept-delete-letter-spacing);
+  word-spacing:var(--cache-cleanner-acept-delete-word-spacing);
+  text-transform:var(--cache-cleanner-acept-delete-text-transform);
+  text-shadow:var(--cache-cleanner-acept-delete-text-shadow);
+  font-style:var(--cache-cleanner-acept-delete-font-style);
 }
-.btn-cancel:hover, .btn.primary:hover {
-  transform: scale(0.95);
-}
+
 #cache-cleaner-inner-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px;
+  flex:1;
+  overflow-y:auto;
+
+  background:var(--cache-cleanner-list-container-background);
+  backdrop-filter:var(--cache-cleanner-list-container-blur);
+  opacity:var(--cache-cleanner-list-container-opacity);
+
+  border-top:var(--cache-cleanner-list-container-border-top-width) var(--cache-cleanner-list-container-border-top-style) var(--cache-cleanner-list-container-border-top-color);
+  border-right:var(--cache-cleanner-list-container-border-right-width) var(--cache-cleanner-list-container-border-right-style) var(--cache-cleanner-list-container-border-right-color);
+  border-bottom:var(--cache-cleanner-list-container-border-bottom-width) var(--cache-cleanner-list-container-border-bottom-style) var(--cache-cleanner-list-container-border-bottom-color);
+  border-left:var(--cache-cleanner-list-container-border-left-width) var(--cache-cleanner-list-container-border-left-style) var(--cache-cleanner-list-container-border-left-color);
+
+  border-top-left-radius:var(--cache-cleanner-list-container-border-radius-top-left);
+  border-top-right-radius:var(--cache-cleanner-list-container-border-radius-top-right);
+  border-bottom-right-radius:var(--cache-cleanner-list-container-border-radius-bottom-right);
+  border-bottom-left-radius:var(--cache-cleanner-list-container-border-radius-bottom-left);
+
+  box-shadow:var(--cache-cleanner-list-container-shadow-external), inset var(--cache-cleanner-list-container-shadow-internal);
+
+  outline:var(--cache-cleanner-list-container-outline-width) var(--cache-cleanner-list-container-outline-style) var(--cache-cleanner-list-container-outline-color);
+  outline-offset:var(--cache-cleanner-list-container-outline-offset);
+
+  transition-property:var(--cache-cleanner-list-container-transition-property);
+  transition-duration:var(--cache-cleanner-list-container-transition-duration);
+  transition-timing-function:var(--cache-cleanner-list-container-transition-timing-function);
+  transition-delay:var(--cache-cleanner-list-container-transition-delay);
+
+  padding-top:var(--cache-cleanner-list-container-padding-top);
+  padding-right:var(--cache-cleanner-list-container-padding-right);
+  padding-bottom:var(--cache-cleanner-list-container-padding-bottom);
+  padding-left:var(--cache-cleanner-list-container-padding-left);
 }
-.cache-item {
-  background: var(--modal-input-bg);
-  border-radius: 12px;
-  margin-bottom: 8px;
-  padding: 10px;
-}
+
+
 .resize-cache-cleaner {
-  position: absolute;
-  background: transparent;
-  transition: background 0.1s;
-  z-index: 10;
-  touch-action: none;
+  position:absolute;
+  z-index:10;
+  touch-action:none;
+
+  background:var(--cache-cleanner-resize-handle-background);
+  backdrop-filter:var(--cache-cleanner-resize-handle-blur);
+  opacity:var(--cache-cleanner-resize-handle-opacity);
+
+  border-top:var(--cache-cleanner-resize-handle-border-top-width) var(--cache-cleanner-resize-handle-border-top-style) var(--cache-cleanner-resize-handle-border-top-color);
+  border-right:var(--cache-cleanner-resize-handle-border-right-width) var(--cache-cleanner-resize-handle-border-right-style) var(--cache-cleanner-resize-handle-border-right-color);
+  border-bottom:var(--cache-cleanner-resize-handle-border-bottom-width) var(--cache-cleanner-resize-handle-border-bottom-style) var(--cache-cleanner-resize-handle-border-bottom-color);
+  border-left:var(--cache-cleanner-resize-handle-border-left-width) var(--cache-cleanner-resize-handle-border-left-style) var(--cache-cleanner-resize-handle-border-left-color);
+
+  border-top-left-radius:var(--cache-cleanner-resize-handle-border-radius-top-left);
+  border-top-right-radius:var(--cache-cleanner-resize-handle-border-radius-top-right);
+  border-bottom-right-radius:var(--cache-cleanner-resize-handle-border-radius-bottom-right);
+  border-bottom-left-radius:var(--cache-cleanner-resize-handle-border-radius-bottom-left);
+
+  box-shadow:var(--cache-cleanner-resize-handle-shadow-external), inset var(--cache-cleanner-resize-handle-shadow-internal);
+
+  outline:var(--cache-cleanner-resize-handle-outline-width) var(--cache-cleanner-resize-handle-outline-style) var(--cache-cleanner-resize-handle-outline-color);
+  outline-offset:var(--cache-cleanner-resize-handle-outline-offset);
+
+  transition-property:var(--cache-cleanner-resize-handle-transition-property);
+  transition-duration:var(--cache-cleanner-resize-handle-transition-duration);
+  transition-timing-function:var(--cache-cleanner-resize-handle-transition-timing-function);
+  transition-delay:var(--cache-cleanner-resize-handle-transition-delay);
+
+  padding-top:var(--cache-cleanner-resize-handle-padding-top);
+  padding-right:var(--cache-cleanner-resize-handle-padding-right);
+  padding-bottom:var(--cache-cleanner-resize-handle-padding-bottom);
+  padding-left:var(--cache-cleanner-resize-handle-padding-left);
 }
-.resize-cache-cleaner:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
+
 .resize-cache-cleaner.resize-n,
 .resize-cache-cleaner.resize-s {
   left: 10px;

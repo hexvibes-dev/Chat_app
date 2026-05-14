@@ -154,20 +154,6 @@ export const playKeyboard = () => playSound('keyboard');
 export const playMessageSendQuick = () => playSound('messageSendQuick');
 export const playPopupClose = () => playSound('popupClose');
 
-if (typeof window !== 'undefined') {
-  loadSoundPreferences();
-  
-  const initOnFirstInteraction = async () => {
-    await initSoundManager();
-    document.removeEventListener('click', initOnFirstInteraction);
-    document.removeEventListener('touchstart', initOnFirstInteraction);
-    document.removeEventListener('keydown', initOnFirstInteraction);
-  };
-  
-  document.addEventListener('click', initOnFirstInteraction);
-  document.addEventListener('touchstart', initOnFirstInteraction);
-  document.addEventListener('keydown', initOnFirstInteraction);
-}
 
 export default {
   init: initSoundManager,
@@ -191,3 +177,4 @@ export default {
   playMessageSendQuick,
   playPopupClose
 };
+

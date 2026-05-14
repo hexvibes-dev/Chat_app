@@ -24,6 +24,7 @@
 │   ├── 📁 scripts
 │   │   ├── 📁 CacheManager
 │   │   │   └── 📄 CacheManager.js
+│   │   │   └── 📄 cacheEventManager.js
 │   │   ├── 📁 editor
 │   │   │   ├── 📄 EditorCSSEditor.js
 │   │   │   ├── 📄 EditorCSSValidator.js

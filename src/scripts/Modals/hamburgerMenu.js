@@ -73,7 +73,7 @@ async function loadItemsAsync(keys, storageType, onProgress) {
 
 function renderContentHTML() {
   if (!currentItems.length) {
-    return '<div class="cache-empty-state">📭 No hay datos en este almacenamiento</div>';
+    return '<div class="cache-empty-state">No hay datos en este almacenamiento</div>';
   }
   let html = '<div class="cache-grid">';
   currentItems.forEach((item) => {
@@ -190,7 +190,7 @@ async function refreshCacheDisplay() {
     currentItemKeys = await getAllStorageKeys(currentStorageType);
     if (currentItemKeys.length === 0) {
       const container = document.getElementById('cache-cleaner-inner-content');
-      if (container) container.innerHTML = '<div class="cache-empty-state">📭 No hay datos en este almacenamiento</div>';
+      if (container) container.innerHTML = '<div class="cache-empty-state">No hay datos en este almacenamiento</div>';
       updatePaginationControls();
       updateSelectionCount();
       return;
@@ -215,6 +215,7 @@ async function deleteSelectedCacheItems() {
   }
   const confirmed = await showCustomPopup(`⚠️ Estás a punto de eliminar ${selectedItems.length} elemento(s). Esta acción no se puede deshacer. ¿Estás seguro?`, 'warning');
   if (!confirmed) return;
+  
   for (const item of selectedItems) {
     if (currentStorageType === 'local') {
       localStorage.removeItem(item.key);
@@ -228,9 +229,11 @@ async function deleteSelectedCacheItems() {
       }
     }
   }
+  
   await refreshCacheDisplay();
   showTransientNotification(`${selectedItems.length} elemento(s) eliminados.`, 2000);
-  window.dispatchEvent(new CustomEvent('cache-cleared'));
+  
+  sessionStorage.setItem('should_reload_after_cache_close', 'true');
 }
 
 async function deleteAllStorage() {
@@ -239,6 +242,7 @@ async function deleteAllStorage() {
     'danger'
   );
   if (!confirmed) return;
+  
   if (currentStorageType === 'local') {
     localStorage.clear();
   } else if (currentStorageType === 'session') {
@@ -249,9 +253,11 @@ async function deleteAllStorage() {
       await caches.delete(cacheName);
     }
   }
+  
   await refreshCacheDisplay();
   showTransientNotification('🗑️ Todos los datos han sido eliminados.', 2000);
-  window.dispatchEvent(new CustomEvent('cache-cleared'));
+  
+  sessionStorage.setItem('should_reload_after_cache_close', 'true');
 }
 
 function getAllStorageKeys(storageType) {
@@ -545,17 +551,11 @@ function rebuildCacheModalStructure() {
     <span id="cache-selection-count">0 seleccionados/0</span>
   `;
 
-  const oldFooter = movableWindow.querySelector('div[style*="display:flex; justify-content:flex-end; gap:12px; padding:16px"]');
+  const oldFooter = movableWindow.querySelector('div[style*="display:flex; justify-content:flex-end; gap:12px; padding:16px;"]');
   if (oldFooter) {
-    oldFooter.style.cssText = 'display: flex; justify-content: center; gap: 20px; padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.1); flex-shrink:0;';
+    oldFooter.style.cssText = 'display:flex;justify-content:center;gap:20px;padding:12px 16px;flex-shrink:0;background:var(--cache-cleanner-footer-background);backdrop-filter:var(--cache-cleanner-footer-blur);opacity:var(--cache-cleanner-footer-opacity);border-top:var(--cache-cleanner-footer-border-top-width) var(--cache-cleanner-footer-border-top-style) var(--cache-cleanner-footer-border-top-color);border-right:var(--cache-cleanner-footer-border-right-width) var(--cache-cleanner-footer-border-right-style) var(--cache-cleanner-footer-border-right-color);border-bottom:var(--cache-cleanner-footer-border-bottom-width) var(--cache-cleanner-footer-border-bottom-style) var(--cache-cleanner-footer-border-bottom-color);border-left:var(--cache-cleanner-footer-border-left-width) var(--cache-cleanner-footer-border-left-style) var(--cache-cleanner-footer-border-left-color);border-top-left-radius:var(--cache-cleanner-footer-border-radius-top-left);border-top-right-radius:var(--cache-cleanner-footer-border-radius-top-right);border-bottom-right-radius:var(--cache-cleanner-footer-border-radius-bottom-right);border-bottom-left-radius:var(--cache-cleanner-footer-border-radius-bottom-left);box-shadow:var(--cache-cleanner-footer-shadow-external),inset var(--cache-cleanner-footer-shadow-internal);outline:var(--cache-cleanner-footer-outline-width) var(--cache-cleanner-footer-outline-style) var(--cache-cleanner-footer-outline-color);outline-offset:var(--cache-cleanner-footer-outline-offset);';
     const cancelBtn = oldFooter.querySelector('#cache-cancel-btn');
     const acceptBtn = oldFooter.querySelector('#cache-accept-btn');
-    if (cancelBtn) {
-      cancelBtn.style.cssText = 'padding: 8px 24px; border: none; border-radius: 20px; cursor: pointer; background: rgba(239,68,68,0.2); color: #f87171;';
-    }
-    if (acceptBtn) {
-      acceptBtn.style.cssText = 'padding: 8px 24px; border: none; border-radius: 20px; cursor: pointer; background: rgba(20,184,166,0.2); color: #14b8a6;';
-    }
   }
 
   const innerContent = movableWindow.querySelector('#cache-cleaner-inner-content');
@@ -655,6 +655,14 @@ function showCacheModal() {
 
 function hideCacheModal() {
   if (!isCacheModalOpen) return;
+  
+  const shouldReload = sessionStorage.getItem('should_reload_after_cache_close') === 'true';
+  if (shouldReload) {
+    sessionStorage.removeItem('should_reload_after_cache_close');
+    window.location.reload();
+    return;
+  }
+  
   if (cacheWindowElement) cacheWindowElement.style.display = 'none';
   if (cacheOverlay) {
     cacheOverlay.classList.remove('active');

@@ -2,7 +2,6 @@ import { getCategoryEmojis, addRecentEmoji, getRecentEmojis, searchEmojis, getCu
 import { polyfillEmojis } from './emojiPolyfill.js';
 import { applySkinToneToText, getSkinTone, setSkinTone } from './skinToneManager.js';
 import { isStaticCategoryDisabled } from './CustomEmojiManager.js';
-import debug from '../Utils/DebugLogger.js';
 
 let activeCategory = 'recent';
 let searchQuery = '';
@@ -233,7 +232,6 @@ function createEmojiButton(emoji, onClick) {
 }
 
 function buildGrid(emojis, onClick) {
-  debug.log(`[buildGrid] Construyendo grid con ${emojis.length} emojis`);
   const grid = document.createElement('div');
   grid.className = 'emoji-grid';
   const fragment = document.createDocumentFragment();
@@ -253,10 +251,7 @@ function buildGrid(emojis, onClick) {
 }
 
 function buildSubcategoryAccordion(categoryName, emojis, onClick, isDisabled = false, icon = null) {
-  debug.log(`[buildSubcategoryAccordion] Categoría: ${categoryName}, emojis: ${emojis?.length || 0}, isDisabled: ${isDisabled}`);
-  
   if (isDisabled) {
-    debug.log(`Saltando ${categoryName}: está DESHABILITADA`);
     return null;
   }
   
@@ -294,7 +289,6 @@ function buildSubcategoryAccordion(categoryName, emojis, onClick, isDisabled = f
   let isExpanded = false;
   header.addEventListener('click', (e) => {
     e.stopPropagation();
-    debug.log(`Toggle categoría: ${categoryName}`);
     const arrow = header.querySelector('.category-arrow');
     if (isExpanded) {
       content.style.maxHeight = '0px';
@@ -315,15 +309,11 @@ function buildSubcategoryAccordion(categoryName, emojis, onClick, isDisabled = f
 }
 
 function ensureCategorySection(categoryKey, onClick) {
-  debug.log(`[ensureCategorySection] Categoría: ${categoryKey}`);
-  
   if (categorySections.has(categoryKey)) {
-    debug.log(`${categoryKey} ya existe en cache`);
     return Promise.resolve(categorySections.get(categoryKey));
   }
   if (isLoadingCategory) {
     pendingCategory = categoryKey;
-    debug.log(`${categoryKey} en espera (pendiente: ${pendingCategory})`);
     return new Promise(resolve => {
       const checkInterval = setInterval(() => {
         if (!isLoadingCategory && categorySections.has(categoryKey)) {
@@ -337,12 +327,10 @@ function ensureCategorySection(categoryKey, onClick) {
   isLoadingCategory = true;
   return new Promise((resolve) => {
     setTimeout(() => {
-      debug.log(`Obteniendo datos para: ${categoryKey}`);
       const categoryData = getCategoryEmojis(categoryKey);
       let section = null;
       
       if (categoryKey === 'custom' && categoryData && categoryData.type === 'subcategories') {
-        debug.log(`Procesando subcategorías de custom. Total: ${categoryData.data.length}`);
         const wrapper = document.createElement('div');
         wrapper.className = 'custom-subcategories-wrapper';
         wrapper.style.display = 'flex';
@@ -354,11 +342,8 @@ function ensureCategorySection(categoryKey, onClick) {
         wrapper.appendChild(searchBar);
         
         for (const subcat of categoryData.data) {
-          debug.log(`  Subcategoría: ${subcat.name}, isStatic: ${subcat.isStatic}, emojis: ${subcat.emojis?.length || 0}`);
           const isDisabled = subcat.isStatic && isStaticCategoryDisabled(subcat.name);
-          debug.log(`    isDisabled: ${isDisabled}`);
           if (isDisabled) {
-            debug.log(`    Saltando ${subcat.name} (desactivada)`);
             continue;
           }
           const icon = subcat.categoryData?.icon || null;
@@ -385,7 +370,6 @@ function ensureCategorySection(categoryKey, onClick) {
           symbols: 'Symbols',
           flags: 'Flags'
         };
-        debug.log(`Construyendo sección normal: ${titles[categoryKey] || categoryKey} con ${emojis?.length || 0} emojis`);
         section = buildSection(titles[categoryKey] || categoryKey, emojis, onClick, categoryKey);
       }
       
@@ -393,13 +377,9 @@ function ensureCategorySection(categoryKey, onClick) {
         categorySections.set(categoryKey, section);
         section.style.display = 'none';
         gridContainer.appendChild(section);
-        debug.log(`Sección ${categoryKey} añadida al DOM`);
-      } else {
-        debug.log(`No se pudo crear sección para ${categoryKey}`);
       }
       isLoadingCategory = false;
       if (pendingCategory && pendingCategory !== categoryKey) {
-        debug.log(`Procesando categoría pendiente: ${pendingCategory}`);
         ensureCategorySection(pendingCategory, onClick).then(resolve);
         pendingCategory = null;
       } else {
@@ -411,7 +391,6 @@ function ensureCategorySection(categoryKey, onClick) {
 
 function buildSection(title, emojis, onClick, categoryKey = null) {
   if (!emojis || emojis.length === 0) {
-    debug.log(`[buildSection] Construyendo "${title}" con 0 emojis (mostrando mensaje)`);
     const section = document.createElement('div');
     section.className = 'emoji-section';
     if (categoryKey) section.dataset.category = categoryKey;
@@ -426,7 +405,6 @@ function buildSection(title, emojis, onClick, categoryKey = null) {
     section.appendChild(emptyMsg);
     return section;
   }
-  debug.log(`[buildSection] Construyendo "${title}" con ${emojis.length} emojis`);
   const section = document.createElement('div');
   section.className = 'emoji-section';
   if (categoryKey) section.dataset.category = categoryKey;
@@ -439,8 +417,6 @@ function buildSection(title, emojis, onClick, categoryKey = null) {
 }
 
 function showCategory(categoryKey) {
-  debug.log(`[showCategory] Mostrando: ${categoryKey}`);
-  
   if (categoryKey === 'custom' && customCategorySearchInput) {
     customCategorySearchInput.value = '';
     customCategorySearchQuery = '';
@@ -455,14 +431,12 @@ function showCategory(categoryKey) {
   }
   
   if (!categorySections.has(categoryKey)) {
-    debug.log(`${categoryKey} no está en cache, cargando...`);
     ensureCategorySection(categoryKey, currentOnEmojiClick).then(() => {
       if (activeCategory === categoryKey && searchQuery.length < 2) {
         for (const [key, section] of categorySections.entries()) {
           section.style.display = key === categoryKey ? 'flex' : 'none';
         }
         if (searchSection) searchSection.style.display = 'none';
-        debug.log(`${categoryKey} mostrada después de carga`);
       }
     });
     return;
@@ -471,12 +445,9 @@ function showCategory(categoryKey) {
     section.style.display = key === categoryKey ? 'flex' : 'none';
   }
   if (searchSection) searchSection.style.display = 'none';
-  debug.log(`${categoryKey} mostrada desde cache`);
 }
 
 function showSearch(results, query, onClick) {
-  debug.log(`[showSearch] Query: "${query}", resultados: ${results.length}`);
-  
   if (!searchSection) {
     searchSection = document.createElement('div');
     searchSection.className = 'emoji-search-results';
@@ -499,8 +470,6 @@ function showSearch(results, query, onClick) {
 }
 
 function refreshDisplay(onClick) {
-  debug.log(`[refreshDisplay] searchQuery: "${searchQuery}", searchResults: ${searchResults?.length || 0}`);
-  
   if (searchQuery.length >= 2 && searchResults) {
     showSearch(searchResults, searchQuery, onClick);
   } else {
@@ -545,7 +514,6 @@ function buildSkinToneSelector(onToneChange) {
     btn.className = 'skin-tone-option';
     btn.innerHTML = `${tone.icon} <span>${tone.label}</span>`;
     btn.addEventListener('click', () => {
-      debug.log(`Ton de piel cambiado a: ${tone.label}`);
       setSkinTone(tone.key);
       mainBtn.innerHTML = `${tone.icon} <span style="font-size: 12px;">▼</span>`;
       dropdown.style.display = 'none';
@@ -599,8 +567,6 @@ function buildSkinToneSelector(onToneChange) {
 }
 
 function buildCategoryBar(onCategorySelect, onEmojiClick) {
-  debug.log(`[buildCategoryBar] Construyendo barra de categorías`);
-  
   const bar = document.createElement('div');
   bar.className = 'custom-categories-bar';
   bar.setAttribute('role', 'tablist');
@@ -677,7 +643,6 @@ function buildCategoryBar(onCategorySelect, onEmojiClick) {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      debug.log(`Click en categoría: ${cat.name} (${cat.key})`);
       
       if (activeCategory === cat.key && searchQuery === '') return;
       
@@ -703,14 +668,12 @@ function buildCategoryBar(onCategorySelect, onEmojiClick) {
       if (searchInput) searchInput.value = '';
       
       if (cat.key === 'custom') {
-        debug.log(`Refrescando emojis personalizados...`);
         refreshCustomEmojis();
         if (categorySections.has('custom')) {
           categorySections.get('custom').remove();
           categorySections.delete('custom');
           customCategoryWrappers.clear();
           allCustomCategories = [];
-          debug.log(`Sección custom eliminada del cache`);
         }
       }
       if (cat.key === 'recent') {
@@ -755,11 +718,9 @@ function buildSearchBar(onSearch) {
     clearTimeout(debounce);
     debounce = setTimeout(() => {
       const query = e.target.value.trim();
-      debug.log(`Búsqueda global: "${query}"`);
       searchQuery = query;
       if (query.length >= 2) {
         searchResults = searchEmojis(query);
-        debug.log(`Resultados de búsqueda: ${searchResults.length}`);
       } else {
         searchResults = null;
       }
@@ -774,14 +735,10 @@ function buildSearchBar(onSearch) {
 }
 
 export function initEmojiPicker(container, onEmojiClick, onCategoryChange = null) {
-  debug.log(`[initEmojiPicker] INICIANDO PICKER`);
-  
   if (!container) {
-    debug.logError(`Container no existe`);
     return null;
   }
   
-  debug.log(`Cargando emojis personalizados...`);
   loadCustomEmojis();
   updateRecentCategory();
   
@@ -794,7 +751,6 @@ export function initEmojiPicker(container, onEmojiClick, onCategoryChange = null
   scrollContainer.setAttribute('role', 'region');
   scrollContainer.setAttribute('aria-label', 'Selector de emojis');
   
-  debug.log(`Construyendo componentes UI...`);
   const categoryBar = buildCategoryBar((catKey) => {
     if (onCategoryChange) onCategoryChange(catKey);
   }, onEmojiClick);
@@ -812,7 +768,6 @@ export function initEmojiPicker(container, onEmojiClick, onCategoryChange = null
   container.appendChild(scrollContainer);
   
   const categories = ['recent', 'custom', 'smileys', 'people', 'animals', 'food', 'travel', 'activities', 'objects', 'symbols', 'flags'];
-  debug.log(`Cargando ${categories.length} categorías...`);
   categories.forEach(cat => ensureCategorySection(cat, onEmojiClick));
   
   showCategory(activeCategory);
@@ -827,7 +782,6 @@ export function initEmojiPicker(container, onEmojiClick, onCategoryChange = null
   }
   
   window._refreshCustomEmojis = () => {
-    debug.log(`[_refreshCustomEmojis] Callback llamado`);
     refreshCustomEmojis();
     if (categorySections.has('custom')) {
       categorySections.get('custom').remove();
@@ -842,7 +796,6 @@ export function initEmojiPicker(container, onEmojiClick, onCategoryChange = null
   };
   
   window._updateRecentCategory = (newRecents) => {
-    debug.log(`[_updateRecentCategory] Actualizando recientes: ${newRecents.length} emojis`);
     if (categorySections.has('recent')) {
       const recentSection = categorySections.get('recent');
       const newGrid = buildGrid(newRecents, onEmojiClick);
@@ -851,15 +804,11 @@ export function initEmojiPicker(container, onEmojiClick, onCategoryChange = null
     }
   };
   
-  debug.logSuccess(`[initEmojiPicker] PICKER INICIADO CORRECTAMENTE`);
-  
   return {
     refresh: () => {
-      debug.log(`refresh() llamado`);
       refreshDisplay(onEmojiClick);
     },
     refreshRecent: () => {
-      debug.log(`refreshRecent() llamado`);
       updateRecentCategory();
       if (categorySections.has('recent')) {
         const recentSection = categorySections.get('recent');
@@ -870,7 +819,6 @@ export function initEmojiPicker(container, onEmojiClick, onCategoryChange = null
       }
     },
     setCategory: (cat) => {
-      debug.log(`setCategory() a: ${cat}`);
       if (activeCategory === cat) return;
       activeCategory = cat;
       searchQuery = '';
@@ -907,7 +855,6 @@ export function initEmojiPicker(container, onEmojiClick, onCategoryChange = null
 }
 
 export function destroyEmojiPicker() {
-  debug.log(`[destroyEmojiPicker] Destruyendo picker`);
   if (gridContainer) gridContainer.innerHTML = '';
   categorySections.clear();
   searchSection = null;
@@ -925,7 +872,6 @@ export function destroyEmojiPicker() {
   allCustomCategories = [];
   if (window._refreshCustomEmojis) delete window._refreshCustomEmojis;
   if (window._updateRecentCategory) delete window._updateRecentCategory;
-  debug.logSuccess(`Picker destruido`);
 }
 
 function escapeHtml(text) {

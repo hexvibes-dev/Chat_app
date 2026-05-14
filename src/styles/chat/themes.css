@@ -2,6 +2,7 @@
 @import './themes/dark.css';
 @import './themes/light.css';
 @import './themes/basic.css';
+@import './themes/terminal.css';
 @import './themes/cristal.css';
 @import './themes/forest.css';
 @import './themes/magenta.css';
@@ -30,4 +31,7 @@ body::after {
 root{
   --white: #ffffff;
   --black: #000000;
+}
+*{
+  user-select: none;
 }

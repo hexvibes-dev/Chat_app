@@ -2,9 +2,6 @@ import 'emoji-picker-element';
 
 export const customEmojiCollection = [];
 
-if (typeof window !== 'undefined') {
-  window.customEmojiCollection = customEmojiCollection;
-}
 
 export function createCustomEmojiPicker() {
   const picker = document.createElement('emoji-picker');

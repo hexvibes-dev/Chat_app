@@ -8,12 +8,13 @@ const STORAGE_CUSTOM_BG = 'chat_custom_bg';
 const STORAGE_BG_OPACITY = 'chat_bg_opacity';
 const STORAGE_USER_IMAGES = 'chat_user_images';
 
-const ALLOWED_THEMES = ['dark', 'light', 'basic' , 'cristal', 'forest', 'ocean', 'whatsapp', 'midnight', 'reference', 'magenta' , 'nuevo'];
+const ALLOWED_THEMES = ['dark', 'light', 'basic' , 'terminal' , 'cristal', 'forest', 'ocean', 'whatsapp', 'midnight', 'reference', 'magenta' , 'nuevo'];
 
 const themes = {
   dark: { name: 'Oscuro', bg: '/img/dark.jpg', color: '#17212b' },
   light: { name: 'Claro', bg: '/img/light.jpg', color: '#f8fafc' },
   basic: { name: 'Basico' , bg: '/img/patron1.jpg' , color: '#2a2a3a'},
+  terminal: { name: 'Terminal' , bg: 'null' , color: '#000000'},
   cristal: { name: 'Cristal', bg: '/img/bg.jpg', color: '#1e293b' },
   forest: { name: 'Bosque', bg: '/img/bg-forest.jpg', color: '#1e3a1e' },
   ocean: { name: 'Océano', bg: '/img/ballena.jpg', color: '#082f49' },

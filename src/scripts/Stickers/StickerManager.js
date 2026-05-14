@@ -34,7 +34,7 @@ export function toggleCategoryDisabled(categoryName) {
     disabledCategories.push(categoryName);
   }
   saveDisabledCategories();
-  loadCategories(); // Recargar categorías para actualizar la UI
+  loadCategories(); 
   return !disabledCategories.includes(categoryName);
 }
 
@@ -204,3 +204,4 @@ export function refreshStickersInPicker() {
     window._refreshStickers();
   }
 }
+

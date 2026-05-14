@@ -1,5 +1,4 @@
 import { getStaticEmojiCategories } from './StaticEmojiCategories.js';
-import debug from '../Utils/DebugLogger.js';
 
 const STORAGE_KEY = 'custom_emoji_categories';
 const DISABLED_STATIC_KEY = 'disabled_static_emoji_categories';
@@ -16,47 +15,35 @@ function loadDisabledStatic() {
   } else {
     disabledStaticCategories = [];
   }
-  debug.log(`[loadDisabledStatic] Categorías desactivadas: ${JSON.stringify(disabledStaticCategories)}`);
 }
 
 function saveDisabledStatic() {
   localStorage.setItem(DISABLED_STATIC_KEY, JSON.stringify(disabledStaticCategories));
-  debug.log(`[saveDisabledStatic] Guardado: ${JSON.stringify(disabledStaticCategories)}`);
   window.dispatchEvent(new CustomEvent('custom-emojis-updated'));
 }
 
 export function isStaticCategoryDisabled(categoryName) {
   loadDisabledStatic();
   const result = disabledStaticCategories.includes(categoryName);
-  debug.log(`[isStaticCategoryDisabled] "${categoryName}" -> ${result}`);
   return result;
 }
 
 export function toggleStaticCategoryDisabled(categoryName) {
-  debug.log(`[toggleStaticCategoryDisabled] Categoría: ${categoryName}`);
   loadDisabledStatic();
-  debug.log(`Estado actual: ${JSON.stringify(disabledStaticCategories)}`);
   
   if (disabledStaticCategories.includes(categoryName)) {
-    debug.log(`Activando categoría "${categoryName}"`);
     disabledStaticCategories = disabledStaticCategories.filter(c => c !== categoryName);
   } else {
-    debug.log(`Desactivando categoría "${categoryName}"`);
     disabledStaticCategories.push(categoryName);
   }
   
-  debug.log(`Nuevo estado: ${JSON.stringify(disabledStaticCategories)}`);
   saveDisabledStatic();
   
-  debug.log(`Recargando categorías locales...`);
   categories = [];
   loadCategories();
   
-  debug.log(`Actualizando picker...`);
   if (window._refreshCustomEmojis) {
     window._refreshCustomEmojis();
-  } else {
-    debug.logWarn('window._refreshCustomEmojis no está disponible');
   }
   
   return !disabledStaticCategories.includes(categoryName);
@@ -67,13 +54,11 @@ export function loadCategories() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) {
     categories = JSON.parse(saved);
-    debug.log(`[loadCategories] Cargadas ${categories.length} categorías de usuario`);
   } else {
     categories = [
       { name: 'Favoritos', emojis: [] }
     ];
     saveCategories();
-    debug.log(`[loadCategories] Categorías por defecto creadas`);
   }
   return categories;
 }
@@ -87,7 +72,6 @@ export function getCategories() {
   if (categories.length === 0) loadCategories();
   const staticCats = getStaticEmojiCategories().map(cat => {
     const disabled = isStaticCategoryDisabled(cat.name);
-    debug.log(`[getCategories] Categoría estática "${cat.name}" -> disabled: ${disabled}`);
     return {
       ...cat,
       isStaticCategory: true,
@@ -96,7 +80,6 @@ export function getCategories() {
     };
   });
   const allCats = [...categories, ...staticCats];
-  debug.log(`[getCategories] Total categorías: ${allCats.length} (usuario: ${categories.length}, estáticas: ${staticCats.length})`);
   return allCats;
 }
 
@@ -162,17 +145,13 @@ export function deleteCategory(categoryName) {
 }
 
 export function getCustomEmojiArray() {
-  debug.log(`[getCustomEmojiArray] INICIO`);
   const result = [];
   const allCategories = getCategories();
-  debug.log(`[getCustomEmojiArray] Categorías: ${allCategories.map(c => c.name + '(disabled:' + c.disabled + ')').join(', ')}`);
   
   for (const category of allCategories) {
     if (category.disabled) {
-      debug.log(`[getCustomEmojiArray] Saltando categoría DESHABILITADA: "${category.name}"`);
       continue;
     }
-    debug.log(`[getCustomEmojiArray] Procesando categoría ACTIVA: "${category.name}" con ${category.emojis?.length || 0} emojis`);
     for (const emoji of (category.emojis || [])) {
       result.push({
         name: emoji.name,
@@ -186,10 +165,8 @@ export function getCustomEmojiArray() {
         duration: emoji.duration,
         iterations: emoji.iterations
       });
-      debug.log(`  Añadido: ${emoji.shortcodes[0]} (${category.name})`);
     }
   }
-  debug.log(`[getCustomEmojiArray] RESULTADO: ${result.length} emojis`);
   return result;
 }
 
@@ -207,28 +184,22 @@ export function processImageFile(file) {
 }
 
 export function refreshCustomEmojisInPicker() {
-  debug.log(`[refreshCustomEmojisInPicker] Llamado`);
   if (window._refreshCustomEmojis) {
     window._refreshCustomEmojis();
-  } else {
-    debug.logWarn('window._refreshCustomEmojis no disponible');
   }
 }
 
 export function debugDisabledCategories() {
   loadDisabledStatic();
-  debug.log(`DEBUG - Categorías desactivadas: ${JSON.stringify(disabledStaticCategories)}`);
   return disabledStaticCategories;
 }
 
 export function debugAllCategories() {
   const allCats = getCategories();
-  debug.log(`DEBUG - Todas las categorías: ${allCats.map(c => c.name + ' (disabled: ' + c.disabled + ', isStatic: ' + c.isStaticCategory + ')').join(', ')}`);
   return allCats;
 }
 
 export function debugCustomEmojiArray() {
   const emojis = getCustomEmojiArray();
-  debug.log(`DEBUG - Emojis en getCustomEmojiArray: ${emojis.map(e => e.shortcodes[0] + ' (cat: ' + e.category + ')').join(', ')}`);
   return emojis;
 }

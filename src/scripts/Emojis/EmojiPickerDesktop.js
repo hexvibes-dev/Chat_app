@@ -128,12 +128,11 @@ function renderPicker() {
   
   container.innerHTML = '';
   currentContainer = document.createElement('div');
-  currentContainer.style.cssText = 'height:100%;width:100%;';
+  currentContainer.className = 'desktop-emoji-wrapper';
   container.appendChild(currentContainer);
   
-  emojiPickerInstance = initEmojiPicker(currentContainer, (emoji) => {
-    insertAtCursor(emoji, false);
-    hideModal();
+  import('./EmojiPicker.js').then(module => {
+    module.showEmojiPicker(currentContainer, () => {});
   });
 }
 
