@@ -1,0 +1,609 @@
+<!-- Theme Modal -->
+<div id="theme-modal-overlay" class="theme-modal-overlay"></div>
+<div id="movable-window" class="modal-movable-window overflow-hidden">
+  <div id="modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Menú</span>
+    </div>
+    <button id="close-theme-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="theme-content" class="p-4 overflow-auto flex flex-col gap-4" style="height: calc(100% - 48px);"></div>
+  <div class="resize-theme-modal resize-n"></div>
+  <div class="resize-theme-modal resize-s"></div>
+  <div class="resize-theme-modal resize-e"></div>
+  <div class="resize-theme-modal resize-w"></div>
+  <div class="resize-theme-modal resize-ne"></div>
+  <div class="resize-theme-modal resize-nw"></div>
+  <div class="resize-theme-modal resize-se"></div>
+  <div class="resize-theme-modal resize-sw"></div>
+</div>
+
+<!-- Action Menu -->
+<div id="action-menu-overlay" class="action-menu-overlay"></div>
+<div id="action-movable-window" class="action-movable-window overflow-hidden" style="display: none;">
+  <div id="action-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Acciones</span>
+    </div>
+    <button id="close-action-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="action-menu-content" class="p-4 overflow-auto flex flex-col gap-4" style="height: calc(100% - 48px);">
+    <div class="action-menu-options">
+      <button class="action-option" data-action="sticker">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"/>
+          <path d="M8 12h8"/>
+          <path d="M12 8v8"/>
+          <circle cx="12" cy="12" r="4"/>
+        </svg>
+        <span>Crear sticker</span>
+      </button>
+      <button class="action-option" data-action="emoji">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <line x1="9" y1="9" x2="9.01" y2="9"/>
+          <line x1="15" y1="9" x2="15.01" y2="9"/>
+        </svg>
+        <span>Crear emoji</span>
+      </button>
+      <button class="action-option" data-action="image">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-4-3 3-4-4-5 5"/>
+        </svg>
+        <span>Enviar imagen</span>
+      </button>
+      <button class="action-option" data-action="manage_emoji">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M5.5 20v-4a6.5 6.5 0 0 1 13 0v4"/>
+          <path d="M12 12v6"/>
+          <path d="M9 15h6"/>
+        </svg>
+        <span>Gestionar emojis</span>
+      </button>
+      <button class="action-option" data-action="manage_sticker">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-4-3 3-4-4-5 5"/>
+        </svg>
+        <span>Gestionar stickers</span>
+      </button>
+      <button class="action-option" data-action="editor">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M15.8 5.2L17.8 7.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M14.5 6L9.5 11L9 13L11 12.5L16 7.5L14.5 6Z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Editor</span>
+      </button>
+      <button class="action-option" data-action="paint">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 21l9-9m5-5l5-5m-5 5l-4 4m4-4l-4 4"/>
+          <rect x="7" y="7" width="10" height="10" rx="2"/>
+        </svg>
+        <span>Dibujar</span>
+      </button>
+    </div>
+  </div>
+  <div class="resize-action resize-n"></div>
+  <div class="resize-action resize-s"></div>
+  <div class="resize-action resize-e"></div>
+  <div class="resize-action resize-w"></div>
+  <div class="resize-action resize-ne"></div>
+  <div class="resize-action resize-nw"></div>
+  <div class="resize-action resize-se"></div>
+  <div class="resize-action resize-sw"></div>
+</div>
+
+<!-- Emoji Picker Desktop Modal -->
+<div id="emoji-picker-desktop-overlay" class="emoji-picker-desktop-overlay"></div>
+<div id="emoji-picker-desktop-movable-window" class="emoji-picker-desktop-movable-window overflow-hidden" style="display: none; width: 400px; height: 500px;">
+  <div id="emoji-picker-desktop-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Emojis</span>
+    </div>
+    <button id="close-emoji-picker-desktop-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="emoji-picker-desktop-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div class="resize-emoji-picker-desktop resize-n"></div>
+  <div class="resize-emoji-picker-desktop resize-s"></div>
+  <div class="resize-emoji-picker-desktop resize-e"></div>
+  <div class="resize-emoji-picker-desktop resize-w"></div>
+  <div class="resize-emoji-picker-desktop resize-ne"></div>
+  <div class="resize-emoji-picker-desktop resize-nw"></div>
+  <div class="resize-emoji-picker-desktop resize-se"></div>
+  <div class="resize-emoji-picker-desktop resize-sw"></div>
+</div>
+
+<!-- Custom Sticker Modal -->
+<div id="custom-sticker-overlay" class="custom-sticker-overlay"></div>
+<div id="custom-sticker-movable-window" class="custom-sticker-movable-window overflow-hidden" style="display: none; width: 500px; height: 600px;">
+  <div id="custom-sticker-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">🖼️ Gestionar stickers personalizados</span>
+    </div>
+    <button id="close-custom-sticker-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="custom-sticker-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div class="resize-custom-sticker resize-n"></div>
+  <div class="resize-custom-sticker resize-s"></div>
+  <div class="resize-custom-sticker resize-e"></div>
+  <div class="resize-custom-sticker resize-w"></div>
+  <div class="resize-custom-sticker resize-ne"></div>
+  <div class="resize-custom-sticker resize-nw"></div>
+  <div class="resize-custom-sticker resize-se"></div>
+  <div class="resize-custom-sticker resize-sw"></div>
+</div>
+
+<!-- Editor Modal -->
+<div id="editor-overlay" class="editor-overlay"></div>
+<div id="editor-movable-window" class="editor-movable-window overflow-hidden" style="display: none; width: 700px; height: 600px;">
+  <div id="editor-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">✏️ Customiza tus mensajes</span>
+    </div>
+    <button id="close-editor-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div class="animation-preview-area">
+    <div id="animation-preview"><div class="animation-ball"></div></div>
+    <div class="animation-label">Vista previa de animación</div>
+  </div>
+  <div class="editor-tabs"></div>
+  <div class="editor-tab-content"></div>
+  <div class="editor-bottom-actions">
+    <button id="editor-send" class="btn primary">Enviar mensaje</button>
+    <button id="editor-save-style" class="btn">Guardar estilo</button>
+    <button id="editor-cancel" class="btn-cancel">Cancelar</button>
+  </div>
+  <div class="resize-editor resize-n"></div>
+  <div class="resize-editor resize-s"></div>
+  <div class="resize-editor resize-e"></div>
+  <div class="resize-editor resize-w"></div>
+  <div class="resize-editor resize-ne"></div>
+  <div class="resize-editor resize-nw"></div>
+  <div class="resize-editor resize-se"></div>
+  <div class="resize-editor resize-sw"></div>
+</div>
+
+<!-- Cache Cleaner Modal -->
+<div id="cache-cleaner-overlay" class="cache-cleaner-overlay"></div>
+<div id="cache-cleaner-movable-window" class="cache-cleaner-movable-window">
+  <div id="cache-cleaner-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="Cache-modal-header-text">Limpiar almacenamiento</span>
+    </div>
+    <button id="close-cache-cleaner-modal" class="leading-none">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div style="display: flex; gap:8px; padding:12px; border-bottom:1px solid var(--modal-input-border); flex-wrap:wrap;">
+    <button id="storage-local-btn" class="storage-tab active" data-storage="local">📦 localStorage</button>
+    <button id="storage-session-btn" class="storage-tab" data-storage="session">🔄 sessionStorage</button>
+    <button id="storage-cache-btn" class="storage-tab" data-storage="cache">💾 Cache Storage</button>
+    <button id="delete-all-storage-btn" class="storage-tab danger" style="background:#7f1a1a; color:white;">⚠️ BORRAR TODO</button>
+  </div>
+  <div id="cache-cleaner-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div style="display:flex; justify-content:flex-end; gap:12px; padding:16px; border-top:1px solid var(--modal-input-border);">
+    <button id="cache-cancel-btn">Cancelar</button>
+    <button id="cache-accept-btn">Eliminar seleccionados</button>
+  </div>
+  <div class="resize-cache-cleaner resize-n"></div>
+  <div class="resize-cache-cleaner resize-s"></div>
+  <div class="resize-cache-cleaner resize-e"></div>
+  <div class="resize-cache-cleaner resize-w"></div>
+  <div class="resize-cache-cleaner resize-ne"></div>
+  <div class="resize-cache-cleaner resize-nw"></div>
+  <div class="resize-cache-cleaner resize-se"></div>
+  <div class="resize-cache-cleaner resize-sw"></div>
+</div>
+
+<!-- Color Picker + Image Eyedropper Modal -->
+<div id="color-picker-overlay" class="color-picker-overlay" style="display:none;"></div>
+<div id="color-picker-movable-window" class="color-picker-movable-window overflow-hidden" style="display:none; width:420px; height:420px;">
+  <div id="color-picker-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Selector de color</span>
+    </div>
+    <button id="close-color-picker-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" aria-label="Cerrar">✕</button>
+  </div>
+  <div id="color-picker-tabs" style="display:flex; gap:8px; padding:12px; border-bottom:1px solid var(--modal-input-border);">
+    <button id="tab-color" class="tab active" data-tab="color">Color</button>
+    <button id="tab-image" class="tab" data-tab="image">Imagen</button>
+    <button id="tab-history" class="tab" data-tab="history">Historial</button>
+  </div>
+  <div id="color-picker-inner-content" style="height: calc(100% - 112px); overflow:auto; padding:12px;"></div>
+  <div style="display:flex; gap:8px; justify-content:flex-end; padding:12px; border-top:1px solid var(--modal-input-border);">
+    <button id="color-picker-cancel" class="btn-cancel">Cancelar</button>
+    <button id="color-picker-insert" class="btn primary">Insertar</button>
+  </div>
+  <div class="resize-color-picker resize-n"></div>
+  <div class="resize-color-picker resize-s"></div>
+  <div class="resize-color-picker resize-e"></div>
+  <div class="resize-color-picker resize-w"></div>
+  <div class="resize-color-picker resize-ne"></div>
+  <div class="resize-color-picker resize-nw"></div>
+  <div class="resize-color-picker resize-se"></div>
+  <div class="resize-color-picker resize-sw"></div>
+</div>
+
+<style>
+  .color-picker-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 10000; }
+  .color-picker-movable-window { position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); background: var(--modal-bg, #fff); color: var(--modal-text, #111); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); z-index: 10001; }
+  .tab { background: transparent; border: 1px solid transparent; padding:6px 10px; border-radius:8px; cursor:pointer; }
+  .tab.active { background: var(--modal-input-bg, #f3f4f6); border-color: var(--modal-input-border, #e5e7eb); }
+  #image-canvas { display:block; max-width:100%; border-radius:6px; background:#f8f8f8; touch-action: none; }
+  #image-overlay { position:absolute; left:0; top:0; pointer-events:none; width:100%; height:100%; }
+  .cm-search-highlight { background-color: rgba(255,235,59,0.6); border-radius: 3px; }
+  .magnifier-lens { position: absolute; pointer-events: none; border-radius: 999px; box-shadow: 0 4px 18px rgba(0,0,0,0.35); border: 2px solid #fff; overflow: hidden; z-index: 10002; }
+  .transient-notif { position: fixed; left: 50%; transform: translateX(-50%); bottom: 90px; background: rgba(0,0,0,0.85); color: #fff; padding:8px 12px; border-radius:8px; z-index:10003; opacity:0; transition:opacity .18s; }
+  .transient-notif.visible { opacity:1; }
+</style>
+
+<!-- Paint Modal -->
+<div id="paint-overlay" class="paint-overlay"></div>
+<div id="paint-movable-window" class="paint-movable-window overflow-hidden" style="display: none; width: 850px; height: 650px;">
+  <div id="paint-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">🎨 Dibuja tus <br> stickers</span>
+    </div>
+    <button id="close-paint-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div class="paint-toolbar">
+    <div style="position: relative;">
+      <button id="paint-main-tool" class="paint-tool active" title="Herramientas">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 21l9-9m5-5l5-5m-5 5l-4 4m4-4l-4 4"/>
+          <rect x="7" y="7" width="10" height="10" rx="2"/>
+        </svg>
+      </button>
+      <div id="tool-dropdown" class="tool-dropdown-menu" style="display: none;">
+        <div class="dropdown-group">
+          <div class="dropdown-label">✍️ Trazos</div>
+          <button id="brush-round" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="6"/></svg>Redondo</button>
+          <button id="brush-square" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="6" width="12" height="12"/></svg>Cuadrado</button>
+          <button id="brush-dashed" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="12" x2="20" y2="12" stroke-dasharray="4 4"/></svg>Discontinuo</button>
+        </div>
+        <div class="dropdown-group">
+          <div class="dropdown-label">🔺 Figuras</div>
+          <button id="shape-line" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="20" x2="20" y2="4"/></svg>Línea recta</button>
+          <button id="shape-circle" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/></svg>Círculo</button>
+          <button id="shape-square" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14"/></svg>Cuadrado</button>
+          <button id="shape-rectangle" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="6" width="16" height="12"/></svg>Rectángulo</button>
+          <button id="shape-triangle" class="tool-option"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12,4 20,20 4,20"/></svg>Triángulo</button>
+        </div>
+      </div>
+    </div>
+    <button id="paint-eraser" class="paint-tool" title="Goma">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 21l18-18M8 21l13-13M6 21l3-3"/>
+        <rect x="12" y="12" width="8" height="8" rx="1" transform="rotate(45 12 12)"/>
+      </svg>
+    </button>
+    <button id="paint-color-picker" class="paint-tool" style="background: #000000; width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--modal-input-border);" title="Color del pincel"></button>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="color: var(--modal-text); font-size: 12px;">Grosor</span>
+      <input type="range" id="paint-size" min="1" max="50" value="4" style="width: 100px;">
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="color: var(--modal-text); font-size: 12px;">Opacidad</span>
+      <input type="range" id="paint-opacity" min="0" max="100" value="100" style="width: 100px;">
+      <span id="paint-opacity-value" style="color: var(--modal-text); width: 40px;">100%</span>
+    </div>
+    <div style="position: relative;">
+      <button id="layout-selector-btn" class="paint-tool" title="Cambiar diseño">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+          <rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+      </button>
+      <div id="layout-dropdown" class="layout-dropdown-menu" style="display: none;">
+        <button class="layout-option" data-layout="classic">Clásico</button>
+        <button class="layout-option" data-layout="right-sidebar">➡Lateral derecho</button>
+        <button class="layout-option" data-layout="floating">Herramientas flotantes</button>
+        <button class="layout-option" data-layout="tools-only">Solo herramientas</button>
+        <button class="layout-option" data-layout="mini">Mini</button>
+      </div>
+    </div>
+    <button id="paint-mirror" class="paint-tool" title="Modo espejo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 12h18M12 3v18M12 3L8 7M12 3l4 4M12 21l-4-4M12 21l4-4"/>
+      </svg>
+    </button>
+    <button id="paint-floodfill" class="paint-tool" title="Cubo de pintura">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 21l9-9m5-5l5-5m-5 5l-4 4m4-4l-4 4"/>
+        <rect x="7" y="7" width="10" height="10" rx="2"/>
+      </svg>
+    </button>
+    <button id="paint-gradient" class="paint-tool" title="Modo degradado (pincel)">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <path d="M3 9h18M3 15h18"/>
+      </svg>
+    </button>
+    <button id="paint-text" class="paint-tool" title="Añadir texto">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 7h16M4 12h10M4 17h6" />
+        <rect x="14" y="7" width="6" height="10" rx="1" />
+      </svg>
+    </button>
+    <button id="paint-undo" class="paint-tool" title="Deshacer">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708z"/>
+      </svg>
+    </button>
+    <button id="paint-redo" class="paint-tool" title="Rehacer">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M14.854 4.854a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 4H3.5A2.5 2.5 0 0 0 1 6.5v8a.5.5 0 0 0 1 0v-8A1.5 1.5 0 0 1 3.5 5h9.793l-3.147 3.146a.5.5 0 0 0 .708.708z"/>
+      </svg>
+    </button>
+    <button id="paint-clear" class="paint-tool" title="Limpiar todo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        <line x1="10" y1="11" x2="10" y2="17"/>
+        <line x1="14" y1="11" x2="14" y2="17"/>
+      </svg>
+    </button>
+  </div>
+  <div class="paint-main-area">
+    <div class="paint-sidebar" id="paint-sidebar">
+      <div style="font-weight: bold; color: var(--modal-text);">Fondo</div>
+      <button id="paint-bg-color" class="paint-bg-option" data-bg="color">Color sólido</button>
+      <button id="paint-bg-image" class="paint-bg-option" data-bg="image">🖼️ Imagen de galería</button>
+      <button id="paint-bg-transparent" class="paint-bg-option active" data-bg="transparent">▦ Transparente</button>
+      <button id="paint-bg-gradient" class="paint-bg-option" data-bg="gradient">🌈 Degradado</button>
+      <div id="paint-bg-preview" class="paint-bg-preview"></div>
+      <div id="bg-image-controls" style="display: none;">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px;">
+          <button id="bg-zoom-in" class="paint-bg-option">🔍 +</button>
+          <button id="bg-zoom-out" class="paint-bg-option">🔍 -</button>
+          <button id="bg-reset" class="paint-bg-option">⟳</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 8px;">
+          <button id="bg-rotate-left" class="paint-bg-option">↺</button>
+          <button id="bg-rotate-right" class="paint-bg-option">↻</button>
+          <button id="bg-flip-h" class="paint-bg-option">⇄</button>
+          <button id="bg-flip-v" class="paint-bg-option">⇅</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+          <button id="bg-move-left" class="paint-bg-option">←</button>
+          <button id="bg-move-up" class="paint-bg-option">↑</button>
+          <button id="bg-move-down" class="paint-bg-option">↓</button>
+          <button id="bg-move-right" class="paint-bg-option">→</button>
+        </div>
+      </div>
+      <hr style="border-color: var(--modal-input-border); margin: 12px 0;">
+      <button id="paint-save-sticker" class="btn primary" style="width: 100%;">💾 Guardar como sticker</button>
+      <button id="paint-send" class="btn" style="width: 100%;">📤 Enviar como sticker</button>
+    </div>
+    <div class="paint-canvas-container">
+      <div class="canvas-zoom-wrapper" style="position: relative;">
+        <canvas id="background-canvas" width="512" height="512" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+        <canvas id="drawing-canvas" width="512" height="512" style="position: relative; z-index: 2; width: 100%; height: 100%;"></canvas>
+      </div>
+      <div class="zoom-controls-bottom">
+        <button id="zoom-out-btn" class="zoom-btn" title="Alejar">−</button>
+        <button id="zoom-in-btn" class="zoom-btn" title="Acercar">+</button>
+      </div>
+    </div>
+  </div>
+  <div class="resize-paint resize-n"></div>
+  <div class="resize-paint resize-s"></div>
+  <div class="resize-paint resize-e"></div>
+  <div class="resize-paint resize-w"></div>
+  <div class="resize-paint resize-ne"></div>
+  <div class="resize-paint resize-nw"></div>
+  <div class="resize-paint resize-se"></div>
+  <div class="resize-paint resize-sw"></div>
+</div>
+
+<!-- Gradient Modals -->
+<div id="gradient-bg-modal" class="gradient-modal" style="display: none;">
+  <div class="gradient-modal-header">
+    <span>🌈 Fondo degradado</span>
+    <button class="close-gradient-modal">✕</button>
+  </div>
+  <div class="gradient-modal-content">
+    <div class="gradient-preview" id="gradient-bg-preview"></div>
+    <div class="gradient-angle">
+      <label>Ángulo: <span id="gradient-bg-angle-value">0°</span></label>
+      <input type="range" id="gradient-bg-angle" min="0" max="360" value="0" step="1">
+    </div>
+    <div class="gradient-colors-list" id="gradient-bg-colors"></div>
+    <button class="gradient-add-color">+ Añadir color</button>
+    <div class="gradient-tabs">
+      <button class="gradient-tab active" data-tab="presets">Presets</button>
+      <button class="gradient-tab" data-tab="custom">Custom</button>
+    </div>
+    <div class="gradient-presets" id="gradient-bg-presets"></div>
+    <div class="gradient-custom" id="gradient-bg-custom" style="display: none;">
+      <div class="gradient-saved-list" id="gradient-bg-saved-list"></div>
+      <input type="text" id="gradient-bg-save-name" placeholder="Nombre del degradado">
+      <button id="gradient-bg-save-btn" class="gradient-save-btn">Guardar actual</button>
+    </div>
+    <div class="gradient-modal-actions">
+      <button class="gradient-apply">Aplicar</button>
+      <button class="gradient-cancel">Cancelar</button>
+    </div>
+  </div>
+  <div class="resize-gradient resize-n"></div>
+  <div class="resize-gradient resize-s"></div>
+  <div class="resize-gradient resize-e"></div>
+  <div class="resize-gradient resize-w"></div>
+  <div class="resize-gradient resize-ne"></div>
+  <div class="resize-gradient resize-nw"></div>
+  <div class="resize-gradient resize-se"></div>
+  <div class="resize-gradient resize-sw"></div>
+</div>
+
+<div id="gradient-paint-modal" class="gradient-modal" style="display: none;">
+  <div class="gradient-modal-header">
+    <span>🎨 Pincel degradado</span>
+    <button class="close-gradient-modal">✕</button>
+  </div>
+  <div class="gradient-modal-content">
+    <div class="gradient-preview" id="gradient-paint-preview"></div>
+    <div class="gradient-angle">
+      <label>Ángulo: <span id="gradient-paint-angle-value">0°</span></label>
+      <input type="range" id="gradient-paint-angle" min="0" max="360" value="0" step="1">
+    </div>
+    <div class="gradient-colors-list" id="gradient-paint-colors"></div>
+    <button class="gradient-add-color">+ Añadir color</button>
+    <div class="gradient-tabs">
+      <button class="gradient-tab active" data-tab="presets">Presets</button>
+      <button class="gradient-tab" data-tab="custom">Custom</button>
+    </div>
+    <div class="gradient-presets" id="gradient-paint-presets"></div>
+    <div class="gradient-custom" id="gradient-paint-custom" style="display: none;">
+      <div class="gradient-saved-list" id="gradient-paint-saved-list"></div>
+      <input type="text" id="gradient-paint-save-name" placeholder="Nombre del degradado">
+      <button id="gradient-paint-save-btn" class="gradient-save-btn">Guardar actual</button>
+    </div>
+    <div class="gradient-modal-actions">
+      <button class="gradient-apply">Aplicar</button>
+      <button class="gradient-cancel">Cancelar</button>
+    </div>
+  </div>
+  <div class="resize-gradient resize-n"></div>
+  <div class="resize-gradient resize-s"></div>
+  <div class="resize-gradient resize-e"></div>
+  <div class="resize-gradient resize-w"></div>
+  <div class="resize-gradient resize-ne"></div>
+  <div class="resize-gradient resize-nw"></div>
+  <div class="resize-gradient resize-se"></div>
+  <div class="resize-gradient resize-sw"></div>
+</div>
+
+<!-- Floating Sidebar Modal (para layout floating) -->
+<div id="floating-sidebar-modal" class="floating-sidebar-modal" style="display: none;">
+  <div class="floating-sidebar-header">
+    <span>🛠️ Herramientas</span>
+    <button id="close-floating-sidebar" class="close-floating-btn">✕</button>
+  </div>
+  <div class="floating-sidebar-content"></div>
+  <div class="resize-floating resize-n"></div>
+  <div class="resize-floating resize-s"></div>
+  <div class="resize-floating resize-e"></div>
+  <div class="resize-floating resize-w"></div>
+  <div class="resize-floating resize-ne"></div>
+  <div class="resize-floating resize-nw"></div>
+  <div class="resize-floating resize-se"></div>
+  <div class="resize-floating resize-sw"></div>
+</div>
+
+<!-- Search Modal -->
+<div id="search-overlay" class="search-overlay"></div>
+<div id="search-movable-window" class="search-movable-window overflow-hidden" style="display: none; width: 320px; min-height: 150px;">
+  <div id="search-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">Buscar en CSS</span>
+    </div>
+    <button id="close-search-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="search-inner-content" class="p-0 overflow-auto"></div>
+</div>
+
+<!-- Sound Settings Modal -->
+<div id="sound-settings-overlay" class="sound-settings-overlay"></div>
+<div id="sound-settings-movable-window" class="sound-settings-movable-window overflow-hidden" style="display: none; width: 450px; height: 550px;">
+  <div id="sound-settings-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="modal-header-text">🔊 Sonidos del chat</span>
+    </div>
+    <button id="close-sound-settings-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="sound-settings-inner-content" class="p-4 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div class="resize-sound-settings resize-n"></div>
+  <div class="resize-sound-settings resize-s"></div>
+  <div class="resize-sound-settings resize-e"></div>
+  <div class="resize-sound-settings resize-w"></div>
+  <div class="resize-sound-settings resize-ne"></div>
+  <div class="resize-sound-settings resize-nw"></div>
+  <div class="resize-sound-settings resize-se"></div>
+  <div class="resize-sound-settings resize-sw"></div>
+</div>
+
+<!-- Avatar Modal -->
+<div id="avatar-editor-overlay" class="avatar-editor-overlay"></div>
+<div id="avatar-editor-movable-window" class="avatar-editor-movable-window overflow-hidden" style="display: none;">
+  <div id="avatar-editor-modal-header" class="px-3 py-2 grid grid-cols-3 items-center select-none touch-none cursor-grab active:cursor-grabbing">
+    <div></div>
+    <div class="grid place-content-center w-full h-full">
+      <span class="avatar-editor-header-text">Editar foto de perfil</span>
+    </div>
+    <button id="close-avatar-editor-modal" class="justify-self-end hover:opacity-70 text-lg leading-none" style="color: var(--modal-text);">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 16l3.644 3.644a1.21 1.21 0 0 0 1.712 0l2.288 -2.288a1.21 1.21 0 0 0 0 -1.712l-3.644 -3.644l3.644 -3.644a1.21 1.21 0 0 0 0 -1.712l-2.288 -2.288a1.21 1.21 0 0 0 -1.712 0l-3.644 3.644l-3.644 -3.644a1.21 1.21 0 0 0 -1.712 0l-2.288 2.288a1.21 1.21 0 0 0 0 1.712l3.644 3.644l-3.644 3.644a1.21 1.21 0 0 0 0 1.712l2.288 2.288a1.21 1.21 0 0 0 1.712 0m3.644 -3.644" />
+      </svg>
+    </button>
+  </div>
+  <div id="avatar-editor-inner-content" class="p-0 overflow-auto" style="height: calc(100% - 48px);"></div>
+  <div class="resize-avatar-modal resize-n"></div>
+  <div class="resize-avatar-modal resize-s"></div>
+  <div class="resize-avatar-modal resize-e"></div>
+  <div class="resize-avatar-modal resize-w"></div>
+  <div class="resize-avatar-modal resize-ne"></div>
+  <div class="resize-avatar-modal resize-nw"></div>
+  <div class="resize-avatar-modal resize-se"></div>
+  <div class="resize-avatar-modal resize-sw"></div>
+</div>

@@ -135,29 +135,35 @@ export async function initMobileEmojiPicker(container, onInsertStart) {
   
   const insertCallback = typeof onInsertStart === 'function' ? onInsertStart : () => {};
   
-  container.innerHTML = '';
-  container.className = 'mobile-picker-container';
-  container.style.removeProperty('height');
-  container.style.removeProperty('display');
-  container.style.removeProperty('flex-direction');
+  let header = container.querySelector('.emoji-mobile-header');
+  let body = container.querySelector('.emoji-mobile-body');
+  let footer = container.querySelector('.emoji-mobile-footer');
   
-  const header = document.createElement('div');
-  header.className = 'emoji-mobile-header';
-  header.innerHTML = '<div class="emoji-categories-placeholder"></div>';
-  container.appendChild(header);
-
-  const body = document.createElement('div');
-  body.className = 'emoji-mobile-body';
-  container.appendChild(body);
-
-  const footer = document.createElement('div');
-  footer.className = 'emoji-mobile-footer';
-  footer.innerHTML = `
-    <button class="mobile-tab-btn active" data-tab="emojis">😀 Emojis</button>
-    <button class="mobile-tab-btn" data-tab="stickers">🖼️ Stickers</button>
-    <button class="mobile-tab-btn" data-tab="gifs">🎥 GIFs</button>
-  `;
-  container.appendChild(footer);
+  if (!header || !body || !footer) {
+    container.innerHTML = '';
+    container.className = 'mobile-picker-container';
+    container.style.removeProperty('height');
+    container.style.removeProperty('display');
+    container.style.removeProperty('flex-direction');
+    
+    header = document.createElement('div');
+    header.className = 'emoji-mobile-header';
+    header.innerHTML = '<div class="emoji-categories-placeholder"></div>';
+    container.appendChild(header);
+    
+    body = document.createElement('div');
+    body.className = 'emoji-mobile-body';
+    container.appendChild(body);
+    
+    footer = document.createElement('div');
+    footer.className = 'emoji-mobile-footer';
+    footer.innerHTML = `
+      <button class="mobile-tab-btn active" data-tab="emojis">😀 Emojis</button>
+      <button class="mobile-tab-btn" data-tab="stickers">🖼️ Stickers</button>
+      <button class="mobile-tab-btn" data-tab="gifs">🎥 GIFs</button>
+    `;
+    container.appendChild(footer);
+  }
 
   let currentMobileTab = 'emojis';
   let stickerPickerInstance = null;

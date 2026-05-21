@@ -8,6 +8,7 @@ let isClosing = false;
 let ignoreClose = false;
 let ignoreCloseTimeout = null;
 let mobileOnInsertStart = null;
+let pickerInitialized = false;
 
 function isMobileLayout() {
   return window.innerWidth <= 800 && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
@@ -57,13 +58,12 @@ function forceScrollable() {
 function openMobilePicker() {
   if (isOpen || isClosing) return;
   container = document.getElementById('mobile-picker-container');
-  if (!container) {
-    return;
-  }
+  if (!container) return;
   
-  if (!container.innerHTML.trim()) {
+  if (!pickerInitialized) {
     const onInsert = mobileOnInsertStart || (() => {});
     initMobileEmojiPicker(container, onInsert);
+    pickerInitialized = true;
   }
   
   setMessagesBottomInstant(true);
@@ -95,9 +95,7 @@ function openMobilePicker() {
 }
 
 function closeMobilePicker() {
-  if (ignoreClose) {
-    return;
-  }
+  if (ignoreClose) return;
   if (!isOpen || isClosing) return;
   if (!container) return;
   isClosing = true;
@@ -133,9 +131,7 @@ function onPopState(event) {
 
 export function initEmojiPickerButton() {
   const btn = document.getElementById('emojiPickerBtn');
-  if (!btn) {
-    return;
-  }
+  if (!btn) return;
   
   btn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -149,10 +145,10 @@ export function initEmojiPickerButton() {
   });
   
   container = document.getElementById('mobile-picker-container');
-  if (container && !container.innerHTML.trim()) {
+  if (container) {
     const onInsertStart = () => {};
     mobileOnInsertStart = onInsertStart;
-    initMobileEmojiPicker(container, onInsertStart);
+    pickerInitialized = false;
   }
   
   window.addEventListener('popstate', onPopState);

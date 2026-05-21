@@ -187,6 +187,16 @@ let opacityImageChanged = false;
 let userImagesDeleteMode = false;
 let selectedUserImages = new Set();
 
+let windowElement, headerElement, closeBtn, overlay;
+let windowX = 0, windowY = 0;
+let isModalOpen = false;
+
+let opacityModal = null;
+let opacitySlider = null;
+let opacityPreviewImage = null;
+let onOpacityGalleryRequest = null;
+let onOpacityImageChange = null;
+
 function getDraftSnapshot() {
   return {
     draftOpacity,
@@ -405,12 +415,6 @@ function deleteSelectedUserImages() {
   showTransientNotification('Fondos eliminados');
 }
 
-let opacityModal = null;
-let opacitySlider = null;
-let opacityPreviewImage = null;
-let onOpacityGalleryRequest = null;
-let onOpacityImageChange = null;
-
 function applyDraftPreview() {
   const themeToApply = draftTheme !== null ? draftTheme : confirmedTheme;
   document.documentElement.setAttribute('data-theme', themeToApply);
@@ -588,10 +592,6 @@ function hideOpacityModal() {
   if (opacityModal) opacityModal.style.display = 'none';
 }
 
-let windowElement, headerElement, closeBtn, overlay;
-let windowX = 0, windowY = 0;
-let isModalOpen = false;
-
 function addResizeHandlesToModal(element) {
   const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
   handles.forEach(dir => {
@@ -601,14 +601,52 @@ function addResizeHandlesToModal(element) {
   });
 }
 
-function centerModal() {
+function getModalPosition() {
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  if (!hamburgerBtn) {
+    return {
+      x: (window.innerWidth - (windowElement ? parseInt(windowElement.style.width) || 600 : 600)) / 2,
+      y: 70
+    };
+  }
+  
+  const btnRect = hamburgerBtn.getBoundingClientRect();
+  const modalWidth = windowElement ? parseInt(windowElement.style.width) || 600 : 600;
+  const modalHeight = windowElement ? parseInt(windowElement.style.height) || 600 : 600;
+  
+  let x = btnRect.right - modalWidth;
+  let y = btnRect.bottom + 10;
+  
+  const isMobileView = window.innerWidth <= 768;
+  if (isMobileView) {
+    x = btnRect.left;
+    y = btnRect.bottom + 10;
+  }
+  
+  x = Math.max(10, Math.min(x, window.innerWidth - modalWidth - 10));
+  y = Math.max(10, Math.min(y, window.innerHeight - modalHeight - 10));
+  
+  return { x, y };
+}
+
+function setModalPosition() {
   if (!windowElement) return;
-  const rect = windowElement.getBoundingClientRect();
-  windowX = (window.innerWidth - rect.width) / 2;
-  windowY = (window.innerHeight - rect.height) / 2;
+  const { x, y } = getModalPosition();
+  windowX = x;
+  windowY = y;
   windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
   windowElement.setAttribute('data-x', windowX);
   windowElement.setAttribute('data-y', windowY);
+}
+
+function addModalAnimation() {
+  if (!windowElement) return;
+  const { x, y } = getModalPosition();
+  windowElement.style.setProperty('--start-x', `${x}px`);
+  windowElement.style.setProperty('--start-y', `${y}px`);
+  windowElement.style.animation = 'none';
+  windowElement.offsetHeight;
+  windowElement.style.animation = 'modalCircularBounce 0.45s cubic-bezier(0.34, 1.2, 0.64, 1) forwards';
 }
 
 function isLessThan10PercentVisible(element) {
@@ -624,6 +662,8 @@ function isLessThan10PercentVisible(element) {
 }
 
 function setupInteractForModal() {
+  if (!windowElement || !headerElement) return;
+  
   interact(windowElement).resizable({
     edges: { top: true, left: true, bottom: true, right: true },
     inertia: false,
@@ -767,7 +807,6 @@ function loadThemeContent() {
     </div>
   `;
   
-  // Usar toggleCategoryContent para todos los headers
   document.querySelectorAll('.bg-category-header').forEach(header => {
     header.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -911,7 +950,15 @@ function loadThemeContent() {
 }
 
 function hideModal() {
-  if (windowElement) windowElement.style.display = 'none';
+  if (windowElement) {
+    windowElement.style.animation = 'modalCircularBounceOut 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+    setTimeout(() => {
+      if (windowElement) {
+        windowElement.style.display = 'none';
+        windowElement.style.animation = '';
+      }
+    }, 250);
+  }
   if (overlay) overlay.classList.remove('active');
   isModalOpen = false;
 }
@@ -925,7 +972,6 @@ function showModal() {
     if (!windowElement || !headerElement) return;
     
     associateOverlay(windowElement, overlay);
-    
     addResizeHandlesToModal(windowElement);
     setupInteractForModal();
     
@@ -939,9 +985,21 @@ function showModal() {
     loadThemeContent();
   }
   
+  const isMobileView = window.innerWidth <= 768;
+  if (isMobileView) {
+    windowElement.style.width = '200px';
+    windowElement.style.height = '600px';
+    windowElement.style.minWidth = '200px';
+  } else {
+    windowElement.style.width = '600px';
+    windowElement.style.height = '600px';
+    windowElement.style.minWidth = '400px';
+  }
+  
   overlay.classList.add('active');
   windowElement.style.display = 'block';
-  centerModal();
+  setModalPosition();
+  addModalAnimation();
   isModalOpen = true;
   
   registerModal(windowElement, 'theme-modal');
@@ -950,6 +1008,43 @@ function showModal() {
 
 export function initThemeManager() {
   window.showThemeModal = showModal;
+  
+  const style = document.createElement('style');
+  style.textContent = `
+    #movable-window {
+      transform-origin: top left;
+    }
+    
+    @keyframes modalCircularBounce {
+      0% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.9;
+      }
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes modalCircularBounceOut {
+      0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  window.addEventListener('resize', () => {
+    if (isModalOpen && windowElement && windowElement.style.display === 'block') {
+      setModalPosition();
+    }
+  });
+  
   setTimeout(() => {
     if (typeof updateTerminalPrefixes === 'function') updateTerminalPrefixes();
   }, 100);
