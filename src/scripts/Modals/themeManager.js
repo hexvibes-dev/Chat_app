@@ -1,6 +1,7 @@
 import interact from 'interactjs';
 import { registerModal, unregisterModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
 import { showNotification } from '../Utils/notifications.js';
+import { updateTerminalPrefixes } from '../Messages/messages.js';
 
 const STORAGE_THEME = 'chat_theme_prefs';
 const STORAGE_BG_MODE = 'chat_bg_mode';
@@ -116,6 +117,7 @@ function applyConfirmedBackground(theme, bgMode, customBgUrl, opacity = null) {
   }
   root.style.setProperty('--app-bg-color', bgColor);
   root.style.setProperty('--app-bg-opacity', finalOpacity.toString());
+  if (typeof updateTerminalPrefixes === 'function') updateTerminalPrefixes();
 }
 
 export function setTheme(themeId) {
@@ -126,6 +128,7 @@ export function setTheme(themeId) {
   document.documentElement.setAttribute('data-theme', themeId);
   saveConfirmedState(themeId, currentBgMode, currentCustomBg, currentOpacity);
   applyConfirmedBackground(themeId, currentBgMode, currentCustomBg, currentOpacity);
+  if (typeof updateTerminalPrefixes === 'function') updateTerminalPrefixes();
 }
 
 export function setCustomBackground(url) {
@@ -133,6 +136,7 @@ export function setCustomBackground(url) {
   const currentOpacity = getCurrentBgOpacity();
   saveConfirmedState(currentTheme, 'custom', url, currentOpacity);
   applyConfirmedBackground(currentTheme, 'custom', url, currentOpacity);
+  if (typeof updateTerminalPrefixes === 'function') updateTerminalPrefixes();
   if (url && url.startsWith('data:')) {
     saveUserImage(url);
   }
@@ -143,6 +147,7 @@ export function resetToThemeBackground() {
   const currentOpacity = getCurrentBgOpacity();
   saveConfirmedState(currentTheme, 'theme', '', currentOpacity);
   applyConfirmedBackground(currentTheme, 'theme', '', currentOpacity);
+  if (typeof updateTerminalPrefixes === 'function') updateTerminalPrefixes();
 }
 
 export function setBackgroundOpacity(opacity) {
@@ -151,6 +156,7 @@ export function setBackgroundOpacity(opacity) {
   const currentCustomBg = getCurrentCustomBg();
   saveConfirmedState(currentTheme, currentBgMode, currentCustomBg, opacity);
   applyConfirmedBackground(currentTheme, currentBgMode, currentCustomBg, opacity);
+  if (typeof updateTerminalPrefixes === 'function') updateTerminalPrefixes();
 }
 
 export function getThemes() {
@@ -944,4 +950,7 @@ function showModal() {
 
 export function initThemeManager() {
   window.showThemeModal = showModal;
+  setTimeout(() => {
+    if (typeof updateTerminalPrefixes === 'function') updateTerminalPrefixes();
+  }, 100);
 }

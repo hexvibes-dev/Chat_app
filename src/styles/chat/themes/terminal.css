@@ -12,6 +12,20 @@
   --terminal-red: #F81128;
 }
 
+.terminal-tilde {
+  color: var(--terminal-tilde-color, #00ff00);
+}
+
+.terminal-dollar {
+  color: var(--terminal-dollar-color, #ffaa00);
+}
+
+.terminal-prefix {
+  display: inline;
+  font-family: monospace;
+  font-weight: bold;
+}
+
 /* General y header*/
 html[data-theme="terminal"] {
   --app-bg-image: url('/img/patron1.jpg');

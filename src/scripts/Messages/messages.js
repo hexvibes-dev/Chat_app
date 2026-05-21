@@ -88,6 +88,24 @@ function applyEmojiFontSize(dragWrap) {
   }
 }
 
+function addTerminalPrefixToText(text, isHtml = false) {
+  const isTerminal = document.documentElement.getAttribute('data-theme') === 'terminal';
+  if (!isTerminal) return text;
+  const prefix = '<span class="terminal-prefix"><span class="terminal-tilde">~</span> <span class="terminal-dollar">$</span> </span>';
+  if (isHtml) {
+    return prefix + text;
+  }
+  return '~ $ ' + text;
+}
+
+function processMessageTextForTerminal(text, isSticker = false) {
+  if (isSticker) return text;
+  const isTerminal = document.documentElement.getAttribute('data-theme') === 'terminal';
+  if (!isTerminal) return text;
+  const prefix = '<span class="terminal-prefix"><span class="terminal-tilde">~</span> <span class="terminal-dollar">$</span> </span>';
+  return prefix + text;
+}
+
 export function appendMessage(text, opts = {}) {
   if (!messages || !spacer) return;
 
@@ -120,6 +138,13 @@ export function appendMessage(text, opts = {}) {
   
   if (!isSticker && !isOnlyOneReplacedEmoji) {
     processedText = preserveLineBreaks(processedText);
+  }
+
+  if (!opts.me && !isSticker) {
+    const isTerminal = document.documentElement.getAttribute('data-theme') === 'terminal';
+    if (isTerminal) {
+      processedText = '<span class="terminal-prefix"><span class="terminal-tilde">~</span> <span class="terminal-dollar">$</span> </span>' + processedText;
+    }
   }
 
   const isEmojiOnly = !isSticker && applyEmojiStyle(dragWrap, plainText);
@@ -238,4 +263,24 @@ export function deleteMessageRemotely(msgId) {
 
 export function editMessageRemotely(msgId, newText) {
   editMessageRemotelyFn(msgId, newText);
+}
+
+export function updateTerminalPrefixes() {
+  const isTerminal = document.documentElement.getAttribute('data-theme') === 'terminal';
+  const messages = document.querySelectorAll('.message:not(.me)');
+  messages.forEach(msg => {
+    const messageText = msg.querySelector('.message-text');
+    if (!messageText) return;
+    const currentHtml = messageText.innerHTML;
+    const hasPrefix = currentHtml.includes('terminal-prefix');
+    if (isTerminal) {
+      if (!hasPrefix) {
+        messageText.innerHTML = '<span class="terminal-prefix"><span class="terminal-tilde">~</span> <span class="terminal-dollar">$</span> </span>' + currentHtml;
+      }
+    } else {
+      if (hasPrefix) {
+        messageText.innerHTML = currentHtml.replace(/<span class="terminal-prefix"><span class="terminal-tilde">~<\/span> <span class="terminal-dollar">\$<\/span> <\/span>/, '');
+      }
+    }
+  });
 }

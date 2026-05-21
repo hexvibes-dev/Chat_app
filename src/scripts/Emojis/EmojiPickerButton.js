@@ -1,12 +1,13 @@
 import { initMobileEmojiPicker } from './EmojiPicker.js';
 import { showDesktopEmojiPicker } from './EmojiPickerDesktop.js';
-import { playClick } from  '../Sounds/soundManager.js';
+import { playClick } from '../Sounds/soundManager.js';
 
 let isOpen = false;
 let container = null;
 let isClosing = false;
 let ignoreClose = false;
 let ignoreCloseTimeout = null;
+let mobileOnInsertStart = null;
 
 function isMobileLayout() {
   return window.innerWidth <= 800 && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
@@ -58,6 +59,11 @@ function openMobilePicker() {
   container = document.getElementById('mobile-picker-container');
   if (!container) {
     return;
+  }
+  
+  if (!container.innerHTML.trim()) {
+    const onInsert = mobileOnInsertStart || (() => {});
+    initMobileEmojiPicker(container, onInsert);
   }
   
   setMessagesBottomInstant(true);
@@ -145,6 +151,7 @@ export function initEmojiPickerButton() {
   container = document.getElementById('mobile-picker-container');
   if (container && !container.innerHTML.trim()) {
     const onInsertStart = () => {};
+    mobileOnInsertStart = onInsertStart;
     initMobileEmojiPicker(container, onInsertStart);
   }
   

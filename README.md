@@ -1,21 +1,60 @@
 # Estructura del proyecto
+
+**Generado:** 5/20/2026, 1:20:30 PM
+
+**Ignorados:** node_modules, .git, .vscode, dist, .astro
+
+**Profundidad:** Ilimitada
+
 ```
 📁 ./
 ├── 📁 public
 │   ├── 📁 emojis
+│   │   ├── 📄 512-18.webp
+│   │   ├── 📄 512-8.webp
+│   │   ├── 📄 512.gif
+│   │   └── 📄 512.webp
 │   ├── 📁 fonts
 │   │   └── 📄 NotoColorEmoji.ttf
 │   ├── 📁 img
 │   │   ├── 📁 emojis
+│   │   │   ├── 📄 ico.png
+│   │   │   ├── 📄 ico.webp
+│   │   │   ├── 📄 ico2.png
+│   │   │   ├── 📄 ico3.png
+│   │   │   ├── 📄 ico4.png
+│   │   │   ├── 📄 ico5.png
+│   │   │   ├── 📄 ico6.png
+│   │   │   └── 📄 ico7.png
 │   │   ├── 📁 stickers
+│   │   │   └── 📄 sticker.jpg
+│   │   ├── 📄 ballena.jpg
+│   │   ├── 📄 bg.jpg
+│   │   ├── 📄 dark.jpg
+│   │   ├── 📄 default-avatar.png
+│   │   ├── 📄 fondo-login-mov.jpg
+│   │   ├── 📄 light.jpg
+│   │   ├── 📄 magic.jpg
+│   │   ├── 📄 nubes.jpg
+│   │   ├── 📄 patron1.jpg
+│   │   └── 📄 planton.jpg
 │   ├── 📁 sounds
+│   │   ├── 📄 click.mp3
+│   │   ├── 📄 message-receive.mp3
+│   │   ├── 📄 message-send.mp3
+│   │   ├── 📄 notification.mp3
+│   │   ├── 📄 reaction-add.mp3
+│   │   └── 📄 reaction-remove.mp3
 │   └── 📁 stickers
+│       ├── 📄 ico1.webp
+│       ├── 📄 ico2.webp
+│       └── 📄 ico3.webp
 ├── 📁 src
 │   ├── 📁 assets
 │   ├── 📁 components
 │   │   ├── 📄 App.astro
 │   │   ├── 📄 Chat.astro
-│   │   └── 📄DraggableResizable.astro
+│   │   └── 📄 DraggableResizable.astro
 │   ├── 📁 layouts
 │   │   └── 📄 Layout.astro
 │   ├── 📁 pages
@@ -24,7 +63,6 @@
 │   ├── 📁 scripts
 │   │   ├── 📁 CacheManager
 │   │   │   └── 📄 CacheManager.js
-│   │   │   └── 📄 cacheEventManager.js
 │   │   ├── 📁 editor
 │   │   │   ├── 📄 EditorCSSEditor.js
 │   │   │   ├── 📄 EditorCSSValidator.js
@@ -72,6 +110,7 @@
 │   │   │   ├── 📄 ActionMenu.js
 │   │   │   ├── 📄 AvatarEditorModal.js
 │   │   │   ├── 📄 hamburgerMenu.js
+│   │   │   ├── 📄 main.js
 │   │   │   └── 📄 themeManager.js
 │   │   ├── 📁 Paint
 │   │   │   └── 📄 PaintModal.js
@@ -91,7 +130,6 @@
 │   │   │   └── 📄 StickersPicker.js
 │   │   ├── 📁 Utils
 │   │   │   ├── 📄 automsj.js
-│   │   │   ├── 📄 DebugLogger.js
 │   │   │   ├── 📄 globals.d.ts
 │   │   │   ├── 📄 keyboard.js
 │   │   │   ├── 📄 modalStackManager.js
@@ -103,7 +141,6 @@
 │   └── 📁 styles
 │       ├── 📁 chat
 │       │   ├── 📁 emojiPickerButtom
-│       │   │   └── 📄 emojiPicker.css
 │       │   ├── 📁 themes
 │       │   │   ├── 📄 basic.css
 │       │   │   ├── 📄 cristal.css
@@ -116,6 +153,7 @@
 │       │   │   ├── 📄 nuevo.css
 │       │   │   ├── 📄 ocean.css
 │       │   │   ├── 📄 reference.css
+│       │   │   ├── 📄 terminal.css
 │       │   │   └── 📄 whatsapp.css
 │       │   ├── 📄 actionMenu.css
 │       │   ├── 📄 animations.css
@@ -148,5 +186,10 @@
 │       │   └── 📄 transient-notif.css
 │       ├── 📄 animate.css
 │       └── 📄 global.css
-└── 📄 README.md
+├── 📄 .gitignore
+├── 📄 astro.config.mjs
+├── 📄 package.json
+├── 📄 pnpm-lock.yaml
+├── 📄 pnpm-workspace.yaml
+└── 📄 tsconfig.json
 ```
