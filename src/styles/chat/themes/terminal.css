@@ -26,6 +26,10 @@
   font-weight: bold;
 }
 
+html[data-theme="terminal"] .reactions-popup{
+  background: blue;
+  border-radius: 800px 10px;
+}
 /* General y header*/
 html[data-theme="terminal"] {
   --app-bg-image: url('/img/patron1.jpg');

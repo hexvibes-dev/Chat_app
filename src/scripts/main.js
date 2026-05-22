@@ -75,7 +75,7 @@ function inicializarApp() {
   }
 
   for (let i = 1; i <= 1; i++) appendMessage('Mensaje de ejemplo ' + i);
-  setTimeout(() => appendMessage('Hola, este es un mensaje entrante'), 2000);
+  setTimeout(() => appendMessage(`Hola, este es un mensaje entrante`), 2000);
   setTimeout(updateIsAtBottom, 50);
 
   if (messagesEl) {

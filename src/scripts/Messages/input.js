@@ -51,7 +51,7 @@ function getInputText() {
   if (!wasEditable) input.contentEditable = 'true';
   const clone = input.cloneNode(true);
   if (!wasEditable) input.contentEditable = 'false';
-  
+
   clone.querySelectorAll('img[data-shortcode]').forEach(img => {
     const shortcode = img.getAttribute('data-shortcode');
     const textNode = document.createTextNode(shortcode);
@@ -77,7 +77,7 @@ function clearInputText() {
   preventFocus = true;
   const wasEditable = input.contentEditable === 'true';
   if (!wasEditable) input.contentEditable = 'true';
-  
+
   input.innerText = '';
   const range = document.createRange();
   range.selectNodeContents(input);
@@ -87,7 +87,8 @@ function clearInputText() {
   sel.addRange(range);
   input.dispatchEvent(new Event('input', { bubbles: true }));
   setTimeout(() => convertShortcodesToImagesInNode(input), 10);
-  
+  input.scrollTop = input.scrollHeight;
+
   if (!wasEditable) {
     input.contentEditable = 'false';
   }
@@ -132,7 +133,7 @@ export function insertAtCursor(html, shouldKeepFocus = false) {
   range.deleteContents();
   const fragment = range.createContextualFragment(processedHtml);
   range.insertNode(fragment);
-  
+
   if (fragment.lastChild) {
     range.setStartAfter(fragment.lastChild);
     range.collapse(true);
@@ -148,7 +149,7 @@ export function insertAtCursor(html, shouldKeepFocus = false) {
 
   if (!wasEditable) input.contentEditable = 'false';
   preventFocus = false;
-  
+
   if (shouldKeepFocus) {
     setTimeout(() => input.focus(), 0);
   }
@@ -175,9 +176,9 @@ function playKeyboardSound() {
 
 export function sendMessageFromInput() {
   window._ignoreBlurForPicker = true;
-  
+
   if (window.__setIgnoreClose) window.__setIgnoreClose(true);
-  
+
   setTimeout(() => {
     window._ignoreBlurForPicker = false;
     if (window.__setIgnoreClose) window.__setIgnoreClose(false);
@@ -268,22 +269,47 @@ if (sendBtn) {
 if (input) {
   input.addEventListener('input', () => {
     adjustTextareaHeight();
+    input.scrollTop = input.scrollHeight;
     if (input.contentEditable === 'true') {
       playKeyboardSound();
     }
   });
-  
+
   input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window);
+    const isCtrlEnter = (e.ctrlKey || e.metaKey) && e.key === 'Enter';
+    const isCtrlE = (e.ctrlKey || e.metaKey) && e.key === 'e';
+
+    if (isCtrlE) {
+      e.preventDefault();
+      const emojiBtn = document.getElementById('emojiPickerBtn');
+      if (emojiBtn) emojiBtn.click();
+      return;
+    }
+
+    if (e.key === 'Enter' && !isCtrlEnter) {
+      if (isMobile) {
+        e.preventDefault();
+        document.execCommand('insertLineBreak');
+        adjustTextareaHeight();
+        input.scrollTop = input.scrollHeight;
+        return;
+      } else {
+        e.preventDefault();
+        sendMessageFromInput();
+        return;
+      }
+    }
+
+    if (isCtrlEnter) {
       e.preventDefault();
       document.execCommand('insertLineBreak');
       adjustTextareaHeight();
+      input.scrollTop = input.scrollHeight;
       return;
     }
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault();
-      sendMessageFromInput();
-    } else if (e.key === 'Escape') {
+
+    if (e.key === 'Escape') {
       if (editingMessageId) {
         editingMessageId = null;
         clearInputText();
@@ -296,7 +322,8 @@ if (input) {
     }
   });
 
-  input.addEventListener('click', () => {
+  input.addEventListener('click', (e) => {
+    e.stopPropagation();
     saveCursorPosition();
     if (input.contentEditable !== 'true') {
       input.contentEditable = 'true';
@@ -325,7 +352,7 @@ window.addEventListener('message-edit', (e) => {
   editingMessageId = id;
   const plainText = textEl.textContent.trim();
   input.contentEditable = 'true';
-  clearInputText(); 
+  clearInputText();
   if (input.contentEditable !== 'true') input.contentEditable = 'true';
   input.innerText = plainText;
   const range = document.createRange();

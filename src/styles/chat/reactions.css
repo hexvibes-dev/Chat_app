@@ -1,7 +1,7 @@
 .reactions-popup {
   position: fixed;
   z-index: 1000;
-  background: var(--reactions-bg);
+  background: red;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   padding: 8px;
