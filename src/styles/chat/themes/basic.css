@@ -269,6 +269,293 @@ html[data-theme="basic"] #sendBtn svg{
   fill: var(--white);
 }
 
+/* Pop up de reacciones */
+html[data-theme="basic"] .reactions-popup{
+  background: var(--basic-purple);
+  border:  1px solid var(--basic-purple-dark);
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  padding: 8px;
+}
+html[data-theme="basic"] .reactions-scroll-container::-webkit-scrollbar {
+  width: 2px;
+}
+html[data-theme="basic"] .reactions-scroll-container::-webkit-scrollbar-track{
+  background: transparent;
+}
+html[data-theme="basic"] .reactions-scroll-container::-webkit-scrollbar-thumb{
+  background: transparent;
+}
+html[data-theme="basic"] .react-emoji,
+html[data-theme="basic"] .react-add {
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  padding: 6px;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+  color: var(--white);
+}
+html[data-theme="basic"] .react-add{
+  background: var(--basic-purple-dark);
+}
+html[data-theme="basic"] .react-add:hover{
+  transform: translateY(-3px);
+}
+html[data-theme="basic"] .react-add:active{
+  transform: scale(0.80);
+}
+html[data-theme="basic"] .reaction-badge{
+  border-radius: 16px;
+  font-size: 14px;
+  padding: 0 6px;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+  color: var(--white);
+}
+html[data-theme="basic"] .reaction-badge.you{
+  color: var(--white);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Menu de opciones en mensajes */
+html[data-theme="basic"] .options-menu{
+  background: var(--basic-purple);
+  border: 1px solid var(--basic-purple-dark);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+}
+html[data-theme="basic"] .options-item{
+  color: var(--white);
+  opacity: 0.8;
+  font-size: 16px;
+  border: none;
+  transition: transform 0.1s ease-in;
+}
+html[data-theme="basic"] .options-item:hover{
+  transform: scale(0.95);
+}
+html[data-theme="basic"] .options-item:active{
+  transform: scale(0.90);
+}
+
+/* Selector de emojis / stickers / gifs (movil) */
+html[data-theme="basic"] .mobile-picker-container {
+  background: var(--basic-purple);
+}
+
+html[data-theme="basic"] .mobile-picker-container .emoji-mobile-footer {
+  background: var(--basic-purple-dark);
+  border-top: 1px solid var(--basic-purple);
+  padding: 0 12px;
+  gap: 8px;
+}
+
+html[data-theme="basic"] .mobile-tab-btn {
+  background: transparent;
+  color: var(--white);
+  font-size: 16px;
+}
+
+html[data-theme="basic"] .mobile-tab-btn.active {
+  background: var(--basic-blue);
+  color: var(--white);
+}
+
+html[data-theme="basic"] .custom-categories-bar {
+  background: var(--basic-purple-dark);
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: none;
+}
+
+html[data-theme="basic"] .custom-categories-bar .category-btn,
+html[data-theme="basic"] .category-btn.category-btn {
+  background: var(--basic-purple);
+  border: 1px solid var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .custom-categories-bar .category-btn:hover,
+html[data-theme="basic"] .category-btn.category-btn:hover {
+  transform: scale(0.95);
+  background: var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .custom-categories-bar .category-btn.active,
+html[data-theme="basic"] .category-btn.category-btn.active {
+  background: var(--basic-purple-dark);
+  border-color: var(--basic-blue);
+}
+
+html[data-theme="basic"] .custom-categories-bar .category-btn.active svg,
+html[data-theme="basic"] .category-btn.category-btn.active svg {
+  color: var(--basic-blue);
+}
+
+html[data-theme="basic"] .emoji-search-input {
+  background: var(--basic-purple-dark);
+  border: 1px solid var(--basic-purple);
+  color: var(--white);
+}
+
+html[data-theme="basic"] .emoji-search-input:focus {
+  border-color: var(--basic-blue);
+  box-shadow: 0 0 0 2px rgba(235, 49, 28, 0.2);
+}
+
+html[data-theme="basic"] .emoji-search-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="basic"] .skin-tone-main {
+  background: var(--basic-purple-dark);
+  border: 1px solid var(--basic-purple);
+  color: var(--white);
+}
+
+html[data-theme="basic"] .skin-tone-dropdown {
+  background: var(--basic-purple);
+  border: 1px solid var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .skin-tone-dropdown button {
+  background: transparent;
+  color: var(--white);
+}
+
+html[data-theme="basic"] .skin-tone-dropdown button:hover {
+  background: var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .custom-category-item {
+  border: 1px solid var(--basic-purple-dark);
+  background: var(--basic-purple);
+}
+
+html[data-theme="basic"] .category-header {
+  background: var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .category-header strong {
+  color: var(--white);
+}
+
+html[data-theme="basic"] .category-arrow {
+  color: var(--white);
+}
+
+html[data-theme="basic"] .emoji-item {
+  background: transparent;
+  color: var(--white);
+}
+
+html[data-theme="basic"] .emoji-item:hover {
+  background: var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .sticker-item {
+  background: var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .sticker-item:hover {
+  background: var(--basic-blue);
+}
+
+html[data-theme="basic"] .gifs-search {
+  background: var(--basic-purple);
+  border-bottom-color: var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .gifs-search-input {
+  background: var(--basic-purple-dark);
+  border: 1px solid var(--basic-purple);
+  color: var(--white);
+}
+
+html[data-theme="basic"] .gifs-search-btn {
+  background: var(--basic-purple-dark);
+  color: var(--white);
+}
+
+html[data-theme="basic"] .gifs-search-btn:hover {
+  background: var(--basic-blue);
+  color: var(--white);
+}
+
+html[data-theme="basic"] .emoji-picker-tabs {
+  background: var(--basic-purple-dark);
+}
+
+/* Selector de emojis desktop */
+html[data-theme="basic"] .emoji-picker-desktop-movable-window {
+  background: var(--basic-purple);
+  border-color: var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] #emoji-picker-desktop-modal-header {
+  background: var(--basic-purple-dark);
+  border-bottom-color: var(--basic-purple);
+}
+
+html[data-theme="basic"] .modal-header-text {
+  color: var(--white);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .custom-categories-bar {
+  background: var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .category-btn {
+  background: var(--basic-purple);
+  border: 1px solid var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .category-btn:hover {
+  background: var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .category-btn.active {
+  background: var(--basic-purple-dark);
+  border-color: var(--basic-blue);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .category-btn.active svg {
+  color: var(--basic-blue);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .emoji-search-input {
+  background: var(--basic-purple-dark);
+  border-color: var(--basic-purple);
+  color: var(--white);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .skin-tone-main {
+  background: var(--basic-purple-dark);
+  border-color: var(--basic-purple);
+  color: var(--white);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .custom-category-item {
+  border-color: var(--basic-purple-dark);
+  background: var(--basic-purple);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .category-header {
+  background: var(--basic-purple-dark);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .category-header strong {
+  color: var(--white);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .emoji-item {
+  color: var(--white);
+}
+
+html[data-theme="basic"] .emoji-picker-desktop-movable-window .emoji-item:hover {
+  background: var(--basic-purple-dark);
+}
+
+
 /* Theme modal */
 html[data-theme="basic"] {
   /* modal overlay */
@@ -1763,16 +2050,16 @@ html[data-theme="basic"] {
   
   --alert-clean-cache-and-chat-pop-up-border-top-width: 1px;
   --alert-clean-cache-and-chat-pop-up-border-top-style: solid;
-  --alert-clean-cache-and-chat-pop-up-border-top-color: var(--planton-orange);
+  --alert-clean-cache-and-chat-pop-up-border-top-color: var(--planton-blue);
   --alert-clean-cache-and-chat-pop-up-border-right-width: 1px;
   --alert-clean-cache-and-chat-pop-up-border-right-style: solid;
-  --alert-clean-cache-and-chat-pop-up-border-right-color: var(--planton-orange);
+  --alert-clean-cache-and-chat-pop-up-border-right-color: var(--planton-blue);
   --alert-clean-cache-and-chat-pop-up-border-bottom-width: 1px;
   --alert-clean-cache-and-chat-pop-up-border-bottom-style: solid;
-  --alert-clean-cache-and-chat-pop-up-border-bottom-color: var(--planton-orange);
+  --alert-clean-cache-and-chat-pop-up-border-bottom-color: var(--planton-blue);
   --alert-clean-cache-and-chat-pop-up-border-left-width: 1px;
   --alert-clean-cache-and-chat-pop-up-border-left-style: solid;
-  --alert-clean-cache-and-chat-pop-up-border-left-color: var(--planton-orange);
+  --alert-clean-cache-and-chat-pop-up-border-left-color: var(--planton-blue);
   
   --alert-clean-cache-and-chat-pop-up-border-radius-top-left: 20px;
   --alert-clean-cache-and-chat-pop-up-border-radius-top-right: 20px;

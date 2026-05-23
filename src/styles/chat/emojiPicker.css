@@ -1,9 +1,7 @@
 .mobile-picker-container {
+  position: relative;
   height: 0;
   overflow: hidden;
-  background: var(--modal-bg);
-  border-top: 1px solid var(--modal-input-border);
-  border-radius: 16px 16px 0 0;
   pointer-events: auto;
   touch-action: pan-y;
   overscroll-behavior: contain;
@@ -12,21 +10,14 @@
 
 .mobile-picker-container.open {
   height: 400px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .mobile-picker-container .emoji-mobile-header {
   flex-shrink: 0;
-  height: 48px;
-  min-height: 48px;
-  max-height: 48px;
-  padding: 0 12px;
-  border-bottom: 1px solid var(--modal-input-border);
-  background: var(--modal-bg);
-  display: flex;
-  align-items: center;
-  overflow: hidden;
+  height: 0;
 }
 
 .mobile-picker-container .emoji-mobile-body {
@@ -34,7 +25,6 @@
   min-height: 0;
   overflow-y: auto;
   padding: 8px 0;
-  height: calc(100% - 100px);
 }
 
 .mobile-picker-container .emoji-mobile-footer {
@@ -43,21 +33,13 @@
   min-height: 52px;
   max-height: 52px;
   display: flex;
-  border-top: 1px solid var(--modal-input-border);
-  background: var(--modal-input-bg);
-  padding: 0 12px;
-  gap: 8px;
   align-items: center;
+  position: relative;
+  bottom: auto;
 }
 
 .mobile-picker-container .mobile-tab-btn {
   flex: 1;
-  background: transparent;
-  border: none;
-  padding: 8px;
-  font-size: 15px;
-  cursor: pointer;
-  color: var(--modal-text);
   border-radius: 12px;
   transition: all 0.15s ease;
   font-weight: 500;
@@ -65,11 +47,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.mobile-picker-container .mobile-tab-btn.active {
-  background: var(--modal-btn-primary);
-  color: var(--modal-btn-primary-text);
 }
 
 .mobile-picker-container .emoji-picker-content {
@@ -81,31 +58,22 @@
 .mobile-picker-container .stickers-grid,
 .mobile-picker-container .emoji-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 4px;
 }
 
 .emoji-picker-tabs {
   display: flex;
-  background: var(--modal-input-bg);
-  border-bottom: 1px solid var(--modal-input-border);
   flex-shrink: 0;
 }
 
 .tab-btn {
   flex: 1;
   padding: 12px;
-  background: transparent;
   border: none;
-  color: var(--modal-text);
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
-}
-
-.tab-btn.active {
-  background: var(--modal-btn-primary);
-  color: var(--modal-btn-primary-text);
 }
 
 .emoji-picker-content {
@@ -122,10 +90,6 @@
   flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
-  gap: 4px;
-  padding: 8px 12px;
-  background: var(--modal-bg);
-  border-bottom: 1px solid var(--modal-input-border);
   scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
   flex-shrink: 0;
@@ -134,35 +98,30 @@
   z-index: 100;
 }
 
-.custom-categories-bar::-webkit-scrollbar {
-  height: 4px;
-}
-
-.custom-categories-bar::-webkit-scrollbar-track {
-  background: var(--scrollbar-bg-reactions, #e2e8f0);
-  border-radius: 10px;
-}
-
-.custom-categories-bar::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-reactions, #94a3b8);
-  border-radius: 10px;
-}
-
-.category-btn {
+.custom-categories-bar .category-btn,
+.category-btn.category-btn {
   flex: 0 0 auto;
   padding: 8px;
   border-radius: 12px;
-  background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 22px;
   transition: all 0.2s;
   -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
 }
 
-.category-btn:hover {
-  background: var(--modal-input-bg);
-  transform: scale(1.05);
+.custom-categories-bar .category-btn svg,
+.category-btn.category-btn svg {
+  color: currentColor;
+  transition: color 0.2s;
 }
 
 .skin-tone-selector {
@@ -176,19 +135,11 @@
   justify-content: center;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--modal-input-bg);
-  border: 1px solid var(--modal-input-border);
   border-radius: 40px;
   cursor: pointer;
   font-size: 20px;
   width: 100%;
-  color: var(--modal-text);
   transition: all 0.2s;
-}
-
-.skin-tone-main:hover {
-  background: var(--modal-input-hover);
-  transform: scale(1.02);
 }
 
 .skin-tone-dropdown {
@@ -196,8 +147,6 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: var(--modal-bg);
-  border: 1px solid var(--modal-input-border);
   border-radius: 20px;
   margin-top: 4px;
   display: none;
@@ -212,30 +161,17 @@
   align-items: center;
   gap: 12px;
   padding: 10px 16px;
-  background: transparent;
   border: none;
   cursor: pointer;
   font-size: 20px;
-  color: var(--modal-text);
   transition: background 0.2s;
-}
-
-.skin-tone-dropdown button:hover {
-  background: var(--modal-input-bg);
 }
 
 .custom-category-item {
   margin-bottom: 12px;
-  border: 1px solid var(--modal-input-border);
   border-radius: 16px;
   overflow: hidden;
-  background: var(--modal-bg);
   transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.custom-category-item:hover {
-  border-color: var(--modal-btn-primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .category-header {
@@ -243,25 +179,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  background: var(--modal-input-bg);
   cursor: pointer;
   user-select: none;
   transition: background 0.2s;
 }
 
-.category-header:hover {
-  background: var(--modal-input-hover);
-}
-
 .category-header strong {
   font-size: 14px;
   font-weight: 600;
-  color: var(--modal-text);
 }
 
 .category-arrow {
   font-size: 14px;
-  color: var(--modal-text);
   transition: transform 0.2s;
   display: inline-block;
 }
@@ -287,17 +216,11 @@
 
 .custom-category-item.subcategory {
   margin: 0;
-  border-left: 2px solid var(--modal-input-border);
   border-radius: 12px;
 }
 
 .subcategory-header {
-  background: var(--modal-bg);
   padding: 8px 12px;
-}
-
-.subcategory-header:hover {
-  background: var(--modal-input-bg);
 }
 
 .emoji-grid {
@@ -310,7 +233,6 @@
 .emoji-item {
   aspect-ratio: 1;
   font-size: 32px;
-  background: transparent;
   border: none;
   cursor: pointer;
   border-radius: 12px;
@@ -319,11 +241,6 @@
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
-}
-
-.emoji-item:hover {
-  background: var(--modal-input-bg);
-  transform: scale(1.1);
 }
 
 .emoji-section {
@@ -336,11 +253,9 @@
   padding: 8px 12px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--modal-text);
   opacity: 0.7;
   position: sticky;
   top: 0;
-  background: var(--modal-bg);
   z-index: 5;
 }
 
@@ -348,18 +263,10 @@
   width: 100%;
   padding: 10px 12px;
   border-radius: 40px;
-  border: 1px solid var(--modal-input-border);
-  background: var(--input-bg);
-  color: var(--text-color);
   outline: none;
   font-size: 14px;
   margin-bottom: 8px;
   transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.emoji-search-input:focus {
-  border-color: var(--modal-btn-primary);
-  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
 }
 
 .stickers-grid {
@@ -371,7 +278,6 @@
 
 .sticker-item {
   aspect-ratio: 1;
-  background: var(--input-bg);
   border: none;
   border-radius: 16px;
   cursor: pointer;
@@ -380,11 +286,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.sticker-item:hover {
-  transform: scale(1.05);
-  background: var(--modal-btn-primary);
 }
 
 .sticker-item img {
@@ -398,8 +299,7 @@
   display: flex;
   gap: 8px;
   padding: 12px;
-  background: var(--modal-bg);
-  border-bottom: 1px solid var(--modal-input-border);
+  border-bottom: 1px solid transparent;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -410,25 +310,15 @@
   flex: 1;
   padding: 10px;
   border-radius: 40px;
-  border: 1px solid var(--modal-input-border);
-  background: var(--input-bg);
-  color: var(--text-color);
   outline: none;
 }
 
 .gifs-search-btn {
   padding: 10px 16px;
   border-radius: 40px;
-  background: var(--modal-btn-primary);
-  color: var(--modal-btn-primary-text);
   border: none;
   cursor: pointer;
   transition: transform 0.1s, opacity 0.2s;
-}
-
-.gifs-search-btn:hover {
-  transform: scale(1.02);
-  opacity: 0.9;
 }
 
 .gifs-grid {
@@ -447,14 +337,9 @@
   transition: transform 0.1s;
 }
 
-.gif-item:hover {
-  transform: scale(1.05);
-}
-
 .gifs-error {
   text-align: center;
   padding: 20px;
-  color: var(--modal-text);
 }
 
 .sticker-message {
@@ -475,9 +360,11 @@
     gap: 4px;
   }
 
-  .category-btn {
+  .custom-categories-bar .category-btn,
+  .category-btn.category-btn {
     padding: 6px;
-    font-size: 20px;
+    width: 34px;
+    height: 34px;
   }
 
   .tab-btn {

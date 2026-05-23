@@ -1,8 +1,8 @@
 # Estructura del proyecto
 
-**Generado:** 5/20/2026, 1:20:30 PM
+**Generado:** 5/23/2026, 7:54:26 AM
 
-**Ignorados:** node_modules, .git, .vscode, dist, .astro
+**Ignorados:** node_modules, .git, .astro, .vscode, dist
 
 **Profundidad:** Ilimitada
 
@@ -37,7 +37,8 @@
 │   │   ├── 📄 magic.jpg
 │   │   ├── 📄 nubes.jpg
 │   │   ├── 📄 patron1.jpg
-│   │   └── 📄 planton.jpg
+│   │   ├── 📄 planton.jpg
+│   │   └── 📄 spongebob.jpg
 │   ├── 📁 sounds
 │   │   ├── 📄 click.mp3
 │   │   ├── 📄 message-receive.mp3
@@ -54,7 +55,15 @@
 │   ├── 📁 components
 │   │   ├── 📄 App.astro
 │   │   ├── 📄 Chat.astro
-│   │   └── 📄 DraggableResizable.astro
+│   │   ├── 📄 DraggableResizable.astro
+│   │   ├── 📄 LayerHeader.astro
+│   │   ├── 📄 LayerInput.astro
+│   │   ├── 📄 LayerMessages.astro
+│   │   ├── 📄 MobileEmojiPicker.astro
+│   │   ├── 📄 Modals.astro
+│   │   ├── 📄 ReplyPopup.astro
+│   │   ├── 📄 ScrollButton.astro
+│   │   └── 📄 UserRegister.astro
 │   ├── 📁 layouts
 │   │   └── 📄 Layout.astro
 │   ├── 📁 pages
@@ -153,6 +162,7 @@
 │       │   │   ├── 📄 nuevo.css
 │       │   │   ├── 📄 ocean.css
 │       │   │   ├── 📄 reference.css
+│       │   │   ├── 📄 spongebob.css
 │       │   │   ├── 📄 terminal.css
 │       │   │   └── 📄 whatsapp.css
 │       │   ├── 📄 actionMenu.css
@@ -191,5 +201,6 @@
 ├── 📄 package.json
 ├── 📄 pnpm-lock.yaml
 ├── 📄 pnpm-workspace.yaml
+├── 📄 README.md
 └── 📄 tsconfig.json
 ```

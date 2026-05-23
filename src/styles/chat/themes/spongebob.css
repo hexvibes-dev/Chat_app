@@ -6,6 +6,7 @@
   --spongebob-orange: #EB311C;
   --spongebob-red-dark: #631403;
 }
+
 /* Header ,foto de perfil , nombre de contacto , estado */
 html[data-theme="spongebob"] .layer-header{
   background: var(--spongebob-yellow);
@@ -290,4 +291,290 @@ html[data-theme="spongebob"] #sendBtn svg{
   font-weight: 300;
   opacity: 0.7;
   fill: var(--black);
+}
+
+/* Pop up de reacciones */
+html[data-theme="spongebob"] .reactions-popup{
+  background: var(--spongebob-yellow);
+  border:  1px solid var(--spongebob-yellow-dark);
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  padding: 8px;
+}
+html[data-theme="spongebob"] .reactions-scroll-container::-webkit-scrollbar {
+  width: 2px;
+}
+html[data-theme="spongebob"] .reactions-scroll-container::-webkit-scrollbar-track{
+  background: transparent;
+}
+html[data-theme="spongebob"] .reactions-scroll-container::-webkit-scrollbar-thumb{
+  background: transparent;
+}
+html[data-theme="spongebob"] .react-emoji,
+html[data-theme="spongebob"] .react-add {
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  padding: 6px;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+  color: var(--white);
+}
+html[data-theme="spongebob"] .react-add{
+  background: var(--spongebob-yellow-dark);
+}
+html[data-theme="spongebob"] .react-add:hover{
+  transform: translateY(-3px);
+}
+html[data-theme="spongebob"] .react-add:active{
+  transform: scale(0.80);
+}
+html[data-theme="spongebob"] .reaction-badge{
+  border-radius: 16px;
+  font-size: 14px;
+  padding: 0 6px;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+  color: var(--white);
+}
+html[data-theme="spongebob"] .reaction-badge.you{
+  color: var(--white);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Menu de opciones en mensajes */
+html[data-theme="spongebob"] .options-menu{
+  background: var(--spongebob-yellow);
+  border: 1px solid var(--spongebob-yellow-dark);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+}
+html[data-theme="spongebob"] .options-item{
+  color: var(--black);
+  opacity: 0.8;
+  font-size: 16px;
+  border: none;
+  transition: transform 0.1s ease-in;
+}
+html[data-theme="spongebob"] .options-item:hover{
+  transform: scale(0.95);
+}
+html[data-theme="spongebob"] .options-item:active{
+  transform: scale(0.90);
+}
+
+/* Selector de emojis / stickers / gifs (movil) */
+html[data-theme="spongebob"] .mobile-picker-container {
+  background: var(--spongebob-yellow);
+}
+
+html[data-theme="spongebob"] .mobile-picker-container .emoji-mobile-footer {
+  background: var(--spongebob-yellow-dark);
+  border-top: 1px solid var(--spongebob-yellow);
+  padding: 0 12px;
+  gap: 8px;
+}
+
+html[data-theme="spongebob"] .mobile-tab-btn {
+  background: transparent;
+  color: var(--black);
+  font-size: 16px;
+}
+
+html[data-theme="spongebob"] .mobile-tab-btn.active {
+  background: var(--spongebob-orange);
+  color: white;
+}
+
+html[data-theme="spongebob"] .custom-categories-bar {
+  background: var(--spongebob-yellow-dark);
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: none;
+}
+
+html[data-theme="spongebob"] .custom-categories-bar .category-btn,
+html[data-theme="spongebob"] .category-btn.category-btn {
+  background: var(--spongebob-yellow);
+  border: 1px solid var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .custom-categories-bar .category-btn:hover,
+html[data-theme="spongebob"] .category-btn.category-btn:hover {
+  transform: scale(0.95);
+  background: var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .custom-categories-bar .category-btn.active,
+html[data-theme="spongebob"] .category-btn.category-btn.active {
+  background: var(--spongebob-yellow-dark);
+  border-color: var(--spongebob-orange);
+}
+
+html[data-theme="spongebob"] .custom-categories-bar .category-btn.active svg,
+html[data-theme="spongebob"] .category-btn.category-btn.active svg {
+  color: var(--spongebob-orange);
+}
+
+html[data-theme="spongebob"] .emoji-search-input {
+  background: var(--spongebob-yellow-dark);
+  border: 1px solid var(--spongebob-yellow);
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .emoji-search-input:focus {
+  border-color: var(--spongebob-orange);
+  box-shadow: 0 0 0 2px rgba(235, 49, 28, 0.2);
+}
+
+html[data-theme="spongebob"] .emoji-search-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="spongebob"] .skin-tone-main {
+  background: var(--spongebob-yellow-dark);
+  border: 1px solid var(--spongebob-yellow);
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .skin-tone-dropdown {
+  background: var(--spongebob-yellow);
+  border: 1px solid var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .skin-tone-dropdown button {
+  background: transparent;
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .skin-tone-dropdown button:hover {
+  background: var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .custom-category-item {
+  border: 1px solid var(--spongebob-yellow-dark);
+  background: var(--spongebob-yellow);
+}
+
+html[data-theme="spongebob"] .category-header {
+  background: var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .category-header strong {
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .category-arrow {
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .emoji-item {
+  background: transparent;
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .emoji-item:hover {
+  background: var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .sticker-item {
+  background: var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .sticker-item:hover {
+  background: var(--spongebob-orange);
+}
+
+html[data-theme="spongebob"] .gifs-search {
+  background: var(--spongebob-yellow);
+  border-bottom-color: var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .gifs-search-input {
+  background: var(--spongebob-yellow-dark);
+  border: 1px solid var(--spongebob-yellow);
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .gifs-search-btn {
+  background: var(--spongebob-yellow-dark);
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .gifs-search-btn:hover {
+  background: var(--spongebob-orange);
+  color: white;
+}
+
+html[data-theme="spongebob"] .emoji-picker-tabs {
+  background: var(--spongebob-yellow-dark);
+}
+
+/* Selector de emojis desktop */
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window {
+  background: var(--spongebob-yellow);
+  border-color: var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] #emoji-picker-desktop-modal-header {
+  background: var(--spongebob-yellow-dark);
+  border-bottom-color: var(--spongebob-yellow);
+}
+
+html[data-theme="spongebob"] .modal-header-text {
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .custom-categories-bar {
+  background: var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .category-btn {
+  background: var(--spongebob-yellow);
+  border: 1px solid var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .category-btn:hover {
+  background: var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .category-btn.active {
+  background: var(--spongebob-yellow-dark);
+  border-color: var(--spongebob-orange);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .category-btn.active svg {
+  color: var(--spongebob-orange);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .emoji-search-input {
+  background: var(--spongebob-yellow-dark);
+  border-color: var(--spongebob-yellow);
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .skin-tone-main {
+  background: var(--spongebob-yellow-dark);
+  border-color: var(--spongebob-yellow);
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .custom-category-item {
+  border-color: var(--spongebob-yellow-dark);
+  background: var(--spongebob-yellow);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .category-header {
+  background: var(--spongebob-yellow-dark);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .category-header strong {
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .emoji-item {
+  color: var(--black);
+}
+
+html[data-theme="spongebob"] .emoji-picker-desktop-movable-window .emoji-item:hover {
+  background: var(--spongebob-yellow-dark);
 }

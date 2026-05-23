@@ -598,29 +598,8 @@ function buildCategoryBar(onCategorySelect, onEmojiClick) {
     btn.setAttribute('draggable', 'false');
     btn.setAttribute('tabindex', activeCategory === cat.key ? '0' : '-1');
     
-    btn.style.cssText = `
-      flex: 0 0 auto;
-      padding: 8px;
-      border-radius: 12px;
-      background: ${activeCategory === cat.key ? 'var(--modal-btn-primary)' : 'transparent'};
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-user-drag: none;
-      user-drag: none;
-      width: 38px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    `;
-    
-    const svgElement = btn.querySelector('svg');
-    if (svgElement) {
-      svgElement.style.color = activeCategory === cat.key ? 'white' : 'currentColor';
+    if (activeCategory === cat.key) {
+      btn.classList.add('active');
     }
     
     btn.addEventListener('dragstart', (e) => {
@@ -649,17 +628,13 @@ function buildCategoryBar(onCategorySelect, onEmojiClick) {
       const focusState = preserveInputFocus();
       
       document.querySelectorAll('.category-btn').forEach(b => {
+        b.classList.remove('active');
         b.setAttribute('aria-selected', 'false');
         b.setAttribute('tabindex', '-1');
-        b.style.background = 'transparent';
-        const svg = b.querySelector('svg');
-        if (svg) svg.style.color = 'currentColor';
       });
+      btn.classList.add('active');
       btn.setAttribute('aria-selected', 'true');
       btn.setAttribute('tabindex', '0');
-      btn.style.background = 'var(--modal-btn-primary)';
-      const currentSvg = btn.querySelector('svg');
-      if (currentSvg) currentSvg.style.color = 'white';
       
       activeCategory = cat.key;
       searchQuery = '';

@@ -278,10 +278,14 @@ if (input) {
   input.addEventListener('keydown', (e) => {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window);
     const isCtrlEnter = (e.ctrlKey || e.metaKey) && e.key === 'Enter';
-    const isCtrlE = (e.ctrlKey || e.metaKey) && e.key === 'e';
+    const isAltE = e.altKey && e.key === 'e';
+    const isCtrlShiftE = (e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'E';
+    const isCtrlP = (e.ctrlKey || e.metaKey) && e.key === 'p';
+    const isCtrlShiftP = (e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'P';
 
-    if (isCtrlE) {
+    if (isAltE || isCtrlShiftE || isCtrlP || isCtrlShiftP) {
       e.preventDefault();
+      e.stopPropagation();
       const emojiBtn = document.getElementById('emojiPickerBtn');
       if (emojiBtn) emojiBtn.click();
       return;
