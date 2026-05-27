@@ -212,21 +212,21 @@ function createEmojiButton(emoji, onClick) {
   });
   
   btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-    
-    addRecentEmoji(insertEmoji);
-    if (onClick) onClick(insertEmoji);
-    
-    if (activeCategory === 'recent' && categorySections.has('recent')) {
-      const recentSection = categorySections.get('recent');
-      const newRecents = updateRecentCategory();
-      const newGrid = buildGrid(newRecents, onClick);
-      const oldGrid = recentSection.querySelector('.emoji-grid');
-      if (oldGrid) oldGrid.replaceWith(newGrid);
-    }
-  });
+  e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation();
+  
+  addRecentEmoji(insertEmoji);
+  if (onClick) onClick(insertEmoji);
+  
+  if (activeCategory === 'recent' && categorySections.has('recent')) {
+    const recentSection = categorySections.get('recent');
+    const newRecents = updateRecentCategory();
+    const newGrid = buildGrid(newRecents, onClick);
+    const oldGrid = recentSection.querySelector('.emoji-grid');
+    if (oldGrid) oldGrid.replaceWith(newGrid);
+  }
+});
   
   return btn;
 }
@@ -621,6 +621,7 @@ function buildCategoryBar(onCategorySelect, onEmojiClick) {
     
     btn.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       e.stopPropagation();
       
       if (activeCategory === cat.key && searchQuery === '') return;

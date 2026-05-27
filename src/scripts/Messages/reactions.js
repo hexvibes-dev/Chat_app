@@ -138,25 +138,8 @@ function showConfirmPopup(message) {
 
     const popup = document.createElement('div');
     popup.className = 'confirm-popup';
-    popup.style.cssText = `
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: var(--modal-bg);
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      z-index: 30002;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      min-width: 250px;
-      text-align: center;
-      border: 1px solid var(--modal-input-border);
-    `;
     popup.innerHTML = `
-      <p style="margin: 0; font-size: 16px; color: var(--modal-text);">${message}</p>
+      <p style="margin: 0; font-size: 16px; color: #fff;">${message}</p>
       <div style="display: flex; justify-content: center; gap: 20px;">
         <button class="confirm-no" style="background: transparent; border: none; cursor: pointer; font-size: 28px; color: #ef4444;">✗</button>
         <button class="confirm-yes" style="background: transparent; border: none; cursor: pointer; font-size: 28px; color: #10b981;">✓</button>
@@ -187,7 +170,8 @@ function showTransientNotification(text, duration = NOTIF_DURATION) {
 
 function applyLiftEffect(messageEl) {
   removeLiftEffect();
-  messageEl.style.transition = 'filter 0.18s ease';
+  messageEl.style.transition = '0.3s ease';
+  messageEl.style.transform = 'scale(0.9)'
   messageEl.style.filter = 'brightness(1.2)';
   messageEl.dataset._lifted = 'true';
 }
@@ -196,7 +180,7 @@ function removeLiftEffect() {
   const liftedMsg = document.querySelector('.message[data-_lifted="true"]');
   if (liftedMsg) {
     liftedMsg.style.filter = '';
-    liftedMsg.style.transition = '';
+    liftedMsg.style.transform = '';
     delete liftedMsg.dataset._lifted;
   }
 }
@@ -494,58 +478,7 @@ async function handleOptionAction(action, messageEl) {
   hidePopup();
 }
 
-function createThoughtBubbles(messageEl, popupEl) {
-  activeThoughtBubbles.forEach(b => b.remove());
-  activeThoughtBubbles = [];
 
-  const msgRect = messageEl.querySelector('.msg-drag').getBoundingClientRect();
-  const popupRect = popupEl.getBoundingClientRect();
-
-  const startX = msgRect.left + msgRect.width / 2;
-  const startY = msgRect.top + msgRect.height / 2;
-  const endX = popupRect.left + popupRect.width / 2;
-  const endY = popupRect.top + popupRect.height / 2;
-
-  const numBubbles = 5;
-  const bubbleColors = ['#ffffff', '#f8f9fa', '#e9ecef'];
-
-  for (let i = 1; i <= numBubbles; i++) {
-    const t = i / (numBubbles + 0.5);
-    const x = startX + (endX - startX) * t;
-    const y = startY + (endY - startY) * t;
-    const size = 20 + (i / numBubbles) * 30;
-
-    const bubble = document.createElement('div');
-    bubble.className = 'thought-bubble';
-    bubble.textContent = '';
-    bubble.style.position = 'fixed';
-    bubble.style.left = (x - size/2) + 'px';
-    bubble.style.top = (y - size/2) + 'px';
-    bubble.style.width = size + 'px';
-    bubble.style.height = size + 'px';
-    bubble.style.borderRadius = '50%';
-    bubble.style.backgroundColor = bubbleColors[i % bubbleColors.length];
-    bubble.style.border = '2px solid #333';
-    bubble.style.boxShadow = '2px 2px 6px rgba(0,0,0,0.2)';
-    bubble.style.zIndex = '500';
-    bubble.style.opacity = '0';
-    bubble.style.transform = 'scale(0.5)';
-    bubble.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-    bubble.style.pointerEvents = 'none';
-    document.body.appendChild(bubble);
-    activeThoughtBubbles.push(bubble);
-
-    setTimeout(() => {
-      bubble.style.opacity = '1';
-      bubble.style.transform = 'scale(1)';
-    }, i * 80);
-  }
-}
-
-function removeThoughtBubbles() {
-  activeThoughtBubbles.forEach(bubble => bubble.remove());
-  activeThoughtBubbles = [];
-}
 
 function showReactionsPopup(messageEl, anchorRect) {
   if (popupTimeout) {
@@ -821,7 +754,6 @@ function showReactionsPopup(messageEl, anchorRect) {
       popup.style.transition = '';
     }, 400);
 
-    createThoughtBubbles(messageEl, popup);
 
     showOptionsMenu(messageEl, menuPos, isMe, (action) => {
       handleOptionAction(action, messageEl);
@@ -851,7 +783,6 @@ function hidePopup() {
   }
   hideOptionsMenu();
   removeLiftEffect();
-  removeThoughtBubbles();
   window.removeEventListener('pointerdown', onOutside);
 }
 

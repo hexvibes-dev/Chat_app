@@ -19,9 +19,17 @@ import Modals from '../components/Modals.astro';
 <ScrollButton />
 <Modals />
 
-<script>
-  import { initThemeManager } from '../scripts/Modals/themeManager.js';
-  initThemeManager();
+<!--<script>-->
+<!--  import { initThemeManager } from '../scripts/Modals/themeManager.js';-->
+<!--  initThemeManager();-->
+<!--</script>-->
+<script type="module">
+  // Usa importación absoluta desde la raíz del proyecto
+  import { initTheme } from '/src/scripts/Theme/initTheme.js';
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    window.themeManager = initTheme();
+  });
 </script>
 
 <script>

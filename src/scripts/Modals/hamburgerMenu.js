@@ -1,4 +1,4 @@
-import { initThemeManager } from './themeManager.js';
+import { initThemeManager } from '../Theme/themeManager.js';
 import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
 import interact from 'interactjs';
 import { showAvatarEditor } from './AvatarEditorModal.js';

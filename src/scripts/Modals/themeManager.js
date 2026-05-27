@@ -9,29 +9,33 @@ const STORAGE_CUSTOM_BG = 'chat_custom_bg';
 const STORAGE_BG_OPACITY = 'chat_bg_opacity';
 const STORAGE_USER_IMAGES = 'chat_user_images';
 
-const ALLOWED_THEMES = ['dark', 'light', 'basic' , 'terminal' , 'spongebob' , 'cristal', 'forest', 'ocean', 'whatsapp', 'midnight', 'reference', 'magenta' , 'nuevo'];
+const ALLOWED_THEMES = ['dark', 'light', 'basic', 'terminal', 'spongebob', 'cristal', 'forest', 'ocean', 'whatsapp', 'midnight', 'reference', 'magenta', 'nuevo'];
 
-const themes = {
-  dark: { name: 'Oscuro', bg: '/img/dark.jpg', color: '#17212b' },
-  light: { name: 'Claro', bg: '/img/light.jpg', color: '#f8fafc' },
-  basic: { name: 'Basico' , bg: '/img/patron1.jpg' , color: '#2a2a3a'},
-  terminal: { name: 'Terminal' , bg: 'null' , color: '#000000'},
-  spongebob: { name: 'Bob Esponja' , bg: '/img/spongebob.jpg' , color: '#FBEB22'},
-  cristal: { name: 'Cristal', bg: '/img/bg.jpg', color: '#1e293b' },
-  forest: { name: 'Bosque', bg: '/img/bg-forest.jpg', color: '#1e3a1e' },
-  ocean: { name: 'Océano', bg: '/img/ballena.jpg', color: '#082f49' },
-  magenta: { name: 'Magenta', bg: '/img/patron1.jpg', color: '#16222F' },
-  whatsapp: { name: 'WhatsApp', bg: '/img/dark.jpg', color: '#e5ddd5' },
-  midnight: { name: 'Midnight', bg: '/img/magic.jpg', color: '#0b0f19' },
-  reference: { name: 'Referencia', bg: '/img/dark.jpg', color: '#030F0F' },
-  nuevo: { name: 'nuevo', bg: '/img/planton.jpg', color: '#169369' }
+const themesUI = {
+  dark: { name: 'Oscuro' },
+  light: { name: 'Claro' },
+  basic: { name: 'Basico' },
+  terminal: { name: 'Terminal' },
+  spongebob: { name: 'Bob Esponja' },
+  cristal: { name: 'Cristal' },
+  forest: { name: 'Bosque' },
+  ocean: { name: 'Océano' },
+  magenta: { name: 'Magenta' },
+  whatsapp: { name: 'WhatsApp' },
+  midnight: { name: 'Midnight' },
+  reference: { name: 'Referencia' },
+  nuevo: { name: 'Nuevo' }
 };
+
+function getThemeData(themeId) {
+  return window.__THEMES_DATA__?.[themeId] || { bg: null, color: '#1e293b' };
+}
 
 const nativeBackgroundsGrouped = {
   movil: [
     { name: 'Bosque encantado version movil', url: '/img/bg.jpg' },
     { name: 'Nubes', url: '/img/nubes.jpg' },
-    {name: 'Planton' , url: '/img/planton.jpg' }
+    { name: 'Planton', url: '/img/planton.jpg' }
   ],
   tableta: [
     { name: 'Ballena', url: '/img/ballena.jpg' }
@@ -100,16 +104,17 @@ function saveConfirmedState(theme, bgMode, customBgUrl, opacity = null) {
   }
 }
 
+
 function applyConfirmedBackground(theme, bgMode, customBgUrl, opacity = null) {
   const root = document.documentElement;
-  const themeObj = themes[theme] || themes.dark;
+  const themeData = getThemeData(theme);
   let finalBgUrl = null;
   if (bgMode === 'custom' && customBgUrl) {
     finalBgUrl = customBgUrl;
-  } else if (themeObj.bg) {
-    finalBgUrl = themeObj.bg;
+  } else if (themeData.bg && themeData.bg !== 'null') {
+    finalBgUrl = themeData.bg;
   }
-  const bgColor = themeObj.color;
+  const bgColor = themeData.color;
   const finalOpacity = opacity !== null ? opacity : getCurrentBgOpacity();
   if (finalBgUrl) {
     root.style.setProperty('--app-bg-image', `url('${finalBgUrl}')`);
@@ -161,7 +166,10 @@ export function setBackgroundOpacity(opacity) {
 }
 
 export function getThemes() {
-  return themes;
+  return themesUI;
+}
+export function getThemeDataById(themeId) {
+  return window.__THEMES_DATA__?.[themeId] || { bg: null, color: '#1e293b' };
 }
 
 export function getNativeBackgroundsGrouped() {
@@ -259,7 +267,7 @@ function toggleCategoryContent(header) {
   const arrow = header.querySelector('.arrow');
   if (!content) return;
   const isExpanded = content.classList.contains('expanded');
-  
+
   if (isExpanded) {
     content.classList.remove('expanded');
     if (arrow) arrow.textContent = '▼';
@@ -423,12 +431,13 @@ function applyDraftPreview() {
   if (draftBgMode === 'custom' && draftCustomBg) {
     bgUrl = draftCustomBg;
   } else if (draftBgMode === 'theme' || draftBgMode === null) {
-    bgUrl = themes[themeToApply]?.bg || null;
+    const themeData = getThemeData(themeToApply);
+    bgUrl = themeData.bg || null;
   }
-  const themeObj = themes[themeToApply] || themes.dark;
-  const bgColor = themeObj.color;
+  const themeData = getThemeData(themeToApply);
+  const bgColor = themeData.color;
   const root = document.documentElement;
-  if (bgUrl) {
+  if (bgUrl && bgUrl !== 'null') {
     root.style.setProperty('--app-bg-image', `url('${bgUrl}')`);
   } else {
     root.style.setProperty('--app-bg-image', 'none');
@@ -563,12 +572,12 @@ function showOpacityModal(previewUrl, galleryCallback = null, imageChangeCallbac
   currentPreviewUrl = previewUrl;
   opacityImageChanged = false;
   if (!previewUrl) {
-    const themeObj = themes[draftTheme] || themes.dark;
+    const themeData = getThemeData(draftTheme);
     const canvas = document.createElement('canvas');
     canvas.width = 300;
     canvas.height = 200;
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = themeObj.color;
+    ctx.fillStyle = themeData.color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     previewUrl = canvas.toDataURL('image/png');
   }
@@ -610,23 +619,23 @@ function getModalPosition() {
       y: 70
     };
   }
-  
+
   const btnRect = hamburgerBtn.getBoundingClientRect();
   const modalWidth = windowElement ? parseInt(windowElement.style.width) || 600 : 600;
   const modalHeight = windowElement ? parseInt(windowElement.style.height) || 600 : 600;
-  
+
   let x = btnRect.right - modalWidth;
   let y = btnRect.bottom + 10;
-  
+
   const isMobileView = window.innerWidth <= 768;
   if (isMobileView) {
     x = btnRect.left;
     y = btnRect.bottom + 10;
   }
-  
+
   x = Math.max(10, Math.min(x, window.innerWidth - modalWidth - 10));
   y = Math.max(10, Math.min(y, window.innerHeight - modalHeight - 10));
-  
+
   return { x, y };
 }
 
@@ -664,7 +673,7 @@ function isLessThan10PercentVisible(element) {
 
 function setupInteractForModal() {
   if (!windowElement || !headerElement) return;
-  
+
   interact(windowElement).resizable({
     edges: { top: true, left: true, bottom: true, right: true },
     inertia: false,
@@ -702,12 +711,12 @@ function setupInteractForModal() {
       })
     ],
     listeners: {
-      start() { 
-        window.isDraggingModal = true; 
+      start() {
+        window.isDraggingModal = true;
       },
       move(event) {
         const keyboardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--keyboard')) || 0;
-        
+
         if (keyboardHeight > 0) {
           const inputElement = document.getElementById('layerInput');
           if (inputElement) {
@@ -715,13 +724,13 @@ function setupInteractForModal() {
             const modalRect = windowElement.getBoundingClientRect();
             const inputTop = inputRect.top;
             const modalBottom = modalRect.bottom;
-            
+
             if (modalBottom + event.dy > inputTop - 10) {
               return;
             }
           }
         }
-        
+
         windowX += event.dx;
         windowY += event.dy;
         windowElement.style.transform = `translate3d(${windowX}px, ${windowY}px, 0)`;
@@ -769,12 +778,12 @@ function loadThemeContent() {
         <div class="bg-category-content">
           <div class="bg-options">
             ${items.map(item => {
-              if (item.url) {
-                return `<div class="bg-preview ${draftBgMode === 'custom' && draftCustomBg === item.url ? 'active' : ''}" data-bg="${item.url}" style="background-image: url('${item.url}');"></div>`;
-              } else {
-                return `<div class="bg-preview ${draftBgMode === 'custom' && draftCustomBg === item.color ? 'active' : ''}" data-bg="color:${item.color}" style="background-color: ${item.color};" title="${item.name}"></div>`;
-              }
-            }).join('')}
+      if (item.url) {
+        return `<div class="bg-preview ${draftBgMode === 'custom' && draftCustomBg === item.url ? 'active' : ''}" data-bg="${item.url}" style="background-image: url('${item.url}');"></div>`;
+      } else {
+        return `<div class="bg-preview ${draftBgMode === 'custom' && draftCustomBg === item.color ? 'active' : ''}" data-bg="color:${item.color}" style="background-color: ${item.color};" title="${item.name}"></div>`;
+      }
+    }).join('')}
           </div>
         </div>
       </div>
@@ -784,7 +793,7 @@ function loadThemeContent() {
     <div class="theme-header"><div></div></div>
     <h3 class="tittle">Temas</h3>
     <div class="theme-options ">
-      ${Object.entries(themes).map(([id, t]) => `
+      ${Object.entries(themesUI).map(([id, t]) => `
         <button data-theme="${id}" class="theme-btn ${draftTheme === id ? 'active' : ''}">${t.name}</button>
       `).join('')}
     </div>
@@ -807,14 +816,14 @@ function loadThemeContent() {
       <button class="btn-save" id="saveThemeBtn">Guardar cambios</button>
     </div>
   `;
-  
+
   document.querySelectorAll('.bg-category-header').forEach(header => {
     header.addEventListener('click', (e) => {
       e.stopPropagation();
       toggleCategoryContent(header);
     });
   });
-  
+
   bindUserImagesSection();
   const themeBtns = document.querySelectorAll('#theme-content .theme-btn');
   themeBtns.forEach(btn => {
@@ -827,7 +836,7 @@ function loadThemeContent() {
       btn.classList.add('active');
       document.querySelectorAll('#theme-content .bg-preview').forEach(p => p.classList.remove('active'));
       applyDraftPreview();
-      const bgUrl = themes[draftTheme]?.bg;
+      const bgUrl = getThemeData(draftTheme)?.bg;
       showOpacityModal(bgUrl, null, (newImageUrl) => {
         draftBgMode = 'custom';
         draftCustomBg = newImageUrl;
@@ -857,7 +866,7 @@ function loadThemeContent() {
       preview.classList.add('active');
       applyDraftPreview();
       let previewUrl = draftCustomBg;
-      if (draftBgMode === 'theme') previewUrl = themes[draftTheme]?.bg;
+      if (draftBgMode === 'theme') previewUrl = themesUI[draftTheme]?.bg;
       if (previewUrl && !previewUrl.startsWith('color:')) {
         showOpacityModal(previewUrl, null, (newImageUrl) => {
           draftBgMode = 'custom';
@@ -902,7 +911,7 @@ function loadThemeContent() {
     const restoreSnapshot = getDraftSnapshot();
     let previewUrl = '';
     if (draftBgMode === 'custom' && draftCustomBg) previewUrl = draftCustomBg;
-    else if (draftTheme) previewUrl = themes[draftTheme]?.bg || '';
+    else if (draftTheme) previewUrl = getThemeData(draftTheme)?.bg || '';
     if (previewUrl && !previewUrl.startsWith('color:')) {
       showOpacityModal(previewUrl, null, (newImageUrl) => {
         draftBgMode = 'custom';
@@ -926,6 +935,9 @@ function loadThemeContent() {
             document.documentElement.setAttribute('data-theme', draftTheme);
             saveConfirmedState(draftTheme, 'custom', draftCustomBg, draftOpacity);
             applyConfirmedBackground(draftTheme, 'custom', draftCustomBg, draftOpacity);
+          } else {
+            saveConfirmedState(draftTheme, 'custom', draftCustomBg, draftOpacity);
+            applyConfirmedBackground(draftTheme, 'custom', draftCustomBg, draftOpacity);
           }
         } else {
           if (draftTheme !== confirmedTheme || confirmedBgMode !== 'theme') {
@@ -936,6 +948,11 @@ function loadThemeContent() {
           }
         }
         setBackgroundOpacity(draftOpacity);
+
+        confirmedTheme = draftTheme;
+        confirmedBgMode = draftBgMode;
+        confirmedCustomBg = draftCustomBg;
+        confirmedOpacity = draftOpacity;
       }
       hideModal();
       showTransientNotification('Tema guardado');
@@ -971,11 +988,11 @@ function showModal() {
     closeBtn = document.getElementById('close-theme-modal');
     overlay = document.getElementById('theme-modal-overlay');
     if (!windowElement || !headerElement) return;
-    
+
     associateOverlay(windowElement, overlay);
     addResizeHandlesToModal(windowElement);
     setupInteractForModal();
-    
+
     if (closeBtn) {
       closeBtn.onclick = () => {
         restoreConfirmedState();
@@ -984,8 +1001,19 @@ function showModal() {
       };
     }
     loadThemeContent();
+  } else {
+    confirmedTheme = getCurrentTheme();
+    confirmedBgMode = getCurrentBgMode();
+    confirmedCustomBg = getCurrentCustomBg();
+    confirmedOpacity = getCurrentBgOpacity();
+    draftTheme = confirmedTheme;
+    draftBgMode = confirmedBgMode;
+    draftCustomBg = confirmedCustomBg;
+    draftOpacity = confirmedOpacity;
+    applyDraftPreview();
+    updateActiveIndicators();
   }
-  
+
   const isMobileView = window.innerWidth <= 768;
   if (isMobileView) {
     windowElement.style.width = '200px';
@@ -996,20 +1024,20 @@ function showModal() {
     windowElement.style.height = '600px';
     windowElement.style.minWidth = '400px';
   }
-  
+
   overlay.classList.add('active');
   windowElement.style.display = 'block';
   setModalPosition();
   addModalAnimation();
   isModalOpen = true;
-  
+
   registerModal(windowElement, 'theme-modal');
   bringModalToFront('theme-modal');
 }
 
 export function initThemeManager() {
   window.showThemeModal = showModal;
-  
+
   const style = document.createElement('style');
   style.textContent = `
     #movable-window {
@@ -1039,13 +1067,13 @@ export function initThemeManager() {
     }
   `;
   document.head.appendChild(style);
-  
+
   window.addEventListener('resize', () => {
     if (isModalOpen && windowElement && windowElement.style.display === 'block') {
       setModalPosition();
     }
   });
-  
+
   setTimeout(() => {
     if (typeof updateTerminalPrefixes === 'function') updateTerminalPrefixes();
   }, 100);

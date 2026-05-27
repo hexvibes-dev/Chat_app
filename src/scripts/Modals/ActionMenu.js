@@ -4,22 +4,12 @@ import { showCustomEmojiModal, showQuickEmojiUpload } from '../Emojis/CustomEmoj
 import { showCustomStickerModal, showQuickStickerUpload } from '../Stickers/StickerModal.js';
 import { insertAtCursor } from '../Messages/input.js';
 import { showPaintModal } from '../Paint/PaintModal.js';
+import { addResizeHandlesToModal } from '../Utils/resizeModals.js';
 
 let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
 let isModalOpen = false;
 
-function addResizeHandlesToModal(element) {
-  const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
-  handles.forEach(dir => {
-    let handle = element.querySelector(`.resize-action.resize-${dir}`);
-    if (!handle) {
-      handle = document.createElement('div');
-      handle.className = `resize-action resize-${dir}`;
-      element.appendChild(handle);
-    }
-  });
-}
 
 function centerModal() {
   if (!windowElement) return;

@@ -2,6 +2,7 @@ import interact from 'interactjs';
 import { registerModal, associateOverlay, bringModalToFront, constrainAllModals } from '../Utils/modalStackManager.js';
 import { setContactAvatar } from '../Messages/contactStatus.js';
 import { showNotification } from '../Utils/notifications.js';
+import { addResizeHandlesToModal } from '../Utils/resizeModals.js';
 
 let windowElement, headerElement, closeBtn, overlay;
 let windowX = 0, windowY = 0;
@@ -126,18 +127,6 @@ const BLUR_NORMAL_SVG = `<svg id="blur-icon-normal" class="blur-icon-normal" wid
 
 function showTransientNotification(text, duration = 2000) {
   showNotification(text, duration);
-}
-
-function addResizeHandlesToModal(element) {
-  const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
-  handles.forEach(dir => {
-    let handle = element.querySelector(`.resize-avatar-modal.resize-${dir}`);
-    if (!handle) {
-      handle = document.createElement('div');
-      handle.className = `resize-avatar-modal resize-${dir}`;
-      element.appendChild(handle);
-    }
-  });
 }
 
 function centerModal() {

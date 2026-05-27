@@ -57,7 +57,7 @@ function buildStickerPackAccordion(category, onSelectSticker) {
       align-items: center;
       justify-content: center;
     `;
-    
+
     const img = document.createElement('img');
     img.src = sticker.url;
     img.alt = sticker.name || 'sticker';
@@ -67,7 +67,7 @@ function buildStickerPackAccordion(category, onSelectSticker) {
       object-fit: contain;
       border-radius: 8px;
     `;
-    
+
     if (sticker.animated) {
       img.classList.add('sticker-animated');
       if (sticker.animationType) {
@@ -76,14 +76,16 @@ function buildStickerPackAccordion(category, onSelectSticker) {
         img.setAttribute('data-iterations', sticker.iterations || 1);
       }
     }
-    
+
     btn.appendChild(img);
-    
-    btn.addEventListener('click', () => {
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       const stickerHtml = getStickerHtml(sticker);
       onSelectSticker(stickerHtml);
+      document.dispatchEvent(new CustomEvent('sticker-sent'));
     });
-    
+
     grid.appendChild(btn);
   });
 

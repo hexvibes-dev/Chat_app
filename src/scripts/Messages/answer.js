@@ -230,14 +230,14 @@ export function blurExceptTargetForDuration(target, duration = 1000) {
     'background: rgba(0,0,0,0.12)',
     'pointer-events:none',
     'z-index:1140',
-    'opacity:0',
+    'opacity:1',
     'transition: opacity 80ms ease'
   ].join(';');
   document.body.appendChild(dim);
   dim.getBoundingClientRect();
   dim.style.opacity = '1';
   setTimeout(() => {
-    dim.style.opacity = '0';
+    dim.style.opacity = '1';
     setTimeout(() => {
       allMessages.forEach((m) => {
         const prev = prevStyles.get(m) || {};
@@ -263,7 +263,7 @@ export function addReplyRemotely(targetMsgId, replyText, replyAuthor, senderId) 
   let quotedHtml;
   const isSticker = targetMsg.querySelector('.sticker-message-wrapper') !== null;
   if (isSticker) {
-    quotedHtml = '📷 Sticker';
+    quotedHtml = 'Sticker';
   } else {
     const plainText = extractPlainText(targetMsg.querySelector('.msg-drag'));
     quotedHtml = convertShortcodesToImages(plainText);

@@ -102,6 +102,7 @@ export async function showEmojiPicker(container, onOpen) {
   }
 
   tabs.addEventListener('click', (e) => {
+    e.stopPropagation();
     const btn = e.target.closest('.tab-btn');
     if (btn && btn.dataset.tab) {
       switchTab(btn.dataset.tab);

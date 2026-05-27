@@ -12,7 +12,6 @@ import { loadCustomEmojis, refreshCustomEmojis, getCustomEmojiData } from './Emo
 import { updateIsAtBottom } from './Utils/scroll.js';
 import { updateKeyboard } from './Utils/keyboard.js';
 import { input, insertAtCursor } from './Messages/input.js';
-import { appendMessage } from './Messages/messages.js';
 import { enableAnswerGestures } from './Messages/answer.js';
 import { loadContactAvatar, loadContactName } from './Messages/contactStatus.js';
 import { startAutoReplies } from './Utils/automsj.js';
@@ -20,6 +19,10 @@ import { initGlobalSounds } from './Sounds/globalSounds.js';
 import { getCategories, getCustomEmojiArray, toggleStaticCategoryDisabled, isStaticCategoryDisabled } from './Emojis/CustomEmojiManager.js';
 import { initEmojiPicker } from './Emojis/EmojiPickerCore.js';
 import { getStaticEmojiCategories } from './Emojis/StaticEmojiCategories.js';
+import { generateDevMessages } from './devModeMessages.js';
+import { initEmojiScrollManager } from './Utils/emojiScrollManager.js';
+
+let scrollManagerInitialized = false;
 
 function inicializarApp() {
   if (typeof window.isAtBottom === 'undefined') window.isAtBottom = true;
@@ -74,8 +77,6 @@ function inicializarApp() {
     });
   }
 
-  for (let i = 1; i <= 1; i++) appendMessage('Mensaje de ejemplo ' + i);
-  setTimeout(() => appendMessage(`Hola, este es un mensaje entrante`), 2000);
   setTimeout(updateIsAtBottom, 50);
 
   if (messagesEl) {
@@ -98,6 +99,17 @@ function inicializarApp() {
   startAutoReplies();
   
   initGlobalSounds();
+  
+  generateDevMessages();
+  
+  if (!scrollManagerInitialized) {
+    const messagesContainer = document.getElementById('messages');
+    const inputElement = document.getElementById('layerInput');
+    if (messagesContainer && inputElement) {
+      initEmojiScrollManager(messagesContainer, inputElement);
+      scrollManagerInitialized = true;
+    }
+  }
   
   window.togglePepe = () => {
     toggleStaticCategoryDisabled('Pepe');
